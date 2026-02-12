@@ -626,30 +626,6 @@ class IntegrationsResource(_BaseResource):
         return self._get("/api/v1/integrations/oauth-status")
 
 
-class FilesResource(_BaseResource):
-    def get_url(self, key: str) -> dict[str, Any]:
-        return self._get("/api/v1/files", params={"key": key})
-
-
-class BillingResource(_BaseResource):
-    def plans(self) -> dict[str, Any]:
-        return self._get("/api/v1/billing/plans")
-
-    def plan(self) -> dict[str, Any]:
-        return self._get("/api/v1/billing/plan")
-
-    def usage(self) -> dict[str, Any]:
-        return self._get("/api/v1/billing/usage")
-
-    def addons(self) -> dict[str, Any]:
-        return self._get("/api/v1/billing/addons")
-
-    def purchase_addon(self, addon_id: str) -> dict[str, Any]:
-        return self._post(
-            "/api/v1/billing/addons/purchase", json={"addonId": addon_id}
-        )
-
-
 class ActivityResource(_BaseResource):
     def list(
         self,
@@ -714,8 +690,6 @@ class WeavzClient:
         self.project_members = ProjectMembersResource(self)
         self.connection_policies = ConnectionPoliciesResource(self)
         self.integrations = IntegrationsResource(self)
-        self.files = FilesResource(self)
-        self.billing = BillingResource(self)
         self.activity = ActivityResource(self)
 
     def request(

@@ -46,8 +46,9 @@ The client provides namespaced access to all API resources:
 | `client.api_keys` | `list()`, `create()`, `delete()` |
 | `client.members` | `list()`, `create()`, `update()`, `delete()` |
 | `client.connection_policies` | `list()`, `create()`, `update()`, `delete()` |
-| `client.pieces` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
-| `client.billing` | `plans()`, `plan()`, `usage()`, `addons()`, `purchase_addon()` |
+| `client.integrations` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
+| `client.oauth_apps` | `list()`, `create()`, `delete()` |
+| `client.webhook_secrets` | `list()`, `create()`, `delete()` |
 | `client.activity` | `list()` |
 
 ## Error Handling
