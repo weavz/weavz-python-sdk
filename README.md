@@ -38,14 +38,13 @@ The client provides namespaced access to all API resources:
 
 | Resource | Methods |
 |----------|---------|
-| `client.projects` | `list()`, `create()`, `get()`, `delete()` |
+| `client.projects` | `list()`, `create()`, `get()`, `delete()`, `list_integrations()`, `add_integration()`, `update_integration()`, `remove_integration()` |
 | `client.connections` | `list()`, `create()`, `delete()`, `resolve()` |
 | `client.actions` | `execute()` |
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
 | `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
 | `client.members` | `list()`, `create()`, `update()`, `delete()` |
-| `client.connection_policies` | `list()`, `create()`, `update()`, `delete()` |
 | `client.integrations` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
 | `client.oauth_apps` | `list()`, `create()`, `delete()` |
 | `client.webhook_secrets` | `list()`, `create()`, `delete()` |

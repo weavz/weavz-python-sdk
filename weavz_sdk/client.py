@@ -60,6 +60,75 @@ class ProjectsResource(_BaseResource):
     def delete(self, project_id: str) -> dict[str, Any]:
         return self._delete(f"/api/v1/projects/{project_id}")
 
+    def list_integrations(self, project_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/projects/{project_id}/integrations")
+
+    def add_integration(
+        self,
+        project_id: str,
+        *,
+        integration_name: str,
+        integration_alias: str | None = None,
+        connection_strategy: str | None = None,
+        connection_id: str | None = None,
+        display_name: str | None = None,
+        enabled_actions: list[str] | None = None,
+        sort_order: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {"integrationName": integration_name}
+        if integration_alias is not None:
+            body["alias"] = integration_alias
+        if connection_strategy is not None:
+            body["connectionStrategy"] = connection_strategy
+        if connection_id is not None:
+            body["connectionId"] = connection_id
+        if display_name is not None:
+            body["displayName"] = display_name
+        if enabled_actions is not None:
+            body["enabledActions"] = enabled_actions
+        if sort_order is not None:
+            body["sortOrder"] = sort_order
+        return self._post(
+            f"/api/v1/projects/{project_id}/integrations", json=body
+        )
+
+    def update_integration(
+        self,
+        project_id: str,
+        integration_id: str,
+        *,
+        integration_alias: str | None = None,
+        connection_strategy: str | None = None,
+        connection_id: str | None = None,
+        display_name: str | None = None,
+        enabled_actions: list[str] | None = None,
+        sort_order: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if integration_alias is not None:
+            body["alias"] = integration_alias
+        if connection_strategy is not None:
+            body["connectionStrategy"] = connection_strategy
+        if connection_id is not None:
+            body["connectionId"] = connection_id
+        if display_name is not None:
+            body["displayName"] = display_name
+        if enabled_actions is not None:
+            body["enabledActions"] = enabled_actions
+        if sort_order is not None:
+            body["sortOrder"] = sort_order
+        return self._patch(
+            f"/api/v1/projects/{project_id}/integrations/{integration_id}",
+            json=body,
+        )
+
+    def remove_integration(
+        self, project_id: str, integration_id: str
+    ) -> dict[str, Any]:
+        return self._delete(
+            f"/api/v1/projects/{project_id}/integrations/{integration_id}"
+        )
+
 
 class ConnectionsResource(_BaseResource):
     def list(self, *, id: str | None = None) -> dict[str, Any]:
@@ -252,6 +321,7 @@ class ActionsResource(_BaseResource):
         connection_external_id: str | None = None,
         project_id: str | None = None,
         user_id: str | None = None,
+        integration_alias: str | None = None,
     ) -> Any:
         body: dict[str, Any] = {
             "integrationName": integration_name,
@@ -264,6 +334,8 @@ class ActionsResource(_BaseResource):
             body["projectId"] = project_id
         if user_id is not None:
             body["userId"] = user_id
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         return self._post("/api/v1/actions/execute", json=body)
 
 
@@ -450,6 +522,22 @@ class McpServersResource(_BaseResource):
             f"/api/v1/mcp/servers/{server_id}/declarations/{integration_or_alias}"
         )
 
+    def sync_from_project(
+        self,
+        server_id: str,
+        *,
+        mode: str | None = None,
+        include_disabled: bool | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if mode is not None:
+            body["mode"] = mode
+        if include_disabled is not None:
+            body["includeDisabled"] = include_disabled
+        return self._post(
+            f"/api/v1/mcp/servers/{server_id}/sync-from-project", json=body
+        )
+
 
 class ApiKeysResource(_BaseResource):
     def list(self) -> dict[str, Any]:
@@ -512,46 +600,6 @@ class ProjectMembersResource(_BaseResource):
 
     def delete(self, project_member_id: str) -> dict[str, Any]:
         return self._delete(f"/api/v1/project-members/{project_member_id}")
-
-
-class ConnectionPoliciesResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/connection-policies")
-
-    def create(
-        self,
-        *,
-        integration_name: str,
-        policy: str,
-        project_id: str | None = None,
-        connection_id: str | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {
-            "integrationName": integration_name,
-            "policy": policy,
-        }
-        if project_id is not None:
-            body["projectId"] = project_id
-        if connection_id is not None:
-            body["connectionId"] = connection_id
-        return self._post("/api/v1/connection-policies", json=body)
-
-    def update(
-        self,
-        policy_id: str,
-        *,
-        policy: str | None = None,
-        connection_id: str | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {}
-        if policy is not None:
-            body["policy"] = policy
-        if connection_id is not None:
-            body["connectionId"] = connection_id
-        return self._patch(f"/api/v1/connection-policies/{policy_id}", json=body)
-
-    def delete(self, policy_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/connection-policies/{policy_id}")
 
 
 class IntegrationsResource(_BaseResource):
@@ -688,7 +736,6 @@ class WeavzClient:
         self.api_keys = ApiKeysResource(self)
         self.members = MembersResource(self)
         self.project_members = ProjectMembersResource(self)
-        self.connection_policies = ConnectionPoliciesResource(self)
         self.integrations = IntegrationsResource(self)
         self.activity = ActivityResource(self)
 

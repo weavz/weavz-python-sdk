@@ -23,7 +23,7 @@ _api_key_id: str = ""
 _project_id: str = ""
 _connection_id: str = ""
 _mcp_server_id: str = ""
-_policy_id: str = ""
+_integration_instance_id: str = ""
 
 
 def _service_key_request(method: str, path: str, json: dict | None = None) -> httpx.Response:
@@ -61,8 +61,8 @@ def setup_client():
 
     # Cleanup
     try:
-        if _policy_id:
-            _client.connection_policies.delete(_policy_id)
+        if _integration_instance_id and _project_id:
+            _client.projects.remove_integration(_project_id, _integration_instance_id)
     except Exception:
         pass
     try:
@@ -185,30 +185,50 @@ class TestConnections:
         assert result["connection"]["id"] == _connection_id
 
 
-# ── Connection Policies ──────────────────────────────────────────────────────
+# ── Project Integrations ─────────────────────────────────────────────────────
 
-class TestConnectionPolicies:
-    def test_create_policy(self):
-        global _policy_id
-        result = _client.connection_policies.create(
+class TestProjectIntegrations:
+    def test_add_integration(self):
+        global _integration_instance_id
+        result = _client.projects.add_integration(
+            _project_id,
             integration_name="github",
-            policy="USER_REQUIRED",
+            connection_strategy="per_user",
         )
-        assert "policy" in result
-        assert result["policy"]["policy"] == "USER_REQUIRED"
-        _policy_id = result["policy"]["id"]
+        assert "integration" in result
+        assert result["integration"]["integrationName"] == "github"
+        assert result["integration"]["connectionStrategy"] == "per_user"
+        _integration_instance_id = result["integration"]["id"]
 
-    def test_list_policies(self):
-        result = _client.connection_policies.list()
-        assert "policies" in result
-        assert len(result["policies"]) > 0
+    def test_list_integrations(self):
+        result = _client.projects.list_integrations(_project_id)
+        assert "integrations" in result
+        assert len(result["integrations"]) > 0
+        names = [i["integrationName"] for i in result["integrations"]]
+        assert "github" in names
 
-    def test_update_policy(self):
-        result = _client.connection_policies.update(
-            _policy_id,
-            policy="USER_WITH_DEFAULT",
+    def test_update_integration(self):
+        result = _client.projects.update_integration(
+            _project_id,
+            _integration_instance_id,
+            connection_strategy="per_user_with_fallback",
         )
-        assert result["policy"]["policy"] == "USER_WITH_DEFAULT"
+        assert result["integration"]["connectionStrategy"] == "per_user_with_fallback"
+
+    def test_add_integration_with_alias(self):
+        result = _client.projects.add_integration(
+            _project_id,
+            integration_name="slack",
+            alias="slack_bot",
+            connection_strategy="per_user",
+            display_name="Slack Bot",
+        )
+        assert "integration" in result
+        assert result["integration"]["alias"] == "slack_bot"
+        assert result["integration"]["displayName"] == "Slack Bot"
+        inst_id = result["integration"]["id"]
+        # Clean up
+        _client.projects.remove_integration(_project_id, inst_id)
 
 
 # ── MCP Servers ──────────────────────────────────────────────────────────────

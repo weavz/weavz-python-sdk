@@ -386,24 +386,24 @@ class TestMcpServerEdgeCases:
             _client.mcp_servers.get("00000000-0000-0000-0000-000000000000")
 
 
-# ── Connection Policy Edge Cases ──────────────────────────────────────────────
+# ── Project Integration Edge Cases ────────────────────────────────────────────
 
 
-class TestConnectionPolicyEdgeCases:
+class TestProjectIntegrationEdgeCases:
     _project_id: str = ""
     _conn_id: str = ""
 
     @classmethod
     def _ensure_resources(cls):
         if not cls._project_id:
-            result = _client.projects.create(name="Py Policy Edge", slug="py-policy-edge-test")
+            result = _client.projects.create(name="Py Intg Edge", slug="py-intg-edge-test")
             cls._project_id = result["project"]["id"]
             _cleanup_stack.append(lambda: _client.projects.delete(cls._project_id))
 
             conn = _client.connections.create(
                 type="SECRET_TEXT",
-                external_id="py-policy-edge-conn",
-                display_name="Py Policy Edge Conn",
+                external_id="py-intg-edge-conn",
+                display_name="Py Intg Edge Conn",
                 integration_name="github",
                 secret_text="ghp_testtoken123",
                 project_id=cls._project_id,
@@ -411,46 +411,113 @@ class TestConnectionPolicyEdgeCases:
             cls._conn_id = conn["connection"]["id"]
             _cleanup_stack.append(lambda: _client.connections.delete(cls._conn_id))
 
-    def test_reject_enforced_org_without_connection_id(self):
+    def test_reject_fixed_without_connection_id(self):
         self._ensure_resources()
         with pytest.raises(WeavzError) as exc_info:
-            _client.connection_policies.create(
+            _client.projects.add_integration(
+                self._project_id,
                 integration_name="github",
-                policy="ENFORCED_ORG",
+                connection_strategy="fixed",
             )
         assert exc_info.value.status == 400
 
-    def test_reject_enforced_project_without_connection_id(self):
+    def test_create_fixed_with_connection_id(self):
         self._ensure_resources()
-        with pytest.raises(WeavzError) as exc_info:
-            _client.connection_policies.create(
-                integration_name="github",
-                policy="ENFORCED_PROJECT",
-                project_id=self._project_id,
-            )
-        assert exc_info.value.status == 400
-
-    def test_create_enforced_org_with_connection_id(self):
-        self._ensure_resources()
-        result = _client.connection_policies.create(
+        result = _client.projects.add_integration(
+            self._project_id,
             integration_name="github",
-            policy="ENFORCED_ORG",
+            connection_strategy="fixed",
             connection_id=self._conn_id,
         )
-        assert "policy" in result
-        assert result["policy"]["policy"] == "ENFORCED_ORG"
-        pid = result["policy"]["id"]
-        _cleanup_stack.append(lambda: _client.connection_policies.delete(pid))
-
-    def test_create_user_required_different_integration(self):
-        self._ensure_resources()
-        result = _client.connection_policies.create(
-            integration_name="notion",
-            policy="USER_REQUIRED",
+        assert "integration" in result
+        assert result["integration"]["connectionStrategy"] == "fixed"
+        inst_id = result["integration"]["id"]
+        _cleanup_stack.append(
+            lambda: _client.projects.remove_integration(self._project_id, inst_id)
         )
-        assert "policy" in result
-        pid = result["policy"]["id"]
-        _cleanup_stack.append(lambda: _client.connection_policies.delete(pid))
+
+    def test_create_per_user_integration(self):
+        self._ensure_resources()
+        result = _client.projects.add_integration(
+            self._project_id,
+            integration_name="notion",
+            connection_strategy="per_user",
+        )
+        assert "integration" in result
+        assert result["integration"]["connectionStrategy"] == "per_user"
+        inst_id = result["integration"]["id"]
+        _cleanup_stack.append(
+            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+        )
+
+    def test_create_per_user_with_fallback(self):
+        self._ensure_resources()
+        result = _client.projects.add_integration(
+            self._project_id,
+            integration_name="slack",
+            connection_strategy="per_user_with_fallback",
+        )
+        assert "integration" in result
+        assert result["integration"]["connectionStrategy"] == "per_user_with_fallback"
+        inst_id = result["integration"]["id"]
+        _cleanup_stack.append(
+            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+        )
+
+    def test_add_integration_with_custom_alias(self):
+        self._ensure_resources()
+        result = _client.projects.add_integration(
+            self._project_id,
+            integration_name="openai",
+            alias="openai_primary",
+            connection_strategy="per_user",
+            display_name="OpenAI Primary",
+        )
+        assert "integration" in result
+        assert result["integration"]["alias"] == "openai_primary"
+        assert result["integration"]["displayName"] == "OpenAI Primary"
+        inst_id = result["integration"]["id"]
+        _cleanup_stack.append(
+            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+        )
+
+    def test_update_integration_strategy(self):
+        self._ensure_resources()
+        # Create a per_user integration, then update to per_user_with_fallback
+        result = _client.projects.add_integration(
+            self._project_id,
+            integration_name="anthropic",
+            connection_strategy="per_user",
+        )
+        inst_id = result["integration"]["id"]
+        _cleanup_stack.append(
+            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+        )
+
+        updated = _client.projects.update_integration(
+            self._project_id,
+            inst_id,
+            connection_strategy="per_user_with_fallback",
+        )
+        assert updated["integration"]["connectionStrategy"] == "per_user_with_fallback"
+
+    def test_remove_integration(self):
+        self._ensure_resources()
+        result = _client.projects.add_integration(
+            self._project_id,
+            integration_name="http",
+            connection_strategy="per_user",
+        )
+        inst_id = result["integration"]["id"]
+
+        del_result = _client.projects.remove_integration(self._project_id, inst_id)
+        assert del_result["deleted"] is True
+
+    def test_list_integrations(self):
+        self._ensure_resources()
+        result = _client.projects.list_integrations(self._project_id)
+        assert "integrations" in result
+        assert isinstance(result["integrations"], list)
 
 
 # ── API Key Edge Cases ────────────────────────────────────────────────────────
