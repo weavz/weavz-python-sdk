@@ -73,7 +73,7 @@ class ConnectionsResource(_BaseResource):
         type: str,
         external_id: str,
         display_name: str,
-        piece_name: str,
+        integration_name: str,
         project_id: str | None = None,
         user_id: str | None = None,
         scope: str | None = None,
@@ -92,7 +92,7 @@ class ConnectionsResource(_BaseResource):
             "type": type,
             "externalId": external_id,
             "displayName": display_name,
-            "pieceName": piece_name,
+            "integrationName": integration_name,
         }
         if project_id is not None:
             body["projectId"] = project_id
@@ -128,12 +128,12 @@ class ConnectionsResource(_BaseResource):
     def resolve(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         external_id: str | None = None,
         project_id: str | None = None,
         user_id: str | None = None,
     ) -> dict[str, Any]:
-        body: dict[str, Any] = {"pieceName": piece_name}
+        body: dict[str, Any] = {"integrationName": integration_name}
         if external_id is not None:
             body["externalId"] = external_id
         if project_id is not None:
@@ -150,7 +150,7 @@ class OAuthAppsResource(_BaseResource):
     def create(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         client_id: str,
         client_secret: str,
         auth_url: str | None = None,
@@ -159,7 +159,7 @@ class OAuthAppsResource(_BaseResource):
         extra_params: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "clientId": client_id,
             "clientSecret": client_secret,
         }
@@ -181,14 +181,14 @@ class OAuthResource(_BaseResource):
     def authorize(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         redirect_url: str,
         connection_name: str,
         scope: list[str] | None = None,
         extra_params: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "redirectUrl": redirect_url,
             "connectionName": connection_name,
         }
@@ -201,7 +201,7 @@ class OAuthResource(_BaseResource):
     def claim(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         code: str,
         redirect_url: str,
         connection_name: str,
@@ -209,7 +209,7 @@ class OAuthResource(_BaseResource):
         code_verifier: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "code": code,
             "redirectUrl": redirect_url,
             "connectionName": connection_name,
@@ -229,23 +229,23 @@ class WebhookSecretsResource(_BaseResource):
     def list(self) -> dict[str, Any]:
         return self._get("/api/v1/webhook-secrets")
 
-    def create(self, *, piece_name: str, secret: str) -> dict[str, Any]:
+    def create(self, *, integration_name: str, secret: str) -> dict[str, Any]:
         return self._post(
             "/api/v1/webhook-secrets",
-            json={"pieceName": piece_name, "secret": secret},
+            json={"integrationName": integration_name, "secret": secret},
         )
 
-    def delete(self, secret_id: str, *, piece_name: str) -> dict[str, Any]:
+    def delete(self, secret_id: str, *, integration_name: str) -> dict[str, Any]:
         return self._delete(
             f"/api/v1/webhook-secrets/{secret_id}",
-            params={"pieceName": piece_name},
+            params={"integrationName": integration_name},
         )
 
 
 class ActionsResource(_BaseResource):
     def execute(
         self,
-        piece_name: str,
+        integration_name: str,
         action_name: str,
         *,
         input: dict[str, Any] | None = None,
@@ -254,7 +254,7 @@ class ActionsResource(_BaseResource):
         user_id: str | None = None,
     ) -> Any:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "actionName": action_name,
             "input": input or {},
         }
@@ -274,7 +274,7 @@ class TriggersResource(_BaseResource):
     def enable(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         trigger_name: str,
         callback_url: str,
         callback_headers: dict[str, str] | None = None,
@@ -285,7 +285,7 @@ class TriggersResource(_BaseResource):
         simulate: bool | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "triggerName": trigger_name,
             "callbackUrl": callback_url,
         }
@@ -309,10 +309,10 @@ class TriggersResource(_BaseResource):
             json={"triggerSourceId": trigger_source_id},
         )
 
-    def test(self, piece_name: str, trigger_name: str) -> dict[str, Any]:
+    def test(self, integration_name: str, trigger_name: str) -> dict[str, Any]:
         return self._post(
             "/api/v1/triggers/test",
-            json={"pieceName": piece_name, "triggerName": trigger_name},
+            json={"integrationName": integration_name, "triggerName": trigger_name},
         )
 
 
@@ -376,9 +376,9 @@ class McpServersResource(_BaseResource):
         self,
         server_id: str,
         *,
-        piece_name: str,
+        integration_name: str,
         action_name: str,
-        piece_alias: str | None = None,
+        integration_alias: str | None = None,
         tool_type: str | None = None,
         connection_id: str | None = None,
         display_name: str | None = None,
@@ -387,11 +387,11 @@ class McpServersResource(_BaseResource):
         sort_order: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "actionName": action_name,
         }
-        if piece_alias is not None:
-            body["pieceAlias"] = piece_alias
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         if tool_type is not None:
             body["toolType"] = tool_type
         if connection_id is not None:
@@ -416,7 +416,7 @@ class McpServersResource(_BaseResource):
         input_defaults: dict[str, Any] | None = None,
         connection_id: str | None = None,
         sort_order: int | None = None,
-        piece_alias: str | None = None,
+        integration_alias: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if display_name is not None:
@@ -429,8 +429,8 @@ class McpServersResource(_BaseResource):
             body["connectionId"] = connection_id
         if sort_order is not None:
             body["sortOrder"] = sort_order
-        if piece_alias is not None:
-            body["pieceAlias"] = piece_alias
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         return self._patch(
             f"/api/v1/mcp/servers/{server_id}/tools/{tool_id}", json=body
         )
@@ -444,10 +444,10 @@ class McpServersResource(_BaseResource):
         )
 
     def get_declarations(
-        self, server_id: str, piece_or_alias: str
+        self, server_id: str, integration_or_alias: str
     ) -> dict[str, Any]:
         return self._get(
-            f"/api/v1/mcp/servers/{server_id}/declarations/{piece_or_alias}"
+            f"/api/v1/mcp/servers/{server_id}/declarations/{integration_or_alias}"
         )
 
 
@@ -521,13 +521,13 @@ class ConnectionPoliciesResource(_BaseResource):
     def create(
         self,
         *,
-        piece_name: str,
+        integration_name: str,
         policy: str,
         project_id: str | None = None,
         connection_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "pieceName": piece_name,
+            "integrationName": integration_name,
             "policy": policy,
         }
         if project_id is not None:
@@ -554,16 +554,16 @@ class ConnectionPoliciesResource(_BaseResource):
         return self._delete(f"/api/v1/connection-policies/{policy_id}")
 
 
-class PiecesResource(_BaseResource):
+class IntegrationsResource(_BaseResource):
     def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/pieces")
+        return self._get("/api/v1/integrations")
 
     def get(self, name: str) -> dict[str, Any]:
-        return self._get("/api/v1/pieces", params={"name": name})
+        return self._get("/api/v1/integrations", params={"name": name})
 
     def resolve_options(
         self,
-        piece_name: str,
+        integration_name: str,
         *,
         property_name: str,
         action_name: str | None = None,
@@ -590,12 +590,12 @@ class PiecesResource(_BaseResource):
         if search_value is not None:
             body["searchValue"] = search_value
         return self._post(
-            f"/api/v1/pieces/{piece_name}/properties/options", json=body
+            f"/api/v1/integrations/{integration_name}/properties/options", json=body
         )
 
     def resolve_property(
         self,
-        piece_name: str,
+        integration_name: str,
         *,
         property_name: str,
         action_name: str | None = None,
@@ -619,11 +619,11 @@ class PiecesResource(_BaseResource):
         if input is not None:
             body["input"] = input
         return self._post(
-            f"/api/v1/pieces/{piece_name}/properties/resolve", json=body
+            f"/api/v1/integrations/{integration_name}/properties/resolve", json=body
         )
 
     def oauth_status(self) -> dict[str, Any]:
-        return self._get("/api/v1/pieces/oauth-status")
+        return self._get("/api/v1/integrations/oauth-status")
 
 
 class FilesResource(_BaseResource):
@@ -657,7 +657,7 @@ class ActivityResource(_BaseResource):
         limit: int | None = None,
         offset: int | None = None,
         type: str | None = None,
-        piece_name: str | None = None,
+        integration_name: str | None = None,
         since: str | None = None,
     ) -> dict[str, Any]:
         params: dict[str, Any] = {}
@@ -667,8 +667,8 @@ class ActivityResource(_BaseResource):
             params["offset"] = offset
         if type is not None:
             params["type"] = type
-        if piece_name is not None:
-            params["pieceName"] = piece_name
+        if integration_name is not None:
+            params["integrationName"] = integration_name
         if since is not None:
             params["since"] = since
         return self._get("/api/v1/activity", params=params)
@@ -713,7 +713,7 @@ class WeavzClient:
         self.members = MembersResource(self)
         self.project_members = ProjectMembersResource(self)
         self.connection_policies = ConnectionPoliciesResource(self)
-        self.pieces = PiecesResource(self)
+        self.integrations = IntegrationsResource(self)
         self.files = FilesResource(self)
         self.billing = BillingResource(self)
         self.activity = ActivityResource(self)
