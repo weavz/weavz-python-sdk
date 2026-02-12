@@ -549,11 +549,18 @@ class ApiKeysResource(_BaseResource):
         name: str,
         expires_at: str | None = None,
         permissions: dict[str, Any] | None = None,
+        scope: str | None = None,
+        project_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"name": name}
         if expires_at is not None:
             body["expiresAt"] = expires_at
-        if permissions is not None:
+        if scope is not None:
+            perms: dict[str, Any] = {"scope": scope}
+            if project_ids is not None:
+                perms["projectIds"] = project_ids
+            body["permissions"] = perms
+        elif permissions is not None:
             body["permissions"] = permissions
         return self._post("/api/v1/api-keys", json=body)
 
