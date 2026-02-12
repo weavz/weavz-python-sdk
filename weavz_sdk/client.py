@@ -764,10 +764,6 @@ class WeavzClient:
 
         return response.json()
 
-    def health(self) -> dict[str, Any]:
-        """Health check."""
-        return self.request("GET", "/health")
-
     def close(self) -> None:
         """Close the underlying HTTP client."""
         self._http.close()

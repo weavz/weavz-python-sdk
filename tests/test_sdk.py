@@ -88,14 +88,6 @@ def setup_client():
     _client.close()
 
 
-# ── Health ───────────────────────────────────────────────────────────────────
-
-class TestHealth:
-    def test_health_check(self):
-        result = _client.health()
-        assert result["status"] == "healthy"
-
-
 # ── API Keys ─────────────────────────────────────────────────────────────────
 
 class TestApiKeys:

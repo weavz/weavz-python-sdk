@@ -548,8 +548,6 @@ class TestApiKeyEdgeCases:
         _cleanup_stack.append(lambda: _client.api_keys.delete(key["apiKey"]["id"]))
 
         new_client = WeavzClient(api_key=key["plainKey"], base_url=BASE_URL)
-        health = new_client.health()
-        assert health["status"] == "healthy"
         integrations = new_client.integrations.list()
         assert integrations["total"] > 0
         new_client.close()
@@ -559,7 +557,7 @@ class TestApiKeyEdgeCases:
         key_client = WeavzClient(api_key=key["plainKey"], base_url=BASE_URL)
 
         # Should work
-        key_client.health()
+        key_client.integrations.list()
 
         # Delete the key
         _client.api_keys.delete(key["apiKey"]["id"])
@@ -675,11 +673,11 @@ class TestErrorShapeConsistency:
 class TestClientConfig:
     def test_strips_trailing_slashes(self):
         c = WeavzClient(api_key=_api_key_plain, base_url=BASE_URL + "///")
-        health = c.health()
-        assert health["status"] == "healthy"
+        result = c.integrations.list()
+        assert result["total"] > 0
         c.close()
 
     def test_context_manager(self):
         with WeavzClient(api_key=_api_key_plain, base_url=BASE_URL) as c:
-            health = c.health()
-            assert health["status"] == "healthy"
+            result = c.integrations.list()
+            assert result["total"] > 0
