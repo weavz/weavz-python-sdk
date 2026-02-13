@@ -246,47 +246,44 @@ class OAuthAppsResource(_BaseResource):
         return self._delete(f"/api/v1/oauth-apps/{app_id}")
 
 
-class OAuthResource(_BaseResource):
-    def authorize(
-        self,
-        *,
-        integration_name: str,
-        redirect_url: str,
-        connection_name: str,
-        scope: list[str] | None = None,
-        extra_params: dict[str, str] | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {
-            "integrationName": integration_name,
-            "redirectUrl": redirect_url,
-            "connectionName": connection_name,
-        }
-        if scope is not None:
-            body["scope"] = scope
-        if extra_params is not None:
-            body["extraParams"] = extra_params
-        return self._post("/api/v1/oauth/authorize", json=body)
+class ConnectResource(_BaseResource):
+    """Hosted connect flow — create sessions and poll for results."""
 
-    def claim(
+    def create_token(
         self,
         *,
         integration_name: str,
-        code: str,
-        redirect_url: str,
         connection_name: str,
         external_id: str,
-        code_verifier: str | None = None,
+        end_user_id: str | None = None,
+        project_id: str | None = None,
+        scope: str | None = None,
+        success_redirect_uri: str | None = None,
+        error_redirect_uri: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
             "integrationName": integration_name,
-            "code": code,
-            "redirectUrl": redirect_url,
             "connectionName": connection_name,
             "externalId": external_id,
         }
-        if code_verifier is not None:
-            body["codeVerifier"] = code_verifier
-        return self._post("/api/v1/oauth/callback", json=body)
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
+        if project_id is not None:
+            body["projectId"] = project_id
+        if scope is not None:
+            body["scope"] = scope
+        if success_redirect_uri is not None:
+            body["successRedirectUri"] = success_redirect_uri
+        if error_redirect_uri is not None:
+            body["errorRedirectUri"] = error_redirect_uri
+        return self._post("/api/v1/connect/token", json=body)
+
+    def get_session(self, session_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/connect/session/{session_id}")
+
+
+class OAuthResource(_BaseResource):
+    """OAuth2 token refresh."""
 
     def refresh(self, external_id: str) -> dict[str, Any]:
         return self._post(
@@ -734,6 +731,7 @@ class WeavzClient:
         self.organizations = OrganizationsResource(self)
         self.projects = ProjectsResource(self)
         self.connections = ConnectionsResource(self)
+        self.connect = ConnectResource(self)
         self.oauth_apps = OAuthAppsResource(self)
         self.oauth = OAuthResource(self)
         self.webhook_secrets = WebhookSecretsResource(self)
