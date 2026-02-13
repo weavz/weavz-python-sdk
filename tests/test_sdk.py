@@ -6,6 +6,9 @@ Requires: Docker (Postgres, Redis, MinIO) + running `npm run dev:node`.
 
 Bootstrap: creates an API key via service key auth, then uses it for all tests.
 """
+from __future__ import annotations
+
+from typing import Optional
 
 import httpx
 import pytest
@@ -17,7 +20,7 @@ SERVICE_KEY = "local-test-service-key-12345"
 TEST_ORG_ID = "6555c8f1-c057-4c02-9980-1ef723c23855"
 
 # Module-level state
-_client: WeavzClient | None = None
+_client: Optional[WeavzClient] = None
 _api_key_plain: str = ""
 _api_key_id: str = ""
 _project_id: str = ""
@@ -26,7 +29,7 @@ _mcp_server_id: str = ""
 _integration_instance_id: str = ""
 
 
-def _service_key_request(method: str, path: str, json: dict | None = None) -> httpx.Response:
+def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
     return httpx.request(
         method,
         f"{BASE_URL}{path}",
@@ -211,7 +214,7 @@ class TestProjectIntegrations:
         result = _client.projects.add_integration(
             _project_id,
             integration_name="slack",
-            alias="slack_bot",
+            integration_alias="slack_bot",
             connection_strategy="per_user",
             display_name="Slack Bot",
         )
@@ -344,6 +347,70 @@ class TestWebhookSecrets:
         )
         assert result["success"] is True
         assert result["integrationName"] == "slack"
+
+
+# ── endUserId Parameter ──────────────────────────────────────────────────────
+
+class TestEndUserId:
+    def test_create_connection_with_end_user_id(self):
+        result = _client.connections.create(
+            type="SECRET_TEXT",
+            external_id="py-enduser-test",
+            display_name="endUserId Test Connection",
+            integration_name="openai",
+            secret_text="sk-test-enduser-py-key",
+            project_id=_project_id,
+            end_user_id="end-user-py-001",
+        )
+        assert "connection" in result
+        assert result["connection"]["endUserId"] == "end-user-py-001"
+        assert "userId" not in result["connection"]
+
+        # Cleanup
+        _client.connections.delete(result["connection"]["id"])
+
+    def test_resolve_connection_with_end_user_id(self):
+        # Create a connection with end_user_id first
+        created = _client.connections.create(
+            type="SECRET_TEXT",
+            external_id="py-resolve-enduser",
+            display_name="Resolve endUserId Test",
+            integration_name="openai",
+            secret_text="sk-test-resolve-enduser-py",
+            project_id=_project_id,
+            end_user_id="end-user-py-002",
+        )
+
+        result = _client.connections.resolve(
+            integration_name="openai",
+            external_id="py-resolve-enduser",
+            project_id=_project_id,
+            end_user_id="end-user-py-002",
+        )
+        assert "connection" in result
+        assert result["connection"]["endUserId"] == "end-user-py-002"
+
+        # Cleanup
+        _client.connections.delete(created["connection"]["id"])
+
+
+# ── Project-Scoped API Keys ─────────────────────────────────────────────────
+
+class TestProjectScopedApiKeys:
+    def test_create_project_scoped_key(self):
+        result = _client.api_keys.create(
+            name="py-project-scoped-key",
+            permissions={"scope": "project", "projectIds": [_project_id]},
+        )
+        assert "plainKey" in result
+        assert result["plainKey"].startswith("wvz_")
+        assert result["apiKey"]["permissions"] == {
+            "scope": "project",
+            "projectIds": [_project_id],
+        }
+
+        # Cleanup
+        _client.api_keys.delete(result["apiKey"]["id"])
 
 
 # ── Error Handling ───────────────────────────────────────────────────────────

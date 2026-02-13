@@ -7,6 +7,9 @@ authorization edge cases, and resource lifecycle correctness.
 Runs against a live local Node.js API server (http://localhost:3000).
 Requires: Docker (Postgres, Redis, MinIO) + running `npm run dev:node`.
 """
+from __future__ import annotations
+
+from typing import Optional
 
 import httpx
 import pytest
@@ -18,13 +21,13 @@ SERVICE_KEY = "local-test-service-key-12345"
 TEST_ORG_ID = "6555c8f1-c057-4c02-9980-1ef723c23855"
 
 # Module-level state
-_client: WeavzClient | None = None
+_client: Optional[WeavzClient] = None
 _api_key_plain: str = ""
 _api_key_id: str = ""
 _cleanup_stack: list = []
 
 
-def _service_key_request(method: str, path: str, json: dict | None = None) -> httpx.Response:
+def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
     return httpx.request(
         method,
         f"{BASE_URL}{path}",
@@ -166,8 +169,8 @@ class TestConnectionEdgeCases:
             type="SECRET_TEXT",
             external_id="py-edge-secret-1",
             display_name="Same ExtID Diff Integration",
-            integration_name="anthropic",
-            secret_text="sk-ant-py-edge",
+            integration_name="slack",
+            secret_text="sk-slack-py-edge",
             project_id=self._project_id,
         )
         assert "connection" in result
@@ -342,12 +345,12 @@ class TestMcpServerEdgeCases:
         assert exc_info.value.status == 400
 
     def test_reject_alias_conflict(self):
-        # 'openai-primary' alias already maps to openai — try with anthropic
+        # 'openai-primary' alias already maps to openai — try with discord
         with pytest.raises(WeavzError) as exc_info:
             _client.mcp_servers.add_tool(
                 self._tools_server_id,
-                integration_name="anthropic",
-                action_name="ask_claude",
+                integration_name="discord",
+                action_name="sendMessageWithBot",
                 integration_alias="openai-primary",
             )
         assert exc_info.value.status == 409
@@ -469,7 +472,7 @@ class TestProjectIntegrationEdgeCases:
         result = _client.projects.add_integration(
             self._project_id,
             integration_name="openai",
-            alias="openai_primary",
+            integration_alias="openai_primary",
             connection_strategy="per_user",
             display_name="OpenAI Primary",
         )
@@ -486,7 +489,7 @@ class TestProjectIntegrationEdgeCases:
         # Create a per_user integration, then update to per_user_with_fallback
         result = _client.projects.add_integration(
             self._project_id,
-            integration_name="anthropic",
+            integration_name="discord",
             connection_strategy="per_user",
         )
         inst_id = result["integration"]["id"]

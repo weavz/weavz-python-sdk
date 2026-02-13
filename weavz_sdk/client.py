@@ -144,7 +144,7 @@ class ConnectionsResource(_BaseResource):
         display_name: str,
         integration_name: str,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
         scope: str | None = None,
         secret_text: str | None = None,
         username: str | None = None,
@@ -165,8 +165,8 @@ class ConnectionsResource(_BaseResource):
         }
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         if scope is not None:
             body["scope"] = scope
         if secret_text is not None:
@@ -200,15 +200,15 @@ class ConnectionsResource(_BaseResource):
         integration_name: str,
         external_id: str | None = None,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"integrationName": integration_name}
         if external_id is not None:
             body["externalId"] = external_id
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         return self._post("/api/v1/connections/resolve", json=body)
 
 
@@ -320,7 +320,7 @@ class ActionsResource(_BaseResource):
         input: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
         integration_alias: str | None = None,
     ) -> Any:
         body: dict[str, Any] = {
@@ -332,8 +332,8 @@ class ActionsResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         if integration_alias is not None:
             body["integrationAlias"] = integration_alias
         return self._post("/api/v1/actions/execute", json=body)
@@ -353,7 +353,7 @@ class TriggersResource(_BaseResource):
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
         simulate: bool | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
@@ -369,8 +369,8 @@ class TriggersResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         if simulate is not None:
             body["simulate"] = simulate
         return self._post("/api/v1/triggers/enable", json=body)
@@ -625,7 +625,7 @@ class IntegrationsResource(_BaseResource):
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         search_value: str | None = None,
     ) -> dict[str, Any]:
@@ -638,8 +638,8 @@ class IntegrationsResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         if input is not None:
             body["input"] = input
         if search_value is not None:
@@ -657,7 +657,7 @@ class IntegrationsResource(_BaseResource):
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
         project_id: str | None = None,
-        user_id: str | None = None,
+        end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
     ) -> Any:
         body: dict[str, Any] = {"propertyName": property_name}
@@ -669,8 +669,8 @@ class IntegrationsResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if project_id is not None:
             body["projectId"] = project_id
-        if user_id is not None:
-            body["userId"] = user_id
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         if input is not None:
             body["input"] = input
         return self._post(
