@@ -311,6 +311,94 @@ class TestActivity:
         assert isinstance(result["events"], list)
 
 
+# ── Input Partials ──────────────────────────────────────────────────────────
+
+class TestPartials:
+    _partial_id: str = ""
+
+    def test_create_partial(self):
+        result = _client.partials.create(
+            _project_id,
+            "openai",
+            "Default OpenAI Config",
+            description="Pre-filled model and temperature",
+            values={"model": "gpt-4o", "temperature": 0.7},
+            enforced_keys=["model"],
+            is_default=False,
+        )
+        assert "partial" in result
+        assert result["partial"]["name"] == "Default OpenAI Config"
+        assert result["partial"]["integrationName"] == "openai"
+        assert result["partial"]["values"] == {"model": "gpt-4o", "temperature": 0.7}
+        assert result["partial"]["enforcedKeys"] == ["model"]
+        assert result["partial"]["isDefault"] is False
+        TestPartials._partial_id = result["partial"]["id"]
+
+    def test_list_partials(self):
+        result = _client.partials.list(_project_id)
+        assert "partials" in result
+        assert isinstance(result["partials"], list)
+        assert len(result["partials"]) > 0
+        ids = [p["id"] for p in result["partials"]]
+        assert TestPartials._partial_id in ids
+
+    def test_list_partials_with_filter(self):
+        result = _client.partials.list(
+            _project_id, integration_name="openai"
+        )
+        assert "partials" in result
+        for p in result["partials"]:
+            assert p["integrationName"] == "openai"
+
+    def test_get_partial(self):
+        result = _client.partials.get(TestPartials._partial_id)
+        assert "partial" in result
+        assert result["partial"]["id"] == TestPartials._partial_id
+        assert result["partial"]["name"] == "Default OpenAI Config"
+
+    def test_update_partial(self):
+        result = _client.partials.update(
+            TestPartials._partial_id,
+            name="Updated OpenAI Config",
+            values={"model": "gpt-4o-mini", "temperature": 0.5},
+        )
+        assert "partial" in result
+        assert result["partial"]["name"] == "Updated OpenAI Config"
+        assert result["partial"]["values"]["model"] == "gpt-4o-mini"
+
+    def test_set_default(self):
+        result = _client.partials.set_default(TestPartials._partial_id, True)
+        assert "partial" in result
+        assert result["partial"]["isDefault"] is True
+
+        # Unset default
+        result = _client.partials.set_default(TestPartials._partial_id, False)
+        assert result["partial"]["isDefault"] is False
+
+    def test_create_action_scoped_partial(self):
+        result = _client.partials.create(
+            _project_id,
+            "openai",
+            "Ask ChatGPT Defaults",
+            action_name="ask_chatgpt",
+            values={"model": "gpt-4o"},
+        )
+        assert "partial" in result
+        assert result["partial"]["actionName"] == "ask_chatgpt"
+        # Cleanup
+        _client.partials.delete(result["partial"]["id"])
+
+    def test_delete_partial(self):
+        result = _client.partials.delete(TestPartials._partial_id)
+        assert result["deleted"] is True
+        assert result["id"] == TestPartials._partial_id
+
+    def test_get_deleted_partial_404(self):
+        with pytest.raises(WeavzError) as exc_info:
+            _client.partials.get(TestPartials._partial_id)
+        assert exc_info.value.status == 404
+
+
 # ── OAuth Apps ───────────────────────────────────────────────────────────────
 
 class TestOAuthApps:

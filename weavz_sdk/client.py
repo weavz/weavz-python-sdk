@@ -198,15 +198,16 @@ class ConnectionsResource(_BaseResource):
         self,
         *,
         integration_name: str,
+        project_id: str,
         external_id: str | None = None,
-        project_id: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
-        body: dict[str, Any] = {"integrationName": integration_name}
+        body: dict[str, Any] = {
+            "integrationName": integration_name,
+            "projectId": project_id,
+        }
         if external_id is not None:
             body["externalId"] = external_id
-        if project_id is not None:
-            body["projectId"] = project_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         return self._post("/api/v1/connections/resolve", json=body)
@@ -255,8 +256,8 @@ class ConnectResource(_BaseResource):
         integration_name: str,
         connection_name: str,
         external_id: str,
+        project_id: str,
         end_user_id: str | None = None,
-        project_id: str | None = None,
         scope: str | None = None,
         success_redirect_uri: str | None = None,
         error_redirect_uri: str | None = None,
@@ -265,11 +266,10 @@ class ConnectResource(_BaseResource):
             "integrationName": integration_name,
             "connectionName": connection_name,
             "externalId": external_id,
+            "projectId": project_id,
         }
         if end_user_id is not None:
             body["endUserId"] = end_user_id
-        if project_id is not None:
-            body["projectId"] = project_id
         if scope is not None:
             body["scope"] = scope
         if success_redirect_uri is not None:
@@ -314,25 +314,27 @@ class ActionsResource(_BaseResource):
         integration_name: str,
         action_name: str,
         *,
+        project_id: str,
         input: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
-        project_id: str | None = None,
         end_user_id: str | None = None,
         integration_alias: str | None = None,
+        partial_ids: list[str] | None = None,
     ) -> Any:
         body: dict[str, Any] = {
             "integrationName": integration_name,
             "actionName": action_name,
             "input": input or {},
+            "projectId": project_id,
         }
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
-        if project_id is not None:
-            body["projectId"] = project_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if integration_alias is not None:
             body["integrationAlias"] = integration_alias
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         return self._post("/api/v1/actions/execute", json=body)
 
 
@@ -346,17 +348,20 @@ class TriggersResource(_BaseResource):
         integration_name: str,
         trigger_name: str,
         callback_url: str,
+        project_id: str,
         callback_headers: dict[str, str] | None = None,
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
-        project_id: str | None = None,
         end_user_id: str | None = None,
+        input: dict[str, Any] | None = None,
+        partial_ids: list[str] | None = None,
         simulate: bool | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
             "integrationName": integration_name,
             "triggerName": trigger_name,
             "callbackUrl": callback_url,
+            "projectId": project_id,
         }
         if callback_headers is not None:
             body["callbackHeaders"] = callback_headers
@@ -364,10 +369,12 @@ class TriggersResource(_BaseResource):
             body["callbackMetadata"] = callback_metadata
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
-        if project_id is not None:
-            body["projectId"] = project_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
+        if input is not None:
+            body["input"] = input
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         if simulate is not None:
             body["simulate"] = simulate
         return self._post("/api/v1/triggers/enable", json=body)
@@ -393,17 +400,15 @@ class McpServersResource(_BaseResource):
         self,
         *,
         name: str,
+        project_id: str,
         description: str | None = None,
-        project_id: str | None = None,
         created_by: str | None = None,
         sharing: str | None = None,
         mode: str | None = None,
     ) -> dict[str, Any]:
-        body: dict[str, Any] = {"name": name}
+        body: dict[str, Any] = {"name": name, "projectId": project_id}
         if description is not None:
             body["description"] = description
-        if project_id is not None:
-            body["projectId"] = project_id
         if created_by is not None:
             body["createdBy"] = created_by
         if sharing is not None:
@@ -453,6 +458,7 @@ class McpServersResource(_BaseResource):
         display_name: str | None = None,
         description: str | None = None,
         input_defaults: dict[str, Any] | None = None,
+        partial_ids: list[str] | None = None,
         sort_order: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
@@ -471,6 +477,8 @@ class McpServersResource(_BaseResource):
             body["description"] = description
         if input_defaults is not None:
             body["inputDefaults"] = input_defaults
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._post(f"/api/v1/mcp/servers/{server_id}/tools", json=body)
@@ -486,6 +494,7 @@ class McpServersResource(_BaseResource):
         connection_id: str | None = None,
         sort_order: int | None = None,
         integration_alias: str | None = None,
+        partial_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if display_name is not None:
@@ -500,6 +509,8 @@ class McpServersResource(_BaseResource):
             body["sortOrder"] = sort_order
         if integration_alias is not None:
             body["integrationAlias"] = integration_alias
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         return self._patch(
             f"/api/v1/mcp/servers/{server_id}/tools/{tool_id}", json=body
         )
@@ -702,6 +713,86 @@ class ActivityResource(_BaseResource):
         return self._get("/api/v1/activity", params=params)
 
 
+class PartialsResource(_BaseResource):
+    """Input partials — reusable pre-filled input values for integration actions."""
+
+    def list(
+        self,
+        project_id: str,
+        *,
+        integration_name: str | None = None,
+        action_name: str | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {"projectId": project_id}
+        if integration_name is not None:
+            params["integrationName"] = integration_name
+        if action_name is not None:
+            params["actionName"] = action_name
+        return self._get("/api/v1/partials", params=params)
+
+    def get(self, partial_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/partials/{partial_id}")
+
+    def create(
+        self,
+        project_id: str,
+        integration_name: str,
+        name: str,
+        *,
+        action_name: str | None = None,
+        description: str | None = None,
+        values: dict[str, Any] | None = None,
+        enforced_keys: list[str] | None = None,
+        is_default: bool = False,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {
+            "projectId": project_id,
+            "integrationName": integration_name,
+            "name": name,
+            "values": values or {},
+            "isDefault": is_default,
+        }
+        if action_name is not None:
+            body["actionName"] = action_name
+        if description is not None:
+            body["description"] = description
+        if enforced_keys is not None:
+            body["enforcedKeys"] = enforced_keys
+        return self._post("/api/v1/partials", json=body)
+
+    def update(
+        self,
+        partial_id: str,
+        *,
+        name: str | None = None,
+        description: str | None = None,
+        values: dict[str, Any] | None = None,
+        enforced_keys: list[str] | None = None,
+        is_default: bool | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if name is not None:
+            body["name"] = name
+        if description is not None:
+            body["description"] = description
+        if values is not None:
+            body["values"] = values
+        if enforced_keys is not None:
+            body["enforcedKeys"] = enforced_keys
+        if is_default is not None:
+            body["isDefault"] = is_default
+        return self._patch(f"/api/v1/partials/{partial_id}", json=body)
+
+    def delete(self, partial_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/partials/{partial_id}")
+
+    def set_default(self, partial_id: str, is_default: bool) -> dict[str, Any]:
+        return self._post(
+            f"/api/v1/partials/{partial_id}/set-default",
+            json={"isDefault": is_default},
+        )
+
+
 class WeavzClient:
     """Weavz API client.
 
@@ -743,6 +834,7 @@ class WeavzClient:
         self.project_members = ProjectMembersResource(self)
         self.integrations = IntegrationsResource(self)
         self.activity = ActivityResource(self)
+        self.partials = PartialsResource(self)
 
     def request(
         self,

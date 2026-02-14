@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
@@ -25,5 +25,24 @@ class ProjectIntegration(BaseModel):
     connection_display_name: Optional[str] = Field(
         default=None, alias="connectionDisplayName"
     )
+
+    model_config = {"populate_by_name": True}
+
+
+class InputPartial(BaseModel):
+    """An input partial — reusable pre-filled input values for integration actions."""
+
+    id: str
+    org_id: str = Field(alias="orgId")
+    project_id: str = Field(alias="projectId")
+    integration_name: str = Field(alias="integrationName")
+    action_name: Optional[str] = Field(default=None, alias="actionName")
+    name: str
+    description: Optional[str] = None
+    values: dict[str, Any] = Field(default_factory=dict)
+    enforced_keys: list[str] = Field(default_factory=list, alias="enforcedKeys")
+    is_default: bool = Field(default=False, alias="isDefault")
+    created_at: str = Field(alias="createdAt")
+    updated_at: str = Field(alias="updatedAt")
 
     model_config = {"populate_by_name": True}

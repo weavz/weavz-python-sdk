@@ -2,6 +2,6 @@
 
 from weavz_sdk.client import WeavzClient
 from weavz_sdk.errors import WeavzError
-from weavz_sdk.models import ProjectIntegration
+from weavz_sdk.models import InputPartial, ProjectIntegration
 
-__all__ = ["WeavzClient", "WeavzError", "ProjectIntegration"]
+__all__ = ["WeavzClient", "WeavzError", "InputPartial", "ProjectIntegration"]
