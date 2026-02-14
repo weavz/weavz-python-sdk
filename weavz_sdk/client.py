@@ -529,14 +529,14 @@ class McpServersResource(_BaseResource):
         self,
         server_id: str,
         *,
-        mode: str | None = None,
-        include_disabled: bool | None = None,
+        aliases: list[str] | None = None,
+        actions: dict[str, list[str]] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
-        if mode is not None:
-            body["mode"] = mode
-        if include_disabled is not None:
-            body["includeDisabled"] = include_disabled
+        if aliases is not None:
+            body["aliases"] = aliases
+        if actions is not None:
+            body["actions"] = actions
         return self._post(
             f"/api/v1/mcp/servers/{server_id}/sync-from-project", json=body
         )
@@ -579,7 +579,7 @@ class MembersResource(_BaseResource):
         self,
         *,
         user_id: str,
-        role: str = "MEMBER",
+        role: str = "member",
     ) -> dict[str, Any]:
         return self._post(
             "/api/v1/members", json={"userId": user_id, "role": role}
@@ -794,12 +794,10 @@ class InvitationsResource(_BaseResource):
     def send(
         self,
         email: str,
+        organization_id: str,
         role: str = "member",
-        organization_id: str | None = None,
     ) -> dict[str, Any]:
-        body: dict[str, Any] = {"email": email, "role": role}
-        if organization_id is not None:
-            body["organizationId"] = organization_id
+        body: dict[str, Any] = {"email": email, "organizationId": organization_id, "role": role}
         return self._post("/api/v1/members/invite", json=body)
 
     def list(self) -> dict[str, Any]:

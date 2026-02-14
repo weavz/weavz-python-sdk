@@ -17,7 +17,7 @@ from weavz_sdk import WeavzClient, WeavzError
 
 BASE_URL = "http://localhost:3000"
 SERVICE_KEY = "local-test-service-key-12345"
-TEST_ORG_ID = "6555c8f1-c057-4c02-9980-1ef723c23855"
+TEST_ORG_ID = ""
 
 # Module-level state
 _client: Optional[WeavzClient] = None
@@ -45,12 +45,23 @@ def _service_key_request(method: str, path: str, json: Optional[dict] = None) ->
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_client():
-    """Bootstrap: create API key and initialize client."""
-    global _client, _api_key_plain, _api_key_id
+    """Bootstrap: create org, API key and initialize client."""
+    global _client, _api_key_plain, _api_key_id, TEST_ORG_ID
 
     # Verify server is up
     health = httpx.get(f"{BASE_URL}/health", timeout=5.0)
     assert health.status_code == 200, f"Server not reachable: {health.status_code}"
+
+    # Create a test org
+    import time
+    org_res = httpx.post(
+        f"{BASE_URL}/api/v1/orgs",
+        headers={"X-Service-Key": SERVICE_KEY, "Content-Type": "application/json"},
+        json={"name": "Python SDK Test Org", "slug": f"py-sdk-test-{int(time.time())}"},
+        timeout=15.0,
+    )
+    assert org_res.status_code == 201, f"Failed to create org: {org_res.status_code} {org_res.text}"
+    TEST_ORG_ID = org_res.json()["org"]["id"]
 
     # Create API key via service key
     res = _service_key_request("POST", "/api/v1/api-keys", {"name": "python-sdk-test-key"})
