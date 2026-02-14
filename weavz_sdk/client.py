@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 import httpx
@@ -403,7 +404,6 @@ class McpServersResource(_BaseResource):
         project_id: str,
         description: str | None = None,
         created_by: str | None = None,
-        sharing: str | None = None,
         mode: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"name": name, "projectId": project_id}
@@ -411,8 +411,6 @@ class McpServersResource(_BaseResource):
             body["description"] = description
         if created_by is not None:
             body["createdBy"] = created_by
-        if sharing is not None:
-            body["sharing"] = sharing
         if mode is not None:
             body["mode"] = mode
         return self._post("/api/v1/mcp/servers", json=body)
@@ -426,7 +424,6 @@ class McpServersResource(_BaseResource):
         *,
         name: str | None = None,
         description: str | None = None,
-        sharing: str | None = None,
         mode: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
@@ -434,8 +431,6 @@ class McpServersResource(_BaseResource):
             body["name"] = name
         if description is not None:
             body["description"] = description
-        if sharing is not None:
-            body["sharing"] = sharing
         if mode is not None:
             body["mode"] = mode
         return self._patch(f"/api/v1/mcp/servers/{server_id}", json=body)
@@ -793,6 +788,30 @@ class PartialsResource(_BaseResource):
         )
 
 
+class InvitationsResource(_BaseResource):
+    """Organization invitations."""
+
+    def send(
+        self,
+        email: str,
+        role: str = "member",
+        organization_id: str | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {"email": email, "role": role}
+        if organization_id is not None:
+            body["organizationId"] = organization_id
+        return self._post("/api/v1/members/invite", json=body)
+
+    def list(self) -> dict[str, Any]:
+        return self._get("/api/v1/members/invitations")
+
+    def revoke(self, invitation_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/members/invitations/{invitation_id}")
+
+    def accept(self, invitation_id: str) -> dict[str, Any]:
+        return self._post(f"/api/v1/members/invitations/{invitation_id}/accept")
+
+
 class WeavzClient:
     """Weavz API client.
 
@@ -810,9 +829,11 @@ class WeavzClient:
         *,
         base_url: str = "https://api.weavz.io",
         timeout: float = 30.0,
+        max_retries: int = 2,
     ) -> None:
         self._api_key = api_key
         self._base_url = base_url.rstrip("/")
+        self._max_retries = max_retries
         self._http = httpx.Client(
             base_url=self._base_url,
             headers={"Authorization": f"Bearer {api_key}"},
@@ -835,6 +856,7 @@ class WeavzClient:
         self.integrations = IntegrationsResource(self)
         self.activity = ActivityResource(self)
         self.partials = PartialsResource(self)
+        self.invitations = InvitationsResource(self)
 
     def request(
         self,
@@ -845,21 +867,50 @@ class WeavzClient:
         json: Any = None,
     ) -> Any:
         """Make an authenticated request to the Weavz API."""
-        response = self._http.request(method, path, params=params, json=json)
+        is_idempotent = method.upper() in ("GET", "PUT", "DELETE", "PATCH")
+        last_error: WeavzError | None = None
 
-        if not response.is_success:
+        for attempt in range(self._max_retries + 1):
+            response = self._http.request(method, path, params=params, json=json)
+
+            if response.is_success:
+                return response.json()
+
             try:
                 body = response.json()
             except Exception:
                 body = {}
-            raise WeavzError(
+
+            last_error = WeavzError(
                 body.get("error", f"HTTP {response.status_code}"),
                 code=body.get("code", "HTTP_ERROR"),
                 status=response.status_code,
                 details=body.get("details"),
             )
 
-        return response.json()
+            is_429 = response.status_code == 429
+            is_5xx = 500 <= response.status_code < 600
+            should_retry = is_429 or (is_5xx and is_idempotent)
+
+            if not should_retry or attempt >= self._max_retries:
+                raise last_error
+
+            # Calculate backoff delay
+            retry_after = response.headers.get("Retry-After")
+            if retry_after is not None:
+                try:
+                    delay = float(retry_after)
+                except ValueError:
+                    # RFC 7231 date format — not common, fall back to backoff
+                    delay = 0.5 * (2 ** attempt)
+            else:
+                # Exponential backoff: 0.5s, 1s, 2s, ...
+                delay = 0.5 * (2 ** attempt)
+
+            time.sleep(delay)
+
+        # Should not reach here, but satisfy type checkers
+        raise last_error  # type: ignore[misc]
 
     def close(self) -> None:
         """Close the underlying HTTP client."""
