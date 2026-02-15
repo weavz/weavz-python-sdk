@@ -788,6 +788,90 @@ class PartialsResource(_BaseResource):
         )
 
 
+class EndUsersResource(_BaseResource):
+    """End user management and connect portal."""
+
+    def create(
+        self,
+        *,
+        project_id: str,
+        external_id: str,
+        display_name: str | None = None,
+        email: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {
+            "projectId": project_id,
+            "externalId": external_id,
+        }
+        if display_name is not None:
+            body["displayName"] = display_name
+        if email is not None:
+            body["email"] = email
+        if metadata is not None:
+            body["metadata"] = metadata
+        return self._post("/api/v1/end-users", json=body)
+
+    def list(self, project_id: str) -> dict[str, Any]:
+        return self._get("/api/v1/end-users", params={"projectId": project_id})
+
+    def get(self, end_user_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/end-users/{end_user_id}")
+
+    def update(
+        self,
+        end_user_id: str,
+        *,
+        display_name: str | None = None,
+        email: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if display_name is not None:
+            body["displayName"] = display_name
+        if email is not None:
+            body["email"] = email
+        if metadata is not None:
+            body["metadata"] = metadata
+        return self._patch(f"/api/v1/end-users/{end_user_id}", json=body)
+
+    def delete(self, end_user_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/end-users/{end_user_id}")
+
+    def create_connect_token(
+        self,
+        end_user_id: str,
+        *,
+        integration_name: str | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if integration_name is not None:
+            body["integrationName"] = integration_name
+        if expires_in is not None:
+            body["expiresIn"] = expires_in
+        return self._post(
+            f"/api/v1/end-users/{end_user_id}/connect-token", json=body
+        )
+
+    def invite(
+        self,
+        end_user_id: str,
+        *,
+        email: str,
+        integration_name: str | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {"email": email}
+        if integration_name is not None:
+            body["integrationName"] = integration_name
+        if expires_in is not None:
+            body["expiresIn"] = expires_in
+        return self._post(
+            f"/api/v1/end-users/{end_user_id}/invite", json=body
+        )
+
+
 class InvitationsResource(_BaseResource):
     """Organization invitations."""
 
@@ -855,6 +939,7 @@ class WeavzClient:
         self.activity = ActivityResource(self)
         self.partials = PartialsResource(self)
         self.invitations = InvitationsResource(self)
+        self.end_users = EndUsersResource(self)
 
     def request(
         self,

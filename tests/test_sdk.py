@@ -512,6 +512,65 @@ class TestProjectScopedApiKeys:
         _client.api_keys.delete(result["apiKey"]["id"])
 
 
+# ── End Users ───────────────────────────────────────────────────────────────
+
+class TestEndUsers:
+    _end_user_id: str = ""
+
+    def test_create_end_user(self):
+        import time
+        result = _client.end_users.create(
+            project_id=_project_id,
+            external_id=f"py-eu-{int(time.time())}",
+            display_name="Python SDK End User",
+            email="py-enduser@example.com",
+            metadata={"plan": "pro"},
+        )
+        assert "endUser" in result
+        assert result["endUser"]["displayName"] == "Python SDK End User"
+        assert result["endUser"]["email"] == "py-enduser@example.com"
+        assert result["endUser"]["type"] == "external"
+        TestEndUsers._end_user_id = result["endUser"]["id"]
+
+    def test_list_end_users(self):
+        result = _client.end_users.list(_project_id)
+        assert "endUsers" in result
+        assert "total" in result
+        assert len(result["endUsers"]) > 0
+        ids = [eu["id"] for eu in result["endUsers"]]
+        assert TestEndUsers._end_user_id in ids
+
+    def test_get_end_user(self):
+        result = _client.end_users.get(TestEndUsers._end_user_id)
+        assert "endUser" in result
+        assert result["endUser"]["id"] == TestEndUsers._end_user_id
+        assert "connections" in result
+        assert isinstance(result["connections"], list)
+
+    def test_update_end_user(self):
+        result = _client.end_users.update(
+            TestEndUsers._end_user_id,
+            display_name="Updated Python End User",
+            email="updated-py@example.com",
+        )
+        assert "endUser" in result
+        assert result["endUser"]["displayName"] == "Updated Python End User"
+        assert result["endUser"]["email"] == "updated-py@example.com"
+
+    def test_create_connect_token(self):
+        result = _client.end_users.create_connect_token(TestEndUsers._end_user_id)
+        assert "connectUrl" in result
+        assert "token" in result
+        assert "expiresAt" in result
+        assert result["token"].startswith("eut_")
+        assert "/connect/portal" in result["connectUrl"]
+
+    def test_delete_end_user(self):
+        result = _client.end_users.delete(TestEndUsers._end_user_id)
+        assert result["deleted"] is True
+        assert result["id"] == TestEndUsers._end_user_id
+
+
 # ── Error Handling ───────────────────────────────────────────────────────────
 
 class TestErrorHandling:
