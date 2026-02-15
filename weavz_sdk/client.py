@@ -405,6 +405,7 @@ class McpServersResource(_BaseResource):
         description: str | None = None,
         created_by: str | None = None,
         mode: str | None = None,
+        end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"name": name, "projectId": project_id}
         if description is not None:
@@ -413,6 +414,8 @@ class McpServersResource(_BaseResource):
             body["createdBy"] = created_by
         if mode is not None:
             body["mode"] = mode
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         return self._post("/api/v1/mcp/servers", json=body)
 
     def get(self, server_id: str) -> dict[str, Any]:
@@ -425,6 +428,7 @@ class McpServersResource(_BaseResource):
         name: str | None = None,
         description: str | None = None,
         mode: str | None = None,
+        end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if name is not None:
@@ -433,6 +437,8 @@ class McpServersResource(_BaseResource):
             body["description"] = description
         if mode is not None:
             body["mode"] = mode
+        if end_user_id is not None:
+            body["endUserId"] = end_user_id
         return self._patch(f"/api/v1/mcp/servers/{server_id}", json=body)
 
     def delete(self, server_id: str) -> dict[str, Any]:
