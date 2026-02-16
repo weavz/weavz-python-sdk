@@ -4047,6 +4047,138 @@ class HubspotCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class HuggingFaceDocumentQuestionAnsweringInput(BaseModel):
+    """Hugging Face — Document Question Answering"""
+    model: str = Field(..., description="Hugging Face document question answering model")
+    image: str = Field(..., description="Image of the document to analyze (invoice, contract, etc.)")
+    question: str = Field(..., description="Question to ask about the document (e.g., 'What is the invoice total?')")
+    top_k: Optional[float] = Field(None, description="Number of top answers to return")
+    max_answer_len: Optional[float] = Field(None, description="Maximum length of predicted answers")
+    handle_impossible_answer: Optional[bool] = Field(None, description="Whether to accept 'impossible' as an answer when no answer is found")
+    lang: Optional[str] = Field(None, description="Language to use for OCR text extraction")
+    use_cache: Optional[bool] = Field(None, description="Use cached results if available")
+    wait_for_model: Optional[bool] = Field(None, description="Wait for model to load if not ready")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceLanguageTranslationInput(BaseModel):
+    """Hugging Face — Language Translation"""
+    model: str = Field(..., description="Select a translation model or search from 7000+ available models")
+    customModel: Optional[str] = Field(None, description="Alternative: Enter any Hugging Face translation model ID directly (e.g., Helsinki-NLP/opus-mt-ja-en)")
+    text: str = Field(..., description="The text content you want to translate")
+    sourceLanguage: Optional[str] = Field(None, description="Source language code (e.g., 'en', 'es', 'fr'). Only needed for multilingual models that support multiple language pairs.")
+    targetLanguage: Optional[str] = Field(None, description="Target language code (e.g., 'fr', 'de', 'zh'). Only needed for multilingual models that support multiple language pairs.")
+    cleanUpSpaces: Optional[bool] = Field(None, description="Remove potential extra spaces in the translation output")
+    maxLength: Optional[float] = Field(None, description="Maximum length of the translated text (leave empty for default)")
+    useCache: Optional[bool] = Field(None, description="Use cached results if available for faster responses")
+    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceTextClassificationInput(BaseModel):
+    """Hugging Face — Text Classification"""
+    classificationMode: str = Field(..., description="Choose your classification approach")
+    zeroShotModel: Optional[str] = Field(None, description="Model for classifying into your custom categories")
+    customLabels: Optional[str] = Field(None, description="Enter categories separated by commas (e.g., 'customer support, sales inquiry, spam, billing question')")
+    pretrainedModel: Optional[str] = Field(None, description="Select a specialized pre-trained classification model")
+    searchModel: Optional[str] = Field(None, description="Search from all available text classification models")
+    text: str = Field(..., description="The text content you want to classify")
+    topK: Optional[float] = Field(None, description="Number of top predictions to return")
+    functionToApply: Optional[str] = Field(None, description="How to calculate confidence scores")
+    useCache: Optional[bool] = Field(None, description="Use cached results for faster responses")
+    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceTextSummarizationInput(BaseModel):
+    """Hugging Face — Text Summarization"""
+    contentType: str = Field(..., description="What type of content are you summarizing?")
+    model: str = Field(..., description="Select the best model for your content type")
+    text: str = Field(..., description="The long text content you want to summarize (most models work best with 512-1024 tokens)")
+    summaryLength: Optional[str] = Field(None, description="How long should the summary be?")
+    customMinLength: Optional[float] = Field(None, description="Minimum number of tokens for the summary")
+    customMaxLength: Optional[float] = Field(None, description="Maximum number of tokens for the summary")
+    cleanUpSpaces: Optional[bool] = Field(None, description="Remove extra spaces and clean up formatting")
+    truncationStrategy: Optional[str] = Field(None, description="How to handle text that exceeds model limits")
+    useCache: Optional[bool] = Field(None, description="Use cached results for faster responses")
+    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceChatCompletionInput(BaseModel):
+    """Hugging Face — Chat Completion"""
+    useCase: str = Field(..., description="What type of chat assistant are you building?")
+    model: str = Field(..., description="Select the best model for your use case")
+    conversationMode: str = Field(..., description="How do you want to build the conversation?")
+    userMessage: Optional[str] = Field(None, description="The user message or question to respond to")
+    systemPrompt: Optional[str] = Field(None, description="Instructions for how the assistant should behave")
+    conversationHistory: Optional[list[Any]] = Field(None, description="Previous messages in the conversation (for multi-turn chat)")
+    template: Optional[str] = Field(None, description="Pre-built templates for common business scenarios")
+    responseLength: Optional[str] = Field(None, description="How long should the response be?")
+    customMaxTokens: Optional[float] = Field(None, description="Maximum number of tokens to generate")
+    temperature: Optional[float] = Field(None, description="How creative should responses be? (0.1 = focused, 1.0 = creative)")
+    topP: Optional[float] = Field(None, description="Controls response diversity (0.1 = focused, 1.0 = varied)")
+    stopSequences: Optional[list[Any]] = Field(None, description="Text sequences that will stop generation")
+    frequencyPenalty: Optional[float] = Field(None, description="Reduce repetitive responses (-2.0 to 2.0)")
+    presencePenalty: Optional[float] = Field(None, description="Encourage diverse topics (-2.0 to 2.0)")
+    useCache: Optional[bool] = Field(None, description="Use cached responses for identical requests")
+    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceCreateImageInput(BaseModel):
+    """Hugging Face — Create Image"""
+    useCase: str = Field(..., description="What type of image generation do you need?")
+    model: str = Field(..., description="Select the best model for your use case")
+    prompt: str = Field(..., description="Describe the image you want to generate. Be specific about style, colors, composition, and details.")
+    aspectRatio: Optional[str] = Field(None, description="Choose the dimensions for your image")
+    customWidth: Optional[float] = Field(None, description="Width in pixels (64-1024)")
+    customHeight: Optional[float] = Field(None, description="Height in pixels (64-1024)")
+    negativePrompt: Optional[str] = Field(None, description="Describe what you DON'T want in the image (blur, low quality, distorted, etc.)")
+    qualitySettings: Optional[str] = Field(None, description="Balance between image quality and generation time")
+    customSteps: Optional[float] = Field(None, description="Number of denoising steps (1-100)")
+    guidanceScale: Optional[float] = Field(None, description="How closely to follow the prompt (1-20). Higher values = more prompt adherence but may reduce creativity.")
+    seed: Optional[float] = Field(None, description="Set a seed for reproducible results. Leave empty for random generation.")
+    scheduler: Optional[str] = Field(None, description="Advanced: Choose the noise scheduler algorithm")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceObjectDetectionInput(BaseModel):
+    """Hugging Face — Object Detection"""
+    useCase: str = Field(..., description="What type of object detection do you need?")
+    model: str = Field(..., description="Select the best model for your detection task")
+    image: str = Field(..., description="Upload an image for object detection. Supports JPG, PNG, WebP formats.")
+    confidenceThreshold: Optional[float] = Field(None, description="Minimum confidence score for detections (0.1-0.9). Higher values = fewer but more accurate detections.")
+    maxDetections: Optional[float] = Field(None, description="Maximum number of objects to detect (1-100)")
+    filterSettings: Optional[str] = Field(None, description="How to handle detection results")
+    outputFormat: Optional[str] = Field(None, description="How to structure the detection results")
+
+    model_config = {"populate_by_name": True}
+
+
+class HuggingFaceImageClassificationInput(BaseModel):
+    """Hugging Face — Image Classification"""
+    classificationMode: str = Field(..., description="How do you want to classify your images?")
+    useCase: str = Field(..., description="What type of image classification do you need?")
+    model: str = Field(..., description="Select the best model for your use case")
+    imageSource: str = Field(..., description="How do you want to provide the image?")
+    imageFile: str = Field(..., description="Upload an image file for classification (JPG, PNG, WebP)")
+    imageUrl: str = Field(..., description="URL of the image to classify")
+    customCategories: list[Any] = Field(..., description="Enter the categories you want to classify the image into (e.g., 'dog', 'cat', 'bird')")
+    hypothesisTemplate: Optional[str] = Field(None, description="Template for classification (advanced). Default: 'This image shows {}'")
+    topK: Optional[float] = Field(None, description="Maximum number of classification results to return (1-20)")
+    confidenceThreshold: Optional[float] = Field(None, description="Minimum confidence score for results (0.0-1.0)")
+    outputFormat: Optional[str] = Field(None, description="How to structure the classification results")
+
+    model_config = {"populate_by_name": True}
+
+
 class ImapMarkEmailReadInput(BaseModel):
     """IMAP — Mark Email as Read/Unread"""
     mailbox: str = Field(..., description="Select the parent folder containing the email.")
@@ -10386,6 +10518,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hubspot.get-owner-by-id": HubspotGetOwnerByIdInput,
     "hubspot.get-pipeline-stage-details": HubspotGetPipelineStageDetailsInput,
     "hubspot.custom_api_call": HubspotCustomApiCallInput,
+    "hugging-face.document_question_answering": HuggingFaceDocumentQuestionAnsweringInput,
+    "hugging-face.language_translation": HuggingFaceLanguageTranslationInput,
+    "hugging-face.text_classification": HuggingFaceTextClassificationInput,
+    "hugging-face.text_summarization": HuggingFaceTextSummarizationInput,
+    "hugging-face.chat_completion": HuggingFaceChatCompletionInput,
+    "hugging-face.create_image": HuggingFaceCreateImageInput,
+    "hugging-face.object_detection": HuggingFaceObjectDetectionInput,
+    "hugging-face.image_classification": HuggingFaceImageClassificationInput,
     "imap.mark_email_read": ImapMarkEmailReadInput,
     "imap.copy_email": ImapCopyEmailInput,
     "imap.move_email": ImapMoveEmailInput,
