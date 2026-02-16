@@ -10,6 +10,42 @@ from pydantic import BaseModel, Field
 # Integration Action Input Models
 # ============================================================================
 
+class AiToolkitExtractStructuredDataInput(BaseModel):
+    """AI Toolkit — Extract Structured Data"""
+    text: str = Field(..., description="Text to extract data from")
+    schema: Any = Field(..., description="Zod-compatible schema object defining the expected output structure (e.g., {'name': 'string', 'age': 'number'})")
+    instructions: Optional[str] = Field(None, description="Optional additional context or instructions for the AI")
+
+    model_config = {"populate_by_name": True}
+
+
+class AiToolkitClassifyTextInput(BaseModel):
+    """AI Toolkit — Classify Text"""
+    text: str = Field(..., description="Text to classify")
+    categories: list[Any] = Field(..., description="Array of category labels (e.g., ['positive', 'negative', 'neutral'])")
+    instructions: Optional[str] = Field(None, description="Optional additional context or classification criteria")
+
+    model_config = {"populate_by_name": True}
+
+
+class AiToolkitTransformDataInput(BaseModel):
+    """AI Toolkit — Transform Data"""
+    input: Any = Field(..., description="Data to transform (any JSON-serializable value)")
+    instructions: str = Field(..., description="Natural language description of how to transform the data (e.g., 'Convert all field names to camelCase', 'Extract only users with status active')")
+    outputSchema: Optional[Any] = Field(None, description="Optional Zod-compatible schema for the output (e.g., {'users': 'array', 'count': 'number'}). If omitted, AI decides the structure.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AiToolkitGenerateTextInput(BaseModel):
+    """AI Toolkit — Generate Text"""
+    template: str = Field(..., description="Text template or prompt (e.g., 'Write a product description for {{productName}}')")
+    context: Optional[Any] = Field(None, description="Context variables to fill into the template (e.g., {'productName': 'Widget Pro', 'features': ['Fast', 'Reliable']})")
+    maxLength: Optional[float] = Field(None, description="Maximum length in characters (approximate). If omitted, AI decides length.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AirtableAirtableCreateRecordInput(BaseModel):
     """Airtable — Create Airtable Record"""
     base: str = Field(..., description="Base")
@@ -1522,6 +1558,77 @@ class CrispCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataTransformerTransformJsonInput(BaseModel):
+    """Data Transformer — Transform JSON"""
+    input: Any = Field(..., description="Input JSON object to transform")
+    mapping: Any = Field(..., description="Mapping object where keys are output field names and values are JSONPath selectors (e.g., {'name': '$.user.firstName', 'email': '$.user.email'})")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataTransformerMergeObjectsInput(BaseModel):
+    """Data Transformer — Merge Objects"""
+    objects: list[Any] = Field(..., description="Array of objects to merge")
+    strategy: str = Field(..., description="How to merge the objects")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataTransformerFilterArrayInput(BaseModel):
+    """Data Transformer — Filter Array"""
+    array: list[Any] = Field(..., description="Array to filter")
+    conditions: Any = Field(..., description="Filter conditions as key-value pairs. Supports operators: $gt, $gte, $lt, $lte, $ne, $in, $nin (e.g., {'age': {'$gte': 18}, 'status': 'active'})")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataTransformerBatchArrayInput(BaseModel):
+    """Data Transformer — Batch Array"""
+    array: list[Any] = Field(..., description="Array to batch")
+    batchSize: float = Field(..., description="Number of items per batch")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatetimeParseDateInput(BaseModel):
+    """Datetime — Parse Date"""
+    dateString: str = Field(..., description="Date string to parse (supports ISO 8601, common formats, and timestamps)")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatetimeFormatDateInput(BaseModel):
+    """Datetime — Format Date"""
+    date: str = Field(..., description="Date to format (ISO 8601 string or timestamp)")
+    format: str = Field(..., description="Output format preset")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatetimeDateMathInput(BaseModel):
+    """Datetime — Date Math"""
+    date: str = Field(..., description="Starting date (ISO 8601 string or timestamp)")
+    operation: str = Field(..., description="Add or subtract")
+    amount: float = Field(..., description="Amount to add or subtract")
+    unit: str = Field(..., description="Time unit")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatetimeIsBusinessHoursInput(BaseModel):
+    """Datetime — Is Business Hours"""
+    date: Optional[str] = Field(None, description="Date to check (ISO 8601 string or timestamp). Defaults to current time if omitted.")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+    startHour: Optional[float] = Field(None, description="Business hours start (0-23, default: 9)")
+    endHour: Optional[float] = Field(None, description="Business hours end (0-23, default: 17)")
+    workDays: Optional[list[Any]] = Field(None, description="Array of work day numbers (0=Sunday, 1=Monday, ..., 6=Saturday). Defaults to Mon-Fri.")
 
     model_config = {"populate_by_name": True}
 
@@ -3260,6 +3367,38 @@ class GoogleTasksCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class HashEncodeHashInput(BaseModel):
+    """Hash & Encode — Hash"""
+    text: str = Field(..., description="Text to hash")
+    algorithm: str = Field(..., description="Hashing algorithm")
+    encoding: str = Field(..., description="Output encoding")
+
+    model_config = {"populate_by_name": True}
+
+
+class HashEncodeEncodeInput(BaseModel):
+    """Hash & Encode — Encode"""
+    text: str = Field(..., description="Text to encode")
+    encoding: str = Field(..., description="Output encoding")
+
+    model_config = {"populate_by_name": True}
+
+
+class HashEncodeDecodeInput(BaseModel):
+    """Hash & Encode — Decode"""
+    encoded: str = Field(..., description="Encoded text to decode")
+    encoding: str = Field(..., description="Input encoding")
+
+    model_config = {"populate_by_name": True}
+
+
+class HashEncodeGenerateUuidInput(BaseModel):
+    """Hash & Encode — Generate UUID"""
+    count: Optional[float] = Field(None, description="Number of UUIDs to generate (1-100, default: 1)")
 
     model_config = {"populate_by_name": True}
 
@@ -9357,6 +9496,10 @@ class ZohoCrmCustomApiCallInput(BaseModel):
 # ============================================================================
 
 INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
+    "ai-toolkit.extract_structured_data": AiToolkitExtractStructuredDataInput,
+    "ai-toolkit.classify_text": AiToolkitClassifyTextInput,
+    "ai-toolkit.transform_data": AiToolkitTransformDataInput,
+    "ai-toolkit.generate_text": AiToolkitGenerateTextInput,
     "airtable.airtable_create_record": AirtableAirtableCreateRecordInput,
     "airtable.airtable_find_record": AirtableAirtableFindRecordInput,
     "airtable.airtable_update_record": AirtableAirtableUpdateRecordInput,
@@ -9485,6 +9628,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "crisp.find_conversation": CrispFindConversationInput,
     "crisp.find_user_profile": CrispFindUserProfileInput,
     "crisp.custom_api_call": CrispCustomApiCallInput,
+    "data-transformer.transform_json": DataTransformerTransformJsonInput,
+    "data-transformer.merge_objects": DataTransformerMergeObjectsInput,
+    "data-transformer.filter_array": DataTransformerFilterArrayInput,
+    "data-transformer.batch_array": DataTransformerBatchArrayInput,
+    "datetime.parse_date": DatetimeParseDateInput,
+    "datetime.format_date": DatetimeFormatDateInput,
+    "datetime.date_math": DatetimeDateMathInput,
+    "datetime.is_business_hours": DatetimeIsBusinessHoursInput,
     "discord.sendMessageWithBot": DiscordSendMessageWithBotInput,
     "discord.send_message_webhook": DiscordSendMessageWebhookInput,
     "discord.request_approval_message": DiscordRequestApprovalMessageInput,
@@ -9645,6 +9796,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "google-sheets.custom_api_call": GoogleSheetsCustomApiCallInput,
     "google-tasks.add_task": GoogleTasksAddTaskInput,
     "google-tasks.custom_api_call": GoogleTasksCustomApiCallInput,
+    "hash-encode.hash": HashEncodeHashInput,
+    "hash-encode.encode": HashEncodeEncodeInput,
+    "hash-encode.decode": HashEncodeDecodeInput,
+    "hash-encode.generate_uuid": HashEncodeGenerateUuidInput,
     "help-scout.create_conversation": HelpScoutCreateConversationInput,
     "help-scout.send_reply": HelpScoutSendReplyInput,
     "help-scout.add_note": HelpScoutAddNoteInput,
