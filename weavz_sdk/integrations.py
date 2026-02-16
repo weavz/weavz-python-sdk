@@ -615,6 +615,22 @@ class BlueskyFindThreadInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CalendlyCustomApiCallInput(BaseModel):
+    """Calendly — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class ClickupCreateTaskInput(BaseModel):
     """ClickUp — Create Task"""
     workspace_id: str = Field(..., description="The ID of the ClickUp workspace")
@@ -1590,6 +1606,41 @@ class DataTransformerBatchArrayInput(BaseModel):
     """Data Transformer — Batch Array"""
     array: list[Any] = Field(..., description="Array to batch")
     batchSize: float = Field(..., description="Number of items per batch")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatadogSendMultipleLogsInput(BaseModel):
+    """Datadog — Send Multiple logs"""
+    body: Any = Field(..., description="Logs to send to Datadog, must contain a `logs` key with an array of objects. Documentation: https://docs.datadoghq.com/api/latest/logs/#send-logs")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatadogSendOneLogInput(BaseModel):
+    """Datadog — Send One log"""
+    message: str = Field(..., description="The message to send to Datadog")
+    ddsource: Optional[str] = Field(None, description="The DD source to send to Datadog")
+    ddtags: Optional[str] = Field(None, description="The DD tags to send to Datadog, comma separated")
+    hostname: Optional[str] = Field(None, description="The hostname to send to Datadog")
+    service: Optional[str] = Field(None, description="The service to send to Datadog")
+    additionalProperties: Optional[Any] = Field(None, description="Additional properties to send to Datadog, in key-value pairs like status, level, etc.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatadogCustomApiCallInput(BaseModel):
+    """Datadog — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
 
     model_config = {"populate_by_name": True}
 
@@ -6045,6 +6096,139 @@ class MondayMondayUploadFileToColumnInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class MongodbFindDocumentsInput(BaseModel):
+    """MongoDB — Find Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    query: Optional[Any] = Field(None, description="MongoDB query to filter documents (e.g., {'status': 'active'})")
+    projection: Optional[Any] = Field(None, description="Fields to include or exclude (e.g., {'name': 1, '_id': 0})")
+    sort: Optional[Any] = Field(None, description="Sort criteria (e.g., {'createdAt': -1})")
+    limit: Optional[float] = Field(None, description="Maximum number of documents to return")
+    skip: Optional[float] = Field(None, description="Number of documents to skip")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbInsertDocumentsInput(BaseModel):
+    """MongoDB — Insert Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    documents: Any = Field(..., description="Document(s) to insert. Can be a single document object or an array of documents.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbUpdateDocumentsInput(BaseModel):
+    """MongoDB — Update Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    filter: Any = Field(..., description="MongoDB query to select documents to update (e.g., {'status': 'pending'})")
+    update: Any = Field(..., description="MongoDB update operations (e.g., {'$set': {'status': 'completed'}})")
+    upsert: Optional[bool] = Field(None, description="Insert a document if no documents match the filter")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbDeleteDocumentsInput(BaseModel):
+    """MongoDB — Delete Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    filter: Any = Field(..., description="MongoDB query to select documents to delete (e.g., {'status': 'archived'})")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbFindAndUpdateDocumentsInput(BaseModel):
+    """MongoDB — Find and Update Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    filter: Any = Field(..., description="MongoDB query to select documents to update (e.g., {'status': 'pending'})")
+    update: Any = Field(..., description="MongoDB update operations (e.g., {'$set': {'status': 'completed'}})")
+    upsert: Optional[bool] = Field(None, description="Insert a document if no documents match the filter")
+    returnUpdated: Optional[bool] = Field(None, description="Return the documents after updates are applied")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbFindAndReplaceDocumentsInput(BaseModel):
+    """MongoDB — Find and Replace Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    filter: Any = Field(..., description="MongoDB query to select documents to replace (e.g., {'_id': '123'})")
+    replacement: Any = Field(..., description="New document that will replace the matched documents")
+    upsert: Optional[bool] = Field(None, description="Insert the document if no documents match the filter")
+    returnDocument: Optional[str] = Field(None, description="Which version of the document to return")
+
+    model_config = {"populate_by_name": True}
+
+
+class MongodbAggregateDocumentsInput(BaseModel):
+    """MongoDB — Aggregate Documents"""
+    database: Optional[str] = Field(None, description="The MongoDB database to connect to (from your authentication)")
+    collection: str = Field(..., description="Collection")
+    pipeline: Any = Field(..., description="Array of aggregation stages (e.g., [{'$match': {'status': 'active'}}, {'$group': {'_id': '$category', 'count': {'$sum': 1}}}])")
+
+    model_config = {"populate_by_name": True}
+
+
+class MysqlFindRowsInput(BaseModel):
+    """MySQL — Find Rows"""
+    markdown: Optional[str] = Field(None, description="   **DO NOT** use dynamic input directly in the query string or column names.       Use **?** in the query and dynamic values in args/values for parameterized queries to prevent **SQL injection**.")
+    timezone: Optional[str] = Field(None, description="Timezone for the MySQL server to use")
+    table: str = Field(..., description="Table")
+    condition: str = Field(..., description="SQL condition, can also include logic operators, etc.")
+    args: Optional[list[Any]] = Field(None, description="Arguments can be used using ? in the condition")
+    columns: Optional[list[Any]] = Field(None, description="Specify the columns you want to select")
+
+    model_config = {"populate_by_name": True}
+
+
+class MysqlInsertRowInput(BaseModel):
+    """MySQL — Insert Row"""
+    timezone: Optional[str] = Field(None, description="Timezone for the MySQL server to use")
+    table: str = Field(..., description="Table")
+    values: dict[str, Any] = Field(..., description="Values")
+
+    model_config = {"populate_by_name": True}
+
+
+class MysqlUpdateRowInput(BaseModel):
+    """MySQL — Update Row"""
+    timezone: Optional[str] = Field(None, description="Timezone for the MySQL server to use")
+    table: str = Field(..., description="Table")
+    values: dict[str, Any] = Field(..., description="Values")
+    search_column: str = Field(..., description="Search Column")
+    search_value: str = Field(..., description="Search Value")
+
+    model_config = {"populate_by_name": True}
+
+
+class MysqlDeleteRowInput(BaseModel):
+    """MySQL — Delete Row"""
+    markdown: Optional[str] = Field(None, description="   **DO NOT** use dynamic input directly in the query string or column names.       Use **?** in the query and dynamic values in args/values for parameterized queries to prevent **SQL injection**.")
+    timezone: Optional[str] = Field(None, description="Timezone for the MySQL server to use")
+    table: str = Field(..., description="Table")
+    search_column: str = Field(..., description="Search Column")
+    search_value: str = Field(..., description="Search Value")
+
+    model_config = {"populate_by_name": True}
+
+
+class MysqlGetTablesInput(BaseModel):
+    """MySQL — Get Tables"""
+    pass
+
+
+class MysqlExecuteQueryInput(BaseModel):
+    """MySQL — Execute Query"""
+    markdown: Optional[str] = Field(None, description="   **DO NOT** use dynamic input directly in the query string or column names.       Use **?** in the query and dynamic values in args/values for parameterized queries to prevent **SQL injection**.")
+    timezone: Optional[str] = Field(None, description="Timezone for the MySQL server to use")
+    query: str = Field(..., description="The query string to execute, use ? for arguments to avoid SQL injection.")
+    args: Optional[list[Any]] = Field(None, description="Arguments to use in the query, if any. Should be in the same order as the ? in the query string..")
+
+    model_config = {"populate_by_name": True}
+
+
 class NotionCreateDatabaseItemInput(BaseModel):
     """Notion — Create Database Item"""
     database_id: str = Field(..., description="Choose the Notion database you want to work with from your workspace")
@@ -6921,6 +7105,18 @@ class PlausibleRemoveGuestInput(BaseModel):
     """Plausible — Remove Guest"""
     site_id: str = Field(..., description="Select a site")
     email: str = Field(..., description="Select a guest")
+
+    model_config = {"populate_by_name": True}
+
+
+class PostgresRunQueryInput(BaseModel):
+    """Postgres — Run Query"""
+    markdown: Optional[str] = Field(None, description="       **DO NOT** insert dynamic input directly into the query string. Instead, use $1, $2, $3 and add them in args for parameterized queries to prevent **SQL injection.**")
+    query: str = Field(..., description="Please use $1, $2, etc. for parameterized queries to avoid SQL injection.")
+    args: Optional[list[Any]] = Field(None, description="Arguments to be used in the query")
+    query_timeout: Optional[float] = Field(None, description="An integer indicating the maximum number of milliseconds to wait for a query to complete before timing out.")
+    connection_timeout_ms: Optional[float] = Field(None, description="An integer indicating the maximum number of milliseconds to wait for a connection to be established before timing out.")
+    application_name: Optional[str] = Field(None, description="A string indicating the name of the client application connecting to the server.")
 
     model_config = {"populate_by_name": True}
 
@@ -8122,6 +8318,177 @@ class SmtpSendEmailInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SpotifySearchInput(BaseModel):
+    """Spotify — Search"""
+    search_text: str = Field(..., description="The word or phrase you are searching for")
+    types: list[str] = Field(..., description="Object Types")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyGetPlaybackStateInput(BaseModel):
+    """Spotify — Get Playback State"""
+    pass
+
+
+class SpotifyPlayInput(BaseModel):
+    """Spotify — Play / Resume"""
+    device_id: Optional[str] = Field(None, description="Device")
+    context_uri: Optional[str] = Field(None, description="Spotify URI of the context to play (album, artist, playlist)")
+    tracks: Optional[list[Any]] = Field(None, description="List of spotify track uris to play")
+    position_ms: Optional[float] = Field(None, description="Position in milliseconds")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyPauseInput(BaseModel):
+    """Spotify — Pause"""
+    device_id: Optional[str] = Field(None, description="Device")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifySetVolumeInput(BaseModel):
+    """Spotify — Set Volume"""
+    volume: float = Field(..., description="Volume from 0 to 100")
+    device_id: Optional[str] = Field(None, description="Device")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyGetPlaylistsInput(BaseModel):
+    """Spotify — Get Playlists"""
+    offset: Optional[float] = Field(None, description="Offset")
+    limit: Optional[float] = Field(None, description="Limit")
+    all: Optional[bool] = Field(None, description="Fetches all playlists in a single request")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyGetPlaylistInfoInput(BaseModel):
+    """Spotify — Get Playlist Info"""
+    playlist_id: str = Field(..., description="Playlist")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyGetPlaylistItemsInput(BaseModel):
+    """Spotify — Get Playlist Items"""
+    playlist_id: str = Field(..., description="Playlist")
+    offset: Optional[float] = Field(None, description="Offset")
+    limit: Optional[float] = Field(None, description="Limit")
+    all: Optional[bool] = Field(None, description="Fetches all items in a single request")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyGetSavedTracksInput(BaseModel):
+    """Spotify — Get Saved Tracks"""
+    offset: Optional[float] = Field(None, description="Offset")
+    limit: Optional[float] = Field(None, description="Limit")
+    all: Optional[bool] = Field(None, description="Fetches all items in a single request")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyCreatePlaylistInput(BaseModel):
+    """Spotify — Create Playlist"""
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    public: Optional[bool] = Field(None, description="Public")
+    collaborative: Optional[bool] = Field(None, description="Collaborative")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyUpdatePlaylistInput(BaseModel):
+    """Spotify — Update Playlist"""
+    playlist_id: str = Field(..., description="Playlist")
+    name: Optional[str] = Field(None, description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    public: Optional[bool] = Field(None, description="Public")
+    collaborative: Optional[bool] = Field(None, description="Collaborative")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyAddPlaylistItemsInput(BaseModel):
+    """Spotify — Add items to playlist"""
+    playlist_id: str = Field(..., description="Playlist")
+    items: list[Any] = Field(..., description="URI's of the items to add")
+    position: Optional[float] = Field(None, description="Position")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyRemovePlaylistItemsInput(BaseModel):
+    """Spotify — Remove items from playlist"""
+    playlist_id: str = Field(..., description="Playlist")
+    items: list[Any] = Field(..., description="URI's of the items to remove")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyReorderPlaylistInput(BaseModel):
+    """Spotify — Reorder playlist"""
+    playlist_id: str = Field(..., description="Playlist")
+    from_position: float = Field(..., description="From Position")
+    to_position: float = Field(..., description="To Position")
+    amount: Optional[float] = Field(None, description="Amount of Items")
+
+    model_config = {"populate_by_name": True}
+
+
+class SpotifyCustomApiCallInput(BaseModel):
+    """Spotify — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class StabilityAiTextToImageInput(BaseModel):
+    """Stability AI — Text to Image"""
+    prompt: str = Field(..., description="The text to transform in image.")
+    cfg_scale: Optional[float] = Field(None, description="How strictly the diffusion process adheres to the prompt text (higher values keep your image closer to your prompt) (MIN:0; MAX:35)")
+    height: Optional[float] = Field(None, description="Height of the image in pixels. Must be in increments of 64 and >= 128")
+    width: Optional[float] = Field(None, description="Width of the image in pixels. Must be in increments of 64 and >= 128")
+    samples: Optional[str] = Field(None, description="Number of images to generate (MAX:10)")
+    steps: Optional[float] = Field(None, description="Number of diffusion steps to run (MIN:10; MAX:150)")
+    weight: Optional[float] = Field(None, description="weight")
+    clip_guidance_preset: Optional[str] = Field(None, description="clip_guidance_preset")
+    style_preset: Optional[str] = Field(None, description="Pass in a style preset to guide the image model towards a particular style.")
+    engine_id: str = Field(..., description="Engine ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class StabilityAiCustomApiCallInput(BaseModel):
+    """Stability AI — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class StorageReadFileInput(BaseModel):
     """Storage — Read File"""
     path: str = Field(..., description="File path within the storage scope (e.g. 'config.json', 'data/users.csv')")
@@ -8341,6 +8708,90 @@ class StripeFindInvoiceInput(BaseModel):
 
 class StripeCustomApiCallInput(BaseModel):
     """Stripe — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseUploadFileInput(BaseModel):
+    """Supabase — Upload File"""
+    filePath: str = Field(..., description="File path")
+    bucket: str = Field(..., description="Bucket")
+    file: str = Field(..., description="Base64 or URL")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseCreateRowInput(BaseModel):
+    """Supabase — Create Row"""
+    table_name: str = Field(..., description="Select a table from your database")
+    row_data: dict[str, Any] = Field(..., description="Enter the data for each column")
+    return_row: Optional[bool] = Field(None, description="Whether to return the created row")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseUpdateRowInput(BaseModel):
+    """Supabase — Update Row"""
+    table_name: str = Field(..., description="Select a table from your database")
+    filter_type: str = Field(..., description="How to identify rows to update")
+    filter_column: str = Field(..., description="Select the column to filter on")
+    filter_value: Optional[str] = Field(None, description="The value to match against (not used for 'in list' filter)")
+    filter_values: Optional[list[Any]] = Field(None, description="List of values for 'in list' filter type")
+    update_data: dict[str, Any] = Field(..., description="Select which columns to update (auto-generated fields excluded)")
+    count_updated: Optional[bool] = Field(None, description="Whether to count the number of updated rows")
+    return_updated: Optional[bool] = Field(None, description="Whether to return the updated rows data")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseUpsertRowInput(BaseModel):
+    """Supabase — Upsert Row"""
+    table_name: str = Field(..., description="Select a table from your database")
+    on_conflict: str = Field(..., description="Select the unique column to determine duplicates (required for upsert to work)")
+    row_data: dict[str, Any] = Field(..., description="Enter data for the row (conflict detection handled separately)")
+    count_upserted: Optional[bool] = Field(None, description="Whether to count the number of upserted rows")
+    return_upserted: Optional[bool] = Field(None, description="Whether to return the upserted rows data")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseDeleteRowsInput(BaseModel):
+    """Supabase — Delete Rows"""
+    table_name: str = Field(..., description="Select a table from your database")
+    filter_type: str = Field(..., description="How to filter rows for deletion")
+    filter_column: str = Field(..., description="Select the column to filter on")
+    filter_value: Optional[str] = Field(None, description="The value to match against (not used for null checks)")
+    filter_values: Optional[list[Any]] = Field(None, description="List of values for 'in' filter type")
+    count_deleted: Optional[bool] = Field(None, description="Whether to count the number of deleted rows")
+    return_deleted: Optional[bool] = Field(None, description="Whether to return the deleted rows data")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseSearchRowsInput(BaseModel):
+    """Supabase — Search Rows"""
+    table_name: str = Field(..., description="Select a table from your database")
+    columns: Optional[str] = Field(None, description="Columns to return (comma-separated). Leave empty to return all columns.")
+    filters: Optional[list[Any]] = Field(None, description="List of filters to apply")
+    page: Optional[float] = Field(None, description="Page number for pagination (starts from 1)")
+    pageSize: Optional[float] = Field(None, description="Number of records per page (max 1000)")
+    countOption: Optional[str] = Field(None, description="Algorithm to use for counting rows")
+
+    model_config = {"populate_by_name": True}
+
+
+class SupabaseCustomApiCallInput(BaseModel):
+    """Supabase — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
     headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
@@ -8772,6 +9223,82 @@ class WoocommerceFindProductInput(BaseModel):
 
 class WoocommerceCustomApiCallInput(BaseModel):
     """WooCommerce — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class WordpressCreatePostInput(BaseModel):
+    """WordPress — Create Post"""
+    title: str = Field(..., description="Title of the post about to be added")
+    content: str = Field(..., description="Uses the WordPress Text Editor which supports HTML")
+    slug: Optional[str] = Field(None, description="Slug")
+    date: Optional[str] = Field(None, description="Post publish date (ISO-8601)")
+    featured_media_file: Optional[str] = Field(None, description="URL of featured media")
+    tags: Optional[list[str]] = Field(None, description="Post tags")
+    acfFields: Optional[dict[str, Any]] = Field(None, description="Provide field name with value.You can find out field name from ACF plugin menu.")
+    categories: Optional[list[str]] = Field(None, description="Post categories")
+    featured_media: Optional[str] = Field(None, description="Choose from one of your uploaded media files")
+    status: Optional[str] = Field(None, description="Choose post status")
+    excerpt: Optional[str] = Field(None, description="Uses the WordPress Text Editor which supports HTML")
+    comment_status: Optional[bool] = Field(None, description="Enable Comments")
+    ping_status: Optional[bool] = Field(None, description="Open to Pinging")
+
+    model_config = {"populate_by_name": True}
+
+
+class WordpressCreatePageInput(BaseModel):
+    """WordPress — Create Page"""
+    title: str = Field(..., description="Title of the page about to be added")
+    content: str = Field(..., description="Uses the WordPress Text Editor which supports HTML")
+    slug: Optional[str] = Field(None, description="Slug")
+    date: Optional[str] = Field(None, description="Page publish date (ISO-8601)")
+    status: Optional[str] = Field(None, description="Choose status")
+    excerpt: Optional[str] = Field(None, description="Uses the WordPress Text Editor which supports HTML")
+    comment_status: Optional[bool] = Field(None, description="Enable Comments")
+    ping_status: Optional[bool] = Field(None, description="Open to Pinging")
+
+    model_config = {"populate_by_name": True}
+
+
+class WordpressUpdatePostInput(BaseModel):
+    """WordPress — Update Post"""
+    post: str = Field(..., description="Post")
+    title: Optional[str] = Field(None, description="Title of the post about to be added")
+    content: Optional[str] = Field(None, description="Uses the WordPress Text Editor which supports HTML")
+    slug: Optional[str] = Field(None, description="Slug")
+    date: Optional[str] = Field(None, description="Post publish date (ISO-8601)")
+    featured_media_file: Optional[str] = Field(None, description="URL of featured media")
+    tags: Optional[list[str]] = Field(None, description="Post tags")
+    acfFields: Optional[dict[str, Any]] = Field(None, description="Provide field name with value.You can find out field name from ACF plugin menu.")
+    categories: Optional[list[str]] = Field(None, description="Post categories")
+    featured_media: Optional[str] = Field(None, description="Choose from one of your uploaded media files")
+    status: Optional[str] = Field(None, description="Choose post status")
+    excerpt: Optional[str] = Field(None, description="Uses the WordPress Text Editor which supports HTML")
+    comment_status: Optional[bool] = Field(None, description="Enable Comments")
+    ping_status: Optional[bool] = Field(None, description="Open to Pinging")
+
+    model_config = {"populate_by_name": True}
+
+
+class WordpressGetPostInput(BaseModel):
+    """WordPress — Get Post Details"""
+    id: float = Field(..., description="The ID of the post to get")
+
+    model_config = {"populate_by_name": True}
+
+
+class WordpressCustomApiCallInput(BaseModel):
+    """WordPress — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
     headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
@@ -9552,6 +10079,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "bluesky.repostPost": BlueskyRepostPostInput,
     "bluesky.findPost": BlueskyFindPostInput,
     "bluesky.findThread": BlueskyFindThreadInput,
+    "calendly.custom_api_call": CalendlyCustomApiCallInput,
     "clickup.create_task": ClickupCreateTaskInput,
     "clickup.create_task_from_template": ClickupCreateTaskFromTemplateInput,
     "clickup.create_folderless_list": ClickupCreateFolderlessListInput,
@@ -9632,6 +10160,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "data-transformer.merge_objects": DataTransformerMergeObjectsInput,
     "data-transformer.filter_array": DataTransformerFilterArrayInput,
     "data-transformer.batch_array": DataTransformerBatchArrayInput,
+    "datadog.sendMultipleLogs": DatadogSendMultipleLogsInput,
+    "datadog.sendOneLog": DatadogSendOneLogInput,
+    "datadog.custom_api_call": DatadogCustomApiCallInput,
     "datetime.parse_date": DatetimeParseDateInput,
     "datetime.format_date": DatetimeFormatDateInput,
     "datetime.date_math": DatetimeDateMathInput,
@@ -10044,6 +10575,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "monday.monday_update_column_values_of_item": MondayMondayUpdateColumnValuesOfItemInput,
     "monday.monday_update_item_name": MondayMondayUpdateItemNameInput,
     "monday.monday_upload_file_to_column": MondayMondayUploadFileToColumnInput,
+    "mongodb.find_documents": MongodbFindDocumentsInput,
+    "mongodb.insert_documents": MongodbInsertDocumentsInput,
+    "mongodb.update_documents": MongodbUpdateDocumentsInput,
+    "mongodb.delete_documents": MongodbDeleteDocumentsInput,
+    "mongodb.find_and_update_documents": MongodbFindAndUpdateDocumentsInput,
+    "mongodb.find_and_replace_documents": MongodbFindAndReplaceDocumentsInput,
+    "mongodb.aggregate_documents": MongodbAggregateDocumentsInput,
+    "mysql.find_rows": MysqlFindRowsInput,
+    "mysql.insert_row": MysqlInsertRowInput,
+    "mysql.update_row": MysqlUpdateRowInput,
+    "mysql.delete_row": MysqlDeleteRowInput,
+    "mysql.get_tables": MysqlGetTablesInput,
+    "mysql.execute_query": MysqlExecuteQueryInput,
     "notion.create_database_item": NotionCreateDatabaseItemInput,
     "notion.update_database_item": NotionUpdateDatabaseItemInput,
     "notion.notion-find-database-item": NotionNotionFindDatabaseItemInput,
@@ -10123,6 +10667,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "plausible.list_guests": PlausibleListGuestsInput,
     "plausible.invite_guest": PlausibleInviteGuestInput,
     "plausible.remove_guest": PlausibleRemoveGuestInput,
+    "postgres.run-query": PostgresRunQueryInput,
     "posthog.create_event": PosthogCreateEventInput,
     "posthog.create_project": PosthogCreateProjectInput,
     "posthog.custom_api_call": PosthogCustomApiCallInput,
@@ -10237,6 +10782,23 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "smartsheet.find_attachment_by_row_id": SmartsheetFindAttachmentByRowIdInput,
     "smartsheet.find_sheet_by_name": SmartsheetFindSheetByNameInput,
     "smtp.send-email": SmtpSendEmailInput,
+    "spotify.search": SpotifySearchInput,
+    "spotify.get_playback_state": SpotifyGetPlaybackStateInput,
+    "spotify.play": SpotifyPlayInput,
+    "spotify.pause": SpotifyPauseInput,
+    "spotify.set_volume": SpotifySetVolumeInput,
+    "spotify.get_playlists": SpotifyGetPlaylistsInput,
+    "spotify.get_playlist_info": SpotifyGetPlaylistInfoInput,
+    "spotify.get_playlist_items": SpotifyGetPlaylistItemsInput,
+    "spotify.get_saved_tracks": SpotifyGetSavedTracksInput,
+    "spotify.create_playlist": SpotifyCreatePlaylistInput,
+    "spotify.update_playlist": SpotifyUpdatePlaylistInput,
+    "spotify.add_playlist_items": SpotifyAddPlaylistItemsInput,
+    "spotify.remove_playlist_items": SpotifyRemovePlaylistItemsInput,
+    "spotify.reorder_playlist": SpotifyReorderPlaylistInput,
+    "spotify.custom_api_call": SpotifyCustomApiCallInput,
+    "stability-ai.text-to-image": StabilityAiTextToImageInput,
+    "stability-ai.custom_api_call": StabilityAiCustomApiCallInput,
     "storage.read_file": StorageReadFileInput,
     "storage.write_file": StorageWriteFileInput,
     "storage.delete_file": StorageDeleteFileInput,
@@ -10260,6 +10822,13 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "stripe.retrieve_payment_intent": StripeRetrievePaymentIntentInput,
     "stripe.find_invoice": StripeFindInvoiceInput,
     "stripe.custom_api_call": StripeCustomApiCallInput,
+    "supabase.upload-file": SupabaseUploadFileInput,
+    "supabase.create_row": SupabaseCreateRowInput,
+    "supabase.update_row": SupabaseUpdateRowInput,
+    "supabase.upsert_row": SupabaseUpsertRowInput,
+    "supabase.delete_rows": SupabaseDeleteRowsInput,
+    "supabase.search_rows": SupabaseSearchRowsInput,
+    "supabase.custom_api_call": SupabaseCustomApiCallInput,
     "surveymonkey.custom_api_call": SurveymonkeyCustomApiCallInput,
     "telegram-bot.send_text_message": TelegramBotSendTextMessageInput,
     "telegram-bot.send_media": TelegramBotSendMediaInput,
@@ -10299,6 +10868,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "woocommerce.Find Customer": WoocommerceFindCustomerInput,
     "woocommerce.Find Product": WoocommerceFindProductInput,
     "woocommerce.custom_api_call": WoocommerceCustomApiCallInput,
+    "wordpress.create_post": WordpressCreatePostInput,
+    "wordpress.create_page": WordpressCreatePageInput,
+    "wordpress.update_post": WordpressUpdatePostInput,
+    "wordpress.get_post": WordpressGetPostInput,
+    "wordpress.custom_api_call": WordpressCustomApiCallInput,
     "wrike.create_task": WrikeCreateTaskInput,
     "wrike.update_task": WrikeUpdateTaskInput,
     "wrike.create_folder": WrikeCreateFolderInput,
