@@ -676,7 +676,7 @@ class TestErrorShapeConsistency:
 
     def test_validation_error_status(self):
         with pytest.raises(WeavzError) as exc_info:
-            _client.projects.create(name="", slug="")
+            _client.workspaces.create(name="", slug="")
         err = exc_info.value
         assert 400 <= err.status < 500
 
