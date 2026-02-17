@@ -4614,7 +4614,7 @@ class KvStorePutInput(BaseModel):
     """KV Store — Put"""
     key: str = Field(..., description="The key to store the value under")
     value: Any = Field(..., description="The value to store (any JSON-serializable value)")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -4622,7 +4622,7 @@ class KvStorePutInput(BaseModel):
 class KvStoreGetInput(BaseModel):
     """KV Store — Get"""
     key: str = Field(..., description="The key to retrieve")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -4630,7 +4630,7 @@ class KvStoreGetInput(BaseModel):
 class KvStoreDeleteInput(BaseModel):
     """KV Store — Delete"""
     key: str = Field(..., description="The key to delete")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -4639,7 +4639,7 @@ class KvStoreAddToListInput(BaseModel):
     """KV Store — Add to List"""
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to append to the list")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -4648,7 +4648,7 @@ class KvStoreRemoveFromListInput(BaseModel):
     """KV Store — Remove from List"""
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to remove from the list")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope the store. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -8624,7 +8624,7 @@ class StabilityAiCustomApiCallInput(BaseModel):
 class StorageReadFileInput(BaseModel):
     """Storage — Read File"""
     path: str = Field(..., description="File path within the storage scope (e.g. 'config.json', 'data/users.csv')")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -8634,7 +8634,7 @@ class StorageWriteFileInput(BaseModel):
     path: str = Field(..., description="File path within the storage scope")
     content: str = Field(..., description="File content to write")
     contentType: Optional[str] = Field(None, description="MIME type (e.g. 'application/json', 'text/plain')")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -8642,7 +8642,7 @@ class StorageWriteFileInput(BaseModel):
 class StorageDeleteFileInput(BaseModel):
     """Storage — Delete File"""
     path: str = Field(..., description="File path to delete")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 
@@ -8650,7 +8650,7 @@ class StorageDeleteFileInput(BaseModel):
 class StorageListFilesInput(BaseModel):
     """Storage — List Files"""
     prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. 'data/' to list all files in data folder). Leave empty for all files.")
-    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to project-bound storage.")
+    persistenceId: Optional[str] = Field(None, description="Optional external persistence ID to scope storage. If omitted, defaults to workspace-bound storage.")
 
     model_config = {"populate_by_name": True}
 

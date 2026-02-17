@@ -48,25 +48,25 @@ class OrganizationsResource(_BaseResource):
         return self._patch(f"/api/v1/orgs/{org_id}", json=body)
 
 
-class ProjectsResource(_BaseResource):
+class WorkspacesResource(_BaseResource):
     def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/projects")
+        return self._get("/api/v1/workspaces")
 
     def create(self, *, name: str, slug: str) -> dict[str, Any]:
-        return self._post("/api/v1/projects", json={"name": name, "slug": slug})
+        return self._post("/api/v1/workspaces", json={"name": name, "slug": slug})
 
-    def get(self, project_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/projects/{project_id}")
+    def get(self, workspace_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/workspaces/{workspace_id}")
 
-    def delete(self, project_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/projects/{project_id}")
+    def delete(self, workspace_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/workspaces/{workspace_id}")
 
-    def list_integrations(self, project_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/projects/{project_id}/integrations")
+    def list_integrations(self, workspace_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/workspaces/{workspace_id}/integrations")
 
     def add_integration(
         self,
-        project_id: str,
+        workspace_id: str,
         *,
         integration_name: str,
         integration_alias: str | None = None,
@@ -90,12 +90,12 @@ class ProjectsResource(_BaseResource):
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._post(
-            f"/api/v1/projects/{project_id}/integrations", json=body
+            f"/api/v1/workspaces/{workspace_id}/integrations", json=body
         )
 
     def update_integration(
         self,
-        project_id: str,
+        workspace_id: str,
         integration_id: str,
         *,
         integration_alias: str | None = None,
@@ -119,15 +119,15 @@ class ProjectsResource(_BaseResource):
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._patch(
-            f"/api/v1/projects/{project_id}/integrations/{integration_id}",
+            f"/api/v1/workspaces/{workspace_id}/integrations/{integration_id}",
             json=body,
         )
 
     def remove_integration(
-        self, project_id: str, integration_id: str
+        self, workspace_id: str, integration_id: str
     ) -> dict[str, Any]:
         return self._delete(
-            f"/api/v1/projects/{project_id}/integrations/{integration_id}"
+            f"/api/v1/workspaces/{workspace_id}/integrations/{integration_id}"
         )
 
 
@@ -144,7 +144,7 @@ class ConnectionsResource(_BaseResource):
         external_id: str,
         display_name: str,
         integration_name: str,
-        project_id: str | None = None,
+        workspace_id: str | None = None,
         end_user_id: str | None = None,
         scope: str | None = None,
         secret_text: str | None = None,
@@ -164,8 +164,8 @@ class ConnectionsResource(_BaseResource):
             "displayName": display_name,
             "integrationName": integration_name,
         }
-        if project_id is not None:
-            body["projectId"] = project_id
+        if workspace_id is not None:
+            body["workspaceId"] = workspace_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if scope is not None:
@@ -199,13 +199,13 @@ class ConnectionsResource(_BaseResource):
         self,
         *,
         integration_name: str,
-        project_id: str,
+        workspace_id: str,
         external_id: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
             "integrationName": integration_name,
-            "projectId": project_id,
+            "workspaceId": workspace_id,
         }
         if external_id is not None:
             body["externalId"] = external_id
@@ -257,7 +257,7 @@ class ConnectResource(_BaseResource):
         integration_name: str,
         connection_name: str,
         external_id: str,
-        project_id: str,
+        workspace_id: str,
         end_user_id: str | None = None,
         scope: str | None = None,
         success_redirect_uri: str | None = None,
@@ -267,7 +267,7 @@ class ConnectResource(_BaseResource):
             "integrationName": integration_name,
             "connectionName": connection_name,
             "externalId": external_id,
-            "projectId": project_id,
+            "workspaceId": workspace_id,
         }
         if end_user_id is not None:
             body["endUserId"] = end_user_id
@@ -315,7 +315,7 @@ class ActionsResource(_BaseResource):
         integration_name: str,
         action_name: str,
         *,
-        project_id: str,
+        workspace_id: str,
         input: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
         end_user_id: str | None = None,
@@ -326,7 +326,7 @@ class ActionsResource(_BaseResource):
             "integrationName": integration_name,
             "actionName": action_name,
             "input": input or {},
-            "projectId": project_id,
+            "workspaceId": workspace_id,
         }
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
@@ -349,7 +349,7 @@ class TriggersResource(_BaseResource):
         integration_name: str,
         trigger_name: str,
         callback_url: str,
-        project_id: str,
+        workspace_id: str,
         callback_headers: dict[str, str] | None = None,
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
@@ -362,7 +362,7 @@ class TriggersResource(_BaseResource):
             "integrationName": integration_name,
             "triggerName": trigger_name,
             "callbackUrl": callback_url,
-            "projectId": project_id,
+            "workspaceId": workspace_id,
         }
         if callback_headers is not None:
             body["callbackHeaders"] = callback_headers
@@ -401,13 +401,13 @@ class McpServersResource(_BaseResource):
         self,
         *,
         name: str,
-        project_id: str,
+        workspace_id: str,
         description: str | None = None,
         created_by: str | None = None,
         mode: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
-        body: dict[str, Any] = {"name": name, "projectId": project_id}
+        body: dict[str, Any] = {"name": name, "workspaceId": workspace_id}
         if description is not None:
             body["description"] = description
         if created_by is not None:
@@ -531,7 +531,7 @@ class McpServersResource(_BaseResource):
             f"/api/v1/mcp/servers/{server_id}/declarations/{integration_or_alias}"
         )
 
-    def sync_from_project(
+    def sync_from_workspace(
         self,
         server_id: str,
         *,
@@ -544,7 +544,7 @@ class McpServersResource(_BaseResource):
         if actions is not None:
             body["actions"] = actions
         return self._post(
-            f"/api/v1/mcp/servers/{server_id}/sync-from-project", json=body
+            f"/api/v1/mcp/servers/{server_id}/sync-from-workspace", json=body
         )
 
 
@@ -559,15 +559,15 @@ class ApiKeysResource(_BaseResource):
         expires_at: str | None = None,
         permissions: dict[str, Any] | None = None,
         scope: str | None = None,
-        project_ids: list[str] | None = None,
+        workspace_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"name": name}
         if expires_at is not None:
             body["expiresAt"] = expires_at
         if scope is not None:
             perms: dict[str, Any] = {"scope": scope}
-            if project_ids is not None:
-                perms["projectIds"] = project_ids
+            if workspace_ids is not None:
+                perms["workspaceIds"] = workspace_ids
             body["permissions"] = perms
         elif permissions is not None:
             body["permissions"] = permissions
@@ -598,24 +598,24 @@ class MembersResource(_BaseResource):
         return self._delete(f"/api/v1/members/{member_id}")
 
 
-class ProjectMembersResource(_BaseResource):
+class WorkspaceMembersResource(_BaseResource):
     def create(
         self,
         *,
-        project_id: str,
+        workspace_id: str,
         member_id: str,
         role: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "projectId": project_id,
+            "workspaceId": workspace_id,
             "memberId": member_id,
         }
         if role is not None:
             body["role"] = role
-        return self._post("/api/v1/project-members", json=body)
+        return self._post("/api/v1/workspace-members", json=body)
 
-    def delete(self, project_member_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/project-members/{project_member_id}")
+    def delete(self, workspace_member_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/workspace-members/{workspace_member_id}")
 
 
 class IntegrationsResource(_BaseResource):
@@ -633,7 +633,7 @@ class IntegrationsResource(_BaseResource):
         action_name: str | None = None,
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
-        project_id: str | None = None,
+        workspace_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         search_value: str | None = None,
@@ -645,8 +645,8 @@ class IntegrationsResource(_BaseResource):
             body["triggerName"] = trigger_name
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
-        if project_id is not None:
-            body["projectId"] = project_id
+        if workspace_id is not None:
+            body["workspaceId"] = workspace_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -665,7 +665,7 @@ class IntegrationsResource(_BaseResource):
         action_name: str | None = None,
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
-        project_id: str | None = None,
+        workspace_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
     ) -> Any:
@@ -676,8 +676,8 @@ class IntegrationsResource(_BaseResource):
             body["triggerName"] = trigger_name
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
-        if project_id is not None:
-            body["projectId"] = project_id
+        if workspace_id is not None:
+            body["workspaceId"] = workspace_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -719,12 +719,12 @@ class PartialsResource(_BaseResource):
 
     def list(
         self,
-        project_id: str,
+        workspace_id: str,
         *,
         integration_name: str | None = None,
         action_name: str | None = None,
     ) -> dict[str, Any]:
-        params: dict[str, Any] = {"projectId": project_id}
+        params: dict[str, Any] = {"workspaceId": workspace_id}
         if integration_name is not None:
             params["integrationName"] = integration_name
         if action_name is not None:
@@ -736,7 +736,7 @@ class PartialsResource(_BaseResource):
 
     def create(
         self,
-        project_id: str,
+        workspace_id: str,
         integration_name: str,
         name: str,
         *,
@@ -747,7 +747,7 @@ class PartialsResource(_BaseResource):
         is_default: bool = False,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "projectId": project_id,
+            "workspaceId": workspace_id,
             "integrationName": integration_name,
             "name": name,
             "values": values or {},
@@ -800,14 +800,14 @@ class EndUsersResource(_BaseResource):
     def create(
         self,
         *,
-        project_id: str,
+        workspace_id: str,
         external_id: str,
         display_name: str | None = None,
         email: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
-            "projectId": project_id,
+            "workspaceId": workspace_id,
             "externalId": external_id,
         }
         if display_name is not None:
@@ -818,8 +818,8 @@ class EndUsersResource(_BaseResource):
             body["metadata"] = metadata
         return self._post("/api/v1/end-users", json=body)
 
-    def list(self, project_id: str) -> dict[str, Any]:
-        return self._get("/api/v1/end-users", params={"projectId": project_id})
+    def list(self, workspace_id: str) -> dict[str, Any]:
+        return self._get("/api/v1/end-users", params={"workspaceId": workspace_id})
 
     def get(self, end_user_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/end-users/{end_user_id}")
@@ -929,7 +929,7 @@ class WeavzClient:
         )
 
         self.organizations = OrganizationsResource(self)
-        self.projects = ProjectsResource(self)
+        self.workspaces = WorkspacesResource(self)
         self.connections = ConnectionsResource(self)
         self.connect = ConnectResource(self)
         self.oauth_apps = OAuthAppsResource(self)
@@ -940,7 +940,7 @@ class WeavzClient:
         self.mcp_servers = McpServersResource(self)
         self.api_keys = ApiKeysResource(self)
         self.members = MembersResource(self)
-        self.project_members = ProjectMembersResource(self)
+        self.workspace_members = WorkspaceMembersResource(self)
         self.integrations = IntegrationsResource(self)
         self.activity = ActivityResource(self)
         self.partials = PartialsResource(self)

@@ -23,7 +23,7 @@ TEST_ORG_ID = ""
 _client: Optional[WeavzClient] = None
 _api_key_plain: str = ""
 _api_key_id: str = ""
-_project_id: str = ""
+_workspace_id: str = ""
 _connection_id: str = ""
 _mcp_server_id: str = ""
 _integration_instance_id: str = ""
@@ -75,8 +75,8 @@ def setup_client():
 
     # Cleanup
     try:
-        if _integration_instance_id and _project_id:
-            _client.projects.remove_integration(_project_id, _integration_instance_id)
+        if _integration_instance_id and _workspace_id:
+            _client.workspaces.remove_integration(_workspace_id, _integration_instance_id)
     except Exception:
         pass
     try:
@@ -90,8 +90,8 @@ def setup_client():
     except Exception:
         pass
     try:
-        if _project_id:
-            _client.projects.delete(_project_id)
+        if _workspace_id:
+            _client.workspaces.delete(_workspace_id)
     except Exception:
         pass
     try:
@@ -120,24 +120,24 @@ class TestApiKeys:
         assert del_result["deleted"] is True
 
 
-# ── Projects ─────────────────────────────────────────────────────────────────
+# ── Workspaces ────────────────────────────────────────────────────────────────
 
-class TestProjects:
-    def test_create_project(self):
-        global _project_id
-        result = _client.projects.create(name="Python SDK Test", slug="python-sdk-test")
-        assert "project" in result
-        assert result["project"]["name"] == "Python SDK Test"
-        _project_id = result["project"]["id"]
+class TestWorkspaces:
+    def test_create_workspace(self):
+        global _workspace_id
+        result = _client.workspaces.create(name="Python SDK Test", slug="python-sdk-test")
+        assert "workspace" in result
+        assert result["workspace"]["name"] == "Python SDK Test"
+        _workspace_id = result["workspace"]["id"]
 
-    def test_list_projects(self):
-        result = _client.projects.list()
-        assert "projects" in result
-        assert len(result["projects"]) > 0
+    def test_list_workspaces(self):
+        result = _client.workspaces.list()
+        assert "workspaces" in result
+        assert len(result["workspaces"]) > 0
 
-    def test_get_project(self):
-        result = _client.projects.get(_project_id)
-        assert result["project"]["id"] == _project_id
+    def test_get_workspace(self):
+        result = _client.workspaces.get(_workspace_id)
+        assert result["workspace"]["id"] == _workspace_id
 
 
 # ── Integrations ─────────────────────────────────────────────────────────────
@@ -170,7 +170,7 @@ class TestConnections:
             display_name="Python SDK Test Connection",
             integration_name="openai",
             secret_text="sk-test-fake-key-py-12345",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
         )
         assert "connection" in result
         assert result["connection"]["displayName"] == "Python SDK Test Connection"
@@ -185,19 +185,19 @@ class TestConnections:
         result = _client.connections.resolve(
             integration_name="openai",
             external_id="py-sdk-test-ext",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
         )
         assert "connection" in result
         assert result["connection"]["id"] == _connection_id
 
 
-# ── Project Integrations ─────────────────────────────────────────────────────
+# ── Workspace Integrations ────────────────────────────────────────────────────
 
-class TestProjectIntegrations:
+class TestWorkspaceIntegrations:
     def test_add_integration(self):
         global _integration_instance_id
-        result = _client.projects.add_integration(
-            _project_id,
+        result = _client.workspaces.add_integration(
+            _workspace_id,
             integration_name="github",
             connection_strategy="per_user",
         )
@@ -207,23 +207,23 @@ class TestProjectIntegrations:
         _integration_instance_id = result["integration"]["id"]
 
     def test_list_integrations(self):
-        result = _client.projects.list_integrations(_project_id)
+        result = _client.workspaces.list_integrations(_workspace_id)
         assert "integrations" in result
         assert len(result["integrations"]) > 0
         names = [i["integrationName"] for i in result["integrations"]]
         assert "github" in names
 
     def test_update_integration(self):
-        result = _client.projects.update_integration(
-            _project_id,
+        result = _client.workspaces.update_integration(
+            _workspace_id,
             _integration_instance_id,
             connection_strategy="per_user_with_fallback",
         )
         assert result["integration"]["connectionStrategy"] == "per_user_with_fallback"
 
     def test_add_integration_with_alias(self):
-        result = _client.projects.add_integration(
-            _project_id,
+        result = _client.workspaces.add_integration(
+            _workspace_id,
             integration_name="slack",
             integration_alias="slack_bot",
             connection_strategy="per_user",
@@ -234,7 +234,7 @@ class TestProjectIntegrations:
         assert result["integration"]["displayName"] == "Slack Bot"
         inst_id = result["integration"]["id"]
         # Clean up
-        _client.projects.remove_integration(_project_id, inst_id)
+        _client.workspaces.remove_integration(_workspace_id, inst_id)
 
 
 # ── MCP Servers ──────────────────────────────────────────────────────────────
@@ -247,7 +247,7 @@ class TestMcpServers:
         result = _client.mcp_servers.create(
             name="Python SDK Test Server",
             description="Integration test server",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
             mode="TOOLS",
         )
         assert "server" in result
@@ -329,7 +329,7 @@ class TestPartials:
 
     def test_create_partial(self):
         result = _client.partials.create(
-            _project_id,
+            _workspace_id,
             "openai",
             "Default OpenAI Config",
             description="Pre-filled model and temperature",
@@ -346,7 +346,7 @@ class TestPartials:
         TestPartials._partial_id = result["partial"]["id"]
 
     def test_list_partials(self):
-        result = _client.partials.list(_project_id)
+        result = _client.partials.list(_workspace_id)
         assert "partials" in result
         assert isinstance(result["partials"], list)
         assert len(result["partials"]) > 0
@@ -355,7 +355,7 @@ class TestPartials:
 
     def test_list_partials_with_filter(self):
         result = _client.partials.list(
-            _project_id, integration_name="openai"
+            _workspace_id, integration_name="openai"
         )
         assert "partials" in result
         for p in result["partials"]:
@@ -388,7 +388,7 @@ class TestPartials:
 
     def test_create_action_scoped_partial(self):
         result = _client.partials.create(
-            _project_id,
+            _workspace_id,
             "openai",
             "Ask ChatGPT Defaults",
             action_name="ask_chatgpt",
@@ -458,7 +458,7 @@ class TestEndUserId:
             display_name="endUserId Test Connection",
             integration_name="openai",
             secret_text="sk-test-enduser-py-key",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
             end_user_id="end-user-py-001",
         )
         assert "connection" in result
@@ -476,14 +476,14 @@ class TestEndUserId:
             display_name="Resolve endUserId Test",
             integration_name="openai",
             secret_text="sk-test-resolve-enduser-py",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
             end_user_id="end-user-py-002",
         )
 
         result = _client.connections.resolve(
             integration_name="openai",
             external_id="py-resolve-enduser",
-            project_id=_project_id,
+            workspace_id=_workspace_id,
             end_user_id="end-user-py-002",
         )
         assert "connection" in result
@@ -493,19 +493,19 @@ class TestEndUserId:
         _client.connections.delete(created["connection"]["id"])
 
 
-# ── Project-Scoped API Keys ─────────────────────────────────────────────────
+# ── Workspace-Scoped API Keys ────────────────────────────────────────────────
 
-class TestProjectScopedApiKeys:
-    def test_create_project_scoped_key(self):
+class TestWorkspaceScopedApiKeys:
+    def test_create_workspace_scoped_key(self):
         result = _client.api_keys.create(
-            name="py-project-scoped-key",
-            permissions={"scope": "project", "projectIds": [_project_id]},
+            name="py-workspace-scoped-key",
+            permissions={"scope": "workspace", "workspaceIds": [_workspace_id]},
         )
         assert "plainKey" in result
         assert result["plainKey"].startswith("wvz_")
         assert result["apiKey"]["permissions"] == {
-            "scope": "project",
-            "projectIds": [_project_id],
+            "scope": "workspace",
+            "workspaceIds": [_workspace_id],
         }
 
         # Cleanup
@@ -520,7 +520,7 @@ class TestEndUsers:
     def test_create_end_user(self):
         import time
         result = _client.end_users.create(
-            project_id=_project_id,
+            workspace_id=_workspace_id,
             external_id=f"py-eu-{int(time.time())}",
             display_name="Python SDK End User",
             email="py-enduser@example.com",
@@ -533,7 +533,7 @@ class TestEndUsers:
         TestEndUsers._end_user_id = result["endUser"]["id"]
 
     def test_list_end_users(self):
-        result = _client.end_users.list(_project_id)
+        result = _client.end_users.list(_workspace_id)
         assert "endUsers" in result
         assert "total" in result
         assert len(result["endUsers"]) > 0
@@ -583,8 +583,8 @@ class TestErrorHandling:
 
     def test_not_found(self):
         with pytest.raises(WeavzError):
-            _client.projects.get("nonexistent-id")
+            _client.workspaces.get("nonexistent-id")
 
     def test_validation_error(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="", slug="")
+            _client.workspaces.create(name="", slug="")

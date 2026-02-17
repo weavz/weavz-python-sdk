@@ -7,11 +7,11 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 
-class ProjectIntegration(BaseModel):
-    """A project integration instance."""
+class WorkspaceIntegration(BaseModel):
+    """A workspace integration instance."""
 
     id: str
-    project_id: str = Field(alias="projectId")
+    workspace_id: str = Field(alias="workspaceId")
     integration_name: str = Field(alias="integrationName")
     alias: str = Field(alias="alias")
     connection_strategy: str = Field(alias="connectionStrategy")
@@ -34,7 +34,7 @@ class InputPartial(BaseModel):
 
     id: str
     org_id: str = Field(alias="orgId")
-    project_id: str = Field(alias="projectId")
+    workspace_id: str = Field(alias="workspaceId")
     integration_name: str = Field(alias="integrationName")
     action_name: Optional[str] = Field(default=None, alias="actionName")
     name: str

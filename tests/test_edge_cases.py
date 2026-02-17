@@ -82,87 +82,87 @@ def setup_client():
     _client.close()
 
 
-# ── Project Edge Cases ────────────────────────────────────────────────────────
+# ── Workspace Edge Cases ──────────────────────────────────────────────────────
 
 
-class TestProjectEdgeCases:
+class TestWorkspaceEdgeCases:
     def test_reject_empty_name(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="", slug="valid-slug-py")
+            _client.workspaces.create(name="", slug="valid-slug-py")
 
     def test_reject_empty_slug(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="Valid", slug="")
+            _client.workspaces.create(name="Valid", slug="")
 
     def test_reject_slug_with_uppercase(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="Test", slug="Invalid-Slug-Py")
+            _client.workspaces.create(name="Test", slug="Invalid-Slug-Py")
 
     def test_reject_slug_with_special_chars(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="Test", slug="invalid slug!")
+            _client.workspaces.create(name="Test", slug="invalid slug!")
 
     def test_reject_slug_starting_with_hyphen(self):
         with pytest.raises(WeavzError):
-            _client.projects.create(name="Test", slug="-leading-hyphen")
+            _client.workspaces.create(name="Test", slug="-leading-hyphen")
 
-    def test_create_project_with_unicode_name(self):
-        result = _client.projects.create(
+    def test_create_workspace_with_unicode_name(self):
+        result = _client.workspaces.create(
             name="Projet Spécial 日本語",
             slug="py-unicode-name-test",
         )
-        assert "project" in result
-        assert result["project"]["name"] == "Projet Spécial 日本語"
-        pid = result["project"]["id"]
-        _cleanup_stack.append(lambda: _client.projects.delete(pid))
+        assert "workspace" in result
+        assert result["workspace"]["name"] == "Projet Spécial 日本語"
+        wid = result["workspace"]["id"]
+        _cleanup_stack.append(lambda: _client.workspaces.delete(wid))
 
     def test_reject_duplicate_slug(self):
         with pytest.raises(WeavzError) as exc_info:
-            _client.projects.create(name="Dup", slug="py-unicode-name-test")
+            _client.workspaces.create(name="Dup", slug="py-unicode-name-test")
         assert exc_info.value.status >= 400
 
-    def test_error_for_nonexistent_project(self):
+    def test_error_for_nonexistent_workspace(self):
         with pytest.raises(WeavzError):
-            _client.projects.get("00000000-0000-0000-0000-000000000000")
+            _client.workspaces.get("00000000-0000-0000-0000-000000000000")
 
-    def test_delete_already_deleted_project(self):
-        result = _client.projects.create(name="PyDelMe", slug="py-del-me-edge")
-        pid = result["project"]["id"]
-        _client.projects.delete(pid)
+    def test_delete_already_deleted_workspace(self):
+        result = _client.workspaces.create(name="PyDelMe", slug="py-del-me-edge")
+        wid = result["workspace"]["id"]
+        _client.workspaces.delete(wid)
         with pytest.raises(WeavzError):
-            _client.projects.delete(pid)
+            _client.workspaces.delete(wid)
 
 
 # ── Connection Edge Cases ─────────────────────────────────────────────────────
 
 
 class TestConnectionEdgeCases:
-    _project_id: str = ""
+    _workspace_id: str = ""
     _conn_id: str = ""
 
     @classmethod
-    def _ensure_project(cls):
-        if not cls._project_id:
-            result = _client.projects.create(name="Py Conn Edge", slug="py-conn-edge-test")
-            cls._project_id = result["project"]["id"]
-            _cleanup_stack.append(lambda: _client.projects.delete(cls._project_id))
+    def _ensure_workspace(cls):
+        if not cls._workspace_id:
+            result = _client.workspaces.create(name="Py Conn Edge", slug="py-conn-edge-test")
+            cls._workspace_id = result["workspace"]["id"]
+            _cleanup_stack.append(lambda: _client.workspaces.delete(cls._workspace_id))
 
     def test_create_secret_text_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.connections.create(
             type="SECRET_TEXT",
             external_id="py-edge-secret-1",
             display_name="Py Edge Secret Text",
             integration_name="openai",
             secret_text="sk-test-py-edge-12345",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
         )
         assert "connection" in result
         TestConnectionEdgeCases._conn_id = result["connection"]["id"]
         _cleanup_stack.append(lambda: _client.connections.delete(self._conn_id))
 
     def test_reject_duplicate_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         with pytest.raises(WeavzError) as exc_info:
             _client.connections.create(
                 type="SECRET_TEXT",
@@ -170,26 +170,26 @@ class TestConnectionEdgeCases:
                 display_name="Duplicate",
                 integration_name="openai",
                 secret_text="sk-dupe",
-                project_id=self._project_id,
+                workspace_id=self._workspace_id,
             )
         assert exc_info.value.status == 409
 
     def test_allow_same_external_id_different_integration(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.connections.create(
             type="SECRET_TEXT",
             external_id="py-edge-secret-1",
             display_name="Same ExtID Diff Integration",
             integration_name="slack",
             secret_text="sk-slack-py-edge",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
         )
         assert "connection" in result
         cid = result["connection"]["id"]
         _cleanup_stack.append(lambda: _client.connections.delete(cid))
 
     def test_create_basic_auth_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.connections.create(
             type="BASIC_AUTH",
             external_id="py-edge-basic-1",
@@ -197,21 +197,21 @@ class TestConnectionEdgeCases:
             integration_name="http",
             username="testuser",
             password="testpass123",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
         )
         assert "connection" in result
         cid = result["connection"]["id"]
         _cleanup_stack.append(lambda: _client.connections.delete(cid))
 
     def test_create_custom_auth_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.connections.create(
             type="CUSTOM_AUTH",
             external_id="py-edge-custom-1",
             display_name="Py Edge Custom Auth",
             integration_name="http",
             props={"headerName": "X-Custom-Token", "headerValue": "test-token-value"},
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
         )
         assert "connection" in result
         cid = result["connection"]["id"]
@@ -227,22 +227,22 @@ class TestConnectionEdgeCases:
             )
 
     def test_resolve_valid_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.connections.resolve(
             integration_name="openai",
             external_id="py-edge-secret-1",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
         )
         assert "connection" in result
         assert result["connection"]["id"] == self._conn_id
 
     def test_resolve_nonexistent_connection(self):
-        self._ensure_project()
+        self._ensure_workspace()
         with pytest.raises(WeavzError):
             _client.connections.resolve(
                 integration_name="openai",
                 external_id="does-not-exist-xyz",
-                project_id=self._project_id,
+                workspace_id=self._workspace_id,
             )
 
 
@@ -250,23 +250,23 @@ class TestConnectionEdgeCases:
 
 
 class TestMcpServerEdgeCases:
-    _project_id: str = ""
+    _workspace_id: str = ""
     _tools_server_id: str = ""
     _code_server_id: str = ""
 
     @classmethod
-    def _ensure_project(cls):
-        if not cls._project_id:
-            result = _client.projects.create(name="Py MCP Edge", slug="py-mcp-edge-test")
-            cls._project_id = result["project"]["id"]
-            _cleanup_stack.append(lambda: _client.projects.delete(cls._project_id))
+    def _ensure_workspace(cls):
+        if not cls._workspace_id:
+            result = _client.workspaces.create(name="Py MCP Edge", slug="py-mcp-edge-test")
+            cls._workspace_id = result["workspace"]["id"]
+            _cleanup_stack.append(lambda: _client.workspaces.delete(cls._workspace_id))
 
     def test_create_tools_mode_server(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.mcp_servers.create(
             name="Py Edge Tools Server",
             description="Testing tools mode",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
             mode="TOOLS",
         )
         assert "server" in result
@@ -277,11 +277,11 @@ class TestMcpServerEdgeCases:
         _cleanup_stack.append(lambda: _client.mcp_servers.delete(self._tools_server_id))
 
     def test_create_code_mode_server(self):
-        self._ensure_project()
+        self._ensure_workspace()
         result = _client.mcp_servers.create(
             name="Py Edge Code Server",
             description="Testing code mode",
-            project_id=self._project_id,
+            workspace_id=self._workspace_id,
             mode="CODE",
         )
         assert "server" in result
@@ -400,19 +400,19 @@ class TestMcpServerEdgeCases:
             _client.mcp_servers.get("00000000-0000-0000-0000-000000000000")
 
 
-# ── Project Integration Edge Cases ────────────────────────────────────────────
+# ── Workspace Integration Edge Cases ──────────────────────────────────────────
 
 
-class TestProjectIntegrationEdgeCases:
-    _project_id: str = ""
+class TestWorkspaceIntegrationEdgeCases:
+    _workspace_id: str = ""
     _conn_id: str = ""
 
     @classmethod
     def _ensure_resources(cls):
-        if not cls._project_id:
-            result = _client.projects.create(name="Py Intg Edge", slug="py-intg-edge-test")
-            cls._project_id = result["project"]["id"]
-            _cleanup_stack.append(lambda: _client.projects.delete(cls._project_id))
+        if not cls._workspace_id:
+            result = _client.workspaces.create(name="Py Intg Edge", slug="py-intg-edge-test")
+            cls._workspace_id = result["workspace"]["id"]
+            _cleanup_stack.append(lambda: _client.workspaces.delete(cls._workspace_id))
 
             conn = _client.connections.create(
                 type="SECRET_TEXT",
@@ -420,7 +420,7 @@ class TestProjectIntegrationEdgeCases:
                 display_name="Py Intg Edge Conn",
                 integration_name="github",
                 secret_text="ghp_testtoken123",
-                project_id=cls._project_id,
+                workspace_id=cls._workspace_id,
             )
             cls._conn_id = conn["connection"]["id"]
             _cleanup_stack.append(lambda: _client.connections.delete(cls._conn_id))
@@ -428,8 +428,8 @@ class TestProjectIntegrationEdgeCases:
     def test_reject_fixed_without_connection_id(self):
         self._ensure_resources()
         with pytest.raises(WeavzError) as exc_info:
-            _client.projects.add_integration(
-                self._project_id,
+            _client.workspaces.add_integration(
+                self._workspace_id,
                 integration_name="github",
                 connection_strategy="fixed",
             )
@@ -437,8 +437,8 @@ class TestProjectIntegrationEdgeCases:
 
     def test_create_fixed_with_connection_id(self):
         self._ensure_resources()
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="github",
             connection_strategy="fixed",
             connection_id=self._conn_id,
@@ -447,13 +447,13 @@ class TestProjectIntegrationEdgeCases:
         assert result["integration"]["connectionStrategy"] == "fixed"
         inst_id = result["integration"]["id"]
         _cleanup_stack.append(
-            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+            lambda: _client.workspaces.remove_integration(self._workspace_id, inst_id)
         )
 
     def test_create_per_user_integration(self):
         self._ensure_resources()
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="notion",
             connection_strategy="per_user",
         )
@@ -461,13 +461,13 @@ class TestProjectIntegrationEdgeCases:
         assert result["integration"]["connectionStrategy"] == "per_user"
         inst_id = result["integration"]["id"]
         _cleanup_stack.append(
-            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+            lambda: _client.workspaces.remove_integration(self._workspace_id, inst_id)
         )
 
     def test_create_per_user_with_fallback(self):
         self._ensure_resources()
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="slack",
             connection_strategy="per_user_with_fallback",
         )
@@ -475,13 +475,13 @@ class TestProjectIntegrationEdgeCases:
         assert result["integration"]["connectionStrategy"] == "per_user_with_fallback"
         inst_id = result["integration"]["id"]
         _cleanup_stack.append(
-            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+            lambda: _client.workspaces.remove_integration(self._workspace_id, inst_id)
         )
 
     def test_add_integration_with_custom_alias(self):
         self._ensure_resources()
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="openai",
             integration_alias="openai_primary",
             connection_strategy="per_user",
@@ -492,24 +492,24 @@ class TestProjectIntegrationEdgeCases:
         assert result["integration"]["displayName"] == "OpenAI Primary"
         inst_id = result["integration"]["id"]
         _cleanup_stack.append(
-            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+            lambda: _client.workspaces.remove_integration(self._workspace_id, inst_id)
         )
 
     def test_update_integration_strategy(self):
         self._ensure_resources()
         # Create a per_user integration, then update to per_user_with_fallback
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="discord",
             connection_strategy="per_user",
         )
         inst_id = result["integration"]["id"]
         _cleanup_stack.append(
-            lambda: _client.projects.remove_integration(self._project_id, inst_id)
+            lambda: _client.workspaces.remove_integration(self._workspace_id, inst_id)
         )
 
-        updated = _client.projects.update_integration(
-            self._project_id,
+        updated = _client.workspaces.update_integration(
+            self._workspace_id,
             inst_id,
             connection_strategy="per_user_with_fallback",
         )
@@ -517,19 +517,19 @@ class TestProjectIntegrationEdgeCases:
 
     def test_remove_integration(self):
         self._ensure_resources()
-        result = _client.projects.add_integration(
-            self._project_id,
+        result = _client.workspaces.add_integration(
+            self._workspace_id,
             integration_name="http",
             connection_strategy="per_user",
         )
         inst_id = result["integration"]["id"]
 
-        del_result = _client.projects.remove_integration(self._project_id, inst_id)
+        del_result = _client.workspaces.remove_integration(self._workspace_id, inst_id)
         assert del_result["deleted"] is True
 
     def test_list_integrations(self):
         self._ensure_resources()
-        result = _client.projects.list_integrations(self._project_id)
+        result = _client.workspaces.list_integrations(self._workspace_id)
         assert "integrations" in result
         assert isinstance(result["integrations"], list)
 
