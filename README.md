@@ -25,10 +25,15 @@ result = client.actions.execute(
     "send_channel_message",
     input={"channel": "#general", "text": "Hello from Weavz!"},
     connection_external_id="my-slack",
+    workspace_id="your-workspace-id",
 )
 
 # Create an MCP server
-result = client.mcp_servers.create(name="My MCP Server", mode="TOOLS")
+result = client.mcp_servers.create(
+    name="My MCP Server",
+    mode="TOOLS",
+    workspace_id="your-workspace-id",
+)
 print(result["bearerToken"])
 ```
 
