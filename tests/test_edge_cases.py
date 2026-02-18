@@ -613,39 +613,6 @@ class TestIntegrationEdgeCases:
         assert "triggers" in integration
 
 
-# ── Activity Edge Cases ───────────────────────────────────────────────────────
-
-
-class TestActivityEdgeCases:
-    def test_list_with_default_pagination(self):
-        result = _client.activity.list()
-        assert "events" in result
-        assert "total" in result
-        assert isinstance(result["total"], int)
-
-    def test_filter_with_limit(self):
-        result = _client.activity.list(limit=5)
-        assert "events" in result
-        assert len(result["events"]) <= 5
-
-    def test_filter_with_offset(self):
-        result1 = _client.activity.list(limit=2, offset=0)
-        result2 = _client.activity.list(limit=2, offset=2)
-        assert "events" in result1
-        assert "events" in result2
-
-    def test_future_since_filter_empty(self):
-        import datetime
-
-        future = (
-            datetime.datetime.now(datetime.timezone.utc)
-            + datetime.timedelta(days=365)
-        ).isoformat()
-        result = _client.activity.list(since=future)
-        assert "events" in result
-        assert len(result["events"]) == 0
-
-
 # ── Trigger Edge Cases ────────────────────────────────────────────────────────
 
 

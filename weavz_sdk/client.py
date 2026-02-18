@@ -29,25 +29,6 @@ class _BaseResource:
         return self._client.request("DELETE", path, params=params)
 
 
-class OrganizationsResource(_BaseResource):
-    def get(self, org_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/orgs/{org_id}")
-
-    def update(
-        self,
-        org_id: str,
-        *,
-        name: str | None = None,
-        slug: str | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {}
-        if name is not None:
-            body["name"] = name
-        if slug is not None:
-            body["slug"] = slug
-        return self._patch(f"/api/v1/orgs/{org_id}", json=body)
-
-
 class WorkspacesResource(_BaseResource):
     def list(self) -> dict[str, Any]:
         return self._get("/api/v1/workspaces")
@@ -214,40 +195,6 @@ class ConnectionsResource(_BaseResource):
         return self._post("/api/v1/connections/resolve", json=body)
 
 
-class OAuthAppsResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/oauth-apps")
-
-    def create(
-        self,
-        *,
-        integration_name: str,
-        client_id: str,
-        client_secret: str,
-        auth_url: str | None = None,
-        token_url: str | None = None,
-        scope: str | None = None,
-        extra_params: dict[str, str] | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {
-            "integrationName": integration_name,
-            "clientId": client_id,
-            "clientSecret": client_secret,
-        }
-        if auth_url is not None:
-            body["authUrl"] = auth_url
-        if token_url is not None:
-            body["tokenUrl"] = token_url
-        if scope is not None:
-            body["scope"] = scope
-        if extra_params is not None:
-            body["extraParams"] = extra_params
-        return self._post("/api/v1/oauth-apps", json=body)
-
-    def delete(self, app_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/oauth-apps/{app_id}")
-
-
 class ConnectResource(_BaseResource):
     """Hosted connect flow — create sessions and poll for results."""
 
@@ -281,32 +228,6 @@ class ConnectResource(_BaseResource):
 
     def get_session(self, session_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/connect/session/{session_id}")
-
-
-class OAuthResource(_BaseResource):
-    """OAuth2 token refresh."""
-
-    def refresh(self, external_id: str) -> dict[str, Any]:
-        return self._post(
-            "/api/v1/oauth/refresh", json={"externalId": external_id}
-        )
-
-
-class WebhookSecretsResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/webhook-secrets")
-
-    def create(self, *, integration_name: str, secret: str) -> dict[str, Any]:
-        return self._post(
-            "/api/v1/webhook-secrets",
-            json={"integrationName": integration_name, "secret": secret},
-        )
-
-    def delete(self, secret_id: str, *, integration_name: str) -> dict[str, Any]:
-        return self._delete(
-            f"/api/v1/webhook-secrets/{secret_id}",
-            params={"integrationName": integration_name},
-        )
 
 
 class ActionsResource(_BaseResource):
@@ -690,30 +611,6 @@ class IntegrationsResource(_BaseResource):
         return self._get("/api/v1/integrations/oauth-status")
 
 
-class ActivityResource(_BaseResource):
-    def list(
-        self,
-        *,
-        limit: int | None = None,
-        offset: int | None = None,
-        type: str | None = None,
-        integration_name: str | None = None,
-        since: str | None = None,
-    ) -> dict[str, Any]:
-        params: dict[str, Any] = {}
-        if limit is not None:
-            params["limit"] = limit
-        if offset is not None:
-            params["offset"] = offset
-        if type is not None:
-            params["type"] = type
-        if integration_name is not None:
-            params["integrationName"] = integration_name
-        if since is not None:
-            params["since"] = since
-        return self._get("/api/v1/activity", params=params)
-
-
 class PartialsResource(_BaseResource):
     """Input partials — reusable pre-filled input values for integration actions."""
 
@@ -928,13 +825,9 @@ class WeavzClient:
             timeout=timeout,
         )
 
-        self.organizations = OrganizationsResource(self)
         self.workspaces = WorkspacesResource(self)
         self.connections = ConnectionsResource(self)
         self.connect = ConnectResource(self)
-        self.oauth_apps = OAuthAppsResource(self)
-        self.oauth = OAuthResource(self)
-        self.webhook_secrets = WebhookSecretsResource(self)
         self.actions = ActionsResource(self)
         self.triggers = TriggersResource(self)
         self.mcp_servers = McpServersResource(self)
@@ -942,7 +835,6 @@ class WeavzClient:
         self.members = MembersResource(self)
         self.workspace_members = WorkspaceMembersResource(self)
         self.integrations = IntegrationsResource(self)
-        self.activity = ActivityResource(self)
         self.partials = PartialsResource(self)
         self.invitations = InvitationsResource(self)
         self.end_users = EndUsersResource(self)

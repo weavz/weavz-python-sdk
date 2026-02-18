@@ -312,16 +312,6 @@ class TestTriggers:
         assert "sampleData" in result
 
 
-# ── Activity ─────────────────────────────────────────────────────────────────
-
-class TestActivity:
-    def test_list_activity(self):
-        result = _client.activity.list()
-        assert "events" in result
-        assert "total" in result
-        assert isinstance(result["events"], list)
-
-
 # ── Input Partials ──────────────────────────────────────────────────────────
 
 class TestPartials:
@@ -408,44 +398,6 @@ class TestPartials:
         with pytest.raises(WeavzError) as exc_info:
             _client.partials.get(TestPartials._partial_id)
         assert exc_info.value.status == 404
-
-
-# ── OAuth Apps ───────────────────────────────────────────────────────────────
-
-class TestOAuthApps:
-    def test_list_oauth_apps(self):
-        result = _client.oauth_apps.list()
-        assert "apps" in result
-        assert isinstance(result["apps"], list)
-
-    def test_create_and_delete_oauth_app(self):
-        result = _client.oauth_apps.create(
-            integration_name="github",
-            client_id="py-test-client-id",
-            client_secret="py-test-client-secret",
-        )
-        assert "app" in result
-        app_id = result["app"]["id"]
-
-        del_result = _client.oauth_apps.delete(app_id)
-        assert del_result["deleted"] is True
-
-
-# ── Webhook Secrets ──────────────────────────────────────────────────────────
-
-class TestWebhookSecrets:
-    def test_list_webhook_secrets(self):
-        result = _client.webhook_secrets.list()
-        assert "secrets" in result
-        assert isinstance(result["secrets"], list)
-
-    def test_create_webhook_secret(self):
-        result = _client.webhook_secrets.create(
-            integration_name="slack",
-            secret="py-test-webhook-secret-12345",
-        )
-        assert result["success"] is True
-        assert result["integrationName"] == "slack"
 
 
 # ── endUserId Parameter ──────────────────────────────────────────────────────

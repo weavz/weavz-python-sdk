@@ -51,9 +51,6 @@ The client provides namespaced access to all API resources:
 | `client.api_keys` | `list()`, `create()`, `delete()` |
 | `client.members` | `list()`, `create()`, `update()`, `delete()` |
 | `client.integrations` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
-| `client.oauth_apps` | `list()`, `create()`, `delete()` |
-| `client.webhook_secrets` | `list()`, `create()`, `delete()` |
-| `client.activity` | `list()` |
 | `client.end_users` | `create()`, `list()`, `get()`, `update()`, `delete()`, `create_connect_token()`, `invite()` |
 | `client.partials` | `list()`, `get()`, `create()`, `update()`, `delete()` |
 | `client.invitations` | `send()`, `list()`, `revoke()`, `accept()` |
