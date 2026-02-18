@@ -452,21 +452,6 @@ class McpServersResource(_BaseResource):
             f"/api/v1/mcp/servers/{server_id}/declarations/{integration_or_alias}"
         )
 
-    def sync_from_workspace(
-        self,
-        server_id: str,
-        *,
-        aliases: list[str] | None = None,
-        actions: dict[str, list[str]] | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {}
-        if aliases is not None:
-            body["aliases"] = aliases
-        if actions is not None:
-            body["actions"] = actions
-        return self._post(
-            f"/api/v1/mcp/servers/{server_id}/sync-from-workspace", json=body
-        )
 
 
 class ApiKeysResource(_BaseResource):

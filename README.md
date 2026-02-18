@@ -47,7 +47,7 @@ The client provides namespaced access to all API resources:
 | `client.connections` | `list()`, `create()`, `delete()`, `resolve()` |
 | `client.actions` | `execute()` |
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
-| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `sync_from_workspace()` |
+| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
 | `client.members` | `list()`, `create()`, `update()`, `delete()` |
 | `client.integrations` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
