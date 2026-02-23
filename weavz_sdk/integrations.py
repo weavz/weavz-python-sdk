@@ -183,6 +183,50 @@ class AirtableCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ClaudeAskClaudeInput(BaseModel):
+    """Anthropic Claude — Ask Claude"""
+    model: str = Field(..., description="The model which will generate the completion. Some models are suitable for natural language tasks, others specialize in code.")
+    systemPrompt: Optional[str] = Field(None, description="System Prompt")
+    temperature: Optional[float] = Field(None, description="Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive.")
+    maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
+    prompt: str = Field(..., description="Question")
+    image: Optional[str] = Field(None, description="URL of image to be used as input for the model.")
+    roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response.Please check [guide to Input Messages](https://docs.anthropic.com/en/api/messages-examples#vision).")
+    thinkingMode: Optional[bool] = Field(None, description="Uses claude 3.7 sonnet enhanced reasoning capabilities for complex tasks.")
+    thinkingModeParams: Optional[dict[str, Any]] = Field(None, description="thinkingModeParams")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClaudeExtractStructuredDataInput(BaseModel):
+    """Anthropic Claude — Extract Structured Data"""
+    model: str = Field(..., description="The model which will generate the completion. Some models are suitable for natural language tasks, others specialize in code.")
+    text: Optional[str] = Field(None, description="Text to extract structured data from.")
+    image: Optional[str] = Field(None, description="Image or PDF to extract structured data from.")
+    prompt: Optional[str] = Field(None, description="Prompt to guide the AI.")
+    mode: str = Field(..., description="For complex schema, you can use advanced mode.")
+    schema: dict[str, Any] = Field(..., description="Data Definition")
+    maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClaudeCustomApiCallInput(BaseModel):
+    """Anthropic Claude — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class ApolloMatchPersonInput(BaseModel):
     """Apollo — Match Person"""
     email: str = Field(..., description=" The email address of the person to be matched")
@@ -292,6 +336,22 @@ class AsanaCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AshbyCustomApiCallInput(BaseModel):
+    """Ashby — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class AttioCreateRecordInput(BaseModel):
     """Attio — Create Record"""
     objectTypeId: str = Field(..., description="Object")
@@ -346,6 +406,22 @@ class AttioFindListEntryInput(BaseModel):
 
 class AttioCustomApiCallInput(BaseModel):
     """Attio — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class BamboohrCustomApiCallInput(BaseModel):
+    """BambooHR — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
     headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
@@ -557,6 +633,52 @@ class BigcommerceCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class BitbucketListRepositoriesInput(BaseModel):
+    """Bitbucket — List Repositories"""
+    workspace: str = Field(..., description="Workspace slug or UUID")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class BitbucketGetRepositoryInput(BaseModel):
+    """Bitbucket — Get Repository"""
+    workspace: str = Field(..., description="Workspace")
+    repoSlug: str = Field(..., description="Repository Slug")
+
+    model_config = {"populate_by_name": True}
+
+
+class BitbucketListPullRequestsInput(BaseModel):
+    """Bitbucket — List Pull Requests"""
+    workspace: str = Field(..., description="Workspace")
+    repoSlug: str = Field(..., description="Repository Slug")
+    state: Optional[str] = Field(None, description="State")
+
+    model_config = {"populate_by_name": True}
+
+
+class BitbucketCreatePullRequestInput(BaseModel):
+    """Bitbucket — Create Pull Request"""
+    workspace: str = Field(..., description="Workspace")
+    repoSlug: str = Field(..., description="Repository Slug")
+    title: str = Field(..., description="Title")
+    sourceBranch: str = Field(..., description="Source Branch")
+    destinationBranch: str = Field(..., description="Destination Branch")
+    description: Optional[str] = Field(None, description="Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class BitbucketListCommitsInput(BaseModel):
+    """Bitbucket — List Commits"""
+    workspace: str = Field(..., description="Workspace")
+    repoSlug: str = Field(..., description="Repository Slug")
+    page: Optional[float] = Field(None, description="Page")
 
     model_config = {"populate_by_name": True}
 
@@ -1144,6 +1266,35 @@ class CodeRunCodeInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CohereChatInput(BaseModel):
+    """Cohere — Chat"""
+    model: str = Field(..., description="Model to use (e.g., command-r-plus, command-r)")
+    message: str = Field(..., description="The user message to send")
+    system: Optional[str] = Field(None, description="Optional system prompt")
+    temperature: Optional[float] = Field(None, description="Sampling temperature (0-1)")
+
+    model_config = {"populate_by_name": True}
+
+
+class CohereEmbedInput(BaseModel):
+    """Cohere — Create Embeddings"""
+    model: str = Field(..., description="Embedding model (e.g., embed-english-v3.0)")
+    texts: list[Any] = Field(..., description="List of texts to embed")
+    inputType: str = Field(..., description="Type of input text")
+
+    model_config = {"populate_by_name": True}
+
+
+class CohereRerankInput(BaseModel):
+    """Cohere — Rerank"""
+    model: str = Field(..., description="Rerank model (e.g., rerank-english-v3.0)")
+    query: str = Field(..., description="The search query")
+    documents: list[Any] = Field(..., description="List of documents to rerank")
+    topN: Optional[float] = Field(None, description="Number of results to return")
+
+    model_config = {"populate_by_name": True}
+
+
 class ConfluenceGetPageContentInput(BaseModel):
     """Confluence — Get Page Content"""
     pageId: str = Field(..., description="Get this from the page URL of your Confluence Cloud")
@@ -1684,6 +1835,39 @@ class DatetimeIsBusinessHoursInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class DeelListContractsInput(BaseModel):
+    """Deel — List Contracts"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeelGetContractInput(BaseModel):
+    """Deel — Get Contract"""
+    contractId: str = Field(..., description="Contract ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeelListPeopleInput(BaseModel):
+    """Deel — List People"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeelCreateInvoiceInput(BaseModel):
+    """Deel — Create Invoice"""
+    contractId: str = Field(..., description="Contract ID")
+    amount: float = Field(..., description="Amount")
+    description: str = Field(..., description="Description")
+    dateSubmitted: str = Field(..., description="ISO date (YYYY-MM-DD)")
+
+    model_config = {"populate_by_name": True}
+
+
 class DiscordSendMessageWithBotInput(BaseModel):
     """Discord — Send Message with Bot"""
     channel_id: str = Field(..., description="List of channels")
@@ -1833,6 +2017,51 @@ class DiscordCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class DocusignListEnvelopesInput(BaseModel):
+    """Docusign — List envelopes"""
+    accountId: str = Field(..., description="Account ID")
+    fromDate: Optional[str] = Field(None, description="From date")
+    toDate: Optional[str] = Field(None, description="To date")
+    searchText: Optional[str] = Field(None, description="Search text")
+    status: Optional[str] = Field(None, description="Status")
+    include: Optional[list[Any]] = Field(None, description="Include (e.g. recipients)")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusignGetEnvelopeInput(BaseModel):
+    """Docusign — Get envelope"""
+    accountId: str = Field(..., description="Account ID")
+    envelopeId: str = Field(..., description="Envelope ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusignGetDocumentInput(BaseModel):
+    """Docusign — Get document"""
+    accountId: str = Field(..., description="Account ID")
+    envelopeId: str = Field(..., description="Envelope ID")
+    documentId: str = Field(..., description="The ID of the document to retrieve. Alternatively, you can use one of the following special keywords:  combined: Retrieves all of the documents as a single PDF file. When the query parameter certificate is true, the certificate of completion is included in the PDF file. When the query parameter certificate is false, the certificate of completion is not included in the PDF file. archive: Retrieves a ZIP archive that contains all of the PDF documents and the certificate of completion. certificate: Retrieves only the certificate of completion as a PDF file. portfolio: Retrieves the envelope documents as a PDF portfolio. ")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusignCustomApiCallInput(BaseModel):
+    """Docusign — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class DropboxSearchDropboxInput(BaseModel):
     """Dropbox — Search"""
     query: str = Field(..., description="The search string. Must be at least 3 characters.")
@@ -1957,6 +2186,31 @@ class DropboxListDropboxFolderInput(BaseModel):
 
 class DropboxCustomApiCallInput(BaseModel):
     """Dropbox — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class ElevenlabsElevenlabsTextToSpeechInput(BaseModel):
+    """ElevenLabs — Text to Speech"""
+    model: Optional[str] = Field(None, description="Model")
+    voice: str = Field(..., description="Select the voice for the text to speech")
+    text: str = Field(..., description="The text to convert to speech")
+
+    model_config = {"populate_by_name": True}
+
+
+class ElevenlabsCustomApiCallInput(BaseModel):
+    """ElevenLabs — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
     headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
@@ -2638,6 +2892,31 @@ class GithubCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class GitlabCreateIssueInput(BaseModel):
+    """GitLab — Create Issue"""
+    projectId: str = Field(..., description="Project")
+    title: str = Field(..., description="Issue Title")
+    description: Optional[str] = Field(None, description="Issue Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class GitlabCustomApiCallInput(BaseModel):
+    """GitLab — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class GmailSendEmailInput(BaseModel):
     """Gmail — Send Email"""
     receiver: list[Any] = Field(..., description="Receiver Email (To)")
@@ -2735,6 +3014,48 @@ class GmailCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsListCampaignsInput(BaseModel):
+    """Google Ads — List Campaigns"""
+    customerId: str = Field(..., description="Google Ads customer ID (without dashes)")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsGetCampaignInput(BaseModel):
+    """Google Ads — Get Campaign"""
+    customerId: str = Field(..., description="Customer ID")
+    campaignId: str = Field(..., description="Campaign ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsSearchInput(BaseModel):
+    """Google Ads — Search (GAQL)"""
+    customerId: str = Field(..., description="Customer ID")
+    query: str = Field(..., description="Google Ads Query Language query")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsRunReportInput(BaseModel):
+    """Google Analytics — Run Report"""
+    propertyId: str = Field(..., description="GA4 property ID (e.g., 123456789)")
+    startDate: str = Field(..., description="Start date (YYYY-MM-DD or relative: today, yesterday, 7daysAgo, 30daysAgo)")
+    endDate: str = Field(..., description="End date (YYYY-MM-DD or relative: today, yesterday)")
+    dimensions: Optional[list[Any]] = Field(None, description="Dimension names (e.g., city, country, date, pagePath)")
+    metrics: list[Any] = Field(..., description="Metric names (e.g., activeUsers, sessions, screenPageViews)")
+    limit: Optional[float] = Field(None, description="Row Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsGetMetadataInput(BaseModel):
+    """Google Analytics — Get Metadata"""
+    propertyId: str = Field(..., description="GA4 property ID")
 
     model_config = {"populate_by_name": True}
 
@@ -3063,6 +3384,69 @@ class GoogleDriveCustomApiCallInput(BaseModel):
 
 class GoogleFormsCustomApiCallInput(BaseModel):
     """Google Forms — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiGenerateContentInput(BaseModel):
+    """Google Gemini — Generate Content"""
+    prompt: str = Field(..., description="The prompt to generate content from.")
+    model: str = Field(..., description="The model which will generate the completion")
+    toolType: Optional[str] = Field(None, description="Select built-in tool to use with Gemini model.")
+    toolProperties: Optional[dict[str, Any]] = Field(None, description="Tool Config")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiGenerateContentWithFilesearchInput(BaseModel):
+    """Google Gemini — Generate Content with File Search"""
+    prompt: str = Field(..., description="The prompt to generate content from.")
+    model: str = Field(..., description="The model which will generate the completion")
+    fileStoreName: str = Field(..., description="File Store Name")
+    file: str = Field(..., description="File")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiGenerateContentFromImageInput(BaseModel):
+    """Google Gemini — Generate Content from Image"""
+    prompt: str = Field(..., description="The prompt to generate content from.")
+    image: str = Field(..., description="The image to generate content from.")
+    model: str = Field(..., description="The model which will generate the completion")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiChatGeminiInput(BaseModel):
+    """Google Gemini — Chat Gemini"""
+    model: str = Field(..., description="The model which will generate the completion")
+    prompt: str = Field(..., description="The prompt to generate content from.")
+    memoryKey: Optional[str] = Field(None, description="A memory key that will keep the chat history. Keep it empty to leave Gemini without memory of previous messages.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiTextToSpeechInput(BaseModel):
+    """Google Gemini — Text to Speech"""
+    model: str = Field(..., description="Model")
+    text: str = Field(..., description="Input Text")
+    voice: str = Field(..., description="Voice")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleGeminiCustomApiCallInput(BaseModel):
+    """Google Gemini — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
     headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
@@ -3418,6 +3802,123 @@ class GoogleTasksCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseListCandidatesInput(BaseModel):
+    """Greenhouse — List Candidates"""
+    perPage: Optional[float] = Field(None, description="Per Page")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseGetCandidateInput(BaseModel):
+    """Greenhouse — Get Candidate"""
+    candidateId: str = Field(..., description="Candidate ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseListJobsInput(BaseModel):
+    """Greenhouse — List Jobs"""
+    status: Optional[str] = Field(None, description="Status")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseListApplicationsInput(BaseModel):
+    """Greenhouse — List Applications"""
+    jobId: Optional[str] = Field(None, description="Job ID")
+    status: Optional[str] = Field(None, description="Status")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class GroqAskAiInput(BaseModel):
+    """Groq — Ask AI"""
+    model: str = Field(..., description="The model which will generate the completion.")
+    prompt: str = Field(..., description="Question")
+    temperature: Optional[float] = Field(None, description="Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive.")
+    maxTokens: float = Field(..., description="The maximum number of tokens to generate. The total length of input tokens and generated tokens is limited by the model's context length.")
+    topP: Optional[float] = Field(None, description="An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.")
+    frequencyPenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.")
+    presencePenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.")
+    memoryKey: Optional[str] = Field(None, description="A memory key that will keep the chat history shared across runs and flows. Keep it empty to leave Groq without memory of previous messages.")
+    roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response")
+
+    model_config = {"populate_by_name": True}
+
+
+class GroqTranscribeAudioInput(BaseModel):
+    """Groq — Transcribe Audio"""
+    file: str = Field(..., description="The audio file to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
+    model: str = Field(..., description="The model to use for transcription.")
+    language: Optional[str] = Field(None, description="The language of the input audio in ISO-639-1 format (e.g., 'en' for English). This will improve accuracy and latency.")
+    prompt: Optional[str] = Field(None, description="An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.")
+    temperature: Optional[float] = Field(None, description="The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.")
+    responseFormat: Optional[str] = Field(None, description="The format of the transcript output.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GroqTranslateAudioInput(BaseModel):
+    """Groq — Translate Audio"""
+    file: str = Field(..., description="The audio file to translate. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
+    model: str = Field(..., description="The model to use for translation.")
+    prompt: Optional[str] = Field(None, description="An optional text in English to guide the model's style or continue a previous audio segment.")
+    temperature: Optional[float] = Field(None, description="The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.")
+    responseFormat: Optional[str] = Field(None, description="The format of the translation output.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GroqCustomApiCallInput(BaseModel):
+    """Groq — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoListEmployeesInput(BaseModel):
+    """Gusto — List Employees"""
+    companyId: str = Field(..., description="Company ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoGetEmployeeInput(BaseModel):
+    """Gusto — Get Employee"""
+    employeeId: str = Field(..., description="Employee ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoListPayrollsInput(BaseModel):
+    """Gusto — List Payrolls"""
+    companyId: str = Field(..., description="Company ID")
+    processed: Optional[str] = Field(None, description="Processed")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoGetCompanyInput(BaseModel):
+    """Gusto — Get Company"""
+    companyId: str = Field(..., description="Company ID")
 
     model_config = {"populate_by_name": True}
 
@@ -4610,6 +5111,42 @@ class JotformCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class KlaviyoListProfilesInput(BaseModel):
+    """Klaviyo — List Profiles"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class KlaviyoGetProfileInput(BaseModel):
+    """Klaviyo — Get Profile"""
+    profileId: str = Field(..., description="Profile ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class KlaviyoCreateEventInput(BaseModel):
+    """Klaviyo — Create Event"""
+    metricName: str = Field(..., description="Name of the event (e.g., 'Placed Order')")
+    email: str = Field(..., description="Email of the profile")
+    properties: Optional[dict[str, Any]] = Field(None, description="Event Properties")
+    value: Optional[float] = Field(None, description="Monetary value of the event")
+
+    model_config = {"populate_by_name": True}
+
+
+class KlaviyoListListsInput(BaseModel):
+    """Klaviyo — List Lists"""
+    pass
+
+
+class KlaviyoListCampaignsInput(BaseModel):
+    """Klaviyo — List Campaigns"""
+    filter: Optional[str] = Field(None, description="Filter string (e.g., equals(messages.channel,'email'))")
+
+    model_config = {"populate_by_name": True}
+
+
 class KvStorePutInput(BaseModel):
     """KV Store — Put"""
     key: str = Field(..., description="The key to store the value under")
@@ -4654,6 +5191,66 @@ class KvStoreRemoveFromListInput(BaseModel):
     value: Any = Field(..., description="The value to remove from the list")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
     externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverGetOpportunityInput(BaseModel):
+    """Lever — Get opportunity"""
+    opportunityId: str = Field(..., description="Opportunity ID")
+    expand: Optional[list[Any]] = Field(None, description="Expand")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverUpdateOpportunityStageInput(BaseModel):
+    """Lever — Update opportunity stage"""
+    opportunityId: str = Field(..., description="Opportunity ID")
+    stage: str = Field(..., description="Stage")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListOpportunityFormsInput(BaseModel):
+    """Lever — List opportunity forms"""
+    opportunityId: str = Field(..., description="Opportunity ID")
+    template: Optional[str] = Field(None, description="Form template")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListOpportunityFeedbackInput(BaseModel):
+    """Lever — List opportunity feedback"""
+    opportunityId: str = Field(..., description="Opportunity ID")
+    template: Optional[str] = Field(None, description="Feedback template")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverAddFeedbackToOpportunityInput(BaseModel):
+    """Lever — Add feedback to opportunity"""
+    performAs: str = Field(..., description="Feedback author")
+    opportunityId: str = Field(..., description="Opportunity ID")
+    panelId: Optional[str] = Field(None, description="If you select one, you must select an interview too")
+    interviewId: Optional[str] = Field(None, description="Mandatory is you select an interview panel")
+    feedbackTemplateId: Optional[str] = Field(None, description="Ignored if you select an interview panel and an interview")
+    feedbackFields: dict[str, Any] = Field(..., description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverCustomApiCallInput(BaseModel):
+    """Lever — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
 
     model_config = {"populate_by_name": True}
 
@@ -6582,6 +7179,167 @@ class OpenaiCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PagerdutyListIncidentsInput(BaseModel):
+    """PagerDuty — List Incidents"""
+    status: Optional[str] = Field(None, description="Status")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyGetIncidentInput(BaseModel):
+    """PagerDuty — Get Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyCreateIncidentInput(BaseModel):
+    """PagerDuty — Create Incident"""
+    title: str = Field(..., description="Title")
+    serviceId: str = Field(..., description="Service ID")
+    urgency: Optional[str] = Field(None, description="Urgency")
+    body: Optional[str] = Field(None, description="Details")
+    fromEmail: str = Field(..., description="Email of the user creating the incident")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyAcknowledgeIncidentInput(BaseModel):
+    """PagerDuty — Acknowledge Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    fromEmail: str = Field(..., description="From Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyResolveIncidentInput(BaseModel):
+    """PagerDuty — Resolve Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    fromEmail: str = Field(..., description="From Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocCreateDocumentFromTemplateInput(BaseModel):
+    """PandaDoc — Create Document from Template"""
+    template_uuid: str = Field(..., description="Select a template from your PandaDoc workspace")
+    name: str = Field(..., description="Name the document you are creating")
+    recipients: list[Any] = Field(..., description="List of recipients to whom the document will be sent")
+    fields: Optional[dict[str, Any]] = Field(None, description="Template Fields")
+    tokens: Optional[list[Any]] = Field(None, description="Pass values for the variables in the template")
+    folder_uuid: Optional[str] = Field(None, description="Select a folder from your PandaDoc workspace")
+    tags: Optional[list[Any]] = Field(None, description="Tag the document for filtering and organization")
+    metadata: Optional[dict[str, Any]] = Field(None, description="Additional data in key-value format to associate with document")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocCreateAttachmentInput(BaseModel):
+    """PandaDoc — Create Attachment"""
+    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
+    source: str = Field(..., description="URL link to the file to be attached to the document")
+    name: Optional[str] = Field(None, description="Optional name to set for the uploaded file.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocCreateOrUpdateContactInput(BaseModel):
+    """PandaDoc — Create or Update Contact"""
+    contact_id: Optional[str] = Field(None, description="Select a contact to update. Leave empty to create a new contact.")
+    email: Optional[str] = Field(None, description="An email address of the contact")
+    first_name: Optional[str] = Field(None, description="Contact's first name")
+    last_name: Optional[str] = Field(None, description="Contact's last name")
+    company: Optional[str] = Field(None, description="Contact's company name")
+    job_title: Optional[str] = Field(None, description="Select a common job title or choose 'Other' to enter a custom title")
+    custom_job_title: Optional[str] = Field(None, description="Enter a custom job title (only used if 'Other' is selected above)")
+    industry: Optional[str] = Field(None, description="Select an industry or choose 'Other' to enter a custom industry")
+    custom_industry: Optional[str] = Field(None, description="Enter a custom industry (only used if 'Other' is selected above)")
+    phone: Optional[str] = Field(None, description="A phone number")
+    country: Optional[str] = Field(None, description="Select a country or choose 'Other' to enter a custom country")
+    custom_country: Optional[str] = Field(None, description="Enter your country name (only used if 'Other' is selected above)")
+    state: Optional[str] = Field(None, description="Select a state/province or choose 'Other' to enter a custom value")
+    custom_state: Optional[str] = Field(None, description="Enter your state/province name (only used if 'Other' is selected above)")
+    street_address: Optional[str] = Field(None, description="A street address")
+    city: Optional[str] = Field(None, description="A city name")
+    postal_code: Optional[str] = Field(None, description="A postal code")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocFindDocumentInput(BaseModel):
+    """PandaDoc — Find Document(s)"""
+    q: Optional[str] = Field(None, description="Search documents by name or reference number")
+    id: Optional[str] = Field(None, description="Search for document by its specific ID")
+    status: Optional[str] = Field(None, description="Filter documents by status")
+    status__ne: Optional[str] = Field(None, description="Exclude documents with this status")
+    template_id: Optional[str] = Field(None, description="Filter by parent template (cannot be used with Form)")
+    form_id: Optional[str] = Field(None, description="Select a form from your PandaDoc workspace")
+    folder_uuid: Optional[str] = Field(None, description="Select a folder from your PandaDoc workspace")
+    contact_id: Optional[str] = Field(None, description="Select a contact from your PandaDoc workspace")
+    membership_id: Optional[str] = Field(None, description="Select a workspace member")
+    tag: Optional[str] = Field(None, description="Select a common tag or choose 'Custom' to enter your own")
+    custom_tag: Optional[str] = Field(None, description="Enter a custom tag (only used if 'Custom' is selected above)")
+    created_from: Optional[str] = Field(None, description="Include only documents created on or after this date")
+    created_to: Optional[str] = Field(None, description="Include only documents created before this date")
+    completed_from: Optional[str] = Field(None, description="Include only documents completed on or after this date")
+    completed_to: Optional[str] = Field(None, description="Include only documents completed before this date")
+    modified_from: Optional[str] = Field(None, description="Include only documents modified on or after this date")
+    modified_to: Optional[str] = Field(None, description="Include only documents modified before this date")
+    deleted: Optional[bool] = Field(None, description="Return only deleted documents")
+    count: Optional[float] = Field(None, description="Number of documents to return (default: 50, max: 100)")
+    page: Optional[float] = Field(None, description="Page number for pagination (starts with 1)")
+    order_by: Optional[str] = Field(None, description="Sort results by field")
+    metadata: Optional[dict[str, Any]] = Field(None, description="Filter by metadata key-value pairs. Use format: {'key': 'value'}")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocGetDocumentAttachmentsInput(BaseModel):
+    """PandaDoc — Get Document Attachment"""
+    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
+    attachment_id: str = Field(..., description="Select an attachment from the document")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocGetDocumentDetailsInput(BaseModel):
+    """PandaDoc — Get Document"""
+    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocDownloadDocumentInput(BaseModel):
+    """PandaDoc — Download Document"""
+    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
+    separate_files: Optional[bool] = Field(None, description="Download document bundle as a zip archive of separate PDFs (1 file per section)")
+    watermark_text: Optional[str] = Field(None, description="Select common watermark text or choose 'Custom' to enter your own")
+    custom_watermark_text: Optional[str] = Field(None, description="Enter custom watermark text (only used if 'Custom' is selected above)")
+    watermark_color: Optional[str] = Field(None, description="Select a watermark color or use custom HEX code")
+    custom_watermark_color: Optional[str] = Field(None, description="Enter a custom HEX color code (e.g., #FF5733). Only used if 'Custom HEX Code' is selected above.")
+    watermark_font_size: Optional[float] = Field(None, description="Font size of the watermark text")
+    watermark_opacity: Optional[float] = Field(None, description="Opacity of the watermark (0.0 to 1.0)")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocCustomApiCallInput(BaseModel):
+    """PandaDoc — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 class PaywhirlCancelSubscriptionInput(BaseModel):
     """Paywhirl — Cancel Subscription"""
     subscription_id: Optional[float] = Field(None, description="Subscription ID")
@@ -6657,6 +7415,37 @@ class PaywhirlCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class PersonioListEmployeesInput(BaseModel):
+    """Personio — List Employees"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PersonioGetEmployeeInput(BaseModel):
+    """Personio — Get Employee"""
+    employeeId: str = Field(..., description="Employee ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PersonioListAbsencesInput(BaseModel):
+    """Personio — List Absences"""
+    startDate: Optional[str] = Field(None, description="ISO date (YYYY-MM-DD)")
+    endDate: Optional[str] = Field(None, description="ISO date (YYYY-MM-DD)")
+
+    model_config = {"populate_by_name": True}
+
+
+class PersonioListAttendancesInput(BaseModel):
+    """Personio — List Attendances"""
+    startDate: str = Field(..., description="ISO date (YYYY-MM-DD)")
+    endDate: str = Field(..., description="ISO date (YYYY-MM-DD)")
 
     model_config = {"populate_by_name": True}
 
@@ -7514,6 +8303,32 @@ class ResendCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class RingcentralSendSmsInput(BaseModel):
+    """RingCentral — Send SMS"""
+    from_: str = Field(..., alias="from", description="Your RingCentral phone number")
+    to: str = Field(..., description="Recipient phone number")
+    text: str = Field(..., description="SMS message text")
+
+    model_config = {"populate_by_name": True}
+
+
+class RingcentralGetCallLogInput(BaseModel):
+    """RingCentral — Get Call Log"""
+    direction: Optional[str] = Field(None, description="Direction")
+    type: Optional[str] = Field(None, description="Type")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class RingcentralListExtensionsInput(BaseModel):
+    """RingCentral — List Extensions"""
+    perPage: Optional[float] = Field(None, description="Per Page")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
 class SalesforceAddContactToCampaignInput(BaseModel):
     """Salesforce — Add Contact to Campaign"""
     campaign_id: str = Field(..., description="Campaign")
@@ -7832,6 +8647,43 @@ class SendgridCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class SentryListProjectsInput(BaseModel):
+    """Sentry — List Projects"""
+    organization: str = Field(..., description="Organization Slug")
+
+    model_config = {"populate_by_name": True}
+
+
+class SentryListIssuesInput(BaseModel):
+    """Sentry — List Issues"""
+    organization: str = Field(..., description="Organization Slug")
+    project: str = Field(..., description="Project Slug")
+    query: Optional[str] = Field(None, description="Search Query")
+
+    model_config = {"populate_by_name": True}
+
+
+class SentryGetIssueInput(BaseModel):
+    """Sentry — Get Issue"""
+    issueId: str = Field(..., description="Issue ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SentryResolveIssueInput(BaseModel):
+    """Sentry — Resolve Issue"""
+    issueId: str = Field(..., description="Issue ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SentryListEventsInput(BaseModel):
+    """Sentry — List Events"""
+    issueId: str = Field(..., description="Issue ID")
 
     model_config = {"populate_by_name": True}
 
@@ -8451,6 +9303,37 @@ class SmtpSendEmailInput(BaseModel):
     body: str = Field(..., description="Body")
     customHeaders: Optional[dict[str, Any]] = Field(None, description="Custom Headers")
     attachments: Optional[list[Any]] = Field(None, description="Attachments")
+
+    model_config = {"populate_by_name": True}
+
+
+class SnowflakeRunQueryInput(BaseModel):
+    """Snowflake — Run Query"""
+    sqlText: str = Field(..., description="Use :1, :2… or ? placeholders to use binding parameters.")
+    binds: Optional[list[Any]] = Field(None, description="Binding parameters for the SQL query (to prevent SQL injection attacks)")
+    timeout: Optional[float] = Field(None, description="An integer indicating the maximum number of milliseconds to wait for a query to complete before timing out.")
+    application: Optional[str] = Field(None, description="A string indicating the name of the client application connecting to the server.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SnowflakeRunMultipleQueriesInput(BaseModel):
+    """Snowflake — Run Multiple Queries"""
+    sqlTexts: list[Any] = Field(..., description="Array of SQL queries to execute in order, in the same transaction. Use :1, :2… placeholders to use binding parameters. Avoid using '?' to avoid unexpected behaviors when having multiple queries.")
+    binds: Optional[list[Any]] = Field(None, description="Binding parameters shared across all queries to prevent SQL injection attacks. Use :1, :2, etc. to reference parameters in order. Avoid using '?' to avoid unexpected behaviors when having multiple queries. Unused parameters are allowed.")
+    useTransaction: Optional[bool] = Field(None, description="When enabled, all queries will be executed in a single transaction. If any query fails, all changes will be rolled back.")
+    timeout: Optional[float] = Field(None, description="An integer indicating the maximum number of milliseconds to wait for a query to complete before timing out.")
+    application: Optional[str] = Field(None, description="A string indicating the name of the client application connecting to the server.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SnowflakeInsertRowInput(BaseModel):
+    """Snowflake — Insert Row"""
+    database: str = Field(..., description="Database")
+    schema: str = Field(..., description="Schema")
+    table: str = Field(..., description="Table")
+    table_column_values: dict[str, Any] = Field(..., description="Rows")
 
     model_config = {"populate_by_name": True}
 
@@ -9454,6 +10337,21 @@ class WordpressCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class WorkdayListWorkersInput(BaseModel):
+    """Workday — List Workers"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class WorkdayGetWorkerInput(BaseModel):
+    """Workday — Get Worker"""
+    workerId: str = Field(..., description="Worker ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class WrikeCreateTaskInput(BaseModel):
     """Wrike — Create Task"""
     folderId: str = Field(..., description="The ID of the folder where the task will be created")
@@ -10159,6 +11057,62 @@ class ZohoCrmCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ZoomZoomCreateMeetingInput(BaseModel):
+    """Zoom — Create Zoom Meeting"""
+    topic: str = Field(..., description="The meeting's topic")
+    start_time: Optional[str] = Field(None, description="Meeting start date-time")
+    duration: Optional[float] = Field(None, description="Duration of the meeting")
+    auto_recording: Optional[str] = Field(None, description="Auto Recording")
+    audio: Optional[str] = Field(None, description="Audio")
+    agenda: Optional[str] = Field(None, description="The meeting's agenda")
+    password: Optional[str] = Field(None, description="The password required to join the meeting. By default, a password can only have a maximum length of 10 characters and only contain alphanumeric characters and the @, -, _, and * characters.")
+    pre_schedule: Optional[bool] = Field(None, description="Whether the prescheduled meeting was created via the GSuite app.")
+    schedule_for: Optional[str] = Field(None, description="The email address or user ID of the user to schedule a meeting for.")
+    join_url: Optional[str] = Field(None, description="URL for participants to join the meeting.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZoomZoomCreateMeetingRegistrantInput(BaseModel):
+    """Zoom — Create Zoom Meeting Registrant"""
+    meeting_id: str = Field(..., description="The meeting ID.")
+    first_name: str = Field(..., description="The registrant's first name.")
+    last_name: Optional[str] = Field(None, description="The registrant's last name.")
+    email: str = Field(..., description="The registrant's email address.")
+    address: Optional[str] = Field(None, description="The registrant's address")
+    city: Optional[str] = Field(None, description="The registrant's city")
+    state: Optional[str] = Field(None, description="The registrant's state or province.")
+    zip: Optional[str] = Field(None, description="The registrant's zip or postal code.")
+    country: Optional[str] = Field(None, description="The registrant's two-letter country code.")
+    phone: Optional[str] = Field(None, description="The registrant's phone number.")
+    comments: Optional[str] = Field(None, description="The registrant's questions and comments.")
+    custom_questions: Optional[dict[str, Any]] = Field(None, description="Custom questions")
+    industry: Optional[str] = Field(None, description="The registrant's industry.")
+    job_title: Optional[str] = Field(None, description="The registrant's job title.")
+    no_of_employees: Optional[str] = Field(None, description="The registrant's number of employees.")
+    org: Optional[str] = Field(None, description="The registrant's organization.")
+    purchasing_time_frame: Optional[str] = Field(None, description="The registrant's purchasing time frame.")
+    role_in_purchase_process: Optional[str] = Field(None, description="The registrant's role in the purchase process.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZoomCustomApiCallInput(BaseModel):
+    """Zoom — Custom API Call"""
+    url: dict[str, Any] = Field(..., description="url")
+    method: str = Field(..., description="Method")
+    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
 # ============================================================================
 # Action Input Model Map
 # ============================================================================
@@ -10182,6 +11136,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "airtable.airtable_find_table": AirtableAirtableFindTableInput,
     "airtable.airtable_get_base_schema": AirtableAirtableGetBaseSchemaInput,
     "airtable.custom_api_call": AirtableCustomApiCallInput,
+    "claude.ask_claude": ClaudeAskClaudeInput,
+    "claude.extract-structured-data": ClaudeExtractStructuredDataInput,
+    "claude.custom_api_call": ClaudeCustomApiCallInput,
     "apollo.matchPerson": ApolloMatchPersonInput,
     "apollo.enrichCompany": ApolloEnrichCompanyInput,
     "apollo.newsArticlesSearch": ApolloNewsArticlesSearchInput,
@@ -10191,6 +11148,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "apollo.custom_api_call": ApolloCustomApiCallInput,
     "asana.create_task": AsanaCreateTaskInput,
     "asana.custom_api_call": AsanaCustomApiCallInput,
+    "ashby.custom_api_call": AshbyCustomApiCallInput,
     "attio.create_record": AttioCreateRecordInput,
     "attio.update_record": AttioUpdateRecordInput,
     "attio.find_record": AttioFindRecordInput,
@@ -10198,6 +11156,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "attio.update_entry": AttioUpdateEntryInput,
     "attio.find_list_entry": AttioFindListEntryInput,
     "attio.custom_api_call": AttioCustomApiCallInput,
+    "bamboohr.custom_api_call": BamboohrCustomApiCallInput,
     "baserow.baserow_create_row": BaserowBaserowCreateRowInput,
     "baserow.baserow_delete_row": BaserowBaserowDeleteRowInput,
     "baserow.baserow_get_row": BaserowBaserowGetRowInput,
@@ -10215,6 +11174,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "bigcommerce.findOrCreateProduct": BigcommerceFindOrCreateProductInput,
     "bigcommerce.findOrCreateCustomersAddress": BigcommerceFindOrCreateCustomersAddressInput,
     "bigcommerce.custom_api_call": BigcommerceCustomApiCallInput,
+    "bitbucket.list_repositories": BitbucketListRepositoriesInput,
+    "bitbucket.get_repository": BitbucketGetRepositoryInput,
+    "bitbucket.list_pull_requests": BitbucketListPullRequestsInput,
+    "bitbucket.create_pull_request": BitbucketCreatePullRequestInput,
+    "bitbucket.list_commits": BitbucketListCommitsInput,
     "bluesky.createPost": BlueskyCreatePostInput,
     "bluesky.likePost": BlueskyLikePostInput,
     "bluesky.repostPost": BlueskyRepostPostInput,
@@ -10267,6 +11231,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "coda.get-table": CodaGetTableInput,
     "coda.custom_api_call": CodaCustomApiCallInput,
     "code.run_code": CodeRunCodeInput,
+    "cohere.chat": CohereChatInput,
+    "cohere.embed": CohereEmbedInput,
+    "cohere.rerank": CohereRerankInput,
     "confluence.getPageContent": ConfluenceGetPageContentInput,
     "confluence.create-page-from-template": ConfluenceCreatePageFromTemplateInput,
     "confluence.custom_api_call": ConfluenceCustomApiCallInput,
@@ -10308,6 +11275,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "datetime.format_date": DatetimeFormatDateInput,
     "datetime.date_math": DatetimeDateMathInput,
     "datetime.is_business_hours": DatetimeIsBusinessHoursInput,
+    "deel.list_contracts": DeelListContractsInput,
+    "deel.get_contract": DeelGetContractInput,
+    "deel.list_people": DeelListPeopleInput,
+    "deel.create_invoice": DeelCreateInvoiceInput,
     "discord.sendMessageWithBot": DiscordSendMessageWithBotInput,
     "discord.send_message_webhook": DiscordSendMessageWebhookInput,
     "discord.request_approval_message": DiscordRequestApprovalMessageInput,
@@ -10324,6 +11295,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "discord.deleteGuildRole": DiscordDeleteGuildRoleInput,
     "discord.ban_guild_member": DiscordBanGuildMemberInput,
     "discord.custom_api_call": DiscordCustomApiCallInput,
+    "docusign.listEnvelopes": DocusignListEnvelopesInput,
+    "docusign.getEnvelope": DocusignGetEnvelopeInput,
+    "docusign.getDocument": DocusignGetDocumentInput,
+    "docusign.custom_api_call": DocusignCustomApiCallInput,
     "dropbox.search_dropbox": DropboxSearchDropboxInput,
     "dropbox.create_new_dropbox_text_file": DropboxCreateNewDropboxTextFileInput,
     "dropbox.upload_dropbox_file": DropboxUploadDropboxFileInput,
@@ -10338,6 +11313,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "dropbox.copy_dropbox_folder": DropboxCopyDropboxFolderInput,
     "dropbox.list_dropbox_folder": DropboxListDropboxFolderInput,
     "dropbox.custom_api_call": DropboxCustomApiCallInput,
+    "elevenlabs.elevenlabs-text-to-speech": ElevenlabsElevenlabsTextToSpeechInput,
+    "elevenlabs.custom_api_call": ElevenlabsCustomApiCallInput,
     "facebook-pages.create_post": FacebookPagesCreatePostInput,
     "facebook-pages.create_photo_post": FacebookPagesCreatePhotoPostInput,
     "facebook-pages.create_video_post": FacebookPagesCreateVideoPostInput,
@@ -10400,6 +11377,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "github.find_issue": GithubFindIssueInput,
     "github.find_user": GithubFindUserInput,
     "github.custom_api_call": GithubCustomApiCallInput,
+    "gitlab.create_issue": GitlabCreateIssueInput,
+    "gitlab.custom_api_call": GitlabCustomApiCallInput,
     "gmail.send_email": GmailSendEmailInput,
     "gmail.request_approval_in_mail": GmailRequestApprovalInMailInput,
     "gmail.reply_to_email": GmailReplyToEmailInput,
@@ -10407,6 +11386,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gmail.gmail_get_mail": GmailGmailGetMailInput,
     "gmail.gmail_search_mail": GmailGmailSearchMailInput,
     "gmail.custom_api_call": GmailCustomApiCallInput,
+    "google-ads.list_campaigns": GoogleAdsListCampaignsInput,
+    "google-ads.get_campaign": GoogleAdsGetCampaignInput,
+    "google-ads.search": GoogleAdsSearchInput,
+    "google-analytics.run_report": GoogleAnalyticsRunReportInput,
+    "google-analytics.get_metadata": GoogleAnalyticsGetMetadataInput,
     "google-calendar.google-calendar-add-attendees": GoogleCalendarGoogleCalendarAddAttendeesInput,
     "google-calendar.create_quick_event": GoogleCalendarCreateQuickEventInput,
     "google-calendar.create_google_calendar_event": GoogleCalendarCreateGoogleCalendarEventInput,
@@ -10437,6 +11421,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "google-drive.trash_gdrive_file": GoogleDriveTrashGdriveFileInput,
     "google-drive.custom_api_call": GoogleDriveCustomApiCallInput,
     "google-forms.custom_api_call": GoogleFormsCustomApiCallInput,
+    "google-gemini.generate_content": GoogleGeminiGenerateContentInput,
+    "google-gemini.generate_content_with_filesearch": GoogleGeminiGenerateContentWithFilesearchInput,
+    "google-gemini.generate_content_from_image": GoogleGeminiGenerateContentFromImageInput,
+    "google-gemini.chat_gemini": GoogleGeminiChatGeminiInput,
+    "google-gemini.text-to-speech": GoogleGeminiTextToSpeechInput,
+    "google-gemini.custom_api_call": GoogleGeminiCustomApiCallInput,
     "google-search-console.search_analytics": GoogleSearchConsoleSearchAnalyticsInput,
     "google-search-console.list_sitemaps": GoogleSearchConsoleListSitemapsInput,
     "google-search-console.submit_sitemap": GoogleSearchConsoleSubmitSitemapInput,
@@ -10468,6 +11458,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "google-sheets.custom_api_call": GoogleSheetsCustomApiCallInput,
     "google-tasks.add_task": GoogleTasksAddTaskInput,
     "google-tasks.custom_api_call": GoogleTasksCustomApiCallInput,
+    "greenhouse.list_candidates": GreenhouseListCandidatesInput,
+    "greenhouse.get_candidate": GreenhouseGetCandidateInput,
+    "greenhouse.list_jobs": GreenhouseListJobsInput,
+    "greenhouse.list_applications": GreenhouseListApplicationsInput,
+    "groq.ask-ai": GroqAskAiInput,
+    "groq.transcribe-audio": GroqTranscribeAudioInput,
+    "groq.translate-audio": GroqTranslateAudioInput,
+    "groq.custom_api_call": GroqCustomApiCallInput,
+    "gusto.list_employees": GustoListEmployeesInput,
+    "gusto.get_employee": GustoGetEmployeeInput,
+    "gusto.list_payrolls": GustoListPayrollsInput,
+    "gusto.get_company": GustoGetCompanyInput,
     "hash-encode.hash": HashEncodeHashInput,
     "hash-encode.encode": HashEncodeEncodeInput,
     "hash-encode.decode": HashEncodeDecodeInput,
@@ -10579,11 +11581,22 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "jira-cloud.get_issue": JiraCloudGetIssueInput,
     "jira-cloud.custom_api_call": JiraCloudCustomApiCallInput,
     "jotform.custom_api_call": JotformCustomApiCallInput,
+    "klaviyo.list_profiles": KlaviyoListProfilesInput,
+    "klaviyo.get_profile": KlaviyoGetProfileInput,
+    "klaviyo.create_event": KlaviyoCreateEventInput,
+    "klaviyo.list_lists": KlaviyoListListsInput,
+    "klaviyo.list_campaigns": KlaviyoListCampaignsInput,
     "kv-store.put": KvStorePutInput,
     "kv-store.get": KvStoreGetInput,
     "kv-store.delete": KvStoreDeleteInput,
     "kv-store.add_to_list": KvStoreAddToListInput,
     "kv-store.remove_from_list": KvStoreRemoveFromListInput,
+    "lever.getOpportunity": LeverGetOpportunityInput,
+    "lever.updateOpportunityStage": LeverUpdateOpportunityStageInput,
+    "lever.listOpportunityForms": LeverListOpportunityFormsInput,
+    "lever.listOpportunityFeedback": LeverListOpportunityFeedbackInput,
+    "lever.addFeedbackToOpportunity": LeverAddFeedbackToOpportunityInput,
+    "lever.custom_api_call": LeverCustomApiCallInput,
     "linear.linear_create_issue": LinearLinearCreateIssueInput,
     "linear.linear_update_issue": LinearLinearUpdateIssueInput,
     "linear.linear_create_project": LinearLinearCreateProjectInput,
@@ -10759,12 +11772,29 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "openai.translate": OpenaiTranslateInput,
     "openai.extract-structured-data": OpenaiExtractStructuredDataInput,
     "openai.custom_api_call": OpenaiCustomApiCallInput,
+    "pagerduty.list_incidents": PagerdutyListIncidentsInput,
+    "pagerduty.get_incident": PagerdutyGetIncidentInput,
+    "pagerduty.create_incident": PagerdutyCreateIncidentInput,
+    "pagerduty.acknowledge_incident": PagerdutyAcknowledgeIncidentInput,
+    "pagerduty.resolve_incident": PagerdutyResolveIncidentInput,
+    "pandadoc.createDocumentFromTemplate": PandadocCreateDocumentFromTemplateInput,
+    "pandadoc.createAttachment": PandadocCreateAttachmentInput,
+    "pandadoc.createOrUpdateContact": PandadocCreateOrUpdateContactInput,
+    "pandadoc.findDocument": PandadocFindDocumentInput,
+    "pandadoc.getDocumentAttachments": PandadocGetDocumentAttachmentsInput,
+    "pandadoc.getDocumentDetails": PandadocGetDocumentDetailsInput,
+    "pandadoc.downloadDocument": PandadocDownloadDocumentInput,
+    "pandadoc.custom_api_call": PandadocCustomApiCallInput,
     "paywhirl.cancelSubscription": PaywhirlCancelSubscriptionInput,
     "paywhirl.createCustomer": PaywhirlCreateCustomerInput,
     "paywhirl.getCustomer": PaywhirlGetCustomerInput,
     "paywhirl.searchCustomersSubscription": PaywhirlSearchCustomersSubscriptionInput,
     "paywhirl.subscribeCustomer": PaywhirlSubscribeCustomerInput,
     "paywhirl.custom_api_call": PaywhirlCustomApiCallInput,
+    "personio.list_employees": PersonioListEmployeesInput,
+    "personio.get_employee": PersonioGetEmployeeInput,
+    "personio.list_absences": PersonioListAbsencesInput,
+    "personio.list_attendances": PersonioListAttendancesInput,
     "pinterest.createPin": PinterestCreatePinInput,
     "pinterest.createBoard": PinterestCreateBoardInput,
     "pinterest.deletePin": PinterestDeletePinInput,
@@ -10840,6 +11870,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "reddit.custom_api_call": RedditCustomApiCallInput,
     "resend.send_email": ResendSendEmailInput,
     "resend.custom_api_call": ResendCustomApiCallInput,
+    "ringcentral.send_sms": RingcentralSendSmsInput,
+    "ringcentral.get_call_log": RingcentralGetCallLogInput,
+    "ringcentral.list_extensions": RingcentralListExtensionsInput,
     "salesforce.add_contact_to_campaign": SalesforceAddContactToCampaignInput,
     "salesforce.add_file_to_record": SalesforceAddFileToRecordInput,
     "salesforce.add_lead_to_campaign": SalesforceAddLeadToCampaignInput,
@@ -10871,6 +11904,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "sendgrid.send_email": SendgridSendEmailInput,
     "sendgrid.send_dynamic_template": SendgridSendDynamicTemplateInput,
     "sendgrid.custom_api_call": SendgridCustomApiCallInput,
+    "sentry.list_projects": SentryListProjectsInput,
+    "sentry.list_issues": SentryListIssuesInput,
+    "sentry.get_issue": SentryGetIssueInput,
+    "sentry.resolve_issue": SentryResolveIssueInput,
+    "sentry.list_events": SentryListEventsInput,
     "shopify.adjust_inventory_level": ShopifyAdjustInventoryLevelInput,
     "shopify.cancel_order": ShopifyCancelOrderInput,
     "shopify.close_order": ShopifyCloseOrderInput,
@@ -10931,6 +11969,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "smartsheet.find_attachment_by_row_id": SmartsheetFindAttachmentByRowIdInput,
     "smartsheet.find_sheet_by_name": SmartsheetFindSheetByNameInput,
     "smtp.send-email": SmtpSendEmailInput,
+    "snowflake.runQuery": SnowflakeRunQueryInput,
+    "snowflake.runMultipleQueries": SnowflakeRunMultipleQueriesInput,
+    "snowflake.insert-row": SnowflakeInsertRowInput,
     "spotify.search": SpotifySearchInput,
     "spotify.get_playback_state": SpotifyGetPlaybackStateInput,
     "spotify.play": SpotifyPlayInput,
@@ -11022,6 +12063,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "wordpress.update_post": WordpressUpdatePostInput,
     "wordpress.get_post": WordpressGetPostInput,
     "wordpress.custom_api_call": WordpressCustomApiCallInput,
+    "workday.list_workers": WorkdayListWorkersInput,
+    "workday.get_worker": WorkdayGetWorkerInput,
     "wrike.create_task": WrikeCreateTaskInput,
     "wrike.update_task": WrikeUpdateTaskInput,
     "wrike.create_folder": WrikeCreateFolderInput,
@@ -11068,4 +12111,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "zendesk.custom_api_call": ZendeskCustomApiCallInput,
     "zoho-crm.read-file": ZohoCrmReadFileInput,
     "zoho-crm.custom_api_call": ZohoCrmCustomApiCallInput,
+    "zoom.zoom_create_meeting": ZoomZoomCreateMeetingInput,
+    "zoom.zoom_create_meeting_registrant": ZoomZoomCreateMeetingRegistrantInput,
+    "zoom.custom_api_call": ZoomCustomApiCallInput,
 }
