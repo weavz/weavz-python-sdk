@@ -207,6 +207,7 @@ class ConnectResource(_BaseResource):
         workspace_id: str,
         end_user_id: str | None = None,
         scope: str | None = None,
+        oauth_app_id: str | None = None,
         success_redirect_uri: str | None = None,
         error_redirect_uri: str | None = None,
     ) -> dict[str, Any]:
@@ -220,11 +221,17 @@ class ConnectResource(_BaseResource):
             body["endUserId"] = end_user_id
         if scope is not None:
             body["scope"] = scope
+        if oauth_app_id is not None:
+            body["oauthAppId"] = oauth_app_id
         if success_redirect_uri is not None:
             body["successRedirectUri"] = success_redirect_uri
         if error_redirect_uri is not None:
             body["errorRedirectUri"] = error_redirect_uri
         return self._post("/api/v1/connect/token", json=body)
+
+    def available_oauth_apps(self, integration_name: str) -> dict[str, Any]:
+        """List available OAuth apps for an integration (platform default + org custom)."""
+        return self._get(f"/api/v1/oauth-apps/available/{integration_name}")
 
     def get_session(self, session_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/connect/session/{session_id}")
