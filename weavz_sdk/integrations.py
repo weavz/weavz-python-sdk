@@ -939,48 +939,56 @@ class AirtableCustomApiCallInput(BaseModel):
 
 class AmazonS3UploadFileInput(BaseModel):
     """Amazon S3 — Upload File"""
-    file: str = Field(..., description="File")
-    fileName: Optional[str] = Field(None, description="The File Name to use, if not set the API will try to figure out the file name.")
-    acl: Optional[str] = Field(None, description="ACL")
-    type: Optional[str] = Field(None, description="Content Type of the uploaded file, if not set the API will try to figure out the content type.")
+    file: str = Field(..., description="The file to upload to S3.")
+    fileName: Optional[str] = Field(None, description="File Name (Optional)")
+    acl: Optional[str] = Field(None, description="Access Control (ACL)")
+    type: Optional[str] = Field(None, description="Content Type")
 
     model_config = {"populate_by_name": True}
 
 
 class AmazonS3ReadFileInput(BaseModel):
     """Amazon S3 — Read File"""
-    key: str = Field(..., description="The key of the file to read")
+    key: str = Field(..., description="File Path")
 
     model_config = {"populate_by_name": True}
 
 
 class AmazonS3GenerateSignedUrlInput(BaseModel):
     """Amazon S3 — Generate signed URL"""
-    key: str = Field(..., description="The path/filename of the file to get")
-    expiresIn: float = Field(..., description="How long the URL should remain valid (in minutes).")
+    key: str = Field(..., description="File Path")
+    expiresIn: float = Field(..., description="Expires In (minutes)")
+
+    model_config = {"populate_by_name": True}
+
+
+class AmazonS3GenerateSignedUploadUrlInput(BaseModel):
+    """Amazon S3 — Generate Signed Upload URL"""
+    key: str = Field(..., description="File Key")
+    expiresIn: float = Field(..., description="Expires In (minutes)")
 
     model_config = {"populate_by_name": True}
 
 
 class AmazonS3MoveFileInput(BaseModel):
     """Amazon S3 — Move File"""
-    fileKey: str = Field(..., description="The key of the file to move")
-    folderKey: str = Field(..., description="The key of the folder to move the file to")
+    fileKey: str = Field(..., description="File Path")
+    folderKey: str = Field(..., description="Destination Folder")
 
     model_config = {"populate_by_name": True}
 
 
 class AmazonS3DeleteFileInput(BaseModel):
     """Amazon S3 — Delete File"""
-    key: str = Field(..., description="The key of the file to delete.")
+    key: str = Field(..., description="File Path")
 
     model_config = {"populate_by_name": True}
 
 
 class AmazonS3ListFilesInput(BaseModel):
     """Amazon S3 — List Files"""
-    prefix: Optional[str] = Field(None, description="The folder path to list files from (e.g., 'folder/'). Leave empty to list from root.")
-    maxKeys: Optional[float] = Field(None, description="Maximum number of files to return (1-1000)")
+    prefix: Optional[str] = Field(None, description="Folder Path (Optional)")
+    maxKeys: Optional[float] = Field(None, description="Maximum Files")
 
     model_config = {"populate_by_name": True}
 
@@ -991,6 +999,8 @@ class AmazonS3DecryptPgpFileInput(BaseModel):
     secretArn: str = Field(..., description="The ARN of the secret in AWS Secrets Manager containing the PGP private key")
     passphraseArn: Optional[str] = Field(None, description="Optional ARN of the secret in AWS Secrets Manager containing the passphrase for the private key (if the key is encrypted)")
     secretsManagerRegion: Optional[str] = Field(None, description="The AWS region where the Secrets Manager secret is stored (defaults to S3 region if not provided)")
+    allowUnauthenticatedMessages: Optional[bool] = Field(None, description="Allow decryption of messages without integrity protection (no MDC). Only enable this for legacy files where integrity protection was never used.")
+    allowInsecureDecryptionWithSigningKeys: Optional[bool] = Field(None, description="Allow decryption using a key not marked for encryption use.")
 
     model_config = {"populate_by_name": True}
 
@@ -1211,7 +1221,7 @@ class ClaudeAskClaudeInput(BaseModel):
     maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
     prompt: str = Field(..., description="Question")
     image: Optional[str] = Field(None, description="URL of image to be used as input for the model.")
-    roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response.Please check [guide to Input Messages](https://docs.anthropic.com/en/api/messages-examples#vision).")
+    roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response.")
     thinkingMode: Optional[bool] = Field(None, description="Uses claude 3.7 sonnet enhanced reasoning capabilities for complex tasks.")
     thinkingModeParams: Optional[dict[str, Any]] = Field(None, description="thinkingModeParams")
 
@@ -1233,12 +1243,12 @@ class ClaudeExtractStructuredDataInput(BaseModel):
 
 class ClaudeCustomApiCallInput(BaseModel):
     """Anthropic Claude — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="Claude API path such as /messages, or a full https://api.anthropic.com/v1 URL.")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization headers are injected automatically from your connection.")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    body: Optional[Any] = Field(None, description="Body")
     response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
@@ -1633,45 +1643,45 @@ class AssemblyaiUploadFileInput(BaseModel):
 class AssemblyaiTranscribeInput(BaseModel):
     """AssemblyAI — Transcribe"""
     audio_url: str = Field(..., description="The URL of the audio or video file to transcribe.")
-    language_code: Optional[str] = Field(None, description="The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages). The default value is 'en_us'. ")
-    language_detection: Optional[bool] = Field(None, description="Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.")
-    language_confidence_threshold: Optional[float] = Field(None, description="The confidence threshold for the automatically detected language. An error will be returned if the language confidence is below this threshold. Defaults to 0. ")
-    speech_model: Optional[str] = Field(None, description="The speech model to use for the transcription. When `null`, the 'best' model is used.")
-    punctuate: Optional[bool] = Field(None, description="Enable Automatic Punctuation, can be true or false")
-    format_text: Optional[bool] = Field(None, description="Enable Text Formatting, can be true or false")
-    disfluencies: Optional[bool] = Field(None, description="Transcribe Filler Words, like 'umm', in your media file; can be true or false")
-    dual_channel: Optional[bool] = Field(None, description="Enable [Dual Channel](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) transcription, can be true or false.")
-    webhook_url: Optional[str] = Field(None, description="The URL to which we send webhook requests. We sends two different types of webhook requests. One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled. ")
-    webhook_auth_header_name: Optional[str] = Field(None, description="The header name to be sent with the transcript completed or failed webhook requests")
-    webhook_auth_header_value: Optional[str] = Field(None, description="The header value to send back with the transcript completed or failed webhook requests for added security")
-    auto_highlights: Optional[bool] = Field(None, description="Enable Key Phrases, either true or false")
-    audio_start_from: Optional[float] = Field(None, description="The point in time, in milliseconds, to begin transcribing in your media file")
-    audio_end_at: Optional[float] = Field(None, description="The point in time, in milliseconds, to stop transcribing in your media file")
-    word_boost: Optional[list[Any]] = Field(None, description="The list of custom vocabulary to boost transcription probability for")
-    boost_param: Optional[str] = Field(None, description="How much to boost specified words")
-    filter_profanity: Optional[bool] = Field(None, description="Filter profanity from the transcribed text, can be true or false")
-    redact_pii: Optional[bool] = Field(None, description="Redact PII from the transcribed text using the Redact PII model, can be true or false")
-    redact_pii_audio: Optional[bool] = Field(None, description="Generate a copy of the original media file with spoken PII 'beeped' out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.")
-    redact_pii_audio_quality: Optional[str] = Field(None, description="Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.")
-    redact_pii_policies: Optional[list[str]] = Field(None, description="The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.")
-    redact_pii_sub: Optional[str] = Field(None, description="The replacement logic for detected PII, can be 'entity_type' or 'hash'. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.")
-    speaker_labels: Optional[bool] = Field(None, description="Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false")
-    speakers_expected: Optional[float] = Field(None, description="Tells the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.")
-    content_safety: Optional[bool] = Field(None, description="Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false")
-    content_safety_confidence: Optional[float] = Field(None, description="The confidence threshold for the Content Moderation model. Values must be between 25 and 100.")
-    iab_categories: Optional[bool] = Field(None, description="Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false")
-    custom_spelling: Optional[Any] = Field(None, description="Customize how words are spelled and formatted using to and from values. Use a JSON array of objects of the following format: ``` [   {     'from': ['original', 'spelling'],     'to': 'corrected'   } ] ``` ")
-    sentiment_analysis: Optional[bool] = Field(None, description="Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false")
-    auto_chapters: Optional[bool] = Field(None, description="Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false")
-    entity_detection: Optional[bool] = Field(None, description="Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false")
-    speech_threshold: Optional[float] = Field(None, description="Reject audio files that contain less than this fraction of speech. Valid values are in the range [0, 1] inclusive. ")
-    summarization: Optional[bool] = Field(None, description="Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false")
-    summary_model: Optional[str] = Field(None, description="The model to summarize the transcript")
-    summary_type: Optional[str] = Field(None, description="The type of summary")
-    custom_topics: Optional[bool] = Field(None, description="Enable custom topics, either true or false")
-    topics: Optional[list[Any]] = Field(None, description="The list of custom topics")
-    wait_until_ready: bool = Field(..., description="Wait until the transcript status is 'completed' or 'error' before moving on to the next step.")
-    throw_on_error: bool = Field(..., description="If the transcript status is 'error', throw an error.")
+    language_code: Optional[str] = Field(None, description="Optional language code, such as en_us, en, es, fr, or de.")
+    language_detection: Optional[bool] = Field(None, description="Language Detection")
+    language_confidence_threshold: Optional[float] = Field(None, description="Language Confidence Threshold")
+    speech_model: Optional[str] = Field(None, description="Speech Model")
+    punctuate: Optional[bool] = Field(None, description="Punctuate")
+    format_text: Optional[bool] = Field(None, description="Format Text")
+    disfluencies: Optional[bool] = Field(None, description="Include Disfluencies")
+    dual_channel: Optional[bool] = Field(None, description="Dual Channel")
+    webhook_url: Optional[str] = Field(None, description="Webhook URL")
+    webhook_auth_header_name: Optional[str] = Field(None, description="Webhook Auth Header Name")
+    webhook_auth_header_value: Optional[str] = Field(None, description="Webhook Auth Header Value")
+    auto_highlights: Optional[bool] = Field(None, description="Auto Highlights")
+    audio_start_from: Optional[float] = Field(None, description="Audio Start From")
+    audio_end_at: Optional[float] = Field(None, description="Audio End At")
+    word_boost: Optional[list[Any]] = Field(None, description="Word Boost")
+    boost_param: Optional[str] = Field(None, description="Boost Param")
+    filter_profanity: Optional[bool] = Field(None, description="Filter Profanity")
+    redact_pii: Optional[bool] = Field(None, description="Redact PII")
+    redact_pii_audio: Optional[bool] = Field(None, description="Redact PII Audio")
+    redact_pii_audio_quality: Optional[str] = Field(None, description="Redact PII Audio Quality")
+    redact_pii_policies: Optional[list[Any]] = Field(None, description="Redact PII Policies")
+    redact_pii_sub: Optional[str] = Field(None, description="Redact PII Substitution")
+    speaker_labels: Optional[bool] = Field(None, description="Speaker Labels")
+    speakers_expected: Optional[float] = Field(None, description="Speakers Expected")
+    content_safety: Optional[bool] = Field(None, description="Content Safety")
+    content_safety_confidence: Optional[float] = Field(None, description="Content Safety Confidence")
+    iab_categories: Optional[bool] = Field(None, description="IAB Categories")
+    custom_spelling: Optional[list[Any]] = Field(None, description="Custom Spelling")
+    sentiment_analysis: Optional[bool] = Field(None, description="Sentiment Analysis")
+    auto_chapters: Optional[bool] = Field(None, description="Auto Chapters")
+    entity_detection: Optional[bool] = Field(None, description="Entity Detection")
+    speech_threshold: Optional[float] = Field(None, description="Speech Threshold")
+    summarization: Optional[bool] = Field(None, description="Summarization")
+    summary_model: Optional[str] = Field(None, description="Summary Model")
+    summary_type: Optional[str] = Field(None, description="Summary Type")
+    custom_topics: Optional[bool] = Field(None, description="Custom Topics")
+    topics: Optional[list[Any]] = Field(None, description="Topics")
+    wait_until_ready: bool = Field(..., description="Wait until the transcript status is completed or error before moving on to the next step.")
+    throw_on_error: bool = Field(..., description="If the transcript status is error, throw an error.")
 
     model_config = {"populate_by_name": True}
 
@@ -1710,7 +1720,7 @@ class AssemblyaiGetRedactedAudioInput(BaseModel):
     """AssemblyAI — Get Transcript Redacted Audio"""
     id: str = Field(..., description="Transcript ID")
     download_file: bool = Field(..., description="Download file?")
-    download_file_name: str = Field(..., description="The desired file name for storing in ActivePieces. Make sure the file extension is correct.")
+    download_file_name: str = Field(..., description="The desired file name for storing in Weavz. Make sure the file extension is correct.")
 
     model_config = {"populate_by_name": True}
 
@@ -1744,13 +1754,13 @@ class AssemblyaiDeleteTranscriptInput(BaseModel):
 
 class AssemblyaiLemurTaskInput(BaseModel):
     """AssemblyAI — Run a Task using LeMUR"""
-    prompt: str = Field(..., description="Your text to prompt the model to produce a desired output, including any context you want to pass into the model.")
-    transcript_ids: Optional[list[Any]] = Field(None, description="A list of completed transcripts with text. Up to a maximum of 100 files or 100 hours, whichever is lower. Use either transcript_ids or input_text as input into LeMUR. ")
-    input_text: Optional[str] = Field(None, description="Custom formatted transcript data. Maximum size is the context limit of the selected model, which defaults to 100000. Use either transcript_ids or input_text as input into LeMUR. ")
-    context: Optional[str] = Field(None, description="Context to provide the model. This can be a string or a free-form JSON value.")
-    final_model: Optional[str] = Field(None, description="The model that is used for the final prompt after compression is performed. ")
-    max_output_size: Optional[float] = Field(None, description="Max output size in tokens, up to 4000")
-    temperature: Optional[float] = Field(None, description="The temperature to use for the model. Higher values result in answers that are more creative, lower values are more conservative. Can be any value between 0.0 and 1.0 inclusive. ")
+    prompt: str = Field(..., description="Prompt")
+    transcript_ids: Optional[list[Any]] = Field(None, description="Transcript IDs")
+    input_text: Optional[str] = Field(None, description="Input Text")
+    context: Optional[str] = Field(None, description="Context")
+    final_model: Optional[str] = Field(None, description="Final Model")
+    max_output_size: Optional[float] = Field(None, description="Max Output Size")
+    temperature: Optional[float] = Field(None, description="Temperature")
 
     model_config = {"populate_by_name": True}
 
@@ -1771,16 +1781,16 @@ class AssemblyaiPurgeLemurRequestDataInput(BaseModel):
 
 class AssemblyaiCustomApiCallInput(BaseModel):
     """AssemblyAI — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="URL")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    body: Optional[Any] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Response is Binary?")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    timeout: Optional[float] = Field(None, description="Timeout")
+    followRedirects: Optional[bool] = Field(None, description="Follow Redirects")
 
     model_config = {"populate_by_name": True}
 
@@ -8420,7 +8430,7 @@ class FirecrawlScrapeInput(BaseModel):
     """Firecrawl — Scrape Website"""
     url: str = Field(..., description="The webpage URL to scrape.")
     timeout: Optional[float] = Field(None, description="Maximum time to wait for the page to load (in milliseconds).")
-    useActions: Optional[bool] = Field(None, description="Enable to perform a sequence of actions on the page before scraping (like clicking buttons, filling forms, etc.). See [Firecrawl Actions Documentation](https://docs.firecrawl.dev/api-reference/endpoint/scrape#body-actions) for details on available actions and their parameters.")
+    useActions: Optional[bool] = Field(None, description="Enable to perform a sequence of actions on the page before scraping.")
     actionProperties: Optional[dict[str, Any]] = Field(None, description="Properties for actions that will be performed on the page.")
     formats: str = Field(..., description="Choose what format you want your output in.")
     extractPrompt: Optional[dict[str, Any]] = Field(None, description="Prompt for extracting data.")
@@ -8468,7 +8478,7 @@ class FirecrawlCrawlResultsInput(BaseModel):
 class FirecrawlMapInput(BaseModel):
     """Firecrawl — Map Websites"""
     url: str = Field(..., description="The webpage URL to start scraping from.")
-    subdomain: Optional[bool] = Field(None, description="Include and crawl pages from subdomains of the target website (e.g., blog.example.com, shop.example.com) in addition to the main domain.")
+    subdomain: Optional[bool] = Field(None, description="Include and crawl pages from subdomains of the target website.")
     limit: Optional[float] = Field(None, description="Maximum number of links to return (max: 100,000)")
 
     model_config = {"populate_by_name": True}
@@ -8476,12 +8486,12 @@ class FirecrawlMapInput(BaseModel):
 
 class FirecrawlCustomApiCallInput(BaseModel):
     """Firecrawl — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="Firecrawl API path such as /scrape, or a full URL.")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization headers are injected automatically from your connection.")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    body: Optional[Any] = Field(None, description="Body")
     response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
@@ -10376,7 +10386,7 @@ class GoogleCloudStorageSearchObjectsInput(BaseModel):
     includeFoldersAsPrefixes: Optional[bool] = Field(None, description="Include empty folders and managed folders in results")
     versions: Optional[bool] = Field(None, description="List all versions of objects as distinct results")
     pageToken: Optional[str] = Field(None, description="Token for pagination (from previous response)")
-    maxResults: Optional[float] = Field(None, description="Maximum number of objects to return (recommended: ≤1000)")
+    maxResults: Optional[float] = Field(None, description="Maximum number of objects to return (recommended: <=1000)")
 
     model_config = {"populate_by_name": True}
 
@@ -10398,7 +10408,7 @@ class GoogleCloudStorageCreateObjectAclInput(BaseModel):
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
     object: str = Field(..., description="Object")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     role: str = Field(..., description="Role")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
@@ -10410,7 +10420,7 @@ class GoogleCloudStorageDeleteObjectAclInput(BaseModel):
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
     object: str = Field(..., description="Object")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
     model_config = {"populate_by_name": True}
@@ -10420,7 +10430,7 @@ class GoogleCloudStorageCreateBucketAclInput(BaseModel):
     """Google Cloud Storage — Create Bucket ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     role: str = Field(..., description="Role")
 
     model_config = {"populate_by_name": True}
@@ -10430,7 +10440,7 @@ class GoogleCloudStorageDeleteBucketAclInput(BaseModel):
     """Google Cloud Storage — Delete Bucket ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
 
     model_config = {"populate_by_name": True}
 
@@ -10439,8 +10449,10 @@ class GoogleCloudStorageCreateBucketDefaultObjectAclInput(BaseModel):
     """Google Cloud Storage — Create Bucket Default Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    object: str = Field(..., description="Object")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     role: str = Field(..., description="Role")
+    generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
     model_config = {"populate_by_name": True}
 
@@ -10449,7 +10461,9 @@ class GoogleCloudStorageDeleteBucketDefaultObjectAclInput(BaseModel):
     """Google Cloud Storage — Delete Bucket Default Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    entity: str = Field(..., description="The entity to grant access to. Must include the entity type prefix. Format: user-emailAddress, group-groupId, group-emailAddress, domain-domainName, project-team-projectId, allUsers, or allAuthenticatedUsers. Examples: user-liz@example.com, group-mygroup@googlegroups.com, domain-example.com, allUsers")
+    object: str = Field(..., description="Object")
+    entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
+    generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
     model_config = {"populate_by_name": True}
 
@@ -12807,29 +12821,29 @@ class HubspotCustomApiCallInput(BaseModel):
 class HuggingFaceDocumentQuestionAnsweringInput(BaseModel):
     """Hugging Face — Document Question Answering"""
     model: str = Field(..., description="Hugging Face document question answering model")
-    image: str = Field(..., description="Image of the document to analyze (invoice, contract, etc.)")
-    question: str = Field(..., description="Question to ask about the document (e.g., 'What is the invoice total?')")
-    top_k: Optional[float] = Field(None, description="Number of top answers to return")
-    max_answer_len: Optional[float] = Field(None, description="Maximum length of predicted answers")
-    handle_impossible_answer: Optional[bool] = Field(None, description="Whether to accept 'impossible' as an answer when no answer is found")
+    image: str = Field(..., description="Image of the document to analyze.")
+    question: str = Field(..., description="Question to ask about the document.")
+    top_k: Optional[float] = Field(None, description="Number of Answers")
+    max_answer_len: Optional[float] = Field(None, description="Max Answer Length")
+    handle_impossible_answer: Optional[bool] = Field(None, description="Handle Impossible Answers")
     lang: Optional[str] = Field(None, description="Language to use for OCR text extraction")
-    use_cache: Optional[bool] = Field(None, description="Use cached results if available")
-    wait_for_model: Optional[bool] = Field(None, description="Wait for model to load if not ready")
+    use_cache: Optional[bool] = Field(None, description="Use Cache")
+    wait_for_model: Optional[bool] = Field(None, description="Wait for Model")
 
     model_config = {"populate_by_name": True}
 
 
 class HuggingFaceLanguageTranslationInput(BaseModel):
     """Hugging Face — Language Translation"""
-    model: str = Field(..., description="Select a translation model or search from 7000+ available models")
-    customModel: Optional[str] = Field(None, description="Alternative: Enter any Hugging Face translation model ID directly (e.g., Helsinki-NLP/opus-mt-ja-en)")
-    text: str = Field(..., description="The text content you want to translate")
-    sourceLanguage: Optional[str] = Field(None, description="Source language code (e.g., 'en', 'es', 'fr'). Only needed for multilingual models that support multiple language pairs.")
-    targetLanguage: Optional[str] = Field(None, description="Target language code (e.g., 'fr', 'de', 'zh'). Only needed for multilingual models that support multiple language pairs.")
-    cleanUpSpaces: Optional[bool] = Field(None, description="Remove potential extra spaces in the translation output")
-    maxLength: Optional[float] = Field(None, description="Maximum length of the translated text (leave empty for default)")
-    useCache: Optional[bool] = Field(None, description="Use cached results if available for faster responses")
-    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+    model: str = Field(..., description="Select a translation model.")
+    customModel: Optional[str] = Field(None, description="Or Enter Custom Model ID")
+    text: str = Field(..., description="Text to Translate")
+    sourceLanguage: Optional[str] = Field(None, description="Source Language (Optional)")
+    targetLanguage: Optional[str] = Field(None, description="Target Language (Optional)")
+    cleanUpSpaces: Optional[bool] = Field(None, description="Clean Up Extra Spaces")
+    maxLength: Optional[float] = Field(None, description="Max Translation Length")
+    useCache: Optional[bool] = Field(None, description="Use Cache")
+    waitForModel: Optional[bool] = Field(None, description="Wait for Model")
 
     model_config = {"populate_by_name": True}
 
@@ -12837,15 +12851,15 @@ class HuggingFaceLanguageTranslationInput(BaseModel):
 class HuggingFaceTextClassificationInput(BaseModel):
     """Hugging Face — Text Classification"""
     classificationMode: str = Field(..., description="Choose your classification approach")
-    zeroShotModel: Optional[str] = Field(None, description="Model for classifying into your custom categories")
-    customLabels: Optional[str] = Field(None, description="Enter categories separated by commas (e.g., 'customer support, sales inquiry, spam, billing question')")
-    pretrainedModel: Optional[str] = Field(None, description="Select a specialized pre-trained classification model")
-    searchModel: Optional[str] = Field(None, description="Search from all available text classification models")
-    text: str = Field(..., description="The text content you want to classify")
-    topK: Optional[float] = Field(None, description="Number of top predictions to return")
+    zeroShotModel: Optional[str] = Field(None, description="Model for custom categories")
+    customLabels: Optional[str] = Field(None, description="Enter categories separated by commas.")
+    pretrainedModel: Optional[str] = Field(None, description="Specialized pre-trained classification model")
+    searchModel: Optional[str] = Field(None, description="Search from text classification models.")
+    text: str = Field(..., description="Text to Classify")
+    topK: Optional[float] = Field(None, description="Number of Results")
     functionToApply: Optional[str] = Field(None, description="How to calculate confidence scores")
-    useCache: Optional[bool] = Field(None, description="Use cached results for faster responses")
-    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+    useCache: Optional[bool] = Field(None, description="Use Cache")
+    waitForModel: Optional[bool] = Field(None, description="Wait for Model")
 
     model_config = {"populate_by_name": True}
 
@@ -12853,15 +12867,15 @@ class HuggingFaceTextClassificationInput(BaseModel):
 class HuggingFaceTextSummarizationInput(BaseModel):
     """Hugging Face — Text Summarization"""
     contentType: str = Field(..., description="What type of content are you summarizing?")
-    model: str = Field(..., description="Select the best model for your content type")
-    text: str = Field(..., description="The long text content you want to summarize (most models work best with 512-1024 tokens)")
+    model: str = Field(..., description="Select a summarization model.")
+    text: str = Field(..., description="Text to Summarize")
     summaryLength: Optional[str] = Field(None, description="How long should the summary be?")
-    customMinLength: Optional[float] = Field(None, description="Minimum number of tokens for the summary")
-    customMaxLength: Optional[float] = Field(None, description="Maximum number of tokens for the summary")
-    cleanUpSpaces: Optional[bool] = Field(None, description="Remove extra spaces and clean up formatting")
+    customMinLength: Optional[float] = Field(None, description="Custom Min Length")
+    customMaxLength: Optional[float] = Field(None, description="Custom Max Length")
+    cleanUpSpaces: Optional[bool] = Field(None, description="Clean Up Extra Spaces")
     truncationStrategy: Optional[str] = Field(None, description="How to handle text that exceeds model limits")
-    useCache: Optional[bool] = Field(None, description="Use cached results for faster responses")
-    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+    useCache: Optional[bool] = Field(None, description="Use Cache")
+    waitForModel: Optional[bool] = Field(None, description="Wait for Model")
 
     model_config = {"populate_by_name": True}
 
@@ -12869,21 +12883,21 @@ class HuggingFaceTextSummarizationInput(BaseModel):
 class HuggingFaceChatCompletionInput(BaseModel):
     """Hugging Face — Chat Completion"""
     useCase: str = Field(..., description="What type of chat assistant are you building?")
-    model: str = Field(..., description="Select the best model for your use case")
+    model: str = Field(..., description="Select a chat model.")
     conversationMode: str = Field(..., description="How do you want to build the conversation?")
-    userMessage: Optional[str] = Field(None, description="The user message or question to respond to")
-    systemPrompt: Optional[str] = Field(None, description="Instructions for how the assistant should behave")
-    conversationHistory: Optional[list[Any]] = Field(None, description="Previous messages in the conversation (for multi-turn chat)")
-    template: Optional[str] = Field(None, description="Pre-built templates for common business scenarios")
+    userMessage: Optional[str] = Field(None, description="User Message")
+    systemPrompt: Optional[str] = Field(None, description="System Prompt (Optional)")
+    conversationHistory: Optional[list[Any]] = Field(None, description="Conversation History")
+    template: Optional[str] = Field(None, description="Pre-built templates for common scenarios")
     responseLength: Optional[str] = Field(None, description="How long should the response be?")
-    customMaxTokens: Optional[float] = Field(None, description="Maximum number of tokens to generate")
-    temperature: Optional[float] = Field(None, description="How creative should responses be? (0.1 = focused, 1.0 = creative)")
-    topP: Optional[float] = Field(None, description="Controls response diversity (0.1 = focused, 1.0 = varied)")
-    stopSequences: Optional[list[Any]] = Field(None, description="Text sequences that will stop generation")
-    frequencyPenalty: Optional[float] = Field(None, description="Reduce repetitive responses (-2.0 to 2.0)")
-    presencePenalty: Optional[float] = Field(None, description="Encourage diverse topics (-2.0 to 2.0)")
-    useCache: Optional[bool] = Field(None, description="Use cached responses for identical requests")
-    waitForModel: Optional[bool] = Field(None, description="Wait for model to load if not immediately available")
+    customMaxTokens: Optional[float] = Field(None, description="Custom Max Tokens")
+    temperature: Optional[float] = Field(None, description="Creativity Level")
+    topP: Optional[float] = Field(None, description="Response Variety")
+    stopSequences: Optional[list[Any]] = Field(None, description="Stop Sequences (Optional)")
+    frequencyPenalty: Optional[float] = Field(None, description="Repetition Penalty")
+    presencePenalty: Optional[float] = Field(None, description="Topic Diversity")
+    useCache: Optional[bool] = Field(None, description="Use Cache")
+    waitForModel: Optional[bool] = Field(None, description="Wait for Model")
 
     model_config = {"populate_by_name": True}
 
@@ -12891,17 +12905,17 @@ class HuggingFaceChatCompletionInput(BaseModel):
 class HuggingFaceCreateImageInput(BaseModel):
     """Hugging Face — Create Image"""
     useCase: str = Field(..., description="What type of image generation do you need?")
-    model: str = Field(..., description="Select the best model for your use case")
-    prompt: str = Field(..., description="Describe the image you want to generate. Be specific about style, colors, composition, and details.")
-    aspectRatio: Optional[str] = Field(None, description="Choose the dimensions for your image")
-    customWidth: Optional[float] = Field(None, description="Width in pixels (64-1024)")
-    customHeight: Optional[float] = Field(None, description="Height in pixels (64-1024)")
-    negativePrompt: Optional[str] = Field(None, description="Describe what you DON'T want in the image (blur, low quality, distorted, etc.)")
-    qualitySettings: Optional[str] = Field(None, description="Balance between image quality and generation time")
-    customSteps: Optional[float] = Field(None, description="Number of denoising steps (1-100)")
-    guidanceScale: Optional[float] = Field(None, description="How closely to follow the prompt (1-20). Higher values = more prompt adherence but may reduce creativity.")
-    seed: Optional[float] = Field(None, description="Set a seed for reproducible results. Leave empty for random generation.")
-    scheduler: Optional[str] = Field(None, description="Advanced: Choose the noise scheduler algorithm")
+    model: str = Field(..., description="Select an image generation model.")
+    prompt: str = Field(..., description="Text Prompt")
+    aspectRatio: Optional[str] = Field(None, description="Choose image dimensions")
+    customWidth: Optional[float] = Field(None, description="Custom Width")
+    customHeight: Optional[float] = Field(None, description="Custom Height")
+    negativePrompt: Optional[str] = Field(None, description="Negative Prompt")
+    qualitySettings: Optional[str] = Field(None, description="Balance image quality and generation time")
+    customSteps: Optional[float] = Field(None, description="Custom Inference Steps")
+    guidanceScale: Optional[float] = Field(None, description="Guidance Scale")
+    seed: Optional[float] = Field(None, description="Seed (Optional)")
+    scheduler: Optional[str] = Field(None, description="Advanced scheduler")
 
     model_config = {"populate_by_name": True}
 
@@ -12909,29 +12923,29 @@ class HuggingFaceCreateImageInput(BaseModel):
 class HuggingFaceObjectDetectionInput(BaseModel):
     """Hugging Face — Object Detection"""
     useCase: str = Field(..., description="What type of object detection do you need?")
-    model: str = Field(..., description="Select the best model for your detection task")
-    image: str = Field(..., description="Upload an image for object detection. Supports JPG, PNG, WebP formats.")
-    confidenceThreshold: Optional[float] = Field(None, description="Minimum confidence score for detections (0.1-0.9). Higher values = fewer but more accurate detections.")
-    maxDetections: Optional[float] = Field(None, description="Maximum number of objects to detect (1-100)")
+    model: str = Field(..., description="Select an object detection model.")
+    image: str = Field(..., description="Image to Analyze")
+    confidenceThreshold: Optional[float] = Field(None, description="Confidence Threshold")
+    maxDetections: Optional[float] = Field(None, description="Max Detections")
     filterSettings: Optional[str] = Field(None, description="How to handle detection results")
-    outputFormat: Optional[str] = Field(None, description="How to structure the detection results")
+    outputFormat: Optional[str] = Field(None, description="How to structure detection results")
 
     model_config = {"populate_by_name": True}
 
 
 class HuggingFaceImageClassificationInput(BaseModel):
     """Hugging Face — Image Classification"""
-    classificationMode: str = Field(..., description="How do you want to classify your images?")
+    classificationMode: str = Field(..., description="How do you want to classify images?")
     useCase: str = Field(..., description="What type of image classification do you need?")
-    model: str = Field(..., description="Select the best model for your use case")
+    model: str = Field(..., description="Select an image classification model.")
     imageSource: str = Field(..., description="How do you want to provide the image?")
-    imageFile: str = Field(..., description="Upload an image file for classification (JPG, PNG, WebP)")
-    imageUrl: str = Field(..., description="URL of the image to classify")
-    customCategories: list[Any] = Field(..., description="Enter the categories you want to classify the image into (e.g., 'dog', 'cat', 'bird')")
-    hypothesisTemplate: Optional[str] = Field(None, description="Template for classification (advanced). Default: 'This image shows {}'")
-    topK: Optional[float] = Field(None, description="Maximum number of classification results to return (1-20)")
-    confidenceThreshold: Optional[float] = Field(None, description="Minimum confidence score for results (0.0-1.0)")
-    outputFormat: Optional[str] = Field(None, description="How to structure the classification results")
+    imageFile: str = Field(..., description="Image File")
+    imageUrl: Optional[str] = Field(None, description="Image URL")
+    customCategories: Optional[list[Any]] = Field(None, description="Custom Categories")
+    hypothesisTemplate: Optional[str] = Field(None, description="Classification Template")
+    topK: Optional[float] = Field(None, description="Number of Results")
+    confidenceThreshold: Optional[float] = Field(None, description="Confidence Threshold")
+    outputFormat: Optional[str] = Field(None, description="How to structure classification results")
 
     model_config = {"populate_by_name": True}
 
@@ -16671,6 +16685,13 @@ class MicrosoftSharepointMicrosoftSharepointGetSiteInformationInput(BaseModel):
     """Microsoft SharePoint — Get Site Information"""
     siteId: str = Field(..., description="Site")
     select: Optional[str] = Field(None, description="A comma-separated list of properties to return. If left blank, all default properties are returned. Example: `id,displayName,webUrl,description`")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftSharepointMicrosoftSharepointFindSiteInput(BaseModel):
+    """Microsoft SharePoint — Find Site"""
+    searchTerm: str = Field(..., description="The name or keyword to search for.")
 
     model_config = {"populate_by_name": True}
 
@@ -20770,8 +20791,8 @@ class QdrantAddPointsToCollectionInput(BaseModel):
     collectionName: str = Field(..., description="The name of the collection needed for this action")
     embeddings: str = Field(..., description="Embeddings (= vectors) for the points")
     embeddingsIds: Optional[list[Any]] = Field(None, description="The ids of the embeddings for the points. If not provided, the ids will be generated automatically")
-    distance: str = Field(..., description="The calculation method helps to rank vectors when you want to find the closest points, the method to use depends on the model who's created the embeddings, see the documentation of your model")
-    payload: Optional[Any] = Field(None, description="Please follow [payload documentation](https://qdrant.tech/documentation/concepts/payload/) to add additional information to the points.")
+    distance: str = Field(..., description="The calculation method helps to rank vectors when you want to find the closest points, the method to use depends on the model that's created the embeddings.")
+    payload: Optional[Any] = Field(None, description="Additional payload to store with every point.")
     storage: Optional[str] = Field(None, description="Define where points will be stored")
 
     model_config = {"populate_by_name": True}
@@ -20818,10 +20839,42 @@ class QdrantSearchPointsInput(BaseModel):
     """Qdrant — Search Points"""
     collectionName: str = Field(..., description="The name of the collection needed for this action")
     vector: str = Field(..., description="The vector (= embedding) you want to search for.")
-    must: Optional[dict[str, Any]] = Field(None, description="If the point have this property in his payload it will be selected")
-    must_not: Optional[dict[str, Any]] = Field(None, description="If the point have this property in his payload it will not be selected")
+    must: Optional[dict[str, Any]] = Field(None, description="If the point has this property in its payload it will be selected")
+    must_not: Optional[dict[str, Any]] = Field(None, description="If the point has this property in its payload it will not be selected")
     negativeVector: Optional[str] = Field(None, description="The vector (= embedding) you want to be the farthest.")
     limitResult: Optional[float] = Field(None, description="The max number of results you want to get.")
+
+    model_config = {"populate_by_name": True}
+
+
+class QdrantCreateCollectionInput(BaseModel):
+    """Qdrant — Create Collection"""
+    collectionName: str = Field(..., description="The name of the collection needed for this action")
+    vectorSize: float = Field(..., description="Dimension of the vectors")
+    distance: Optional[str] = Field(None, description="Distance Metric")
+
+    model_config = {"populate_by_name": True}
+
+
+class QdrantUpsertPointsInput(BaseModel):
+    """Qdrant — Upsert Points"""
+    collectionName: str = Field(..., description="The name of the collection needed for this action")
+    points: Any = Field(..., description="Array of points: [{id: 1, vector: [0.1, ...], payload: {...}}, ...]")
+    wait: Optional[bool] = Field(None, description="Wait for the operation to be applied")
+
+    model_config = {"populate_by_name": True}
+
+
+class QdrantListCollectionsInput(BaseModel):
+    """Qdrant — List Collections"""
+    pass
+
+
+class QdrantCustomApiCallInput(BaseModel):
+    """Qdrant — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -21855,7 +21908,7 @@ class SalesforceRunQueryInput(BaseModel):
 class SalesforceRunReportInput(BaseModel):
     """Salesforce — Run Report"""
     report_id: str = Field(..., description="Report")
-    filters: Optional[Any] = Field(None, description="Apply dynamic filters to the report run.")
+    filters: Optional[Any] = Field(None, description="Apply dynamic filters to the report run. Leave empty to use the report's saved filters.")
 
     model_config = {"populate_by_name": True}
 
@@ -24320,14 +24373,26 @@ class SupabaseSearchRowsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SupabaseListTablesInput(BaseModel):
+    """Supabase — List Tables"""
+    pass
+
+
+class SupabaseGetTableSchemaInput(BaseModel):
+    """Supabase — Get Table Schema"""
+    table_name: str = Field(..., description="Select a table from your database")
+
+    model_config = {"populate_by_name": True}
+
+
 class SupabaseCustomApiCallInput(BaseModel):
     """Supabase — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="Supabase API path such as /rest/v1/table, or a full URL within the connected Supabase project.")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization headers are injected automatically from your connection.")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
+    body: Optional[Any] = Field(None, description="Body")
     response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
@@ -28805,6 +28870,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "amazon-s3.upload-file": AmazonS3UploadFileInput,
     "amazon-s3.read-file": AmazonS3ReadFileInput,
     "amazon-s3.generate-signed-url": AmazonS3GenerateSignedUrlInput,
+    "amazon-s3.generate-signed-upload-url": AmazonS3GenerateSignedUploadUrlInput,
     "amazon-s3.moveFile": AmazonS3MoveFileInput,
     "amazon-s3.deleteFile": AmazonS3DeleteFileInput,
     "amazon-s3.list-files": AmazonS3ListFilesInput,
@@ -30426,6 +30492,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "microsoft-sharepoint.microsoft_sharepoint_find_file": MicrosoftSharepointMicrosoftSharepointFindFileInput,
     "microsoft-sharepoint.microsoft_sharepoint_get_folder_contents": MicrosoftSharepointMicrosoftSharepointGetFolderContentsInput,
     "microsoft-sharepoint.microsoft_sharepoint_get_site_information": MicrosoftSharepointMicrosoftSharepointGetSiteInformationInput,
+    "microsoft-sharepoint.microsoft_sharepoint_find_site": MicrosoftSharepointMicrosoftSharepointFindSiteInput,
     "microsoft-sharepoint.custom_api_call": MicrosoftSharepointCustomApiCallInput,
     "microsoft-teams.list_teams": MicrosoftTeamsListTeamsInput,
     "microsoft-teams.list_channels": MicrosoftTeamsListChannelsInput,
@@ -30858,6 +30925,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "qdrant.delete_points": QdrantDeletePointsInput,
     "qdrant.get_points": QdrantGetPointsInput,
     "qdrant.search_points": QdrantSearchPointsInput,
+    "qdrant.create_collection": QdrantCreateCollectionInput,
+    "qdrant.upsert_points": QdrantUpsertPointsInput,
+    "qdrant.list_collections": QdrantListCollectionsInput,
+    "qdrant.custom_api_call": QdrantCustomApiCallInput,
     "qdrant-custom.create_collection": QdrantCustomCreateCollectionInput,
     "qdrant-custom.upsert_points": QdrantCustomUpsertPointsInput,
     "qdrant-custom.search_points": QdrantCustomSearchPointsInput,
@@ -31242,6 +31313,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "supabase.upsert_row": SupabaseUpsertRowInput,
     "supabase.delete_rows": SupabaseDeleteRowsInput,
     "supabase.search_rows": SupabaseSearchRowsInput,
+    "supabase.list_tables": SupabaseListTablesInput,
+    "supabase.get_table_schema": SupabaseGetTableSchemaInput,
     "supabase.custom_api_call": SupabaseCustomApiCallInput,
     "surveymonkey.list_surveys": SurveymonkeyListSurveysInput,
     "surveymonkey.get_survey": SurveymonkeyGetSurveyInput,
