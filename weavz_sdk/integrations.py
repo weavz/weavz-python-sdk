@@ -23920,6 +23920,7 @@ class StorageReadFileInput(BaseModel):
     path: str = Field(..., description="File path within the storage scope (e.g. 'config.json', 'data/users.csv')")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
     externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    outputEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
 
     model_config = {"populate_by_name": True}
 
@@ -23929,6 +23930,7 @@ class StorageWriteFileInput(BaseModel):
     path: str = Field(..., description="File path within the storage scope")
     content: str = Field(..., description="File content to write")
     contentType: Optional[str] = Field(None, description="MIME type (e.g. 'application/json', 'text/plain')")
+    contentEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
     externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
 
@@ -28581,6 +28583,153 @@ class ZohoInvoiceCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ZohoMailListAccountsInput(BaseModel):
+    """Zoho Mail — List Accounts"""
+    pass
+
+
+class ZohoMailGetAccountInput(BaseModel):
+    """Zoho Mail — Get Account"""
+    accountId: str = Field(..., description="Account")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailListFoldersInput(BaseModel):
+    """Zoho Mail — List Folders"""
+    accountId: str = Field(..., description="Account")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailCreateFolderInput(BaseModel):
+    """Zoho Mail — Create Folder"""
+    accountId: str = Field(..., description="Account")
+    folderName: str = Field(..., description="Folder Name")
+    parentFolderId: Optional[str] = Field(None, description="Parent Folder")
+    parentFolderPath: Optional[str] = Field(None, description="Optional path such as /Projects.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailListLabelsInput(BaseModel):
+    """Zoho Mail — List Labels"""
+    accountId: str = Field(..., description="Account")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailCreateLabelInput(BaseModel):
+    """Zoho Mail — Create Label"""
+    accountId: str = Field(..., description="Account")
+    displayName: str = Field(..., description="Display Name")
+    color: Optional[str] = Field(None, description="Hex color such as #22c55e.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailUpdateLabelInput(BaseModel):
+    """Zoho Mail — Update Label"""
+    accountId: str = Field(..., description="Account")
+    labelId: str = Field(..., description="Label")
+    displayName: Optional[str] = Field(None, description="Display Name")
+    color: Optional[str] = Field(None, description="Hex color such as #22c55e.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailDeleteLabelInput(BaseModel):
+    """Zoho Mail — Delete Label"""
+    accountId: str = Field(..., description="Account")
+    labelId: str = Field(..., description="Label")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailListEmailsInput(BaseModel):
+    """Zoho Mail — List Emails"""
+    accountId: str = Field(..., description="Account")
+    folderId: Optional[str] = Field(None, description="Folder")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 200.")
+    status: Optional[str] = Field(None, description="Read Status")
+    sortBy: Optional[str] = Field(None, description="Sort By")
+    sortorder: Optional[bool] = Field(None, description="Sort Ascending")
+    includeto: Optional[bool] = Field(None, description="Include To Details")
+    includesent: Optional[bool] = Field(None, description="Include Sent Emails")
+    includearchive: Optional[bool] = Field(None, description="Include Archived Emails")
+    attachedMails: Optional[bool] = Field(None, description="Only Emails with Attachments")
+    flaggedMails: Optional[bool] = Field(None, description="Only Flagged Emails")
+    labelid: Optional[str] = Field(None, description="Label ID")
+    threadId: Optional[str] = Field(None, description="Thread ID")
+    flagid: Optional[float] = Field(None, description="0 none, 1 info, 2 important, 3 followup.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailSearchEmailsInput(BaseModel):
+    """Zoho Mail — Search Emails"""
+    accountId: str = Field(..., description="Account")
+    searchKey: str = Field(..., description="Zoho Mail search syntax, e.g. newMails or from:person@example.com.")
+    receivedTime: Optional[float] = Field(None, description="Unix timestamp in milliseconds.")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 200.")
+    includeto: Optional[bool] = Field(None, description="Include To Details")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailGetEmailContentInput(BaseModel):
+    """Zoho Mail — Get Email Content"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    includeBlockContent: Optional[bool] = Field(None, description="Include Block Content")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailGetEmailHeadersInput(BaseModel):
+    """Zoho Mail — Get Email Headers"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailGetAttachmentInfoInput(BaseModel):
+    """Zoho Mail — Get Attachment Info"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    includeInline: Optional[bool] = Field(None, description="Include Inline Attachments")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailDownloadAttachmentInput(BaseModel):
+    """Zoho Mail — Download Attachment"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    attachmentId: str = Field(..., description="From get_attachment_info.")
+    fileName: Optional[str] = Field(None, description="Used in the storageWriteInput helper path.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailDownloadInlineImageInput(BaseModel):
+    """Zoho Mail — Download Inline Image"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    contentId: str = Field(..., description="Inline content ID from get_attachment_info.")
+    fileName: str = Field(..., description="File Name")
+
+    model_config = {"populate_by_name": True}
+
+
 class ZohoMailGetEmailDetailsInput(BaseModel):
     """Zoho Mail — Get Email Details"""
     accountId: str = Field(..., description="Account")
@@ -28594,16 +28743,16 @@ class ZohoMailMarkEmailAsReadInput(BaseModel):
     """Zoho Mail — Mark Email as Read"""
     accountId: str = Field(..., description="Account")
     folderId: str = Field(..., description="Folder")
-    messageId: str = Field(..., description="The ID of the email message to mark as read.")
+    messageId: str = Field(..., description="The ID of the email message.")
 
     model_config = {"populate_by_name": True}
 
 
 class ZohoMailMarkEmailAsUnreadInput(BaseModel):
-    """Zoho Mail — Mark Emai as Unread"""
+    """Zoho Mail — Mark Email as Unread"""
     accountId: str = Field(..., description="Account")
     folderId: str = Field(..., description="Folder")
-    messageId: str = Field(..., description="The ID of the email message to mark as unread.")
+    messageId: str = Field(..., description="The ID of the email message.")
 
     model_config = {"populate_by_name": True}
 
@@ -28612,7 +28761,7 @@ class ZohoMailArchiveEmailInput(BaseModel):
     """Zoho Mail — Archive Email"""
     accountId: str = Field(..., description="Account")
     folderId: str = Field(..., description="Folder")
-    messageId: str = Field(..., description="The ID of the email message to archive.")
+    messageId: str = Field(..., description="The ID of the email message.")
 
     model_config = {"populate_by_name": True}
 
@@ -28621,7 +28770,66 @@ class ZohoMailUnarchiveEmailInput(BaseModel):
     """Zoho Mail — Unarchive Email"""
     accountId: str = Field(..., description="Account")
     folderId: str = Field(..., description="Folder")
-    messageId: str = Field(..., description="The ID of the email message to unarchive.")
+    messageId: str = Field(..., description="The ID of the email message.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailFlagEmailInput(BaseModel):
+    """Zoho Mail — Flag Email"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    flagid: str = Field(..., description="Flag")
+    includeArchived: Optional[bool] = Field(None, description="Include Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailApplyLabelInput(BaseModel):
+    """Zoho Mail — Apply Label"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    labelId: str = Field(..., description="Label")
+    includeArchived: Optional[bool] = Field(None, description="Include Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailRemoveLabelInput(BaseModel):
+    """Zoho Mail — Remove Label"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+    labelId: str = Field(..., description="Label")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailRemoveAllLabelsInput(BaseModel):
+    """Zoho Mail — Remove All Labels"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailMarkEmailAsSpamInput(BaseModel):
+    """Zoho Mail — Mark Email as Spam"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="The ID of the email message.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailMarkEmailAsNotSpamInput(BaseModel):
+    """Zoho Mail — Mark Email as Not Spam"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="The ID of the email message.")
 
     model_config = {"populate_by_name": True}
 
@@ -28632,6 +28840,25 @@ class ZohoMailMoveEmailInput(BaseModel):
     folderId: str = Field(..., description="Current Folder")
     messageId: str = Field(..., description="The ID of the email message to move.")
     destfolderId: str = Field(..., description="Select the folder to move the email to.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailDeleteEmailInput(BaseModel):
+    """Zoho Mail — Delete Email"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Folder")
+    messageId: str = Field(..., description="The ID of the email message to delete.")
+    expunge: Optional[bool] = Field(None, description="Delete Permanently")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoMailUploadAttachmentInput(BaseModel):
+    """Zoho Mail — Upload Attachment"""
+    accountId: str = Field(..., description="Account")
+    attachment: str = Field(..., description="Attachment")
+    attachmentName: Optional[str] = Field(None, description="Attachment Name")
 
     model_config = {"populate_by_name": True}
 
@@ -28653,18 +28880,34 @@ class ZohoMailSendEmailInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ZohoMailReplyEmailInput(BaseModel):
+    """Zoho Mail — Reply to Email"""
+    accountId: str = Field(..., description="Account")
+    folderId: str = Field(..., description="Used only to select the message.")
+    messageId: str = Field(..., description="The ID of the email message to reply to.")
+    fromAddress: str = Field(..., description="From Email Address")
+    toAddress: str = Field(..., description="To Email Address")
+    subject: str = Field(..., description="Subject")
+    mailFormat: str = Field(..., description="Mail Format")
+    content: str = Field(..., description="Content")
+    ccAddress: Optional[str] = Field(None, description="CC Email Address")
+    bccAddress: Optional[str] = Field(None, description="BCC Email Address")
+    askReceipt: Optional[str] = Field(None, description="Ask for Read Receipt")
+    attachment: Optional[str] = Field(None, description="Attachment")
+    attachmentName: Optional[str] = Field(None, description="Attachment Name")
+
+    model_config = {"populate_by_name": True}
+
+
 class ZohoMailCustomApiCallInput(BaseModel):
     """Zoho Mail — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="Zoho Mail API path such as /accounts, or a full Zoho Mail API URL.")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization is injected automatically.")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    body: Optional[Any] = Field(None, description="Body")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
 
     model_config = {"populate_by_name": True}
 
@@ -31740,13 +31983,37 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "zoho-invoice.send_invoice": ZohoInvoiceSendInvoiceInput,
     "zoho-invoice.list_customers": ZohoInvoiceListCustomersInput,
     "zoho-invoice.custom_api_call": ZohoInvoiceCustomApiCallInput,
+    "zoho-mail.list_accounts": ZohoMailListAccountsInput,
+    "zoho-mail.get_account": ZohoMailGetAccountInput,
+    "zoho-mail.list_folders": ZohoMailListFoldersInput,
+    "zoho-mail.create_folder": ZohoMailCreateFolderInput,
+    "zoho-mail.list_labels": ZohoMailListLabelsInput,
+    "zoho-mail.create_label": ZohoMailCreateLabelInput,
+    "zoho-mail.update_label": ZohoMailUpdateLabelInput,
+    "zoho-mail.delete_label": ZohoMailDeleteLabelInput,
+    "zoho-mail.list_emails": ZohoMailListEmailsInput,
+    "zoho-mail.search_emails": ZohoMailSearchEmailsInput,
+    "zoho-mail.get_email_content": ZohoMailGetEmailContentInput,
+    "zoho-mail.get_email_headers": ZohoMailGetEmailHeadersInput,
+    "zoho-mail.get_attachment_info": ZohoMailGetAttachmentInfoInput,
+    "zoho-mail.download_attachment": ZohoMailDownloadAttachmentInput,
+    "zoho-mail.download_inline_image": ZohoMailDownloadInlineImageInput,
     "zoho-mail.get_email_details": ZohoMailGetEmailDetailsInput,
     "zoho-mail.mark_email_as_read": ZohoMailMarkEmailAsReadInput,
     "zoho-mail.mark_email_as_unread": ZohoMailMarkEmailAsUnreadInput,
     "zoho-mail.archive_email": ZohoMailArchiveEmailInput,
     "zoho-mail.unarchive_email": ZohoMailUnarchiveEmailInput,
+    "zoho-mail.flag_email": ZohoMailFlagEmailInput,
+    "zoho-mail.apply_label": ZohoMailApplyLabelInput,
+    "zoho-mail.remove_label": ZohoMailRemoveLabelInput,
+    "zoho-mail.remove_all_labels": ZohoMailRemoveAllLabelsInput,
+    "zoho-mail.mark_email_as_spam": ZohoMailMarkEmailAsSpamInput,
+    "zoho-mail.mark_email_as_not_spam": ZohoMailMarkEmailAsNotSpamInput,
     "zoho-mail.move_email": ZohoMailMoveEmailInput,
+    "zoho-mail.delete_email": ZohoMailDeleteEmailInput,
+    "zoho-mail.upload_attachment": ZohoMailUploadAttachmentInput,
     "zoho-mail.send_email": ZohoMailSendEmailInput,
+    "zoho-mail.reply_email": ZohoMailReplyEmailInput,
     "zoho-mail.custom_api_call": ZohoMailCustomApiCallInput,
     "zoom.zoom_create_meeting": ZoomZoomCreateMeetingInput,
     "zoom.zoom_create_meeting_registrant": ZoomZoomCreateMeetingRegistrantInput,
