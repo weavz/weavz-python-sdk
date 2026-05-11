@@ -15468,9 +15468,9 @@ class MailchimpAddMemberToListInput(BaseModel):
     """Mailchimp — Add or Update Subscriber"""
     list_id: str = Field(..., description="Audience you want to add the contact to")
     email_address: str = Field(..., description="Email address for the subscriber")
-    status_if_new: str = Field(..., description="Status for new subscribers")
+    status_if_new: str = Field(..., description="Status if New")
     email_type: Optional[str] = Field(None, description="Type of email this member wants to receive")
-    status: Optional[str] = Field(None, description="Current status of subscriber (for updates)")
+    status: Optional[str] = Field(None, description="Status")
     first_name: Optional[str] = Field(None, description="First name of the subscriber")
     last_name: Optional[str] = Field(None, description="Last name of the subscriber")
     language: Optional[str] = Field(None, description="Subscriber language (e.g., 'en', 'es', 'fr')")
