@@ -8,6 +8,7 @@ Bootstrap: creates an API key via service key auth, then uses it for all tests.
 """
 from __future__ import annotations
 
+import os
 from typing import Optional
 
 import httpx
@@ -15,7 +16,7 @@ import pytest
 
 from weavz_sdk import WeavzClient, WeavzError
 
-BASE_URL = "http://localhost:3000"
+BASE_URL = os.environ.get("TEST_API_URL", "http://localhost:3000")
 SERVICE_KEY = "local-test-service-key-12345"
 TEST_ORG_ID = ""
 
@@ -308,7 +309,7 @@ class TestTriggers:
         assert isinstance(result["triggers"], list)
 
     def test_sample_trigger_data(self):
-        result = _client.triggers.test("slack", "new-message")
+        result = _client.triggers.test("slack", "new_message")
         assert "sampleData" in result
 
 

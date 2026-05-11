@@ -849,13 +849,20 @@ class WeavzClient:
             if response.is_success:
                 return response.json()
 
+            body: dict[str, Any] = {}
+            error_text = ""
             try:
-                body = response.json()
+                if "application/json" in response.headers.get("content-type", ""):
+                    parsed = response.json()
+                    if isinstance(parsed, dict):
+                        body = parsed
+                else:
+                    error_text = response.text
             except Exception:
-                body = {}
+                pass
 
             last_error = WeavzError(
-                body.get("error", f"HTTP {response.status_code}"),
+                body.get("error", error_text or f"HTTP {response.status_code}"),
                 code=body.get("code", "HTTP_ERROR"),
                 status=response.status_code,
                 details=body.get("details"),

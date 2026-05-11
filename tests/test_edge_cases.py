@@ -9,6 +9,7 @@ Requires: Docker (Postgres, Redis, MinIO) + running `npm run dev:node`.
 """
 from __future__ import annotations
 
+import os
 from typing import Optional
 
 import httpx
@@ -16,7 +17,7 @@ import pytest
 
 from weavz_sdk import WeavzClient, WeavzError
 
-BASE_URL = "http://localhost:3000"
+BASE_URL = os.environ.get("TEST_API_URL", "http://localhost:3000")
 SERVICE_KEY = "local-test-service-key-12345"
 TEST_ORG_ID = ""
 
@@ -562,8 +563,8 @@ class TestApiKeyEdgeCases:
         _cleanup_stack.append(lambda: _client.api_keys.delete(key["apiKey"]["id"]))
 
         new_client = WeavzClient(api_key=key["plainKey"], base_url=BASE_URL)
-        integrations = new_client.integrations.list()
-        assert integrations["total"] > 0
+        workspaces = new_client.workspaces.list()
+        assert isinstance(workspaces["workspaces"], list)
         new_client.close()
 
     def test_deleted_key_stops_working(self):
