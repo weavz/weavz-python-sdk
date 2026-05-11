@@ -18262,7 +18262,7 @@ class OdooCreateCompanyInput(BaseModel):
 class OdooGetRecordsInput(BaseModel):
     """Odoo — Custom Search and read records"""
     model: str = Field(..., description="Model name. e.g.: res.partner")
-    domain: Optional[Any] = Field(None, description="A domain is a list of criteria, each criterion being a triple of (field_name, operator, value). See https://www.odoo.com/documentation/17.0/developer/reference/backend/orm.html#reference-orm-domains for details.")
+    domain: Optional[Any] = Field(None, description="A domain is a list of criteria, each criterion being a triple of (field_name, operator, value).")
     fields: Optional[list[Any]] = Field(None, description="Returns the requested fields of the records. When undefined, returns all fields.")
     offset: Optional[float] = Field(None, description="Offset")
     limit: Optional[float] = Field(None, description="Limit")
@@ -18290,7 +18290,7 @@ class OdooUpdateRecordInput(BaseModel):
 class OdooCustomOdooApiCallInput(BaseModel):
     """Odoo — Custom API Call"""
     model: str = Field(..., description="The Odoo model to interact with (e.g., res.partner, product.product)")
-    method: str = Field(..., description="The method to call on the model (e.g., search_read, create, write)")
+    method: str = Field(..., description="The method to call on the model")
     method_params: dict[str, Any] = Field(..., description="method_params")
 
     model_config = {"populate_by_name": True}
