@@ -281,6 +281,7 @@ class TriggersResource(_BaseResource):
         callback_headers: dict[str, str] | None = None,
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
+        workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         partial_ids: list[str] | None = None,
@@ -298,6 +299,8 @@ class TriggersResource(_BaseResource):
             body["callbackMetadata"] = callback_metadata
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -506,6 +509,7 @@ class IntegrationsResource(_BaseResource):
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
         workspace_id: str | None = None,
+        workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         search_value: str | None = None,
@@ -519,6 +523,8 @@ class IntegrationsResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if workspace_id is not None:
             body["workspaceId"] = workspace_id
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -538,6 +544,7 @@ class IntegrationsResource(_BaseResource):
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
         workspace_id: str | None = None,
+        workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
     ) -> Any:
@@ -550,6 +557,8 @@ class IntegrationsResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if workspace_id is not None:
             body["workspaceId"] = workspace_id
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
