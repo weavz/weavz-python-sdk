@@ -490,47 +490,6 @@ class ApiKeysResource(_BaseResource):
         return self._delete(f"/api/v1/api-keys/{key_id}")
 
 
-class MembersResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/members")
-
-    def create(
-        self,
-        *,
-        user_id: str,
-        role: str = "member",
-    ) -> dict[str, Any]:
-        return self._post(
-            "/api/v1/members", json={"userId": user_id, "role": role}
-        )
-
-    def update(self, member_id: str, *, role: str) -> dict[str, Any]:
-        return self._patch(f"/api/v1/members/{member_id}", json={"role": role})
-
-    def delete(self, member_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/members/{member_id}")
-
-
-class WorkspaceMembersResource(_BaseResource):
-    def create(
-        self,
-        *,
-        workspace_id: str,
-        member_id: str,
-        role: str | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {
-            "workspaceId": workspace_id,
-            "memberId": member_id,
-        }
-        if role is not None:
-            body["role"] = role
-        return self._post("/api/v1/workspace-members", json=body)
-
-    def delete(self, workspace_member_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/workspace-members/{workspace_member_id}")
-
-
 class IntegrationsResource(_BaseResource):
     def list(self) -> dict[str, Any]:
         return self._get("/api/v1/integrations")
@@ -767,28 +726,6 @@ class EndUsersResource(_BaseResource):
         )
 
 
-class InvitationsResource(_BaseResource):
-    """Organization invitations."""
-
-    def send(
-        self,
-        email: str,
-        organization_id: str,
-        role: str = "member",
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {"email": email, "organizationId": organization_id, "role": role}
-        return self._post("/api/v1/members/invite", json=body)
-
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/members/invitations")
-
-    def revoke(self, invitation_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/members/invitations/{invitation_id}")
-
-    def accept(self, invitation_id: str) -> dict[str, Any]:
-        return self._post(f"/api/v1/members/invitations/{invitation_id}/accept")
-
-
 class WeavzClient:
     """Weavz API client.
 
@@ -824,11 +761,8 @@ class WeavzClient:
         self.triggers = TriggersResource(self)
         self.mcp_servers = McpServersResource(self)
         self.api_keys = ApiKeysResource(self)
-        self.members = MembersResource(self)
-        self.workspace_members = WorkspaceMembersResource(self)
         self.integrations = IntegrationsResource(self)
         self.partials = PartialsResource(self)
-        self.invitations = InvitationsResource(self)
         self.end_users = EndUsersResource(self)
 
     def request(
