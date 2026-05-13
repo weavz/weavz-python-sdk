@@ -697,11 +697,14 @@ class EndUsersResource(_BaseResource):
         end_user_id: str,
         *,
         integration_name: str | None = None,
+        workspace_integration_id: str | None = None,
         expires_in: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if integration_name is not None:
             body["integrationName"] = integration_name
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if expires_in is not None:
             body["expiresIn"] = expires_in
         return self._post(
@@ -714,11 +717,14 @@ class EndUsersResource(_BaseResource):
         *,
         email: str,
         integration_name: str | None = None,
+        workspace_integration_id: str | None = None,
         expires_in: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"email": email}
         if integration_name is not None:
             body["integrationName"] = integration_name
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if expires_in is not None:
             body["expiresIn"] = expires_in
         return self._post(
