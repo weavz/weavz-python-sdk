@@ -28,6 +28,7 @@ _workspace_id: str = ""
 _connection_id: str = ""
 _mcp_server_id: str = ""
 _integration_instance_id: str = ""
+_openai_integration_instance_id: str = ""
 
 
 def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
@@ -42,6 +43,21 @@ def _service_key_request(method: str, path: str, json: Optional[dict] = None) ->
         json=json,
         timeout=15.0,
     )
+
+
+def _ensure_openai_workspace_integration() -> None:
+    """Partials are valid only for integrations configured in the workspace."""
+    global _openai_integration_instance_id
+    if _openai_integration_instance_id:
+        return
+    result = _client.workspaces.add_integration(
+        _workspace_id,
+        integration_name="openai",
+        integration_alias="openai_primary",
+        connection_strategy="fixed",
+        connection_id=_connection_id,
+    )
+    _openai_integration_instance_id = result["integration"]["id"]
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -75,6 +91,11 @@ def setup_client():
     yield
 
     # Cleanup
+    try:
+        if _openai_integration_instance_id and _workspace_id:
+            _client.workspaces.remove_integration(_workspace_id, _openai_integration_instance_id)
+    except Exception:
+        pass
     try:
         if _integration_instance_id and _workspace_id:
             _client.workspaces.remove_integration(_workspace_id, _integration_instance_id)
@@ -270,7 +291,7 @@ class TestMcpServers:
         result = _client.mcp_servers.add_tool(
             _mcp_server_id,
             integration_name="openai",
-            action_name="ask_chatgpt",
+            action_name="chat_completion",
         )
         assert "tool" in result
         TestMcpServers._tool_id = result["tool"]["id"]
@@ -319,6 +340,7 @@ class TestPartials:
     _partial_id: str = ""
 
     def test_create_partial(self):
+        _ensure_openai_workspace_integration()
         result = _client.partials.create(
             _workspace_id,
             "openai",
@@ -381,12 +403,12 @@ class TestPartials:
         result = _client.partials.create(
             _workspace_id,
             "openai",
-            "Ask ChatGPT Defaults",
-            action_name="ask_chatgpt",
+            "Chat Completion Defaults",
+            action_name="chat_completion",
             values={"model": "gpt-4o"},
         )
         assert "partial" in result
-        assert result["partial"]["actionName"] == "ask_chatgpt"
+        assert result["partial"]["actionName"] == "chat_completion"
         # Cleanup
         _client.partials.delete(result["partial"]["id"])
 
