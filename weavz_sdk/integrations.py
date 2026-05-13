@@ -105,7 +105,7 @@ class ActivecampaignCreateContactInput(BaseModel):
     firstName: Optional[str] = Field(None, description="Contact first name")
     lastName: Optional[str] = Field(None, description="Contact last name")
     phone: Optional[str] = Field(None, description="Contact phone number")
-    fieldValues: Optional[Any] = Field(None, description="Custom field values as JSON array, e.g. [{'field': '1', 'value': 'custom value'}]")
+    fieldValues: Optional[Any] = Field(None, description="Custom field values as JSON array, e.g. [{\"field\": \"1\", \"value\": \"custom value\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -131,7 +131,7 @@ class ActivecampaignFindContactInput(BaseModel):
 class ActivecampaignSubscribeContactInput(BaseModel):
     """ActiveCampaign — Subscribe Contact to List"""
     contact_id: str = Field(..., description="Contact ID")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
     status: str = Field(..., description="Subscription status")
 
     model_config = {"populate_by_name": True}
@@ -400,7 +400,7 @@ class AffinityCreatePersonInput(BaseModel):
     """Affinity — Create Person"""
     first_name: str = Field(..., description="First Name")
     last_name: str = Field(..., description="Last Name")
-    emails: Optional[Any] = Field(None, description="Array of email addresses (e.g. ['a@b.com'])")
+    emails: Optional[Any] = Field(None, description="Array of email addresses (e.g. [\"a@b.com\"])")
 
     model_config = {"populate_by_name": True}
 
@@ -544,7 +544,7 @@ class AgentMemoryCreateEntitiesInput(BaseModel):
     """Agent Memory — Create Entities"""
     entities: Any = Field(..., description="Array of entities to create. Each entity: { name: string, type: string, observations?: string[] }")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -553,7 +553,7 @@ class AgentMemoryAddObservationsInput(BaseModel):
     """Agent Memory — Add Observations"""
     observations: Any = Field(..., description="Array of observation batches. Each: { entityName: string, contents: string[] }")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -562,7 +562,7 @@ class AgentMemoryCreateRelationsInput(BaseModel):
     """Agent Memory — Create Relations"""
     relations: Any = Field(..., description="Array of relations. Each: { from: string, to: string, type: string }")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -571,7 +571,7 @@ class AgentMemorySearchInput(BaseModel):
     """Agent Memory — Search"""
     query: str = Field(..., description="Text to search for in entity names, types, and observations")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -579,7 +579,7 @@ class AgentMemorySearchInput(BaseModel):
 class AgentMemoryReadGraphInput(BaseModel):
     """Agent Memory — Read Graph"""
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -588,7 +588,7 @@ class AgentMemoryGetEntityInput(BaseModel):
     """Agent Memory — Get Entity"""
     name: str = Field(..., description="Name of the entity to retrieve")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -597,7 +597,7 @@ class AgentMemoryDeleteEntitiesInput(BaseModel):
     """Agent Memory — Delete Entities"""
     names: Any = Field(..., description="Array of entity names to delete (string array)")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -607,7 +607,7 @@ class AgentMemoryDeleteObservationsInput(BaseModel):
     entityName: str = Field(..., description="Name of the entity to remove observations from")
     observations: Any = Field(..., description="Array of observation strings to remove")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -616,7 +616,7 @@ class AgentMemoryDeleteRelationsInput(BaseModel):
     """Agent Memory — Delete Relations"""
     relations: Any = Field(..., description="Array of relations to delete. Each: { from: string, to: string, type: string }")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -625,7 +625,7 @@ class AgentScratchpadReadPageInput(BaseModel):
     """Agent Scratchpad — Read Page"""
     pageName: str = Field(..., description="Name of the page to read")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -635,7 +635,7 @@ class AgentScratchpadWritePageInput(BaseModel):
     pageName: str = Field(..., description="Name of the page to write")
     content: str = Field(..., description="Content to write to the page")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -645,7 +645,7 @@ class AgentScratchpadAppendPageInput(BaseModel):
     pageName: str = Field(..., description="Name of the page to append to")
     content: str = Field(..., description="Content to append to the page")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -653,7 +653,7 @@ class AgentScratchpadAppendPageInput(BaseModel):
 class AgentScratchpadListPagesInput(BaseModel):
     """Agent Scratchpad — List Pages"""
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -662,7 +662,7 @@ class AgentScratchpadSearchPagesInput(BaseModel):
     """Agent Scratchpad — Search Pages"""
     query: str = Field(..., description="Text to search for across all pages")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -671,7 +671,7 @@ class AgentScratchpadDeletePageInput(BaseModel):
     """Agent Scratchpad — Delete Page"""
     pageName: str = Field(..., description="Name of the page to delete")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -679,7 +679,7 @@ class AgentScratchpadDeletePageInput(BaseModel):
 class AgentScratchpadClearAllInput(BaseModel):
     """Agent Scratchpad — Clear All Pages"""
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -721,7 +721,7 @@ class AhrefsCustomApiCallInput(BaseModel):
 class AiToolkitExtractStructuredDataInput(BaseModel):
     """AI Toolkit — Extract Structured Data"""
     text: str = Field(..., description="Text to extract data from")
-    schema: Any = Field(..., description="Zod-compatible schema object defining the expected output structure (e.g., {'name': 'string', 'age': 'number'})")
+    schema_: Any = Field(..., alias="schema", description="Zod-compatible schema object defining the expected output structure (e.g., {\"name\": \"string\", \"age\": \"number\"})")
     instructions: Optional[str] = Field(None, description="Optional additional context or instructions for the AI")
 
     model_config = {"populate_by_name": True}
@@ -730,7 +730,7 @@ class AiToolkitExtractStructuredDataInput(BaseModel):
 class AiToolkitClassifyTextInput(BaseModel):
     """AI Toolkit — Classify Text"""
     text: str = Field(..., description="Text to classify")
-    categories: list[Any] = Field(..., description="Array of category labels (e.g., ['positive', 'negative', 'neutral'])")
+    categories: list[Any] = Field(..., description="Array of category labels (e.g., [\"positive\", \"negative\", \"neutral\"])")
     instructions: Optional[str] = Field(None, description="Optional additional context or classification criteria")
 
     model_config = {"populate_by_name": True}
@@ -739,16 +739,16 @@ class AiToolkitClassifyTextInput(BaseModel):
 class AiToolkitTransformDataInput(BaseModel):
     """AI Toolkit — Transform Data"""
     input: Any = Field(..., description="Data to transform (any JSON-serializable value)")
-    instructions: str = Field(..., description="Natural language description of how to transform the data (e.g., 'Convert all field names to camelCase', 'Extract only users with status active')")
-    outputSchema: Optional[Any] = Field(None, description="Optional Zod-compatible schema for the output (e.g., {'users': 'array', 'count': 'number'}). If omitted, AI decides the structure.")
+    instructions: str = Field(..., description="Natural language description of how to transform the data (e.g., \"Convert all field names to camelCase\", \"Extract only users with status active\")")
+    outputSchema: Optional[Any] = Field(None, description="Optional Zod-compatible schema for the output (e.g., {\"users\": \"array\", \"count\": \"number\"}). If omitted, AI decides the structure.")
 
     model_config = {"populate_by_name": True}
 
 
 class AiToolkitGenerateTextInput(BaseModel):
     """AI Toolkit — Generate Text"""
-    template: str = Field(..., description="Text template or prompt (e.g., 'Write a product description for {{productName}}')")
-    context: Optional[Any] = Field(None, description="Context variables to fill into the template (e.g., {'productName': 'Widget Pro', 'features': ['Fast', 'Reliable']})")
+    template: str = Field(..., description="Text template or prompt (e.g., \"Write a product description for {{productName}}\")")
+    context: Optional[Any] = Field(None, description="Context variables to fill into the template (e.g., {\"productName\": \"Widget Pro\", \"features\": [\"Fast\", \"Reliable\"]})")
     maxLength: Optional[float] = Field(None, description="Maximum length in characters (approximate). If omitted, AI decides length.")
 
     model_config = {"populate_by_name": True}
@@ -802,7 +802,7 @@ class AirtableCreateRecordInput(BaseModel):
     """Airtable — Create Record"""
     base: str = Field(..., description="Base")
     table: str = Field(..., description="Table")
-    fields: Any = Field(..., description="JSON object mapping field names to values, e.g. {'Name': 'John', 'Email': 'john@example.com'}")
+    fields: Any = Field(..., description="JSON object mapping field names to values, e.g. {\"Name\": \"John\", \"Email\": \"john@example.com\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -811,9 +811,9 @@ class AirtableFindRecordInput(BaseModel):
     """Airtable — Find Record"""
     base: str = Field(..., description="Base")
     table: str = Field(..., description="Table")
-    filter_by_formula: str = Field(..., description="Airtable formula to filter records, e.g. {Email}='john@example.com'")
+    filter_by_formula: str = Field(..., description="Airtable formula to filter records, e.g. {Email}=\"john@example.com\"")
     max_records: Optional[float] = Field(None, description="Max Records")
-    sort: Optional[Any] = Field(None, description="Sort array, e.g. [{'field': 'Name', 'direction': 'asc'}]")
+    sort: Optional[Any] = Field(None, description="Sort array, e.g. [{\"field\": \"Name\", \"direction\": \"asc\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -853,7 +853,7 @@ class AirtableListRecordsInput(BaseModel):
     view: Optional[str] = Field(None, description="View")
     filter_by_formula: Optional[str] = Field(None, description="Airtable formula to filter records")
     max_records: Optional[float] = Field(None, description="Max Records")
-    sort: Optional[Any] = Field(None, description="Sort array, e.g. [{'field': 'Name', 'direction': 'asc'}]")
+    sort: Optional[Any] = Field(None, description="Sort array, e.g. [{\"field\": \"Name\", \"direction\": \"asc\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -862,7 +862,7 @@ class AirtableCreateTableInput(BaseModel):
     """Airtable — Create Table"""
     base: str = Field(..., description="Base")
     name: str = Field(..., description="Table Name")
-    fields: Any = Field(..., description="Array of field definitions, e.g. [{'name': 'Name', 'type': 'singleLineText'}, {'name': 'Notes', 'type': 'multilineText'}]")
+    fields: Any = Field(..., description="Array of field definitions, e.g. [{\"name\": \"Name\", \"type\": \"singleLineText\"}, {\"name\": \"Notes\", \"type\": \"multilineText\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -942,7 +942,7 @@ class AmazonS3UploadFileInput(BaseModel):
     file: str = Field(..., description="The file to upload to S3.")
     fileName: Optional[str] = Field(None, description="File Name (Optional)")
     acl: Optional[str] = Field(None, description="Access Control (ACL)")
-    type: Optional[str] = Field(None, description="Content Type")
+    type_: Optional[str] = Field(None, alias="type", description="Content Type")
 
     model_config = {"populate_by_name": True}
 
@@ -1235,7 +1235,7 @@ class ClaudeExtractStructuredDataInput(BaseModel):
     image: Optional[str] = Field(None, description="Image or PDF to extract structured data from.")
     prompt: Optional[str] = Field(None, description="Prompt to guide the AI.")
     mode: str = Field(..., description="For complex schema, you can use advanced mode.")
-    schema: dict[str, Any] = Field(..., description="Data Definition")
+    schema_: dict[str, Any] = Field(..., alias="schema", description="Data Definition")
     maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
 
     model_config = {"populate_by_name": True}
@@ -1349,7 +1349,7 @@ class ApolloOrganizationSearchInput(BaseModel):
     q_organization_name: Optional[str] = Field(None, description="Search by organization name")
     organization_locations: Optional[list[Any]] = Field(None, description="Filter by locations (e.g., texas, tokyo)")
     organization_not_locations: Optional[list[Any]] = Field(None, description="Exclude specific locations (e.g., minnesota)")
-    organization_num_employees_ranges: Optional[list[Any]] = Field(None, description="Filter by employee count ranges (e.g., '1,10', '250,500')")
+    organization_num_employees_ranges: Optional[list[Any]] = Field(None, description="Filter by employee count ranges (e.g., \"1,10\", \"250,500\")")
     organization_ids: Optional[list[Any]] = Field(None, description="Filter by specific organization IDs")
     q_organization_domains: Optional[list[Any]] = Field(None, description="Filter by organization domains")
     organization_industry_tag_ids: Optional[list[Any]] = Field(None, description="Filter by industry tag IDs")
@@ -1361,11 +1361,11 @@ class ApolloOrganizationSearchInput(BaseModel):
 class ApolloPeopleSearchInput(BaseModel):
     """Apollo — People Search"""
     q_keywords: Optional[str] = Field(None, description="Search keywords for people")
-    person_titles: Optional[list[Any]] = Field(None, description="Filter by job titles (e.g., 'CEO', 'Sales Manager')")
+    person_titles: Optional[list[Any]] = Field(None, description="Filter by job titles (e.g., \"CEO\", \"Sales Manager\")")
     person_locations: Optional[list[Any]] = Field(None, description="Filter by person locations")
-    person_seniorities: Optional[list[Any]] = Field(None, description="Filter by seniority levels (e.g., 'senior', 'manager', 'director')")
+    person_seniorities: Optional[list[Any]] = Field(None, description="Filter by seniority levels (e.g., \"senior\", \"manager\", \"director\")")
     organization_ids: Optional[list[Any]] = Field(None, description="Filter by specific organization IDs")
-    organization_num_employees_ranges: Optional[list[Any]] = Field(None, description="Filter by organization employee count ranges (e.g., '1,10', '250,500')")
+    organization_num_employees_ranges: Optional[list[Any]] = Field(None, description="Filter by organization employee count ranges (e.g., \"1,10\", \"250,500\")")
     q_organization_domains: Optional[list[Any]] = Field(None, description="Filter by organization domains")
     organization_locations: Optional[list[Any]] = Field(None, description="Filter by organization locations")
     cacheResponse: Optional[bool] = Field(None, description="Store the response in the project store for future use.")
@@ -1447,7 +1447,7 @@ class AppwriteCreateDocumentInput(BaseModel):
     """Appwrite — Create Document"""
     databaseId: str = Field(..., description="Database ID")
     collectionId: str = Field(..., description="Collection ID")
-    documentId: str = Field(..., description="Custom ID or 'unique()' for auto-generated")
+    documentId: str = Field(..., description="Custom ID or \"unique()\" for auto-generated")
     data: str = Field(..., description="JSON object with document fields")
 
     model_config = {"populate_by_name": True}
@@ -2159,7 +2159,7 @@ class AzureDevopsCreateWorkItemInput(BaseModel):
     """Azure DevOps — Create Work Item"""
     organization: str = Field(..., description="Organization")
     project: str = Field(..., description="Project")
-    type: str = Field(..., description="Work Item Type")
+    type_: str = Field(..., alias="type", description="Work Item Type")
     title: str = Field(..., description="Title")
     description: Optional[str] = Field(None, description="Description")
     assignedTo: Optional[str] = Field(None, description="Display name or email")
@@ -2412,7 +2412,7 @@ class BaserowBaserowListRowsInput(BaseModel):
     table_id: float = Field(..., description="Please enter the table ID where you want to get the rows from. You can find the ID by clicking on the three dots next to the table. It's the number between brackets.")
     limit: Optional[float] = Field(None, description="The maximum number of rows to return.")
     search: Optional[str] = Field(None, description="If provided only rows with cell data that matches the search query are going to be returned.")
-    order_by: Optional[str] = Field(None, description="If provided rows will be order by specific field.Use **-** sign for descending / **+** sing for ascending ordering.         Example. '-My Field' will return rows in descending order based on 'My Field' field.")
+    order_by: Optional[str] = Field(None, description="If provided rows will be order by specific field.Use **-** sign for descending / **+** sing for ascending ordering.         Example. \"-My Field\" will return rows in descending order based on \"My Field\" field.")
 
     model_config = {"populate_by_name": True}
 
@@ -2481,7 +2481,7 @@ class BeehiivAddSubscriptionToAutomationInput(BaseModel):
     automationId: str = Field(..., description="Automation ID")
     email: Optional[str] = Field(None, description="The email address of the subscription. Provide either Email or Subscription ID.")
     subscription_id: Optional[str] = Field(None, description="Subscription ID")
-    double_opt_override: Optional[str] = Field(None, description="Override publication double-opt settings for this subscription (e.g., 'on').")
+    double_opt_override: Optional[str] = Field(None, description="Override publication double-opt settings for this subscription (e.g., \"on\").")
 
     model_config = {"populate_by_name": True}
 
@@ -2581,7 +2581,7 @@ class BigcommerceCreateCustomerInput(BaseModel):
 class BigcommerceCreateAProductInput(BaseModel):
     """Bigcommerce — Create a Product"""
     name: str = Field(..., description="Name of the product")
-    type: str = Field(..., description="Type of product")
+    type_: str = Field(..., alias="type", description="Type of product")
     sku: Optional[str] = Field(None, description="Product SKU")
     description: Optional[str] = Field(None, description="Product description")
     weight: float = Field(..., description="Product weight")
@@ -2635,7 +2635,7 @@ class BigcommerceSearchProductInput(BaseModel):
     """Bigcommerce — Search Product"""
     name: Optional[str] = Field(None, description="Product name to search for")
     sku: Optional[str] = Field(None, description="Product SKU to search for")
-    type: Optional[str] = Field(None, description="Product Type")
+    type_: Optional[str] = Field(None, alias="type", description="Product Type")
     brand_id: Optional[str] = Field(None, description="Brand ID to search for")
     weight: Optional[float] = Field(None, description="Weight")
     price: Optional[float] = Field(None, description="Price")
@@ -2667,7 +2667,7 @@ class BigcommerceFindOrCreateProductInput(BaseModel):
     """Bigcommerce — Find or Create Product"""
     name: str = Field(..., description="Product Name")
     sku: Optional[str] = Field(None, description="SKU")
-    type: str = Field(..., description="Product Type")
+    type_: str = Field(..., alias="type", description="Product Type")
     weight: float = Field(..., description="Weight")
     price: float = Field(..., description="Price")
     description: Optional[str] = Field(None, description="Description")
@@ -2720,7 +2720,7 @@ class MessagebirdSendSmsInput(BaseModel):
 
 class MessagebirdListMessagesInput(BaseModel):
     """Bird — List Messages"""
-    status: str = Field(..., description="The status of the messages to filter by (select 'All' for all statuses)")
+    status: str = Field(..., description="The status of the messages to filter by (select \"All\" for all statuses)")
     startAt: str = Field(..., description="The start date and time (in UTC) to filter messages")
     endAt: str = Field(..., description="The end date and time (in UTC) to filter messages, should not exceed 7 days from start date")
     pageToken: Optional[str] = Field(None, description="Token for pagination to fetch next set of results after 1000 messages")
@@ -2840,7 +2840,7 @@ class BloomerangGetConstituentInput(BaseModel):
 
 class BloomerangCreateConstituentInput(BaseModel):
     """Bloomerang — Create Constituent"""
-    type: str = Field(..., description="Type")
+    type_: str = Field(..., alias="type", description="Type")
     firstName: Optional[str] = Field(None, description="First Name")
     lastName: Optional[str] = Field(None, description="Last Name")
     primaryEmail: Optional[str] = Field(None, description="Primary Email")
@@ -2907,7 +2907,7 @@ class BlueskyCreatePostInput(BaseModel):
 class BlueskyLikePostInput(BaseModel):
     """Bluesky — Like Post"""
     selectionMethod: str = Field(..., description="How to choose the post")
-    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when 'From my timeline' is selected above)")
+    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when \"From my timeline\" is selected above)")
     postUrl: Optional[str] = Field(None, description="Paste the Bluesky post URL")
 
     model_config = {"populate_by_name": True}
@@ -2916,7 +2916,7 @@ class BlueskyLikePostInput(BaseModel):
 class BlueskyRepostPostInput(BaseModel):
     """Bluesky — Repost Post"""
     selectionMethod: str = Field(..., description="How to choose the post")
-    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when 'From my timeline' is selected above)")
+    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when \"From my timeline\" is selected above)")
     postUrl: Optional[str] = Field(None, description="Paste the Bluesky post URL")
 
     model_config = {"populate_by_name": True}
@@ -2940,7 +2940,7 @@ class BlueskyFindThreadInput(BaseModel):
 
 class BoxListFolderItemsInput(BaseModel):
     """Box — List Folder Items"""
-    folderId: Optional[str] = Field(None, description="The ID of the folder to list items from. Use '0' for the root folder.")
+    folderId: Optional[str] = Field(None, description="The ID of the folder to list items from. Use \"0\" for the root folder.")
     limit: Optional[float] = Field(None, description="Limit")
     offset: Optional[float] = Field(None, description="Pagination offset")
 
@@ -2957,7 +2957,7 @@ class BoxGetFileInfoInput(BaseModel):
 class BoxCreateFolderInput(BaseModel):
     """Box — Create Folder"""
     name: str = Field(..., description="Folder Name")
-    parentId: Optional[str] = Field(None, description="ID of the parent folder. Use '0' for the root folder.")
+    parentId: Optional[str] = Field(None, description="ID of the parent folder. Use \"0\" for the root folder.")
 
     model_config = {"populate_by_name": True}
 
@@ -2966,7 +2966,7 @@ class BoxSearchInput(BaseModel):
     """Box — Search"""
     query: str = Field(..., description="Search Query")
     limit: Optional[float] = Field(None, description="Limit")
-    type: Optional[str] = Field(None, description="Limit search to files or folders")
+    type_: Optional[str] = Field(None, alias="type", description="Limit search to files or folders")
 
     model_config = {"populate_by_name": True}
 
@@ -3313,7 +3313,7 @@ class BuildkiteCustomApiCallInput(BaseModel):
 class BynderSearchAssetsInput(BaseModel):
     """Bynder — Search Assets"""
     keyword: Optional[str] = Field(None, description="Keyword")
-    type: Optional[str] = Field(None, description="Type")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
     limit: Optional[float] = Field(None, description="Limit")
     page: Optional[float] = Field(None, description="Page")
 
@@ -3622,7 +3622,7 @@ class CanvasLmsListStudentsInput(BaseModel):
 
 class CapsuleCrmCreateContactInput(BaseModel):
     """Capsule CRM — Create Contact"""
-    type: str = Field(..., description="The type of contact to create.")
+    type_: str = Field(..., alias="type", description="The type of contact to create.")
     contactFields: dict[str, Any] = Field(..., description="Details")
     about: Optional[str] = Field(None, description="About")
     ownerId: Optional[str] = Field(None, description="Owner")
@@ -3728,7 +3728,7 @@ class CapsuleCrmAddNoteToEntityInput(BaseModel):
     content: str = Field(..., description="The body of the note.")
     entityType: str = Field(..., description="The type of entity to add the note to.")
     entityId: dict[str, Any] = Field(..., description="Entity")
-    activityTypeId: Optional[str] = Field(None, description="The activity type for this entry. Defaults to 'Note'.")
+    activityTypeId: Optional[str] = Field(None, description="The activity type for this entry. Defaults to \"Note\".")
 
     model_config = {"populate_by_name": True}
 
@@ -3823,7 +3823,7 @@ class ChromadbQueryCollectionInput(BaseModel):
     queryEmbeddings: Any = Field(..., description="Array of query embedding vectors")
     nResults: Optional[float] = Field(None, description="Number of Results")
     where: Optional[Any] = Field(None, description="Optional metadata filter as JSON")
-    include: Optional[Any] = Field(None, description="Array of fields to include: ['documents', 'metadatas', 'distances', 'embeddings']")
+    include: Optional[Any] = Field(None, description="Array of fields to include: [\"documents\", \"metadatas\", \"distances\", \"embeddings\"]")
 
     model_config = {"populate_by_name": True}
 
@@ -4019,7 +4019,7 @@ class ClassdojoPostStoryInput(BaseModel):
     """ClassDojo — Post Story"""
     classId: str = Field(..., description="Class ID")
     body: str = Field(..., description="The text content of the story post")
-    type: Optional[str] = Field(None, description="Post Type")
+    type_: Optional[str] = Field(None, alias="type", description="Post Type")
 
     model_config = {"populate_by_name": True}
 
@@ -4044,7 +4044,7 @@ class ClassyCreateCampaignInput(BaseModel):
     """Classy — Create Campaign"""
     organizationId: float = Field(..., description="Organization ID")
     name: str = Field(..., description="Campaign Name")
-    type: str = Field(..., description="Campaign Type")
+    type_: str = Field(..., alias="type", description="Campaign Type")
     goal: Optional[float] = Field(None, description="Goal Amount")
 
     model_config = {"populate_by_name": True}
@@ -4360,7 +4360,7 @@ class ClickupCreateTaskInput(BaseModel):
     """ClickUp — Create Task"""
     workspace: str = Field(..., description="Workspace")
     space: str = Field(..., description="Space")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
     name: str = Field(..., description="Task Name")
     description: Optional[str] = Field(None, description="Description")
     assignees: Optional[str] = Field(None, description="Comma-separated user IDs")
@@ -4380,7 +4380,7 @@ class ClickupUpdateTaskInput(BaseModel):
     description: Optional[str] = Field(None, description="Description")
     workspace: Optional[str] = Field(None, description="Workspace")
     space: Optional[str] = Field(None, description="Space")
-    list: Optional[str] = Field(None, description="List")
+    list_: Optional[str] = Field(None, alias="list", description="List")
     status_dropdown: Optional[str] = Field(None, description="Status")
     status: Optional[str] = Field(None, description="Status name (used in code mode)")
     priority: Optional[str] = Field(None, description="Priority")
@@ -4407,7 +4407,7 @@ class ClickupCreateSubtaskInput(BaseModel):
     """ClickUp — Create Subtask"""
     workspace: str = Field(..., description="Workspace")
     space: str = Field(..., description="Space")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
     task: str = Field(..., description="Task")
     parent_task_id: Optional[str] = Field(None, description="Parent task ID (used in code mode)")
     name: str = Field(..., description="Subtask Name")
@@ -4435,7 +4435,7 @@ class ClickupGetListTasksInput(BaseModel):
     """ClickUp — Get List Tasks"""
     workspace: str = Field(..., description="Workspace")
     space: str = Field(..., description="Space")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
     statuses: Optional[str] = Field(None, description="Comma-separated status names to filter")
     assignees: Optional[str] = Field(None, description="Comma-separated assignee IDs")
     limit: Optional[float] = Field(None, description="Limit")
@@ -4462,7 +4462,7 @@ class ClickupGetCustomFieldsInput(BaseModel):
     """ClickUp — Get Custom Fields"""
     workspace: str = Field(..., description="Workspace")
     space: str = Field(..., description="Space")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
 
     model_config = {"populate_by_name": True}
 
@@ -4472,7 +4472,7 @@ class ClickupSetCustomFieldInput(BaseModel):
     task_id: str = Field(..., description="ClickUp task ID")
     workspace: str = Field(..., description="Workspace")
     space: str = Field(..., description="Space")
-    list: str = Field(..., description="List")
+    list_: str = Field(..., alias="list", description="List")
     custom_field: Optional[str] = Field(None, description="Custom Field")
     field_id: Optional[str] = Field(None, description="Custom field ID (used in code mode)")
     value: str = Field(..., description="Field value — format depends on field type")
@@ -4536,7 +4536,7 @@ class ClioGetMatterInput(BaseModel):
 
 class ClioListContactsInput(BaseModel):
     """Clio — List Contacts"""
-    type: Optional[str] = Field(None, description="Contact Type")
+    type_: Optional[str] = Field(None, alias="type", description="Contact Type")
     limit: Optional[float] = Field(None, description="Limit")
 
     model_config = {"populate_by_name": True}
@@ -4773,8 +4773,8 @@ class CloudbedsCustomApiCallInput(BaseModel):
 class CloudconvertCreateJobInput(BaseModel):
     """CloudConvert — Create Conversion Job"""
     fileUrl: str = Field(..., description="URL of the file to convert")
-    inputFormat: str = Field(..., description="Input file format (e.g. 'pdf', 'docx', 'jpg')")
-    outputFormat: str = Field(..., description="Desired output format (e.g. 'png', 'pdf', 'mp4')")
+    inputFormat: str = Field(..., description="Input file format (e.g. \"pdf\", \"docx\", \"jpg\")")
+    outputFormat: str = Field(..., description="Desired output format (e.g. \"png\", \"pdf\", \"mp4\")")
     filename: Optional[str] = Field(None, description="Optional output filename without extension")
 
     model_config = {"populate_by_name": True}
@@ -4806,7 +4806,7 @@ class CloudconvertCustomApiCallInput(BaseModel):
 
 class CloudflareListZonesInput(BaseModel):
     """Cloudflare — List Zones"""
-    name: Optional[str] = Field(None, description="Filter by domain name (e.g., 'example.com')")
+    name: Optional[str] = Field(None, description="Filter by domain name (e.g., \"example.com\")")
     status: Optional[str] = Field(None, description="Status")
     perPage: Optional[float] = Field(None, description="Per Page")
     page: Optional[float] = Field(None, description="Page")
@@ -4817,7 +4817,7 @@ class CloudflareListZonesInput(BaseModel):
 class CloudflareListDnsRecordsInput(BaseModel):
     """Cloudflare — List DNS Records"""
     zoneId: str = Field(..., description="Zone ID")
-    type: Optional[str] = Field(None, description="Record Type")
+    type_: Optional[str] = Field(None, alias="type", description="Record Type")
     name: Optional[str] = Field(None, description="Filter by record name")
     perPage: Optional[float] = Field(None, description="Per Page")
 
@@ -4827,8 +4827,8 @@ class CloudflareListDnsRecordsInput(BaseModel):
 class CloudflareCreateDnsRecordInput(BaseModel):
     """Cloudflare — Create DNS Record"""
     zoneId: str = Field(..., description="Zone ID")
-    type: str = Field(..., description="Record Type")
-    name: str = Field(..., description="DNS record name (e.g., 'example.com')")
+    type_: str = Field(..., alias="type", description="Record Type")
+    name: str = Field(..., description="DNS record name (e.g., \"example.com\")")
     content: str = Field(..., description="DNS record content (e.g., IP address)")
     ttl: Optional[float] = Field(None, description="Time to live in seconds (1 = automatic)")
     proxied: Optional[bool] = Field(None, description="Whether the record is proxied through Cloudflare")
@@ -4881,7 +4881,7 @@ class CodaCreateRowInput(BaseModel):
     """Coda — Create Row"""
     doc: str = Field(..., description="Document")
     table: str = Field(..., description="Table")
-    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {'Name': 'John', 'Email': 'john@example.com'}")
+    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {\"Name\": \"John\", \"Email\": \"john@example.com\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -4891,7 +4891,7 @@ class CodaUpdateRowInput(BaseModel):
     doc: str = Field(..., description="Document")
     table: str = Field(..., description="Table")
     row_id: str = Field(..., description="Row ID or name")
-    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {'Name': 'John', 'Email': 'john@example.com'}")
+    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {\"Name\": \"John\", \"Email\": \"john@example.com\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -4900,8 +4900,8 @@ class CodaUpsertRowInput(BaseModel):
     """Coda — Upsert Row"""
     doc: str = Field(..., description="Document")
     table: str = Field(..., description="Table")
-    key_columns: Any = Field(..., description="Array of column IDs/names to match on, e.g. ['Email']")
-    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {'Name': 'John', 'Email': 'john@example.com'}")
+    key_columns: Any = Field(..., description="Array of column IDs/names to match on, e.g. [\"Email\"]")
+    cells: Any = Field(..., description="JSON object mapping column ID or name to value, e.g. {\"Name\": \"John\", \"Email\": \"john@example.com\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -4910,7 +4910,7 @@ class CodaFindRowInput(BaseModel):
     """Coda — Find Row"""
     doc: str = Field(..., description="Document")
     table: str = Field(..., description="Table")
-    query: str = Field(..., description="Formula filter or search text, e.g. Name='John'")
+    query: str = Field(..., description="Formula filter or search text, e.g. Name=\"John\"")
 
     model_config = {"populate_by_name": True}
 
@@ -5160,7 +5160,7 @@ class ConfluenceUpdatePageInput(BaseModel):
 
 class ConfluenceSearchInput(BaseModel):
     """Confluence — Search"""
-    cql: str = Field(..., description="CQL query, e.g. type=page AND space=DEV AND text~'query'")
+    cql: str = Field(..., description="CQL query, e.g. type=page AND space=DEV AND text~\"query\"")
     limit: Optional[float] = Field(None, description="Maximum number of results")
 
     model_config = {"populate_by_name": True}
@@ -5181,9 +5181,9 @@ class ConnectwiseCreateTicketInput(BaseModel):
     siteUrl: str = Field(..., description="Your ConnectWise site URL (e.g., api-na.myconnectwise.net)")
     clientId: str = Field(..., description="Your ConnectWise API client ID")
     summary: str = Field(..., description="Summary")
-    company: Any = Field(..., description="Company object with id, e.g. {'id': 123}")
-    priority: Optional[Any] = Field(None, description="Priority object with id, e.g. {'id': 1}")
-    status: Optional[Any] = Field(None, description="Status object with id, e.g. {'id': 1}")
+    company: Any = Field(..., description="Company object with id, e.g. {\"id\": 123}")
+    priority: Optional[Any] = Field(None, description="Priority object with id, e.g. {\"id\": 1}")
+    status: Optional[Any] = Field(None, description="Status object with id, e.g. {\"id\": 1}")
 
     model_config = {"populate_by_name": True}
 
@@ -5203,7 +5203,7 @@ class ConnectwiseUpdateTicketInput(BaseModel):
     siteUrl: str = Field(..., description="Site URL")
     clientId: str = Field(..., description="Client ID")
     ticketId: float = Field(..., description="Ticket ID")
-    operations: Any = Field(..., description="JSON Patch array, e.g. [{'op': 'replace', 'path': 'summary', 'value': 'new'}]")
+    operations: Any = Field(..., description="JSON Patch array, e.g. [{\"op\": \"replace\", \"path\": \"summary\", \"value\": \"new\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -5242,7 +5242,7 @@ class ConnectwiseCustomApiCallInput(BaseModel):
 
 class ConstantContactCreateOrUpdateContactInput(BaseModel):
     """Constant Contact — Create or Update Contact"""
-    list: list[str] = Field(..., description="The list of the contact")
+    list_: list[str] = Field(..., alias="list", description="The list of the contact")
     email_address: str = Field(..., description="The email of the contact")
     first_name: Optional[str] = Field(None, description="The first name of the contact")
     last_name: Optional[str] = Field(None, description="The last name of the contact")
@@ -5764,7 +5764,7 @@ class CopperCreateActivityInput(BaseModel):
     entity: str = Field(..., description="Select parent entity")
     entityItemId: str = Field(..., description="Select Resource")
     details: Optional[str] = Field(None, description="The details of the project")
-    type: str = Field(..., description="Select activity Type")
+    type_: str = Field(..., alias="type", description="Select activity Type")
 
     model_config = {"populate_by_name": True}
 
@@ -5818,7 +5818,7 @@ class CopperSearchForALeadInput(BaseModel):
     """Copper — Search for a Lead"""
     name: Optional[str] = Field(None, description="Full name of the Lead to search for.")
     phone_number: Optional[str] = Field(None, description="Phone Number of the Lead to search for.")
-    emails: Optional[str] = Field(None, description="Emails of the Lead to search for.	")
+    emails: Optional[str] = Field(None, description="Emails of the Lead to search for.\t")
     assignee_ids: Optional[list[str]] = Field(None, description="select assignees")
     status_ids: Optional[list[str]] = Field(None, description="Select lead status")
     customer_source_ids: Optional[list[str]] = Field(None, description="Select customer source.")
@@ -6112,7 +6112,7 @@ class CustomerIoSendEmailInput(BaseModel):
     """Customer.io — Send Email"""
     transactionalMessageId: str = Field(..., description="Transactional Message ID")
     to: str = Field(..., description="To Email")
-    identifiers: Any = Field(..., description="Customer identifiers (e.g., {'id': '123'})")
+    identifiers: Any = Field(..., description="Customer identifiers (e.g., {\"id\": \"123\"})")
     messageData: Optional[Any] = Field(None, description="Data to populate the email template")
 
     model_config = {"populate_by_name": True}
@@ -6172,7 +6172,7 @@ class CventCustomApiCallInput(BaseModel):
 class DataTransformerTransformJsonInput(BaseModel):
     """Data Transformer — Transform JSON"""
     input: Any = Field(..., description="Input JSON object to transform")
-    mapping: Any = Field(..., description="Mapping object where keys are output field names and values are JSONPath selectors (e.g., {'name': '$.user.firstName', 'email': '$.user.email'})")
+    mapping: Any = Field(..., description="Mapping object where keys are output field names and values are JSONPath selectors (e.g., {\"name\": \"$.user.firstName\", \"email\": \"$.user.email\"})")
 
     model_config = {"populate_by_name": True}
 
@@ -6188,7 +6188,7 @@ class DataTransformerMergeObjectsInput(BaseModel):
 class DataTransformerFilterArrayInput(BaseModel):
     """Data Transformer — Filter Array"""
     array: list[Any] = Field(..., description="Array to filter")
-    conditions: Any = Field(..., description="Filter conditions as key-value pairs. Supports operators: $gt, $gte, $lt, $lte, $ne, $in, $nin (e.g., {'age': {'$gte': 18}, 'status': 'active'})")
+    conditions: Any = Field(..., description="Filter conditions as key-value pairs. Supports operators: $gt, $gte, $lt, $lte, $ne, $in, $nin (e.g., {\"age\": {\"$gte\": 18}, \"status\": \"active\"})")
 
     model_config = {"populate_by_name": True}
 
@@ -6239,7 +6239,7 @@ class DatadogCustomApiCallInput(BaseModel):
 class DatetimeParseDateInput(BaseModel):
     """Datetime — Parse Date"""
     dateString: str = Field(..., description="Date string to parse (supports ISO 8601, common formats, and timestamps)")
-    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., \"America/New_York\", \"Europe/London\", \"UTC\"). Defaults to UTC.")
 
     model_config = {"populate_by_name": True}
 
@@ -6248,7 +6248,7 @@ class DatetimeFormatDateInput(BaseModel):
     """Datetime — Format Date"""
     date: str = Field(..., description="Date to format (ISO 8601 string or timestamp)")
     format: str = Field(..., description="Output format preset")
-    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., \"America/New_York\", \"Europe/London\", \"UTC\"). Defaults to UTC.")
 
     model_config = {"populate_by_name": True}
 
@@ -6259,7 +6259,7 @@ class DatetimeDateMathInput(BaseModel):
     operation: str = Field(..., description="Add or subtract")
     amount: float = Field(..., description="Amount to add or subtract")
     unit: str = Field(..., description="Time unit")
-    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., \"America/New_York\", \"Europe/London\", \"UTC\"). Defaults to UTC.")
 
     model_config = {"populate_by_name": True}
 
@@ -6267,7 +6267,7 @@ class DatetimeDateMathInput(BaseModel):
 class DatetimeIsBusinessHoursInput(BaseModel):
     """Datetime — Is Business Hours"""
     date: Optional[str] = Field(None, description="Date to check (ISO 8601 string or timestamp). Defaults to current time if omitted.")
-    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., 'America/New_York', 'Europe/London', 'UTC'). Defaults to UTC.")
+    timezone: Optional[str] = Field(None, description="IANA timezone name (e.g., \"America/New_York\", \"Europe/London\", \"UTC\"). Defaults to UTC.")
     startHour: Optional[float] = Field(None, description="Business hours start (0-23, default: 9)")
     endHour: Optional[float] = Field(None, description="Business hours end (0-23, default: 17)")
     workDays: Optional[list[Any]] = Field(None, description="Array of work day numbers (0=Sunday, 1=Monday, ..., 6=Saturday). Defaults to Mon-Fri.")
@@ -6302,7 +6302,7 @@ class DatocmsGetItemInput(BaseModel):
 class DatocmsCreateItemInput(BaseModel):
     """DatoCMS — Create Item (Record)"""
     itemTypeId: str = Field(..., description="The ID of the content model to create the record in")
-    attributes: Any = Field(..., description="Record field values as a JSON object (e.g., {'title': 'Hello', 'body': 'World'})")
+    attributes: Any = Field(..., description="Record field values as a JSON object (e.g., {\"title\": \"Hello\", \"body\": \"World\"})")
 
     model_config = {"populate_by_name": True}
 
@@ -6310,7 +6310,7 @@ class DatocmsCreateItemInput(BaseModel):
 class DatocmsUpdateItemInput(BaseModel):
     """DatoCMS — Update Item (Record)"""
     itemId: str = Field(..., description="Item ID")
-    attributes: Any = Field(..., description="Fields to update as a JSON object (e.g., {'title': 'Updated Title'})")
+    attributes: Any = Field(..., description="Fields to update as a JSON object (e.g., {\"title\": \"Updated Title\"})")
 
     model_config = {"populate_by_name": True}
 
@@ -6422,7 +6422,7 @@ class DeepgramCustomTranscribeAudioInput(BaseModel):
 class DeepgramCustomTranscribeUrlInput(BaseModel):
     """Deepgram — Transcribe from URL"""
     url: str = Field(..., description="Audio URL")
-    options: Optional[Any] = Field(None, description="Query parameters as JSON (e.g., {'model': 'nova-2', 'smart_format': true})")
+    options: Optional[Any] = Field(None, description="Query parameters as JSON (e.g., {\"model\": \"nova-2\", \"smart_format\": true})")
 
     model_config = {"populate_by_name": True}
 
@@ -6617,7 +6617,7 @@ class DigitalOceanListDropletsInput(BaseModel):
     page: Optional[float] = Field(None, description="Which page of results to return.")
     tag_name: Optional[str] = Field(None, description="Filter Droplets by a specific tag. Cannot be combined with Name or Type.")
     name: Optional[str] = Field(None, description="Filter by exact Droplet name (case-insensitive). Cannot be combined with Tag Name.")
-    type: Optional[str] = Field(None, description="Filter by Droplet type. Cannot be combined with Tag Name.")
+    type_: Optional[str] = Field(None, alias="type", description="Filter by Droplet type. Cannot be combined with Tag Name.")
 
     model_config = {"populate_by_name": True}
 
@@ -7082,7 +7082,7 @@ class DoodleCreatePollInput(BaseModel):
     """Doodle — Create Poll"""
     title: str = Field(..., description="Title")
     description: Optional[str] = Field(None, description="Description")
-    options: Any = Field(..., description="Array of date/time options: [{start: '2025-01-15T09:00:00Z', end: '2025-01-15T10:00:00Z'}, ...]")
+    options: Any = Field(..., description="Array of date/time options: [{start: \"2025-01-15T09:00:00Z\", end: \"2025-01-15T10:00:00Z\"}, ...]")
     location: Optional[str] = Field(None, description="Location")
     deadline: Optional[str] = Field(None, description="Deadline for responses in ISO 8601 format")
     hidden: Optional[bool] = Field(None, description="Hide participant responses from each other")
@@ -7356,7 +7356,7 @@ class DropboxCreateNewDropboxTextFileInput(BaseModel):
     text: str = Field(..., description="The text to write into the file.")
     autorename: Optional[bool] = Field(None, description="If there's a conflict, have the Dropbox server try to autorename the folder to avoid the conflict. The default for this field is False.")
     mute: Optional[bool] = Field(None, description="Normally, users are made aware of any file modifications in their Dropbox account via notifications in the client software. If true, this tells the clients that this modification shouldn't result in a user notification.")
-    strict_conflict: Optional[bool] = Field(None, description="Be more strict about how each WriteMode detects conflict. For example, always return a conflict error when mode = WriteMode.update and the given 'rev' doesn't match the existing file's 'rev', even if the existing file has been deleted.")
+    strict_conflict: Optional[bool] = Field(None, description="Be more strict about how each WriteMode detects conflict. For example, always return a conflict error when mode = WriteMode.update and the given \"rev\" doesn't match the existing file's \"rev\", even if the existing file has been deleted.")
 
     model_config = {"populate_by_name": True}
 
@@ -7367,7 +7367,7 @@ class DropboxUploadDropboxFileInput(BaseModel):
     file: str = Field(..., description="The file URL or base64 to upload")
     autorename: Optional[bool] = Field(None, description="If there's a conflict, as determined by mode, have the Dropbox server try to autorename the file to avoid conflict.")
     mute: Optional[bool] = Field(None, description="Normally, users are made aware of any file modifications in their Dropbox account via notifications in the client software. If true, this tells the clients that this modification shouldn't result in a user notification.")
-    strict_conflict: Optional[bool] = Field(None, description="Be more strict about how each WriteMode detects conflict. For example, always return a conflict error when mode = WriteMode.update and the given 'rev' doesn't match the existing file's 'rev', even if the existing file has been deleted.")
+    strict_conflict: Optional[bool] = Field(None, description="Be more strict about how each WriteMode detects conflict. For example, always return a conflict error when mode = WriteMode.update and the given \"rev\" doesn't match the existing file's \"rev\", even if the existing file has been deleted.")
 
     model_config = {"populate_by_name": True}
 
@@ -7742,7 +7742,7 @@ class EcwidCustomApiCallInput(BaseModel):
 class ElasticsearchSearchInput(BaseModel):
     """Elasticsearch — Search"""
     index: str = Field(..., description="Index name or pattern (e.g., my-index or my-index-*)")
-    query: str = Field(..., description="Elasticsearch query DSL as JSON (e.g., {'match': {'field': 'value'}})")
+    query: str = Field(..., description="Elasticsearch query DSL as JSON (e.g., {\"match\": {\"field\": \"value\"}})")
     size: Optional[float] = Field(None, description="Maximum number of results to return")
     from_: Optional[float] = Field(None, alias="from", description="Starting offset for pagination")
     sort: Optional[str] = Field(None, description="Sort criteria as JSON array")
@@ -8022,7 +8022,7 @@ class ExaGenerateAnswerInput(BaseModel):
 class ExaPerformSearchInput(BaseModel):
     """Exa — Perform Search"""
     query: str = Field(..., description="Search query to find related articles and data.")
-    type: Optional[str] = Field(None, description="Type of search to perform.")
+    type_: Optional[str] = Field(None, alias="type", description="Type of search to perform.")
     category: Optional[str] = Field(None, description="Category of data to focus the search on.")
     numResults: Optional[float] = Field(None, description="Number of results to return (max 100).")
     includeDomains: Optional[list[Any]] = Field(None, description="Limit results to only these domains.")
@@ -8341,7 +8341,7 @@ class FilloutFormsGetFormResponsesInput(BaseModel):
     afterDate: Optional[str] = Field(None, description="Filter submissions after this date (YYYY-MM-DDTHH:mm:ss.sssZ).")
     beforeDate: Optional[str] = Field(None, description="Filter submissions before this date (YYYY-MM-DDTHH:mm:ss.sssZ).")
     offset: Optional[float] = Field(None, description="Starting position for fetching submissions.")
-    status: Optional[str] = Field(None, description="By default, only finished submissions are returned. Select 'In Progress' to get unfinished submissions instead.")
+    status: Optional[str] = Field(None, description="By default, only finished submissions are returned. Select \"In Progress\" to get unfinished submissions instead.")
     includeEditLink: Optional[bool] = Field(None, description="Include a link to edit the submission.")
     includePreview: Optional[bool] = Field(None, description="Include preview responses.")
     sort: Optional[str] = Field(None, description="Sort order.")
@@ -8384,7 +8384,7 @@ class FilloutFormsCustomApiCallInput(BaseModel):
 
 class FirebaseListDocumentsInput(BaseModel):
     """Firebase — List Documents"""
-    collectionPath: str = Field(..., description="Path to the collection (e.g., 'users' or 'users/uid123/orders')")
+    collectionPath: str = Field(..., description="Path to the collection (e.g., \"users\" or \"users/uid123/orders\")")
     pageSize: Optional[float] = Field(None, description="Maximum number of documents to return")
     pageToken: Optional[str] = Field(None, description="Token for pagination (from previous response)")
     orderBy: Optional[str] = Field(None, description="Field path to order results by")
@@ -8394,26 +8394,26 @@ class FirebaseListDocumentsInput(BaseModel):
 
 class FirebaseGetDocumentInput(BaseModel):
     """Firebase — Get Document"""
-    documentPath: str = Field(..., description="Full path to the document (e.g., 'users/uid123')")
+    documentPath: str = Field(..., description="Full path to the document (e.g., \"users/uid123\")")
 
     model_config = {"populate_by_name": True}
 
 
 class FirebaseCreateDocumentInput(BaseModel):
     """Firebase — Create Document"""
-    collectionPath: str = Field(..., description="Path to the collection (e.g., 'users' or 'users/uid123/orders')")
+    collectionPath: str = Field(..., description="Path to the collection (e.g., \"users\" or \"users/uid123/orders\")")
     documentId: Optional[str] = Field(None, description="Optional custom document ID. If not provided, Firestore auto-generates one")
-    fields: dict[str, Any] = Field(..., description="Document fields in Firestore value format (e.g., {'name': {'stringValue': 'John'}, 'age': {'integerValue': '30'}})")
+    fields: dict[str, Any] = Field(..., description="Document fields in Firestore value format (e.g., {\"name\": {\"stringValue\": \"John\"}, \"age\": {\"integerValue\": \"30\"}})")
 
     model_config = {"populate_by_name": True}
 
 
 class FirebaseRunQueryInput(BaseModel):
     """Firebase — Run Query"""
-    collectionId: str = Field(..., description="The collection to query (e.g., 'users')")
+    collectionId: str = Field(..., description="The collection to query (e.g., \"users\")")
     parentPath: Optional[str] = Field(None, description="Parent document path for subcollections (leave empty for root collections)")
-    where: Optional[dict[str, Any]] = Field(None, description="Structured query filter (e.g., {'fieldFilter': {'field': {'fieldPath': 'status'}, 'op': 'EQUAL', 'value': {'stringValue': 'active'}}})")
-    orderBy: Optional[list[Any]] = Field(None, description="Array of ordering objects (e.g., [{'field': {'fieldPath': 'createdAt'}, 'direction': 'DESCENDING'}])")
+    where: Optional[dict[str, Any]] = Field(None, description="Structured query filter (e.g., {\"fieldFilter\": {\"field\": {\"fieldPath\": \"status\"}, \"op\": \"EQUAL\", \"value\": {\"stringValue\": \"active\"}}})")
+    orderBy: Optional[list[Any]] = Field(None, description="Array of ordering objects (e.g., [{\"field\": {\"fieldPath\": \"createdAt\"}, \"direction\": \"DESCENDING\"}])")
     limit: Optional[float] = Field(None, description="Maximum number of results to return")
 
     model_config = {"populate_by_name": True}
@@ -8421,7 +8421,7 @@ class FirebaseRunQueryInput(BaseModel):
 
 class FirebaseDeleteDocumentInput(BaseModel):
     """Firebase — Delete Document"""
-    documentPath: str = Field(..., description="Full path to the document (e.g., 'users/uid123')")
+    documentPath: str = Field(..., description="Full path to the document (e.g., \"users/uid123\")")
 
     model_config = {"populate_by_name": True}
 
@@ -8447,7 +8447,7 @@ class FirecrawlExtractInput(BaseModel):
     enableWebSearch: Optional[bool] = Field(None, description="Enable web search to find additional context.")
     timeout: Optional[float] = Field(None, description="Timeout in seconds after which the task will be cancelled")
     mode: str = Field(..., description="For complex schema, you can use advanced mode.")
-    schema: dict[str, Any] = Field(..., description="Data Definition")
+    schema_: dict[str, Any] = Field(..., alias="schema", description="Data Definition")
 
     model_config = {"populate_by_name": True}
 
@@ -8636,34 +8636,121 @@ class FlyIoCreateMachineInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class FolkCrmCreateContactInput(BaseModel):
-    """Folk CRM — Create Contact"""
-    firstName: str = Field(..., description="First Name")
-    lastName: str = Field(..., description="Last Name")
-    email: Optional[str] = Field(None, description="Email")
-    phone: Optional[str] = Field(None, description="Phone")
+class FolkCrmCreatePersonInput(BaseModel):
+    """Folk CRM — Create Person"""
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    fullName: Optional[str] = Field(None, description="Alternative to first and last name.")
+    description: Optional[str] = Field(None, description="Description")
+    birthday: Optional[str] = Field(None, description="Date in YYYY-MM-DD format.")
+    jobTitle: Optional[str] = Field(None, description="Job Title")
+    companyIds: Optional[list[Any]] = Field(None, description="Existing Folk company IDs to associate with the person. The first company is primary.")
+    companyNames: Optional[list[Any]] = Field(None, description="Company names to associate with the person. Folk creates a company if no matching company exists.")
+    groupIds: Optional[list[Any]] = Field(None, description="Folk group IDs to add this record to, e.g. grp_5fa60242-0756-4e31-8cca-30c2c5ff1ac2.")
+    addresses: Optional[list[Any]] = Field(None, description="Postal addresses. The first address is primary.")
+    emails: Optional[list[Any]] = Field(None, description="Email addresses. The first email is primary.")
+    phones: Optional[list[Any]] = Field(None, description="Phone numbers. The first phone number is primary.")
+    urls: Optional[list[Any]] = Field(None, description="URLs. The first URL is primary.")
+    customFieldValues: Optional[Any] = Field(None, description="Object grouped by group ID, e.g. {\"grp_...\":{\"Status\":\"Active\"}}. The group IDs must also be in Group IDs.")
 
     model_config = {"populate_by_name": True}
 
 
-class FolkCrmListContactsInput(BaseModel):
-    """Folk CRM — List Contacts"""
-    limit: Optional[float] = Field(None, description="Limit")
-    cursor: Optional[str] = Field(None, description="Pagination cursor from previous response")
+class FolkCrmFindPersonInput(BaseModel):
+    """Folk CRM — Find Person"""
+    limit: Optional[float] = Field(None, description="Number of records to return (1-100).")
+    cursor: Optional[str] = Field(None, description="Pagination cursor from a previous response.")
+    combinator: Optional[str] = Field(None, description="Logical operator used when more than one filter is provided.")
+    nameFilter: Optional[str] = Field(None, description="Matches full name with the Folk like operator.")
+    emailFilter: Optional[str] = Field(None, description="Matches email with the Folk like operator.")
+    companyId: Optional[str] = Field(None, description="Only return people associated with this Folk company ID.")
+    groupId: Optional[str] = Field(None, description="Only return people in this Folk group ID.")
 
     model_config = {"populate_by_name": True}
 
 
-class FolkCrmGetContactInput(BaseModel):
-    """Folk CRM — Get Contact"""
-    contactId: str = Field(..., description="Contact ID")
+class FolkCrmGetPersonInput(BaseModel):
+    """Folk CRM — Get Person"""
+    personId: str = Field(..., description="Person ID")
 
     model_config = {"populate_by_name": True}
 
 
-class FolkCrmCreateGroupInput(BaseModel):
-    """Folk CRM — Create Group"""
-    name: str = Field(..., description="Group Name")
+class FolkCrmUpdatePersonInput(BaseModel):
+    """Folk CRM — Update Person"""
+    personId: str = Field(..., description="Person ID")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    fullName: Optional[str] = Field(None, description="Alternative to first and last name.")
+    description: Optional[str] = Field(None, description="Description")
+    birthday: Optional[str] = Field(None, description="Date in YYYY-MM-DD format.")
+    jobTitle: Optional[str] = Field(None, description="Job Title")
+    companyIds: Optional[list[Any]] = Field(None, description="Existing Folk company IDs to associate with the person. The first company is primary.")
+    companyNames: Optional[list[Any]] = Field(None, description="Company names to associate with the person. Folk creates a company if no matching company exists.")
+    groupIds: Optional[list[Any]] = Field(None, description="Folk group IDs to add this record to, e.g. grp_5fa60242-0756-4e31-8cca-30c2c5ff1ac2.")
+    addresses: Optional[list[Any]] = Field(None, description="Postal addresses. The first address is primary.")
+    emails: Optional[list[Any]] = Field(None, description="Email addresses. The first email is primary.")
+    phones: Optional[list[Any]] = Field(None, description="Phone numbers. The first phone number is primary.")
+    urls: Optional[list[Any]] = Field(None, description="URLs. The first URL is primary.")
+    customFieldValues: Optional[Any] = Field(None, description="Object grouped by group ID, e.g. {\"grp_...\":{\"Status\":\"Active\"}}. The group IDs must also be in Group IDs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FolkCrmCreateCompanyInput(BaseModel):
+    """Folk CRM — Create Company"""
+    name: str = Field(..., description="Company Name")
+    description: Optional[str] = Field(None, description="Description")
+    fundingRaised: Optional[float] = Field(None, description="Amount raised in USD.")
+    lastFundingDate: Optional[str] = Field(None, description="Date in YYYY-MM-DD format.")
+    industry: Optional[str] = Field(None, description="Industry")
+    foundationYear: Optional[str] = Field(None, description="Year in YYYY format.")
+    employeeRange: Optional[str] = Field(None, description="Employee Range")
+    groupIds: Optional[list[Any]] = Field(None, description="Folk group IDs to add this record to, e.g. grp_5fa60242-0756-4e31-8cca-30c2c5ff1ac2.")
+    addresses: Optional[list[Any]] = Field(None, description="Postal addresses. The first address is primary.")
+    emails: Optional[list[Any]] = Field(None, description="Email addresses. The first email is primary.")
+    phones: Optional[list[Any]] = Field(None, description="Phone numbers. The first phone number is primary.")
+    urls: Optional[list[Any]] = Field(None, description="URLs. The first URL is primary.")
+    customFieldValues: Optional[Any] = Field(None, description="Object grouped by group ID, e.g. {\"grp_...\":{\"Status\":\"Active\"}}. The group IDs must also be in Group IDs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FolkCrmFindCompanyInput(BaseModel):
+    """Folk CRM — Find Company"""
+    limit: Optional[float] = Field(None, description="Number of records to return (1-100).")
+    cursor: Optional[str] = Field(None, description="Pagination cursor from a previous response.")
+    combinator: Optional[str] = Field(None, description="Logical operator used when more than one filter is provided.")
+    nameFilter: Optional[str] = Field(None, description="Matches company name with the Folk like operator.")
+    emailFilter: Optional[str] = Field(None, description="Matches email with the Folk like operator.")
+    groupId: Optional[str] = Field(None, description="Only return companies in this Folk group ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FolkCrmGetCompanyInput(BaseModel):
+    """Folk CRM — Get Company"""
+    companyId: str = Field(..., description="Company ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FolkCrmUpdateCompanyInput(BaseModel):
+    """Folk CRM — Update Company"""
+    companyId: str = Field(..., description="Company ID")
+    name: Optional[str] = Field(None, description="Company Name")
+    description: Optional[str] = Field(None, description="Description")
+    fundingRaised: Optional[float] = Field(None, description="Amount raised in USD.")
+    lastFundingDate: Optional[str] = Field(None, description="Date in YYYY-MM-DD format.")
+    industry: Optional[str] = Field(None, description="Industry")
+    foundationYear: Optional[str] = Field(None, description="Year in YYYY format.")
+    employeeRange: Optional[str] = Field(None, description="Employee Range")
+    groupIds: Optional[list[Any]] = Field(None, description="Folk group IDs to add this record to, e.g. grp_5fa60242-0756-4e31-8cca-30c2c5ff1ac2.")
+    addresses: Optional[list[Any]] = Field(None, description="Postal addresses. The first address is primary.")
+    emails: Optional[list[Any]] = Field(None, description="Email addresses. The first email is primary.")
+    phones: Optional[list[Any]] = Field(None, description="Phone numbers. The first phone number is primary.")
+    urls: Optional[list[Any]] = Field(None, description="URLs. The first URL is primary.")
+    customFieldValues: Optional[Any] = Field(None, description="Object grouped by group ID, e.g. {\"grp_...\":{\"Status\":\"Active\"}}. The group IDs must also be in Group IDs.")
 
     model_config = {"populate_by_name": True}
 
@@ -8671,7 +8758,7 @@ class FolkCrmCreateGroupInput(BaseModel):
 class FolkCrmCustomApiCallInput(BaseModel):
     """Folk CRM — Custom API Call"""
     method: str = Field(..., description="Method")
-    path: str = Field(..., description="API path (e.g. /contacts)")
+    path: str = Field(..., description="API path, e.g. /people, /companies, or /v1/webhooks.")
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
@@ -8858,7 +8945,7 @@ class FreshbooksCreateInvoiceInput(BaseModel):
     """FreshBooks — Create Invoice"""
     accountId: str = Field(..., description="Account ID")
     customerId: str = Field(..., description="Customer ID")
-    lines: Any = Field(..., description="Invoice line items as JSON array: [{'name': 'Service', 'amount': {'amount': '100.00', 'code': 'USD'}, 'quantity': 1}]")
+    lines: Any = Field(..., description="Invoice line items as JSON array: [{\"name\": \"Service\", \"amount\": {\"amount\": \"100.00\", \"code\": \"USD\"}, \"quantity\": 1}]")
 
     model_config = {"populate_by_name": True}
 
@@ -9087,7 +9174,7 @@ class FrontCreateContactInput(BaseModel):
     links: Optional[list[Any]] = Field(None, description="List of URLs associated with the contact.")
     group_names: Optional[list[Any]] = Field(None, description="List of group names to associate with the contact.")
     list_names: Optional[list[Any]] = Field(None, description="List of contact list names this contact belongs to. Front will create any that do not exist.")
-    custom_fields: Optional[Any] = Field(None, description="Custom fields for this contact, as a JSON object (e.g., {'CRM ID': '12345'}).")
+    custom_fields: Optional[Any] = Field(None, description="Custom fields for this contact, as a JSON object (e.g., {\"CRM ID\": \"12345\"}).")
 
     model_config = {"populate_by_name": True}
 
@@ -9160,7 +9247,7 @@ class FrontFindContactInput(BaseModel):
 
 class FrontFindConversationInput(BaseModel):
     """Front — Find Conversation"""
-    q: str = Field(..., description="Front query string (e.g. subject:'Order', tag_ids:tag_123, inbox_id:inb_456, etc.). See https://dev.frontapp.com/docs/search-1")
+    q: str = Field(..., description="Front query string (e.g. subject:\"Order\", tag_ids:tag_123, inbox_id:inb_456, etc.). See https://dev.frontapp.com/docs/search-1")
     limit: Optional[float] = Field(None, description="Maximum number of conversations to return.")
     page_token: Optional[str] = Field(None, description="Token for pagination.")
 
@@ -9923,7 +10010,7 @@ class GmailListMessagesInput(BaseModel):
     query: Optional[str] = Field(None, description="Gmail search query (e.g., is:unread, from:user@example.com)")
     maxResults: Optional[float] = Field(None, description="Max Results")
     pageToken: Optional[str] = Field(None, description="Page Token")
-    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to filter by (e.g., 'INBOX,UNREAD')")
+    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to filter by (e.g., \"INBOX,UNREAD\")")
     label: Optional[str] = Field(None, description="Select a label to filter by. Alternative to Label IDs.")
 
     model_config = {"populate_by_name": True}
@@ -9973,7 +10060,7 @@ class GmailForwardEmailInput(BaseModel):
 class GmailAddLabelInput(BaseModel):
     """Gmail — Add Label"""
     messageId: str = Field(..., description="Message ID")
-    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to add (e.g., 'Label_1,Label_2'). Use the list_labels action to find label IDs.")
+    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to add (e.g., \"Label_1,Label_2\"). Use the list_labels action to find label IDs.")
     label: Optional[str] = Field(None, description="Select a label to add. Alternative to Label IDs — use one or the other.")
 
     model_config = {"populate_by_name": True}
@@ -10370,7 +10457,7 @@ class GoogleCloudStorageDeleteObjectInput(BaseModel):
     """Google Cloud Storage — Delete Object"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    object: str = Field(..., description="Object")
+    object_: str = Field(..., alias="object", description="Object")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects (permanently deletes a specific revision)")
 
     model_config = {"populate_by_name": True}
@@ -10381,8 +10468,8 @@ class GoogleCloudStorageSearchObjectsInput(BaseModel):
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
     prefix: Optional[str] = Field(None, description="Filter objects whose names begin with this prefix")
-    matchGlob: Optional[str] = Field(None, description="Glob pattern to filter results (e.g., 'folder/*', 'backup-*.txt')")
-    delimiter: Optional[str] = Field(None, description="Delimiter for hierarchical listing (commonly '/')")
+    matchGlob: Optional[str] = Field(None, description="Glob pattern to filter results (e.g., \"folder/*\", \"backup-*.txt\")")
+    delimiter: Optional[str] = Field(None, description="Delimiter for hierarchical listing (commonly \"/\")")
     includeFoldersAsPrefixes: Optional[bool] = Field(None, description="Include empty folders and managed folders in results")
     versions: Optional[bool] = Field(None, description="List all versions of objects as distinct results")
     pageToken: Optional[str] = Field(None, description="Token for pagination (from previous response)")
@@ -10407,7 +10494,7 @@ class GoogleCloudStorageCreateObjectAclInput(BaseModel):
     """Google Cloud Storage — Create Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    object: str = Field(..., description="Object")
+    object_: str = Field(..., alias="object", description="Object")
     entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     role: str = Field(..., description="Role")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
@@ -10419,7 +10506,7 @@ class GoogleCloudStorageDeleteObjectAclInput(BaseModel):
     """Google Cloud Storage — Delete Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    object: str = Field(..., description="Object")
+    object_: str = Field(..., alias="object", description="Object")
     entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
@@ -10449,7 +10536,7 @@ class GoogleCloudStorageCreateBucketDefaultObjectAclInput(BaseModel):
     """Google Cloud Storage — Create Bucket Default Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    object: str = Field(..., description="Object")
+    object_: str = Field(..., alias="object", description="Object")
     entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     role: str = Field(..., description="Role")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
@@ -10461,7 +10548,7 @@ class GoogleCloudStorageDeleteBucketDefaultObjectAclInput(BaseModel):
     """Google Cloud Storage — Delete Bucket Default Object ACL"""
     projectId: str = Field(..., description="Project")
     bucket: str = Field(..., description="Bucket")
-    object: str = Field(..., description="Object")
+    object_: str = Field(..., alias="object", description="Object")
     entity: str = Field(..., description="The entity to grant access to, such as user-emailAddress, group-emailAddress, domain-domainName, allUsers, or allAuthenticatedUsers.")
     generation: Optional[float] = Field(None, description="Optional generation number for versioned objects")
 
@@ -10687,7 +10774,7 @@ class GoogleFormsCustomApiCallInput(BaseModel):
 class GoogleGeminiGenerateContentInput(BaseModel):
     """Google Gemini — Generate Content"""
     model: str = Field(..., description="The Gemini model to use")
-    contents: str = Field(..., description="Text prompt or JSON array of content parts (e.g., [{'role':'user','parts':[{'text':'Hello'}]}])")
+    contents: str = Field(..., description="Text prompt or JSON array of content parts (e.g., [{\"role\":\"user\",\"parts\":[{\"text\":\"Hello\"}]}])")
     temperature: Optional[float] = Field(None, description="Controls randomness (0.0 to 2.0)")
     maxOutputTokens: Optional[float] = Field(None, description="Maximum number of tokens to generate")
     systemInstruction: Optional[str] = Field(None, description="Optional system instruction for the model")
@@ -10780,7 +10867,7 @@ class GoogleSearchConsoleSearchAnalyticsQueryInput(BaseModel):
     startDate: str = Field(..., description="YYYY-MM-DD format")
     endDate: str = Field(..., description="YYYY-MM-DD format")
     dimensions: Optional[list[str]] = Field(None, description="Dimensions")
-    type: Optional[str] = Field(None, description="Search Type")
+    type_: Optional[str] = Field(None, alias="type", description="Search Type")
     rowLimit: Optional[float] = Field(None, description="Row Limit")
     startRow: Optional[float] = Field(None, description="Start Row")
     dimensionFilterGroups: Optional[Any] = Field(None, description="JSON array of filter groups")
@@ -10832,8 +10919,10 @@ class GoogleSearchConsoleCustomApiCallInput(BaseModel):
 
 class GoogleSheetsListSpreadsheetsInput(BaseModel):
     """Google Sheets — List Spreadsheets"""
+    query: Optional[str] = Field(None, description="Optional spreadsheet name search.")
     pageSize: Optional[float] = Field(None, description="Page Size")
     pageToken: Optional[str] = Field(None, description="Page Token")
+    includeSharedDrives: Optional[bool] = Field(None, description="Include Shared Drives")
 
     model_config = {"populate_by_name": True}
 
@@ -10846,13 +10935,57 @@ class GoogleSheetsGetSpreadsheetInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class GoogleSheetsListSheetsInput(BaseModel):
+    """Google Sheets — List Sheets"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsGetSheetInput(BaseModel):
+    """Google Sheets — Get Sheet"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name or ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class GoogleSheetsReadRangeInput(BaseModel):
     """Google Sheets — Read Range"""
     spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
     spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
     sheet_dropdown: Optional[str] = Field(None, description="Sheet")
-    range: str = Field(..., description="A1 notation (e.g., Sheet1!A1:D10)")
+    range: str = Field(..., description="A1 notation (e.g., A1:D10 or Sheet1!A1:D10)")
     majorDimension: Optional[str] = Field(None, description="Major Dimension")
+    valueRenderOption: Optional[str] = Field(None, description="Value Render Option")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsListRowsInput(BaseModel):
+    """Google Sheets — List Rows"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    startRow: Optional[float] = Field(None, description="Start Row")
+    rowCount: Optional[float] = Field(None, description="Row Count")
+    headerRow: Optional[float] = Field(None, description="Optional row number to use as column names in the output.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsGetRowInput(BaseModel):
+    """Google Sheets — Get Row"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    rowNumber: float = Field(..., description="Row Number")
+    headerRow: Optional[float] = Field(None, description="Optional row number to use as column names in the output.")
 
     model_config = {"populate_by_name": True}
 
@@ -10862,8 +10995,8 @@ class GoogleSheetsWriteRangeInput(BaseModel):
     spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
     spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
     sheet_dropdown: Optional[str] = Field(None, description="Sheet")
-    range: str = Field(..., description="A1 notation (e.g., Sheet1!A1:D10)")
-    values: Any = Field(..., description="A 2D array of values (e.g., [['a','b'],['c','d']])")
+    range: str = Field(..., description="A1 notation (e.g., A1:D10 or Sheet1!A1:D10)")
+    values: Any = Field(..., description="A 2D array of values (e.g., [[\"a\",\"b\"],[\"c\",\"d\"]])")
     valueInputOption: Optional[str] = Field(None, description="Value Input Option")
 
     model_config = {"populate_by_name": True}
@@ -10874,17 +11007,52 @@ class GoogleSheetsAppendRowInput(BaseModel):
     spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
     spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
     sheet_dropdown: Optional[str] = Field(None, description="Sheet")
-    range: Optional[str] = Field(None, description="A1 notation for the sheet (e.g., Sheet1)")
-    values: Any = Field(..., description="An array of values (e.g., ['a','b','c'])")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    values: Any = Field(..., description="An array of values (e.g., [\"a\",\"b\",\"c\"])")
     valueInputOption: Optional[str] = Field(None, description="Value Input Option")
 
     model_config = {"populate_by_name": True}
 
 
-class GoogleSheetsCreateSpreadsheetInput(BaseModel):
-    """Google Sheets — Create Spreadsheet"""
-    title: str = Field(..., description="Title")
-    sheetTitles: Optional[str] = Field(None, description="Comma-separated list of sheet names (optional)")
+class GoogleSheetsAppendRowsInput(BaseModel):
+    """Google Sheets — Append Rows"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    values: Any = Field(..., description="A 2D array of row values (e.g., [[\"a\"],[\"b\"]])")
+    valueInputOption: Optional[str] = Field(None, description="Value Input Option")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsUpdateRowInput(BaseModel):
+    """Google Sheets — Update Row"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    rowNumber: float = Field(..., description="Row Number")
+    values: Any = Field(..., description="An array of values for the row.")
+    valueInputOption: Optional[str] = Field(None, description="Value Input Option")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsFindRowsInput(BaseModel):
+    """Google Sheets — Find Rows"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    column: str = Field(..., description="Column label or zero-based column index. Examples: A, B, 0, 1.")
+    searchValue: str = Field(..., description="Search Value")
+    matchMode: Optional[str] = Field(None, description="Match Mode")
+    caseSensitive: Optional[bool] = Field(None, description="Case Sensitive")
+    startRow: Optional[float] = Field(None, description="Start Row")
+    maxRows: Optional[float] = Field(None, description="Maximum Rows to Search")
+    limit: Optional[float] = Field(None, description="Maximum Matches")
+    headerRow: Optional[float] = Field(None, description="Optional row number to use as column names in the output.")
 
     model_config = {"populate_by_name": True}
 
@@ -10894,7 +11062,38 @@ class GoogleSheetsClearRangeInput(BaseModel):
     spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
     spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
     sheet_dropdown: Optional[str] = Field(None, description="Sheet")
-    range: str = Field(..., description="A1 notation (e.g., Sheet1!A1:D10)")
+    range: str = Field(..., description="A1 notation (e.g., A1:D10 or Sheet1!A1:D10)")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsClearRowInput(BaseModel):
+    """Google Sheets — Clear Row"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    rowNumber: float = Field(..., description="Row Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsDeleteRowInput(BaseModel):
+    """Google Sheets — Delete Row"""
+    spreadsheet_dropdown: Optional[str] = Field(None, description="Spreadsheet")
+    spreadsheetId: Optional[str] = Field(None, description="Spreadsheet ID")
+    sheet_dropdown: Optional[str] = Field(None, description="Sheet")
+    sheetName: Optional[str] = Field(None, description="Sheet Name")
+    rowNumber: float = Field(..., description="Row Number")
+    confirmDelete: bool = Field(..., description="Required because deleting a row shifts following rows up.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleSheetsCreateSpreadsheetInput(BaseModel):
+    """Google Sheets — Create Spreadsheet"""
+    title: str = Field(..., description="Title")
+    sheetTitles: Optional[str] = Field(None, description="Comma-separated list of sheet names (optional)")
 
     model_config = {"populate_by_name": True}
 
@@ -11170,32 +11369,261 @@ class GraphqlSendRequestInput(BaseModel):
 
 class GreenhouseListCandidatesInput(BaseModel):
     """Greenhouse — List Candidates"""
-    perPage: Optional[float] = Field(None, description="Per Page")
-    page: Optional[float] = Field(None, description="Page")
+    cursor: Optional[str] = Field(None, description="Cursor from the previous page response. Do not combine with other filters.")
+    per_page: Optional[float] = Field(None, description="1 to 500 results per page.")
+    ids: Optional[str] = Field(None, description="Comma-separated candidate IDs, max 50.")
+    email: Optional[str] = Field(None, description="Email Address")
+    tag: Optional[str] = Field(None, description="Tag")
+    private: Optional[str] = Field(None, description="Private")
+    custom_field_option_id: Optional[str] = Field(None, description="Custom Field Option ID")
+    fields: Optional[str] = Field(None, description="Comma-separated fields to return, max 50.")
+    created_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    created_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    updated_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    updated_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    last_activity_at_gte: Optional[str] = Field(None, description="Last Activity At >=")
+    last_activity_at_lte: Optional[str] = Field(None, description="Last Activity At <=")
 
     model_config = {"populate_by_name": True}
 
 
 class GreenhouseGetCandidateInput(BaseModel):
     """Greenhouse — Get Candidate"""
-    candidateId: str = Field(..., description="Candidate ID")
+    candidate_id: str = Field(..., description="Candidate ID")
+    fields: Optional[str] = Field(None, description="Comma-separated fields to return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseCreateCandidateInput(BaseModel):
+    """Greenhouse — Create Candidate"""
+    first_name: str = Field(..., description="First Name")
+    last_name: str = Field(..., description="Last Name")
+    preferred_name: Optional[str] = Field(None, description="Preferred Name")
+    time_zone: Optional[str] = Field(None, description="Greenhouse time zone value.")
+    email: Optional[str] = Field(None, description="Email Address")
+    email_type: Optional[str] = Field(None, description="Email Type")
+    phone: Optional[str] = Field(None, description="Phone Number")
+    phone_type: Optional[str] = Field(None, description="Phone Type")
+    company: Optional[str] = Field(None, description="Current Company")
+    title: Optional[str] = Field(None, description="Current Job Title")
+    linkedin_url: Optional[str] = Field(None, description="LinkedIn URL")
+    website_url: Optional[str] = Field(None, description="Website URL")
+    website_type: Optional[str] = Field(None, description="Website Type")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    is_private: Optional[bool] = Field(None, description="Private Candidate")
+    can_email: Optional[bool] = Field(None, description="Can Email")
+    custom_fields: Optional[Any] = Field(None, description="Greenhouse custom_fields array payload.")
+    application: Optional[Any] = Field(None, description="Optional Greenhouse application object to attach while creating the candidate.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseUpdateCandidateInput(BaseModel):
+    """Greenhouse — Update Candidate"""
+    candidate_id: str = Field(..., description="Candidate ID")
+    first_name: Optional[str] = Field(None, description="First Name")
+    last_name: Optional[str] = Field(None, description="Last Name")
+    preferred_name: Optional[str] = Field(None, description="Preferred Name")
+    time_zone: Optional[str] = Field(None, description="Time Zone")
+    email: Optional[str] = Field(None, description="Email Address")
+    email_type: Optional[str] = Field(None, description="Email Type")
+    phone: Optional[str] = Field(None, description="Phone Number")
+    phone_type: Optional[str] = Field(None, description="Phone Type")
+    company: Optional[str] = Field(None, description="Current Company")
+    title: Optional[str] = Field(None, description="Current Job Title")
+    linkedin_url: Optional[str] = Field(None, description="LinkedIn URL")
+    website_url: Optional[str] = Field(None, description="Website URL")
+    website_type: Optional[str] = Field(None, description="Website Type")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    is_private: Optional[bool] = Field(None, description="Private Candidate")
+    can_email: Optional[bool] = Field(None, description="Can Email")
+    custom_fields: Optional[Any] = Field(None, description="Greenhouse custom_fields array payload.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseCreateProspectInput(BaseModel):
+    """Greenhouse — Create Prospect"""
+    first_name: str = Field(..., description="First Name")
+    last_name: str = Field(..., description="Last Name")
+    preferred_name: Optional[str] = Field(None, description="Preferred Name")
+    time_zone: Optional[str] = Field(None, description="Greenhouse time zone value.")
+    email: Optional[str] = Field(None, description="Email Address")
+    email_type: Optional[str] = Field(None, description="Email Type")
+    phone: Optional[str] = Field(None, description="Phone Number")
+    phone_type: Optional[str] = Field(None, description="Phone Type")
+    company: Optional[str] = Field(None, description="Current Company")
+    title: Optional[str] = Field(None, description="Current Job Title")
+    linkedin_url: Optional[str] = Field(None, description="LinkedIn URL")
+    website_url: Optional[str] = Field(None, description="Website URL")
+    website_type: Optional[str] = Field(None, description="Website Type")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    is_private: Optional[bool] = Field(None, description="Private Candidate")
+    can_email: Optional[bool] = Field(None, description="Can Email")
+    custom_fields: Optional[Any] = Field(None, description="Greenhouse custom_fields array payload.")
+    application: Optional[Any] = Field(None, description="Optional application fields. prospect=true is always enforced.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseCreateCandidateNoteInput(BaseModel):
+    """Greenhouse — Create Candidate Note"""
+    candidate_id: str = Field(..., description="Candidate ID")
+    note_type: str = Field(..., description="Note Type")
+    body: str = Field(..., description="Note")
+    visibility: str = Field(..., description="Visibility")
+    user_id: Optional[str] = Field(None, description="Author User ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseFindCandidateInput(BaseModel):
+    """Greenhouse — Find Candidate"""
+    email: str = Field(..., description="Email Address")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseFindOrCreateCandidateInput(BaseModel):
+    """Greenhouse — Find or Create Candidate"""
+    first_name: str = Field(..., description="First Name")
+    last_name: str = Field(..., description="Last Name")
+    preferred_name: Optional[str] = Field(None, description="Preferred Name")
+    time_zone: Optional[str] = Field(None, description="Greenhouse time zone value.")
+    email: str = Field(..., description="Email Address")
+    email_type: Optional[str] = Field(None, description="Email Type")
+    phone: Optional[str] = Field(None, description="Phone Number")
+    phone_type: Optional[str] = Field(None, description="Phone Type")
+    company: Optional[str] = Field(None, description="Current Company")
+    title: Optional[str] = Field(None, description="Current Job Title")
+    linkedin_url: Optional[str] = Field(None, description="LinkedIn URL")
+    website_url: Optional[str] = Field(None, description="Website URL")
+    website_type: Optional[str] = Field(None, description="Website Type")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    is_private: Optional[bool] = Field(None, description="Private Candidate")
+    can_email: Optional[bool] = Field(None, description="Can Email")
+    custom_fields: Optional[Any] = Field(None, description="Greenhouse custom_fields array payload.")
+    application: Optional[Any] = Field(None, description="Optional Greenhouse application object for new candidates.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseFindDueScorecardInput(BaseModel):
+    """Greenhouse — Find Due Scorecard"""
+    scorecard_id: str = Field(..., description="Scorecard ID")
 
     model_config = {"populate_by_name": True}
 
 
 class GreenhouseListJobsInput(BaseModel):
     """Greenhouse — List Jobs"""
+    cursor: Optional[str] = Field(None, description="Cursor from the previous page response. Do not combine with other filters.")
+    per_page: Optional[float] = Field(None, description="1 to 500 results per page.")
+    ids: Optional[str] = Field(None, description="Comma-separated job IDs, max 50.")
     status: Optional[str] = Field(None, description="Status")
-    perPage: Optional[float] = Field(None, description="Per Page")
+    requisition_id: Optional[str] = Field(None, description="Requisition ID")
+    department_id: Optional[str] = Field(None, description="Department ID")
+    office_id: Optional[str] = Field(None, description="Office ID")
+    confidential: Optional[str] = Field(None, description="Confidential")
+    fields: Optional[str] = Field(None, description="Fields")
+    created_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    created_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    updated_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    updated_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    opened_at_gte: Optional[str] = Field(None, description="Opened At >=")
+    opened_at_lte: Optional[str] = Field(None, description="Opened At <=")
+    closed_at_gte: Optional[str] = Field(None, description="Closed At >=")
+    closed_at_lte: Optional[str] = Field(None, description="Closed At <=")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseGetJobInput(BaseModel):
+    """Greenhouse — Get Job"""
+    job_id: str = Field(..., description="Job ID")
+    fields: Optional[str] = Field(None, description="Fields")
 
     model_config = {"populate_by_name": True}
 
 
 class GreenhouseListApplicationsInput(BaseModel):
     """Greenhouse — List Applications"""
-    jobId: Optional[str] = Field(None, description="Job ID")
+    cursor: Optional[str] = Field(None, description="Cursor from the previous page response. Do not combine with other filters.")
+    per_page: Optional[float] = Field(None, description="1 to 500 results per page.")
+    ids: Optional[str] = Field(None, description="Application IDs")
+    candidate_ids: Optional[str] = Field(None, description="Candidate IDs")
+    job_ids: Optional[str] = Field(None, description="Job IDs")
+    prospective_job_ids: Optional[str] = Field(None, description="Prospective Job IDs")
+    job_post_ids: Optional[str] = Field(None, description="Job Post IDs")
+    source_ids: Optional[str] = Field(None, description="Source IDs")
+    referrer_ids: Optional[str] = Field(None, description="Referrer IDs")
+    stage_ids: Optional[str] = Field(None, description="Stage IDs")
+    fields: Optional[str] = Field(None, description="Fields")
     status: Optional[str] = Field(None, description="Status")
-    perPage: Optional[float] = Field(None, description="Per Page")
+    stage_name: Optional[str] = Field(None, description="Stage Name")
+    prospect: Optional[str] = Field(None, description="Prospect")
+    custom_field_option_id: Optional[str] = Field(None, description="Custom Field Option ID")
+    created_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    created_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    updated_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    updated_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    last_activity_at_gte: Optional[str] = Field(None, description="Last Activity At >=")
+    last_activity_at_lte: Optional[str] = Field(None, description="Last Activity At <=")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseGetApplicationInput(BaseModel):
+    """Greenhouse — Get Application"""
+    application_id: str = Field(..., description="Application ID")
+    fields: Optional[str] = Field(None, description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseListJobPostsInput(BaseModel):
+    """Greenhouse — List Job Posts"""
+    cursor: Optional[str] = Field(None, description="Cursor from the previous page response. Do not combine with other filters.")
+    per_page: Optional[float] = Field(None, description="1 to 500 results per page.")
+    ids: Optional[str] = Field(None, description="Job Post IDs")
+    job_ids: Optional[str] = Field(None, description="Job IDs")
+    fields: Optional[str] = Field(None, description="Fields")
+    active: Optional[str] = Field(None, description="Active")
+    live: Optional[str] = Field(None, description="Live")
+    internal: Optional[str] = Field(None, description="Internal")
+    created_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    created_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    updated_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    updated_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseListInterviewsInput(BaseModel):
+    """Greenhouse — List Interviews"""
+    cursor: Optional[str] = Field(None, description="Cursor from the previous page response. Do not combine with other filters.")
+    per_page: Optional[float] = Field(None, description="1 to 500 results per page.")
+    ids: Optional[str] = Field(None, description="Interview IDs")
+    application_ids: Optional[str] = Field(None, description="Application IDs")
+    fields: Optional[str] = Field(None, description="Fields")
+    status: Optional[str] = Field(None, description="Status")
+    created_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    created_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    updated_at_gte: Optional[str] = Field(None, description="ISO-8601 timestamp lower bound.")
+    updated_at_lte: Optional[str] = Field(None, description="ISO-8601 timestamp upper bound.")
+    starts_at_gte: Optional[str] = Field(None, description="Starts At >=")
+    starts_at_lte: Optional[str] = Field(None, description="Starts At <=")
+
+    model_config = {"populate_by_name": True}
+
+
+class GreenhouseCustomApiCallInput(BaseModel):
+    """Greenhouse — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative Harvest v3 path, e.g. /candidates?per_page=10")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization, Cookie, Host, and Content-Length are ignored")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -11277,7 +11705,7 @@ class GroqTranscribeAudioInput(BaseModel):
     """Groq — Transcribe Audio"""
     file: str = Field(..., description="The audio file to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
     model: str = Field(..., description="The model to use for transcription.")
-    language: Optional[str] = Field(None, description="The language of the input audio in ISO-639-1 format (e.g., 'en' for English). This will improve accuracy and latency.")
+    language: Optional[str] = Field(None, description="The language of the input audio in ISO-639-1 format (e.g., \"en\" for English). This will improve accuracy and latency.")
     prompt: Optional[str] = Field(None, description="An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.")
     temperature: Optional[float] = Field(None, description="The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.")
     responseFormat: Optional[str] = Field(None, description="The format of the transcript output.")
@@ -11611,7 +12039,7 @@ class VaultWriteSecretInput(BaseModel):
     """HashiCorp Vault — Write Secret"""
     mountPath: str = Field(..., description="Secrets engine mount path (e.g., secret)")
     secretPath: str = Field(..., description="Path to the secret within the mount (e.g., myapp/config)")
-    data: str = Field(..., description="JSON object with the secret data (e.g., {'username':'admin','password':'s3cr3t'})")
+    data: str = Field(..., description="JSON object with the secret data (e.g., {\"username\":\"admin\",\"password\":\"s3cr3t\"})")
     kvVersion: Optional[str] = Field(None, description="KV Version")
 
     model_config = {"populate_by_name": True}
@@ -11839,10 +12267,10 @@ class HelpScoutCreateCustomerInput(BaseModel):
     jobTitle: Optional[str] = Field(None, description="Job Title")
     location: Optional[str] = Field(None, description="Location")
     background: Optional[str] = Field(None, description="Background")
-    age: Optional[str] = Field(None, description="Customer’s age (string, e.g. '30-35')")
+    age: Optional[str] = Field(None, description="Customer’s age (string, e.g. \"30-35\")")
     gender: Optional[str] = Field(None, description="Gender")
     organization: Optional[str] = Field(None, description="Organization")
-    socialProfiles: Optional[list[Any]] = Field(None, description="URLs for social profiles (type will be set to 'other')")
+    socialProfiles: Optional[list[Any]] = Field(None, description="URLs for social profiles (type will be set to \"other\")")
 
     model_config = {"populate_by_name": True}
 
@@ -12613,7 +13041,7 @@ class HousecallProGetLeadsInput(BaseModel):
 class HousecallProConvertLeadToEstimateOrJobInput(BaseModel):
     """Housecall Pro — Convert Lead to Estimate or Job"""
     id: str = Field(..., description="Lead ID")
-    type: str = Field(..., description="The type to convert the lead to. Must be either 'estimate' or 'job'")
+    type_: str = Field(..., alias="type", description="The type to convert the lead to. Must be either 'estimate' or 'job'")
 
     model_config = {"populate_by_name": True}
 
@@ -12654,11 +13082,69 @@ class HttpSendRequestInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class HubspotListCrmObjectsInput(BaseModel):
+    """HubSpot — List CRM Objects"""
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[str] = Field(None, description="After (Cursor)")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
+    archived: Optional[bool] = Field(None, description="Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotGetCrmObjectInput(BaseModel):
+    """HubSpot — Get CRM Object"""
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    objectId: str = Field(..., description="Object ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as email for contacts")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    propertiesWithHistory: Optional[str] = Field(None, description="Comma-separated property names with history")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
+    archived: Optional[bool] = Field(None, description="Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotCreateCrmObjectInput(BaseModel):
+    """HubSpot — Create CRM Object"""
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    properties: dict[str, Any] = Field(..., description="Properties")
+    associations: Optional[Any] = Field(None, description="Optional HubSpot associations array for create requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotUpdateCrmObjectInput(BaseModel):
+    """HubSpot — Update CRM Object"""
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    objectId: str = Field(..., description="Object ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as email for contacts")
+    properties: dict[str, Any] = Field(..., description="Properties to update")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotSearchCrmObjectsInput(BaseModel):
+    """HubSpot — Search CRM Objects"""
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    query: Optional[str] = Field(None, description="Search Query")
+    filterGroups: Optional[Any] = Field(None, description="HubSpot filter groups JSON")
+    sorts: Optional[Any] = Field(None, description="Optional HubSpot sorts array, for example [\"-createdate\"]")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to return")
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[str] = Field(None, description="After (Cursor)")
+
+    model_config = {"populate_by_name": True}
+
+
 class HubspotListContactsInput(BaseModel):
     """HubSpot — List Contacts"""
     limit: Optional[float] = Field(None, description="Limit")
     after: Optional[str] = Field(None, description="After (Cursor)")
     properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12666,7 +13152,9 @@ class HubspotListContactsInput(BaseModel):
 class HubspotGetContactInput(BaseModel):
     """HubSpot — Get Contact"""
     contactId: str = Field(..., description="Contact ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as email")
     properties: Optional[str] = Field(None, description="Comma-separated property names")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12679,6 +13167,7 @@ class HubspotCreateContactInput(BaseModel):
     phone: Optional[str] = Field(None, description="Phone")
     company: Optional[str] = Field(None, description="Company")
     additionalProperties: Optional[dict[str, Any]] = Field(None, description="Additional Properties")
+    associations: Optional[Any] = Field(None, description="Optional HubSpot associations array for create requests")
 
     model_config = {"populate_by_name": True}
 
@@ -12686,6 +13175,7 @@ class HubspotCreateContactInput(BaseModel):
 class HubspotUpdateContactInput(BaseModel):
     """HubSpot — Update Contact"""
     contactId: str = Field(..., description="Contact ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as email")
     properties: dict[str, Any] = Field(..., description="Properties to update")
 
     model_config = {"populate_by_name": True}
@@ -12695,7 +13185,8 @@ class HubspotListCompaniesInput(BaseModel):
     """HubSpot — List Companies"""
     limit: Optional[float] = Field(None, description="Limit")
     after: Optional[str] = Field(None, description="After (Cursor)")
-    properties: Optional[str] = Field(None, description="Comma-separated property names")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12703,7 +13194,9 @@ class HubspotListCompaniesInput(BaseModel):
 class HubspotGetCompanyInput(BaseModel):
     """HubSpot — Get Company"""
     companyId: str = Field(..., description="Company ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as domain")
     properties: Optional[str] = Field(None, description="Comma-separated property names")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12714,6 +13207,7 @@ class HubspotCreateCompanyInput(BaseModel):
     domain: Optional[str] = Field(None, description="Domain")
     industry: Optional[str] = Field(None, description="Industry")
     additionalProperties: Optional[dict[str, Any]] = Field(None, description="Additional Properties")
+    associations: Optional[Any] = Field(None, description="Optional HubSpot associations array for create requests")
 
     model_config = {"populate_by_name": True}
 
@@ -12721,6 +13215,7 @@ class HubspotCreateCompanyInput(BaseModel):
 class HubspotUpdateCompanyInput(BaseModel):
     """HubSpot — Update Company"""
     companyId: str = Field(..., description="Company ID")
+    idProperty: Optional[str] = Field(None, description="Optional unique property name, such as domain")
     properties: dict[str, Any] = Field(..., description="Properties to update")
 
     model_config = {"populate_by_name": True}
@@ -12730,7 +13225,8 @@ class HubspotListDealsInput(BaseModel):
     """HubSpot — List Deals"""
     limit: Optional[float] = Field(None, description="Limit")
     after: Optional[str] = Field(None, description="After (Cursor)")
-    properties: Optional[str] = Field(None, description="Comma-separated property names")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12738,7 +13234,9 @@ class HubspotListDealsInput(BaseModel):
 class HubspotGetDealInput(BaseModel):
     """HubSpot — Get Deal"""
     dealId: str = Field(..., description="Deal ID")
+    idProperty: Optional[str] = Field(None, description="ID Property")
     properties: Optional[str] = Field(None, description="Comma-separated property names")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
 
     model_config = {"populate_by_name": True}
 
@@ -12747,12 +13245,13 @@ class HubspotCreateDealInput(BaseModel):
     """HubSpot — Create Deal"""
     dealName: str = Field(..., description="Deal Name")
     pipeline_dropdown: Optional[str] = Field(None, description="Pipeline")
-    pipeline: Optional[str] = Field(None, description="Pipeline ID — used if dropdown is empty")
+    pipeline: Optional[str] = Field(None, description="Pipeline ID used if dropdown is empty")
     deal_stage_dropdown: Optional[str] = Field(None, description="Deal Stage")
-    dealStage: Optional[str] = Field(None, description="Stage ID — used if dropdown is empty")
+    dealStage: Optional[str] = Field(None, description="Stage ID used if dropdown is empty")
     amount: Optional[str] = Field(None, description="Amount")
-    closeDate: Optional[str] = Field(None, description="YYYY-MM-DD")
+    closeDate: Optional[str] = Field(None, description="YYYY-MM-DD or ISO datetime")
     additionalProperties: Optional[dict[str, Any]] = Field(None, description="Additional Properties")
+    associations: Optional[Any] = Field(None, description="Optional HubSpot associations array for create requests")
 
     model_config = {"populate_by_name": True}
 
@@ -12760,10 +13259,11 @@ class HubspotCreateDealInput(BaseModel):
 class HubspotUpdateDealInput(BaseModel):
     """HubSpot — Update Deal"""
     dealId: str = Field(..., description="Deal ID")
+    idProperty: Optional[str] = Field(None, description="ID Property")
     pipeline_dropdown: Optional[str] = Field(None, description="Pipeline")
-    pipeline: Optional[str] = Field(None, description="Pipeline ID — used if dropdown is empty")
+    pipeline: Optional[str] = Field(None, description="Pipeline ID used if dropdown is empty")
     deal_stage_dropdown: Optional[str] = Field(None, description="Deal Stage")
-    dealStage: Optional[str] = Field(None, description="Stage ID — used if dropdown is empty")
+    dealStage: Optional[str] = Field(None, description="Stage ID used if dropdown is empty")
     properties: Optional[dict[str, Any]] = Field(None, description="Other properties to update")
 
     model_config = {"populate_by_name": True}
@@ -12773,6 +13273,40 @@ class HubspotListTicketsInput(BaseModel):
     """HubSpot — List Tickets"""
     limit: Optional[float] = Field(None, description="Limit")
     after: Optional[str] = Field(None, description="After (Cursor)")
+    properties: Optional[str] = Field(None, description="Comma-separated property names to include")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotGetTicketInput(BaseModel):
+    """HubSpot — Get Ticket"""
+    ticketId: str = Field(..., description="Ticket ID")
+    idProperty: Optional[str] = Field(None, description="ID Property")
+    properties: Optional[str] = Field(None, description="Comma-separated property names")
+    associations: Optional[str] = Field(None, description="Comma-separated object types to include associations for")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotCreateTicketInput(BaseModel):
+    """HubSpot — Create Ticket"""
+    subject: str = Field(..., description="Subject")
+    content: Optional[str] = Field(None, description="Content")
+    pipeline: Optional[str] = Field(None, description="HubSpot hs_pipeline value")
+    pipelineStage: Optional[str] = Field(None, description="HubSpot hs_pipeline_stage value")
+    priority: Optional[str] = Field(None, description="Priority")
+    additionalProperties: Optional[dict[str, Any]] = Field(None, description="Additional Properties")
+    associations: Optional[Any] = Field(None, description="Optional HubSpot associations array for create requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotUpdateTicketInput(BaseModel):
+    """HubSpot — Update Ticket"""
+    ticketId: str = Field(..., description="Ticket ID")
+    idProperty: Optional[str] = Field(None, description="ID Property")
+    properties: dict[str, Any] = Field(..., description="Properties to update")
 
     model_config = {"populate_by_name": True}
 
@@ -12782,22 +13316,66 @@ class HubspotSearchCrmInput(BaseModel):
     objectType: str = Field(..., description="Object Type")
     query: Optional[str] = Field(None, description="Search Query")
     filterGroups: Optional[Any] = Field(None, description="HubSpot filter groups JSON")
+    sorts: Optional[Any] = Field(None, description="Optional HubSpot sorts array, for example [\"-createdate\"]")
     properties: Optional[str] = Field(None, description="Comma-separated property names to return")
     limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[str] = Field(None, description="After (Cursor)")
 
     model_config = {"populate_by_name": True}
 
 
 class HubspotListPropertiesInput(BaseModel):
     """HubSpot — List Properties"""
-    objectType: str = Field(..., description="Object Type")
+    objectType: str = Field(..., description="Examples: contacts, companies, deals, tickets, products, line_items, or a custom object type ID")
+    archived: Optional[bool] = Field(None, description="Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotListAssociationLabelsInput(BaseModel):
+    """HubSpot — List Association Labels"""
+    fromObjectType: str = Field(..., description="From Object Type")
+    toObjectType: str = Field(..., description="To Object Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotListAssociationsInput(BaseModel):
+    """HubSpot — List Associations"""
+    fromObjectType: str = Field(..., description="From Object Type")
+    fromObjectId: str = Field(..., description="From Object ID")
+    toObjectType: str = Field(..., description="To Object Type")
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[str] = Field(None, description="After (Cursor)")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotCreateAssociationInput(BaseModel):
+    """HubSpot — Create Association"""
+    fromObjectType: str = Field(..., description="From Object Type")
+    fromObjectId: str = Field(..., description="From Object ID")
+    toObjectType: str = Field(..., description="To Object Type")
+    toObjectId: str = Field(..., description="To Object ID")
+    associationTypeId: Optional[float] = Field(None, description="Optional label type ID from List Association Labels")
+    associationCategory: Optional[str] = Field(None, description="Association Category")
+
+    model_config = {"populate_by_name": True}
+
+
+class HubspotRemoveAssociationInput(BaseModel):
+    """HubSpot — Remove Association"""
+    fromObjectType: str = Field(..., description="From Object Type")
+    fromObjectId: str = Field(..., description="From Object ID")
+    toObjectType: str = Field(..., description="To Object Type")
+    toObjectId: str = Field(..., description="To Object ID")
 
     model_config = {"populate_by_name": True}
 
 
 class HubspotCreateEngagementInput(BaseModel):
     """HubSpot — Create Engagement"""
-    type: str = Field(..., description="Engagement Type")
+    type_: str = Field(..., alias="type", description="Engagement Type")
     contactId: Optional[str] = Field(None, description="Associated Contact ID")
     companyId: Optional[str] = Field(None, description="Associated Company ID")
     dealId: Optional[str] = Field(None, description="Associated Deal ID")
@@ -12810,9 +13388,9 @@ class HubspotCreateEngagementInput(BaseModel):
 
 class HubspotCustomApiCallInput(BaseModel):
     """HubSpot — Custom API Call"""
-    url: str = Field(..., description="URL")
+    url: str = Field(..., description="Use a HubSpot API path like /crm/v3/objects/contacts or an https://api.hubapi.com URL")
     method: str = Field(..., description="Method")
-    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    headers: Optional[dict[str, Any]] = Field(None, description="Authorization, Cookie, Host, and Content-Length are ignored")
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
@@ -12972,7 +13550,7 @@ class HunterIoDomainSearchInput(BaseModel):
     domain: str = Field(..., description="The company domain to search (e.g. stripe.com)")
     limit: Optional[float] = Field(None, description="Maximum number of results to return (max 100)")
     offset: Optional[float] = Field(None, description="Number of results to skip for pagination")
-    type: Optional[str] = Field(None, description="Filter by email type")
+    type_: Optional[str] = Field(None, alias="type", description="Filter by email type")
     seniority: Optional[str] = Field(None, description="Filter by seniority level (e.g. junior, senior, executive)")
     department: Optional[str] = Field(None, description="Filter by department (e.g. sales, marketing, engineering)")
 
@@ -13148,7 +13726,7 @@ class InfobipCustomApiCallInput(BaseModel):
 
 class InsightlyCreateRecordInput(BaseModel):
     """Insightly — Create Record"""
-    pod: str = Field(..., description="Your Insightly pod (e.g., 'na1', 'eu1'). Find this in your API URL: https://api.{pod}.insightly.com")
+    pod: str = Field(..., description="Your Insightly pod (e.g., \"na1\", \"eu1\"). Find this in your API URL: https://api.{pod}.insightly.com")
     objectName: str = Field(..., description="Select the type of record to create")
     fields: dict[str, Any] = Field(..., description="Fields")
 
@@ -13157,7 +13735,7 @@ class InsightlyCreateRecordInput(BaseModel):
 
 class InsightlyUpdateRecordInput(BaseModel):
     """Insightly — Update Record"""
-    pod: str = Field(..., description="Your Insightly pod (e.g., 'na1', 'eu1'). Find this in your API URL: https://api.{pod}.insightly.com")
+    pod: str = Field(..., description="Your Insightly pod (e.g., \"na1\", \"eu1\"). Find this in your API URL: https://api.{pod}.insightly.com")
     objectName: str = Field(..., description="Select the type of object that contains the record you want to update")
     recordId: str = Field(..., description="Select the record to update")
     fields: dict[str, Any] = Field(..., description="The new field values to update.")
@@ -13167,7 +13745,7 @@ class InsightlyUpdateRecordInput(BaseModel):
 
 class InsightlyGetRecordInput(BaseModel):
     """Insightly — Get Record"""
-    pod: str = Field(..., description="Your Insightly pod (e.g., 'na1', 'eu1'). Find this in your API URL: https://api.{pod}.insightly.com")
+    pod: str = Field(..., description="Your Insightly pod (e.g., \"na1\", \"eu1\"). Find this in your API URL: https://api.{pod}.insightly.com")
     objectName: str = Field(..., description="Select the type of record to retrieve")
     recordId: str = Field(..., description="Select the record to retrieve")
 
@@ -13176,7 +13754,7 @@ class InsightlyGetRecordInput(BaseModel):
 
 class InsightlyDeleteRecordInput(BaseModel):
     """Insightly — Delete Record"""
-    pod: str = Field(..., description="Your Insightly pod (e.g., 'na1', 'eu1'). Find this in your API URL: https://api.{pod}.insightly.com")
+    pod: str = Field(..., description="Your Insightly pod (e.g., \"na1\", \"eu1\"). Find this in your API URL: https://api.{pod}.insightly.com")
     objectName: str = Field(..., description="Select the type of record to delete")
     recordId: str = Field(..., description="Select the record to delete")
 
@@ -13185,7 +13763,7 @@ class InsightlyDeleteRecordInput(BaseModel):
 
 class InsightlyFindRecordsInput(BaseModel):
     """Insightly — Find Records"""
-    pod: str = Field(..., description="Your Insightly pod (e.g., 'na1', 'eu1').")
+    pod: str = Field(..., description="Your Insightly pod (e.g., \"na1\", \"eu1\").")
     objectName: str = Field(..., description="Select the type of records to find")
     fieldName: str = Field(..., description="Select the field to search by")
     fieldValue: str = Field(..., description="The value to search for")
@@ -13586,8 +14164,8 @@ class JinaAiExtractWebpageContentInput(BaseModel):
     url: str = Field(..., description="The URL of the webpage to extract content from.")
     format: str = Field(..., description="Format of the extracted content - how the webpage should be returned.")
     remove_all_images: Optional[bool] = Field(None, description="Remove all images from the response.")
-    links_summary: Optional[str] = Field(None, description="Create a 'Buttons & Links' section at the end to help downstream LLMs or web agents navigate the page.")
-    images_summary: Optional[str] = Field(None, description="Create an 'Images' section at the end, giving downstream LLMs an overview of all visuals on the page.")
+    links_summary: Optional[str] = Field(None, description="Create a \"Buttons & Links\" section at the end to help downstream LLMs or web agents navigate the page.")
+    images_summary: Optional[str] = Field(None, description="Create an \"Images\" section at the end, giving downstream LLMs an overview of all visuals on the page.")
     do_not_track: Optional[bool] = Field(None, description="When enabled, the requested URL won't be cached and tracked on our server.")
     iframe_extraction: Optional[bool] = Field(None, description="Processes content from all embedded iframes in the DOM tree.")
     shadow_dom_extraction: Optional[bool] = Field(None, description="Extracts content from all Shadow DOM roots in the document.")
@@ -13595,9 +14173,9 @@ class JinaAiExtractWebpageContentInput(BaseModel):
     eu_compliance: Optional[bool] = Field(None, description="All infrastructure and data processing operations reside entirely within EU jurisdiction.")
     json_response: Optional[bool] = Field(None, description="Return response in JSON format containing URL, title, content, and timestamp (if available).")
     timeout_seconds: Optional[float] = Field(None, description="Maximum page load wait time in seconds (0 means use default timeout, set a value if the default browser engine is too slow on simple webpages).")
-    css_selector: Optional[str] = Field(None, description="List of CSS selectors to target specific page elements (e.g., 'body, .main-content, #article').")
-    wait_for_selector: Optional[str] = Field(None, description="CSS selectors to wait for before returning results (e.g., '#dynamic-content, .lazy-loaded').")
-    exclude_selector: Optional[str] = Field(None, description="CSS selectors for elements to remove from the results (e.g., 'header, footer, .ads, #sidebar').")
+    css_selector: Optional[str] = Field(None, description="List of CSS selectors to target specific page elements (e.g., \"body, .main-content, #article\").")
+    wait_for_selector: Optional[str] = Field(None, description="CSS selectors to wait for before returning results (e.g., \"#dynamic-content, .lazy-loaded\").")
+    exclude_selector: Optional[str] = Field(None, description="CSS selectors for elements to remove from the results (e.g., \"header, footer, .ads, #sidebar\").")
 
     model_config = {"populate_by_name": True}
 
@@ -13628,7 +14206,7 @@ class JinaAiDeepsearchQueryInput(BaseModel):
     max_attempts: Optional[float] = Field(None, description="The maximum number of retries for solving a problem in DeepSearch process. A larger value allows DeepSearch to retry solving the problem by using different reasoning approaches and strategies.")
     no_direct_answer: Optional[bool] = Field(None, description="Forces the model to take further thinking/search steps even when the query seems trivial. Useful if you're using DeepSearch in scenarios where you're certain the query always needs DeepSearch, rather than for trivial questions.")
     max_returned_urls: Optional[float] = Field(None, description="The maximum number of URLs to include in the final answer/chunk. URLs are sorted by relevance and other important factors.")
-    response_format: Optional[Any] = Field(None, description="JSON schema for structured output format. Example: { 'type': 'json_schema', 'json_schema': { 'type': 'object', 'properties': { 'numerical_answer_only': { 'type': 'number' } } } }")
+    response_format: Optional[Any] = Field(None, description="JSON schema for structured output format. Example: { \"type\": \"json_schema\", \"json_schema\": { \"type\": \"object\", \"properties\": { \"numerical_answer_only\": { \"type\": \"number\" } } } }")
     boost_hostnames: Optional[str] = Field(None, description="A list of domains that are given a higher priority for content retrieval. Useful for domain-specific, high-quality sources that provide valuable content.")
     bad_hostnames: Optional[str] = Field(None, description="A list of domains to be strictly excluded from content retrieval. Typically used to filter out known spam, low-quality, or irrelevant websites.")
     only_hostnames: Optional[str] = Field(None, description="A list of domains to be exclusively included in content retrieval. All other domains will be ignored. Useful for domain-specific searches.")
@@ -13693,7 +14271,7 @@ class JiraCloudUpdateIssueInput(BaseModel):
 
 class JiraCloudSearchIssuesInput(BaseModel):
     """Jira Cloud — Search Issues (JQL)"""
-    jql: str = Field(..., description="JQL query, e.g. project=PROJ AND status='In Progress'")
+    jql: str = Field(..., description="JQL query, e.g. project=PROJ AND status=\"In Progress\"")
     max_results: Optional[float] = Field(None, description="Max Results")
 
     model_config = {"populate_by_name": True}
@@ -13880,7 +14458,7 @@ class JotformGetSubmissionsInput(BaseModel):
 class JotformCreateSubmissionInput(BaseModel):
     """JotForm — Create Submission"""
     formId: str = Field(..., description="Form ID")
-    submissionData: dict[str, Any] = Field(..., description="Form field answers as key-value pairs. Keys should be field names (e.g., {'q1_name': 'John', 'q2_email': 'john@example.com'})")
+    submissionData: dict[str, Any] = Field(..., description="Form field answers as key-value pairs. Keys should be field names (e.g., {\"q1_name\": \"John\", \"q2_email\": \"john@example.com\"})")
 
     model_config = {"populate_by_name": True}
 
@@ -14169,7 +14747,7 @@ class KlaviyoGetProfileInput(BaseModel):
 
 class KlaviyoCreateEventInput(BaseModel):
     """Klaviyo — Create Event"""
-    metricName: str = Field(..., description="Name of the event (e.g., 'Placed Order')")
+    metricName: str = Field(..., description="Name of the event (e.g., \"Placed Order\")")
     email: str = Field(..., description="Email of the profile")
     properties: Optional[dict[str, Any]] = Field(None, description="Event Properties")
     value: Optional[float] = Field(None, description="Monetary value of the event")
@@ -14322,7 +14900,7 @@ class KvStorePutInput(BaseModel):
     key: str = Field(..., description="The key to store the value under")
     value: Any = Field(..., description="The value to store (any JSON-serializable value)")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -14331,7 +14909,7 @@ class KvStoreGetInput(BaseModel):
     """KV Store — Get"""
     key: str = Field(..., description="The key to retrieve")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -14340,7 +14918,7 @@ class KvStoreDeleteInput(BaseModel):
     """KV Store — Delete"""
     key: str = Field(..., description="The key to delete")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -14350,7 +14928,7 @@ class KvStoreAddToListInput(BaseModel):
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to append to the list")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -14360,7 +14938,7 @@ class KvStoreRemoveFromListInput(BaseModel):
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to remove from the list")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -15054,8 +15632,8 @@ class LeverCustomApiCallInput(BaseModel):
 class LibretranslateTranslateTextInput(BaseModel):
     """LibreTranslate — Translate Text"""
     text: str = Field(..., description="Text to translate")
-    source: str = Field(..., description="Source language code (e.g. 'en', 'fr') or 'auto' for auto-detection")
-    target: str = Field(..., description="Target language code (e.g. 'es', 'de')")
+    source: str = Field(..., description="Source language code (e.g. \"en\", \"fr\") or \"auto\" for auto-detection")
+    target: str = Field(..., description="Target language code (e.g. \"es\", \"de\")")
     baseUrl: Optional[str] = Field(None, description="LibreTranslate instance URL (default: https://libretranslate.com)")
 
     model_config = {"populate_by_name": True}
@@ -15473,7 +16051,7 @@ class MailchimpAddMemberToListInput(BaseModel):
     status: Optional[str] = Field(None, description="Status")
     first_name: Optional[str] = Field(None, description="First name of the subscriber")
     last_name: Optional[str] = Field(None, description="Last name of the subscriber")
-    language: Optional[str] = Field(None, description="Subscriber language (e.g., 'en', 'es', 'fr')")
+    language: Optional[str] = Field(None, description="Subscriber language (e.g., \"en\", \"es\", \"fr\")")
     vip: Optional[bool] = Field(None, description="VIP status for subscriber")
     skip_merge_validation: Optional[bool] = Field(None, description="Accept member data without merge field values even if required")
 
@@ -15522,14 +16100,14 @@ class MailchimpCreateCampaignInput(BaseModel):
     list_id: str = Field(..., description="Audience you want to add the contact to")
     subject_line: str = Field(..., description="The subject line for the campaign")
     title: str = Field(..., description="The title of the campaign")
-    from_name: str = Field(..., description="The name that will appear in the 'From' field")
-    from_email: str = Field(..., description="The email address that will appear in the 'From' field")
+    from_name: str = Field(..., description="The name that will appear in the \"From\" field")
+    from_email: str = Field(..., description="The email address that will appear in the \"From\" field")
     reply_to: str = Field(..., description="The email address that will receive replies")
-    to_name: Optional[str] = Field(None, description="The name that will appear in the 'To' field (e.g., *|FNAME|*)")
+    to_name: Optional[str] = Field(None, description="The name that will appear in the \"To\" field (e.g., *|FNAME|*)")
     content_type: str = Field(..., description="How the campaign content is put together")
-    content_url: Optional[str] = Field(None, description="The URL where the campaign content is hosted (required if content_type is 'url')")
-    template_id: Optional[str] = Field(None, description="The ID of the template to use (required if content_type is 'template')")
-    html_content: Optional[str] = Field(None, description="The HTML content for the campaign (required if content_type is 'html')")
+    content_url: Optional[str] = Field(None, description="The URL where the campaign content is hosted (required if content_type is \"url\")")
+    template_id: Optional[str] = Field(None, description="The ID of the template to use (required if content_type is \"template\")")
+    html_content: Optional[str] = Field(None, description="The HTML content for the campaign (required if content_type is \"html\")")
 
     model_config = {"populate_by_name": True}
 
@@ -15537,8 +16115,8 @@ class MailchimpCreateCampaignInput(BaseModel):
 class MailchimpGetCampaignReportInput(BaseModel):
     """Mailchimp — Get Campaign Report"""
     campaign_id: str = Field(..., description="Select the campaign to get information for")
-    fields: Optional[str] = Field(None, description="Comma-separated list of fields to return (e.g., 'opens.unique_opens,clicks.click_rate')")
-    exclude_fields: Optional[str] = Field(None, description="Comma-separated list of fields to exclude (e.g., 'timeseries,_links')")
+    fields: Optional[str] = Field(None, description="Comma-separated list of fields to return (e.g., \"opens.unique_opens,clicks.click_rate\")")
+    exclude_fields: Optional[str] = Field(None, description="Comma-separated list of fields to exclude (e.g., \"timeseries,_links\")")
 
     model_config = {"populate_by_name": True}
 
@@ -15558,7 +16136,7 @@ class MailchimpCreateAudienceInput(BaseModel):
     from_name: str = Field(..., description="Default from name for campaigns")
     from_email: str = Field(..., description="Default from email address for campaigns")
     subject: str = Field(..., description="Default subject line for campaigns")
-    language: str = Field(..., description="Default language for campaigns (e.g., 'en', 'es', 'fr')")
+    language: str = Field(..., description="Default language for campaigns (e.g., \"en\", \"es\", \"fr\")")
     email_type_option: Optional[bool] = Field(None, description="Whether the list supports multiple email formats (HTML/plain text)")
     use_archive_bar: Optional[bool] = Field(None, description="Whether campaigns use the Archive Bar in archives by default")
     notify_on_subscribe: Optional[str] = Field(None, description="Email address to send subscribe notifications to (optional)")
@@ -15621,7 +16199,7 @@ class MailchimpFindSubscriberInput(BaseModel):
     """Mailchimp — Find Subscriber"""
     list_id: str = Field(..., description="Audience you want to add the contact to")
     email: str = Field(..., description="Email address of the subscriber to search for")
-    include_fields: Optional[list[Any]] = Field(None, description="Fields to include in the response (leave empty for all fields). Use dot notation for nested fields (e.g., 'merge_fields.FNAME')")
+    include_fields: Optional[list[Any]] = Field(None, description="Fields to include in the response (leave empty for all fields). Use dot notation for nested fields (e.g., \"merge_fields.FNAME\")")
     exclude_fields: Optional[list[Any]] = Field(None, description="Fields to exclude from the response. Use dot notation for nested fields")
 
     model_config = {"populate_by_name": True}
@@ -15996,7 +16574,7 @@ class MetabaseEmbedQuestionInput(BaseModel):
     """Metabase — Embed Question"""
     questionId: str = Field(..., description="Metabase Question ID")
     enableEmbedding: bool = Field(..., description="Whether to enable embedding for this question")
-    parameterSettings: Optional[Any] = Field(None, description="JSON object mapping parameter slugs to embedding mode: 'disabled', 'enabled', or 'locked'. Example: {'date_filter': 'enabled', 'category': 'locked'}")
+    parameterSettings: Optional[Any] = Field(None, description="JSON object mapping parameter slugs to embedding mode: \"disabled\", \"enabled\", or \"locked\". Example: {\"date_filter\": \"enabled\", \"category\": \"locked\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -16013,7 +16591,7 @@ class MetabaseGetEmbedUrlInput(BaseModel):
 class MetabaseCustomApiCallInput(BaseModel):
     """Metabase — Custom API Call"""
     method: str = Field(..., description="Method")
-    path: str = Field(..., description="Path after /api/ (e.g. 'card/1' or 'dashboard/5')")
+    path: str = Field(..., description="Path after /api/ (e.g. \"card/1\" or \"dashboard/5\")")
     body: Optional[Any] = Field(None, description="JSON body for POST/PUT/PATCH requests")
 
     model_config = {"populate_by_name": True}
@@ -16207,7 +16785,7 @@ class MicrosoftExcel365WriteRangeInput(BaseModel):
     itemId: str = Field(..., description="Workbook Item ID")
     worksheetName: str = Field(..., description="Worksheet Name")
     range: str = Field(..., description="e.g. A1:D1")
-    values: Any = Field(..., description="A 2D array of values, e.g. [['a','b'],['c','d']]")
+    values: Any = Field(..., description="A 2D array of values, e.g. [[\"a\",\"b\"],[\"c\",\"d\"]]")
 
     model_config = {"populate_by_name": True}
 
@@ -16217,7 +16795,7 @@ class MicrosoftExcel365AddRowInput(BaseModel):
     itemId: str = Field(..., description="Workbook Item ID")
     worksheetName: str = Field(..., description="Worksheet Name")
     tableName: str = Field(..., description="Table Name")
-    values: Any = Field(..., description="Array of values for each column, e.g. ['John', 'Doe', 30]")
+    values: Any = Field(..., description="Array of values for each column, e.g. [\"John\", \"Doe\", 30]")
 
     model_config = {"populate_by_name": True}
 
@@ -16301,7 +16879,7 @@ class MicrosoftOnedriveSearchFilesInput(BaseModel):
 class MicrosoftOnedriveShareFileInput(BaseModel):
     """Microsoft OneDrive — Share File"""
     itemId: str = Field(..., description="Item ID")
-    type: Optional[str] = Field(None, description="Link Type")
+    type_: Optional[str] = Field(None, alias="type", description="Link Type")
     scope: Optional[str] = Field(None, description="Scope")
 
     model_config = {"populate_by_name": True}
@@ -16326,7 +16904,7 @@ class MicrosoftOnedriveCustomApiCallInput(BaseModel):
 
 class MicrosoftOnenoteCreateNotebookInput(BaseModel):
     """Microsoft OneNote — Create Notebook"""
-    displayName: str = Field(..., description="The name of the notebook. Must be unique and cannot contain more than 128 characters or the following characters: ?*/:<>|''%~")
+    displayName: str = Field(..., description="The name of the notebook. Must be unique and cannot contain more than 128 characters or the following characters: ?*/:<>|'\"%~")
 
     model_config = {"populate_by_name": True}
 
@@ -16548,7 +17126,7 @@ class MicrosoftSharepointMicrosoftSharepointCreateFolderInput(BaseModel):
     """Microsoft SharePoint — Create Folder"""
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
-    parentFolder: str = Field(..., description="Parent folder,like '/demo/' or '/docs/assignment/'.Leave it default if you want to create folder at the root (**/**) level.")
+    parentFolder: str = Field(..., description="Parent folder,like \"/demo/\" or \"/docs/assignment/\".Leave it default if you want to create folder at the root (**/**) level.")
     folderName: str = Field(..., description="Folder Name")
 
     model_config = {"populate_by_name": True}
@@ -16605,7 +17183,7 @@ class MicrosoftSharepointMicrosoftSharepointUploadFileInput(BaseModel):
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
     file: str = Field(..., description="The file or url you want to upload")
-    parentFolder: str = Field(..., description="Parent folder, like '/demo/' or '/docs/assignment/'.Leave it default if you want to create folder at the root (**CHANGE THIS BACK//**) level.")
+    parentFolder: str = Field(..., description="Parent folder, like \"/demo/\" or \"/docs/assignment/\".Leave it default if you want to create folder at the root (**CHANGE THIS BACK//**) level.")
     fileName: str = Field(..., description="File Name")
 
     model_config = {"populate_by_name": True}
@@ -16638,7 +17216,7 @@ class MicrosoftSharepointMicrosoftSharepointCopyItemWithinSiteInput(BaseModel):
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
     itemId: str = Field(..., description="Source File or Folder")
-    destinationFolderId: str = Field(..., description="The folder to copy the item into. Select 'Root' to copy to the top level of the drive.")
+    destinationFolderId: str = Field(..., description="The folder to copy the item into. Select \"Root\" to copy to the top level of the drive.")
     newName: Optional[str] = Field(None, description="A new name for the copied item. If not provided, the original name is used.")
     conflictBehavior: str = Field(..., description="Action to take if a file with the same name already exists in the destination.")
 
@@ -16650,7 +17228,7 @@ class MicrosoftSharepointMicrosoftSharepointMoveFileInput(BaseModel):
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
     fileId: str = Field(..., description="The file you want to move.")
-    destinationFolderId: str = Field(..., description="The folder to move the file into. Select 'Root' to move to the top level of the drive.")
+    destinationFolderId: str = Field(..., description="The folder to move the file into. Select \"Root\" to move to the top level of the drive.")
     newName: Optional[str] = Field(None, description="Provide a new name to rename the file during the move.")
 
     model_config = {"populate_by_name": True}
@@ -16672,7 +17250,7 @@ class MicrosoftSharepointMicrosoftSharepointGetFolderContentsInput(BaseModel):
     """Microsoft SharePoint — Get Folder Contents"""
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
-    folderId: str = Field(..., description="The folder whose contents you want to list. Select 'Root Folder' for the top-level folder.")
+    folderId: str = Field(..., description="The folder whose contents you want to list. Select \"Root Folder\" for the top-level folder.")
     includeCustomFields: Optional[bool] = Field(None, description="Check this to include SharePoint-specific metadata (custom columns). This may slow down the request.")
     top: Optional[float] = Field(None, description="The maximum number of items to return. The API default is 200. If more items exist, the output will contain a field `@odata.nextLink` that you can use in a custom API call to get the next page.")
     select: Optional[str] = Field(None, description="A comma-separated list of properties to return. Example: `id,name,size,webUrl`")
@@ -17036,7 +17614,7 @@ class MollieCreateOrderInput(BaseModel):
     """Mollie — Create Order"""
     orderNumber: str = Field(..., description="The order number for this order. We recommend each order number to be unique.")
     currency: str = Field(..., description="A three-character ISO 4217 currency code (e.g. EUR, USD)")
-    amount: str = Field(..., description="The total amount to charge (e.g. '10.00')")
+    amount: str = Field(..., description="The total amount to charge (e.g. \"10.00\")")
     lines: list[Any] = Field(..., description="The order lines for the order")
     billingTitle: Optional[str] = Field(None, description="The title of the person (e.g. Mr., Mrs.)")
     billingGivenName: str = Field(..., description="The given name (first name) of the person")
@@ -17081,10 +17659,10 @@ class MollieCreatePaymentLinkInput(BaseModel):
     description: str = Field(..., description="A short description of the payment link (max 255 characters)")
     includeAmount: Optional[bool] = Field(None, description="Whether to include a fixed amount or let customer enter amount")
     currency: Optional[str] = Field(None, description="A three-character ISO 4217 currency code (e.g. EUR, USD)")
-    amount: Optional[str] = Field(None, description="The amount to charge (e.g. '10.00')")
+    amount: Optional[str] = Field(None, description="The amount to charge (e.g. \"10.00\")")
     includeMinimumAmount: Optional[bool] = Field(None, description="Whether to set a minimum amount (only when no fixed amount)")
     minimumAmountCurrency: Optional[str] = Field(None, description="Currency for minimum amount")
-    minimumAmount: Optional[str] = Field(None, description="The minimum amount (e.g. '5.00')")
+    minimumAmount: Optional[str] = Field(None, description="The minimum amount (e.g. \"5.00\")")
     redirectUrl: Optional[str] = Field(None, description="URL to redirect customer after payment completion")
     webhookUrl: Optional[str] = Field(None, description="URL for payment status updates")
     includeLines: Optional[bool] = Field(None, description="Whether to include detailed order line items")
@@ -17129,7 +17707,7 @@ class MollieCreatePaymentInput(BaseModel):
     """Mollie — Create Payment"""
     description: str = Field(..., description="Description of the payment (max 255 characters)")
     currency: str = Field(..., description="A three-character ISO 4217 currency code (e.g. EUR, USD)")
-    amount: str = Field(..., description="The amount to charge (e.g. '10.00')")
+    amount: str = Field(..., description="The amount to charge (e.g. \"10.00\")")
     redirectUrl: str = Field(..., description="URL to redirect customer after payment completion")
     cancelUrl: Optional[str] = Field(None, description="URL to redirect customer when they cancel payment")
     webhookUrl: Optional[str] = Field(None, description="URL for payment status updates")
@@ -17168,7 +17746,7 @@ class MollieCreatePaymentInput(BaseModel):
     customerId: Optional[str] = Field(None, description="Customer ID (required for recurring payments)")
     mandateId: Optional[str] = Field(None, description="Mandate ID (for recurring payments)")
     captureMode: Optional[str] = Field(None, description="When to capture the payment")
-    captureDelay: Optional[str] = Field(None, description="Delay before automatic capture (e.g. '8 hours', '2 days')")
+    captureDelay: Optional[str] = Field(None, description="Delay before automatic capture (e.g. \"8 hours\", \"2 days\")")
     testmode: Optional[bool] = Field(None, description="Whether to create the payment in test mode")
 
     model_config = {"populate_by_name": True}
@@ -17190,7 +17768,7 @@ class MollieCreatePaymentRefundInput(BaseModel):
     paymentId: str = Field(..., description="Select the payment to refund")
     description: Optional[str] = Field(None, description="The description of the refund (max 255 characters)")
     currency: str = Field(..., description="A three-character ISO 4217 currency code (e.g. EUR, USD)")
-    amount: str = Field(..., description="The amount to refund (e.g. '10.00')")
+    amount: str = Field(..., description="The amount to refund (e.g. \"10.00\")")
     metadata: Optional[str] = Field(None, description="Additional data to save alongside the refund (JSON string)")
     includeExternalReference: Optional[bool] = Field(None, description="Whether to include external reference details")
     externalReferenceType: Optional[str] = Field(None, description="Type of external reference")
@@ -17329,9 +17907,9 @@ class MongodbFindDocumentsInput(BaseModel):
     """MongoDB — Find Documents"""
     collection: str = Field(..., description="Collection")
     database: Optional[str] = Field(None, description="Override default database")
-    filter: Optional[Any] = Field(None, description="MongoDB query filter (e.g., {'status': 'active'})")
-    projection: Optional[Any] = Field(None, description="Fields to include/exclude (e.g., {'name': 1})")
-    sort: Optional[Any] = Field(None, description="Sort order (e.g., {'createdAt': -1})")
+    filter: Optional[Any] = Field(None, description="MongoDB query filter (e.g., {\"status\": \"active\"})")
+    projection: Optional[Any] = Field(None, description="Fields to include/exclude (e.g., {\"name\": 1})")
+    sort: Optional[Any] = Field(None, description="Sort order (e.g., {\"createdAt\": -1})")
     limit: Optional[float] = Field(None, description="Maximum documents to return")
     skip: Optional[float] = Field(None, description="Number of documents to skip")
 
@@ -17342,7 +17920,7 @@ class MongodbFindOneInput(BaseModel):
     """MongoDB — Find One Document"""
     collection: str = Field(..., description="Collection")
     database: Optional[str] = Field(None, description="Override default database")
-    filter: Any = Field(..., description="MongoDB query filter (e.g., {'email': 'test@example.com'})")
+    filter: Any = Field(..., description="MongoDB query filter (e.g., {\"email\": \"test@example.com\"})")
     projection: Optional[Any] = Field(None, description="Fields to include/exclude")
 
     model_config = {"populate_by_name": True}
@@ -17371,7 +17949,7 @@ class MongodbUpdateOneInput(BaseModel):
     collection: str = Field(..., description="Collection")
     database: Optional[str] = Field(None, description="Override default database")
     filter: Any = Field(..., description="Query filter to match the document")
-    update: Any = Field(..., description="Update operations (e.g., {'$set': {'name': 'new'}})")
+    update: Any = Field(..., description="Update operations (e.g., {\"$set\": {\"name\": \"new\"}})")
     upsert: Optional[bool] = Field(None, description="Insert if no document matches")
 
     model_config = {"populate_by_name": True}
@@ -17382,7 +17960,7 @@ class MongodbUpdateManyInput(BaseModel):
     collection: str = Field(..., description="Collection")
     database: Optional[str] = Field(None, description="Override default database")
     filter: Any = Field(..., description="Query filter to match documents")
-    update: Any = Field(..., description="Update operations (e.g., {'$set': {'status': 'archived'}})")
+    update: Any = Field(..., description="Update operations (e.g., {\"$set\": {\"status\": \"archived\"}})")
     upsert: Optional[bool] = Field(None, description="Insert if no documents match")
 
     model_config = {"populate_by_name": True}
@@ -17410,7 +17988,7 @@ class MongodbAggregateInput(BaseModel):
     """MongoDB — Aggregate"""
     collection: str = Field(..., description="Collection")
     database: Optional[str] = Field(None, description="Override default database")
-    pipeline: Any = Field(..., description="Aggregation pipeline as JSON array (e.g., [{'$match': {'status': 'active'}}, {'$group': {'_id': '$category'}}])")
+    pipeline: Any = Field(..., description="Aggregation pipeline as JSON array (e.g., [{\"$match\": {\"status\": \"active\"}}, {\"$group\": {\"_id\": \"$category\"}}])")
 
     model_config = {"populate_by_name": True}
 
@@ -17952,7 +18530,7 @@ class NexhealthCustomApiCallInput(BaseModel):
 
 class NocodbNocodbCreateRecordInput(BaseModel):
     """NocoDB — Create a Record"""
-    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select 'No Workspace'.")
+    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select \"No Workspace\".")
     baseId: str = Field(..., description="Base ID")
     tableId: str = Field(..., description="Table ID")
     tableColumns: dict[str, Any] = Field(..., description="Table Columns")
@@ -17962,7 +18540,7 @@ class NocodbNocodbCreateRecordInput(BaseModel):
 
 class NocodbNocodbDeleteRecordInput(BaseModel):
     """NocoDB — Delete a Record"""
-    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select 'No Workspace'.")
+    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select \"No Workspace\".")
     baseId: str = Field(..., description="Base ID")
     tableId: str = Field(..., description="Table ID")
     recordId: float = Field(..., description="Record ID")
@@ -17972,7 +18550,7 @@ class NocodbNocodbDeleteRecordInput(BaseModel):
 
 class NocodbNocodbUpdateRecordInput(BaseModel):
     """NocoDB — Update a Record"""
-    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select 'No Workspace'.")
+    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select \"No Workspace\".")
     baseId: str = Field(..., description="Base ID")
     tableId: str = Field(..., description="Table ID")
     recordId: float = Field(..., description="Record ID")
@@ -17983,7 +18561,7 @@ class NocodbNocodbUpdateRecordInput(BaseModel):
 
 class NocodbNocodbGetRecordInput(BaseModel):
     """NocoDB — Get a Record"""
-    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select 'No Workspace'.")
+    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select \"No Workspace\".")
     baseId: str = Field(..., description="Base ID")
     tableId: str = Field(..., description="Table ID")
     recordId: float = Field(..., description="Record ID")
@@ -17993,7 +18571,7 @@ class NocodbNocodbGetRecordInput(BaseModel):
 
 class NocodbNocodbSearchRecordsInput(BaseModel):
     """NocoDB — Search Records"""
-    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select 'No Workspace'.")
+    workspaceId: Optional[str] = Field(None, description="For self-hosted instances,select \"No Workspace\".")
     baseId: str = Field(..., description="Base ID")
     tableId: str = Field(..., description="Table ID")
     columnId: Optional[list[str]] = Field(None, description="Allows you to specify the fields that you wish to include in your API response. By default, all the fields are included in the response.")
@@ -18200,7 +18778,7 @@ class NpmRegistryCustomApiCallInput(BaseModel):
 class NutshellCreateLeadInput(BaseModel):
     """Nutshell — Create Lead"""
     description: str = Field(..., description="Description")
-    contacts: Optional[Any] = Field(None, description="Array of contact objects (e.g. [{'id': 1}])")
+    contacts: Optional[Any] = Field(None, description="Array of contact objects (e.g. [{\"id\": 1}])")
 
     model_config = {"populate_by_name": True}
 
@@ -18233,7 +18811,7 @@ class NutshellCustomApiCallInput(BaseModel):
 
 class OdooGetContactsInput(BaseModel):
     """Odoo — Get contacts"""
-    type: str = Field(..., description="Select which contact type to get")
+    type_: str = Field(..., alias="type", description="Select which contact type to get")
     name: Optional[str] = Field(None, description="Would you like to search any specific name?")
 
     model_config = {"populate_by_name": True}
@@ -18458,7 +19036,7 @@ class OpenaiChatCompletionInput(BaseModel):
     """OpenAI — Chat Completion"""
     model: str = Field(..., description="The model to use for chat completion")
     system_message: Optional[str] = Field(None, description="Optional system message to set the behavior of the assistant")
-    messages: Any = Field(..., description="Array of message objects with role and content (e.g., [{'role': 'user', 'content': 'Hello'}])")
+    messages: Any = Field(..., description="Array of message objects with role and content (e.g., [{\"role\": \"user\", \"content\": \"Hello\"}])")
     temperature: Optional[float] = Field(None, description="Sampling temperature between 0 and 2")
     max_tokens: Optional[float] = Field(None, description="Maximum number of tokens to generate")
 
@@ -18852,15 +19430,15 @@ class PandadocCreateOrUpdateContactInput(BaseModel):
     first_name: Optional[str] = Field(None, description="Contact's first name")
     last_name: Optional[str] = Field(None, description="Contact's last name")
     company: Optional[str] = Field(None, description="Contact's company name")
-    job_title: Optional[str] = Field(None, description="Select a common job title or choose 'Other' to enter a custom title")
-    custom_job_title: Optional[str] = Field(None, description="Enter a custom job title (only used if 'Other' is selected above)")
-    industry: Optional[str] = Field(None, description="Select an industry or choose 'Other' to enter a custom industry")
-    custom_industry: Optional[str] = Field(None, description="Enter a custom industry (only used if 'Other' is selected above)")
+    job_title: Optional[str] = Field(None, description="Select a common job title or choose \"Other\" to enter a custom title")
+    custom_job_title: Optional[str] = Field(None, description="Enter a custom job title (only used if \"Other\" is selected above)")
+    industry: Optional[str] = Field(None, description="Select an industry or choose \"Other\" to enter a custom industry")
+    custom_industry: Optional[str] = Field(None, description="Enter a custom industry (only used if \"Other\" is selected above)")
     phone: Optional[str] = Field(None, description="A phone number")
-    country: Optional[str] = Field(None, description="Select a country or choose 'Other' to enter a custom country")
-    custom_country: Optional[str] = Field(None, description="Enter your country name (only used if 'Other' is selected above)")
-    state: Optional[str] = Field(None, description="Select a state/province or choose 'Other' to enter a custom value")
-    custom_state: Optional[str] = Field(None, description="Enter your state/province name (only used if 'Other' is selected above)")
+    country: Optional[str] = Field(None, description="Select a country or choose \"Other\" to enter a custom country")
+    custom_country: Optional[str] = Field(None, description="Enter your country name (only used if \"Other\" is selected above)")
+    state: Optional[str] = Field(None, description="Select a state/province or choose \"Other\" to enter a custom value")
+    custom_state: Optional[str] = Field(None, description="Enter your state/province name (only used if \"Other\" is selected above)")
     street_address: Optional[str] = Field(None, description="A street address")
     city: Optional[str] = Field(None, description="A city name")
     postal_code: Optional[str] = Field(None, description="A postal code")
@@ -18879,8 +19457,8 @@ class PandadocFindDocumentInput(BaseModel):
     folder_uuid: Optional[str] = Field(None, description="Select a folder from your PandaDoc workspace")
     contact_id: Optional[str] = Field(None, description="Select a contact from your PandaDoc workspace")
     membership_id: Optional[str] = Field(None, description="Select a workspace member")
-    tag: Optional[str] = Field(None, description="Select a common tag or choose 'Custom' to enter your own")
-    custom_tag: Optional[str] = Field(None, description="Enter a custom tag (only used if 'Custom' is selected above)")
+    tag: Optional[str] = Field(None, description="Select a common tag or choose \"Custom\" to enter your own")
+    custom_tag: Optional[str] = Field(None, description="Enter a custom tag (only used if \"Custom\" is selected above)")
     created_from: Optional[str] = Field(None, description="Include only documents created on or after this date")
     created_to: Optional[str] = Field(None, description="Include only documents created before this date")
     completed_from: Optional[str] = Field(None, description="Include only documents completed on or after this date")
@@ -18891,7 +19469,7 @@ class PandadocFindDocumentInput(BaseModel):
     count: Optional[float] = Field(None, description="Number of documents to return (default: 50, max: 100)")
     page: Optional[float] = Field(None, description="Page number for pagination (starts with 1)")
     order_by: Optional[str] = Field(None, description="Sort results by field")
-    metadata: Optional[dict[str, Any]] = Field(None, description="Filter by metadata key-value pairs. Use format: {'key': 'value'}")
+    metadata: Optional[dict[str, Any]] = Field(None, description="Filter by metadata key-value pairs. Use format: {\"key\": \"value\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -18915,10 +19493,10 @@ class PandadocDownloadDocumentInput(BaseModel):
     """PandaDoc — Download Document"""
     document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
     separate_files: Optional[bool] = Field(None, description="Download document bundle as a zip archive of separate PDFs (1 file per section)")
-    watermark_text: Optional[str] = Field(None, description="Select common watermark text or choose 'Custom' to enter your own")
-    custom_watermark_text: Optional[str] = Field(None, description="Enter custom watermark text (only used if 'Custom' is selected above)")
+    watermark_text: Optional[str] = Field(None, description="Select common watermark text or choose \"Custom\" to enter your own")
+    custom_watermark_text: Optional[str] = Field(None, description="Enter custom watermark text (only used if \"Custom\" is selected above)")
     watermark_color: Optional[str] = Field(None, description="Select a watermark color or use custom HEX code")
-    custom_watermark_color: Optional[str] = Field(None, description="Enter a custom HEX color code (e.g., #FF5733). Only used if 'Custom HEX Code' is selected above.")
+    custom_watermark_color: Optional[str] = Field(None, description="Enter a custom HEX color code (e.g., #FF5733). Only used if \"Custom HEX Code\" is selected above.")
     watermark_font_size: Optional[float] = Field(None, description="Font size of the watermark text")
     watermark_opacity: Optional[float] = Field(None, description="Opacity of the watermark (0.0 to 1.0)")
 
@@ -19330,7 +19908,7 @@ class PendoListGuidesInput(BaseModel):
 
 class PendoTrackEventInput(BaseModel):
     """Pendo — Track Event"""
-    type: str = Field(..., description="Event Type")
+    type_: str = Field(..., alias="type", description="Event Type")
     visitorId: str = Field(..., description="Visitor ID")
     properties: Optional[Any] = Field(None, description="Event properties")
 
@@ -19513,7 +20091,7 @@ class PineconeUpsertVectorsInput(BaseModel):
     """Pinecone — Upsert Vectors"""
     indexHost: str = Field(..., description="The host URL of the index (e.g., my-index-abc123.svc.us-east1-gcp.pinecone.io)")
     namespace: Optional[str] = Field(None, description="The namespace to upsert into")
-    vectors: Any = Field(..., description="Array of vectors to upsert: [{'id': 'vec1', 'values': [0.1, 0.2, ...], 'metadata': {...}}]")
+    vectors: Any = Field(..., description="Array of vectors to upsert: [{\"id\": \"vec1\", \"values\": [0.1, 0.2, ...], \"metadata\": {...}}]")
 
     model_config = {"populate_by_name": True}
 
@@ -19549,7 +20127,7 @@ class PinterestCreatePinInput(BaseModel):
     media_source_type: str = Field(..., description="The type of media source for the Pin.")
     media_url: str = Field(..., description="The URL of the image or video to upload. Must be a valid URL.")
     link: Optional[str] = Field(None, description="The destination URL that the Pin will link to when clicked.")
-    dominant_color: Optional[str] = Field(None, description="The dominant color of the Pin as a hex color code (e.g., '#6E7874').")
+    dominant_color: Optional[str] = Field(None, description="The dominant color of the Pin as a hex color code (e.g., \"#6E7874\").")
     alt_text: Optional[str] = Field(None, description="Alternative text for accessibility and screen readers (max 500 characters).")
     parent_pin_id: Optional[str] = Field(None, description="The ID of the original Pin if this is a saved/repinned Pin.")
     sponsor_id: Optional[str] = Field(None, description="The sponsor account ID for paid partnership content. Available only to select users in closed beta.")
@@ -19565,8 +20143,8 @@ class PinterestCreateBoardInput(BaseModel):
     ad_account_id: Optional[str] = Field(None, description="Ad account Id")
     name: str = Field(..., description="The name of the board (max 180 characters).")
     description: Optional[str] = Field(None, description="Optional description for your board.")
-    privacy: Optional[str] = Field(None, description="Board privacy setting (auto-set to 'PROTECTED' for ad-only boards).")
-    is_ads_only: Optional[bool] = Field(None, description="Create an ad-only board that can only store promotional Pins. Note: Board name will become 'Ad-only Pins' and privacy will be set to 'PROTECTED'.")
+    privacy: Optional[str] = Field(None, description="Board privacy setting (auto-set to \"PROTECTED\" for ad-only boards).")
+    is_ads_only: Optional[bool] = Field(None, description="Create an ad-only board that can only store promotional Pins. Note: Board name will become \"Ad-only Pins\" and privacy will be set to \"PROTECTED\".")
 
     model_config = {"populate_by_name": True}
 
@@ -19694,7 +20272,7 @@ class PipedriveFindOrganizationInput(BaseModel):
 class PipedriveCreateActivityInput(BaseModel):
     """Pipedrive — Create Activity"""
     subject: str = Field(..., description="Subject")
-    type: str = Field(..., description="Activity Type")
+    type_: str = Field(..., alias="type", description="Activity Type")
     due_date: Optional[str] = Field(None, description="YYYY-MM-DD")
     deal_id: Optional[str] = Field(None, description="Deal ID")
     person_id: Optional[str] = Field(None, description="Person ID")
@@ -19708,7 +20286,7 @@ class PipedriveUpdateActivityInput(BaseModel):
     """Pipedrive — Update Activity"""
     activity_id: str = Field(..., description="Activity ID")
     subject: Optional[str] = Field(None, description="Subject")
-    type: Optional[str] = Field(None, description="Activity Type")
+    type_: Optional[str] = Field(None, alias="type", description="Activity Type")
     due_date: Optional[str] = Field(None, description="YYYY-MM-DD")
     done: Optional[bool] = Field(None, description="Done")
 
@@ -19717,7 +20295,7 @@ class PipedriveUpdateActivityInput(BaseModel):
 
 class PipedriveFindActivityInput(BaseModel):
     """Pipedrive — Find Activities"""
-    type: Optional[str] = Field(None, description="Activity Type")
+    type_: Optional[str] = Field(None, alias="type", description="Activity Type")
     done: Optional[str] = Field(None, description="Done")
     user_id: Optional[str] = Field(None, description="User")
 
@@ -19755,7 +20333,7 @@ class PipedriveCreateLeadInput(BaseModel):
     title: str = Field(..., description="Title")
     person_id: Optional[str] = Field(None, description="Person ID")
     org_id: Optional[str] = Field(None, description="Organization ID")
-    value: Optional[Any] = Field(None, description="e.g. {'amount': 1000, 'currency': 'USD'}")
+    value: Optional[Any] = Field(None, description="e.g. {\"amount\": 1000, \"currency\": \"USD\"}")
     expected_close_date: Optional[str] = Field(None, description="YYYY-MM-DD")
 
     model_config = {"populate_by_name": True}
@@ -19765,7 +20343,7 @@ class PipedriveUpdateLeadInput(BaseModel):
     """Pipedrive — Update Lead"""
     lead_id: str = Field(..., description="Lead ID")
     title: Optional[str] = Field(None, description="Title")
-    value: Optional[Any] = Field(None, description="e.g. {'amount': 1000, 'currency': 'USD'}")
+    value: Optional[Any] = Field(None, description="e.g. {\"amount\": 1000, \"currency\": \"USD\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -20160,7 +20738,7 @@ class PlivoGetMessageInput(BaseModel):
 class PlivoCustomApiCallInput(BaseModel):
     """Plivo — Custom API Call"""
     method: str = Field(..., description="Method")
-    path: str = Field(..., description="Path relative to /v1/Account/{authId} (e.g. '/Message/')")
+    path: str = Field(..., description="Path relative to /v1/Account/{authId} (e.g. \"/Message/\")")
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
@@ -20170,7 +20748,7 @@ class PodiaListProductsInput(BaseModel):
     """Podia — List Products"""
     page: Optional[float] = Field(None, description="Page")
     perPage: Optional[float] = Field(None, description="Per Page")
-    type: Optional[str] = Field(None, description="Filter by product type")
+    type_: Optional[str] = Field(None, alias="type", description="Filter by product type")
 
     model_config = {"populate_by_name": True}
 
@@ -20216,13 +20794,13 @@ class PodioCreateItemInput(BaseModel):
     appId: str = Field(..., description="Select a Podio app")
     externalId: Optional[str] = Field(None, description="The external id of the item. This can be used to hold a reference to the item in an external system.")
     appFields: dict[str, Any] = Field(..., description="Configure values for the fields in the selected app")
-    legacyFields: Optional[dict[str, Any]] = Field(None, description="Advanced: Use this for complex field configurations. Format: {'field_id': {'value': 'content'}}. Only use if the dynamic fields above don't meet your needs.")
+    legacyFields: Optional[dict[str, Any]] = Field(None, description="Advanced: Use this for complex field configurations. Format: {\"field_id\": {\"value\": \"content\"}}. Only use if the dynamic fields above don't meet your needs.")
     fileIds: Optional[list[Any]] = Field(None, description="Temporary files that have been uploaded and should be attached to this item")
     tags: Optional[list[Any]] = Field(None, description="The tags to put on the item")
-    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this item. Format: {'remind_delta': minutes_before_due_date}")
-    recurrence: Optional[dict[str, Any]] = Field(None, description="The recurrence for the task, if any. Format: {'name': 'weekly|monthly|yearly', 'config': {...}, 'step': 1, 'until': 'date'}")
+    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this item. Format: {\"remind_delta\": minutes_before_due_date}")
+    recurrence: Optional[dict[str, Any]] = Field(None, description="The recurrence for the task, if any. Format: {\"name\": \"weekly|monthly|yearly\", \"config\": {...}, \"step\": 1, \"until\": \"date\"}")
     linkedAccountId: Optional[float] = Field(None, description="The linked account to use for the meeting")
-    ref: Optional[dict[str, Any]] = Field(None, description="The reference for the new item, if any. Format: {'type': 'item', 'id': reference_id}")
+    ref: Optional[dict[str, Any]] = Field(None, description="The reference for the new item, if any. Format: {\"type\": \"item\", \"id\": reference_id}")
     hook: Optional[bool] = Field(None, description="If false, webhooks and integrations will not be triggered for this operation")
     silent: Optional[bool] = Field(None, description="If true, notifications will not be triggered and the object will not appear in activity streams")
 
@@ -20239,10 +20817,10 @@ class PodioUpdateItemInput(BaseModel):
     legacyFields: Optional[dict[str, Any]] = Field(None, description="Manual field configuration using field_id or external_id as keys. Use this for advanced scenarios or when dynamic fields are not sufficient.")
     fileIds: Optional[list[Any]] = Field(None, description="The list of attachments")
     tags: Optional[list[Any]] = Field(None, description="The list of tags")
-    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this item. Format: {'remind_delta': minutes_before_due_date}")
-    recurrence: Optional[dict[str, Any]] = Field(None, description="The recurrence for the task, if any. Format: {'name': 'weekly|monthly|yearly', 'config': {...}, 'step': 1, 'until': 'date'}")
+    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this item. Format: {\"remind_delta\": minutes_before_due_date}")
+    recurrence: Optional[dict[str, Any]] = Field(None, description="The recurrence for the task, if any. Format: {\"name\": \"weekly|monthly|yearly\", \"config\": {...}, \"step\": 1, \"until\": \"date\"}")
     linkedAccountId: Optional[float] = Field(None, description="The linked account to use for meetings")
-    ref: Optional[dict[str, Any]] = Field(None, description="The reference of the item. Format: {'type': 'reference_type', 'id': reference_id}")
+    ref: Optional[dict[str, Any]] = Field(None, description="The reference of the item. Format: {\"type\": \"reference_type\", \"id\": reference_id}")
     hook: Optional[bool] = Field(None, description="If false, webhooks and integrations will not be triggered for this operation")
     silent: Optional[bool] = Field(None, description="If true, notifications will not be triggered and the object will not appear in activity streams")
 
@@ -20255,7 +20833,7 @@ class PodioCreateTaskInput(BaseModel):
     description: Optional[str] = Field(None, description="Additional description for the task")
     private: Optional[bool] = Field(None, description="Whether the task should be private (only creator, assignee and assignor can see it)")
     dueDate: Optional[str] = Field(None, description="Due date in local time (date only)")
-    dueTime: Optional[str] = Field(None, description="Due time in local time (HH:MM:SS format, e.g., '14:30:00')")
+    dueTime: Optional[str] = Field(None, description="Due time in local time (HH:MM:SS format, e.g., \"14:30:00\")")
     dueOn: Optional[str] = Field(None, description="Complete due date and time in UTC. Alternative to separate date/time fields.")
     orgId: str = Field(..., description="Select a Podio organization")
     spaceId: str = Field(..., description="Select a Podio workspace")
@@ -20266,8 +20844,8 @@ class PodioCreateTaskInput(BaseModel):
     fileIds: Optional[list[Any]] = Field(None, description="List of file IDs to attach to this task")
     labels: Optional[list[Any]] = Field(None, description="List of label names in text form")
     labelIds: Optional[list[Any]] = Field(None, description="List of label IDs (alternative to text labels)")
-    reminder: Optional[dict[str, Any]] = Field(None, description="Reminder settings. Format: {'remind_delta': minutes_before_due_date}")
-    recurrence: Optional[dict[str, Any]] = Field(None, description="Recurring task settings. Format: {'name': 'weekly|monthly|yearly', 'config': {...}, 'step': 1, 'until': 'date'}")
+    reminder: Optional[dict[str, Any]] = Field(None, description="Reminder settings. Format: {\"remind_delta\": minutes_before_due_date}")
+    recurrence: Optional[dict[str, Any]] = Field(None, description="Recurring task settings. Format: {\"name\": \"weekly|monthly|yearly\", \"config\": {...}, \"step\": 1, \"until\": \"date\"}")
     externalId: Optional[str] = Field(None, description="External system identifier for this task")
     hook: Optional[bool] = Field(None, description="If false, webhooks and integrations will not be triggered for this operation")
     silent: Optional[bool] = Field(None, description="If true, notifications will not be triggered and the object will not appear in activity streams")
@@ -20281,7 +20859,7 @@ class PodioUpdateTaskInput(BaseModel):
     text: Optional[str] = Field(None, description="The updated text (title) for the task")
     description: Optional[str] = Field(None, description="The updated description for the task")
     dueDate: Optional[str] = Field(None, description="The new due date for the task (in users timezone)")
-    dueTime: Optional[str] = Field(None, description="The new due time for the task in local timezone (HH:MM:SS format, e.g., '14:30:00')")
+    dueTime: Optional[str] = Field(None, description="The new due time for the task in local timezone (HH:MM:SS format, e.g., \"14:30:00\")")
     private: Optional[bool] = Field(None, description="Whether the task should be private (only creator, assignee and assignor can see it)")
     completed: Optional[bool] = Field(None, description="Mark the task as completed or not completed")
     orgId: str = Field(..., description="Select a Podio organization")
@@ -20292,7 +20870,7 @@ class PodioUpdateTaskInput(BaseModel):
     responsible: Optional[float] = Field(None, description="The user ID of the person responsible for this task")
     labels: Optional[list[Any]] = Field(None, description="The labels for the task. Either a list of label ids or label texts")
     fileIds: Optional[list[Any]] = Field(None, description="The list of files that should be attached to the task")
-    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this task. Format: {'remind_delta': minutes_before_due_date}. If empty, existing reminder is deleted.")
+    reminder: Optional[dict[str, Any]] = Field(None, description="Optional reminder on this task. Format: {\"remind_delta\": minutes_before_due_date}. If empty, existing reminder is deleted.")
     hook: Optional[bool] = Field(None, description="If false, webhooks and integrations will not be triggered for this operation")
     silent: Optional[bool] = Field(None, description="If true, notifications will not be triggered and the object will not appear in activity streams")
 
@@ -20317,7 +20895,7 @@ class PodioCreateCommentInput(BaseModel):
     orgId: str = Field(..., description="Select a Podio organization")
     spaceId: str = Field(..., description="Select a Podio workspace")
     appId: str = Field(..., description="Select a Podio app")
-    type: str = Field(..., description="What type of object to comment on")
+    type_: str = Field(..., alias="type", description="What type of object to comment on")
     id: str = Field(..., description="Select the specific object to comment on")
     value: str = Field(..., description="The content of your comment")
     externalId: Optional[str] = Field(None, description="Optional external identifier for the comment")
@@ -20339,7 +20917,7 @@ class PodioCreateStatusInput(BaseModel):
     fileIds: Optional[list[Any]] = Field(None, description="File IDs to attach to this status update (enter file IDs from the space)")
     embedId: Optional[float] = Field(None, description="ID of a previously created embedded link")
     embedUrl: Optional[str] = Field(None, description="URL to embed in the status update")
-    question: Optional[dict[str, Any]] = Field(None, description="Create a poll with your status. Format: {'text': 'Question?', 'options': ['Option 1', 'Option 2']}")
+    question: Optional[dict[str, Any]] = Field(None, description="Create a poll with your status. Format: {\"text\": \"Question?\", \"options\": [\"Option 1\", \"Option 2\"]}")
     alertInvite: Optional[bool] = Field(None, description="Automatically invite mentioned users to the workspace if they lack access")
 
     model_config = {"populate_by_name": True}
@@ -20357,7 +20935,7 @@ class PodioFindItemInput(BaseModel):
     filters: Optional[dict[str, Any]] = Field(None, description="Filter criteria as JSON object. Use field external_id as keys.")
     limit: Optional[float] = Field(None, description="Maximum number of results to return (1-500, default: 20)")
     offset: Optional[float] = Field(None, description="Number of results to skip for pagination (default: 0)")
-    sortBy: Optional[str] = Field(None, description="Field to sort results by (e.g., 'created_on', 'last_edit_on')")
+    sortBy: Optional[str] = Field(None, description="Field to sort results by (e.g., \"created_on\", \"last_edit_on\")")
     sortDesc: Optional[bool] = Field(None, description="Sort results in descending order")
 
     model_config = {"populate_by_name": True}
@@ -20578,7 +21156,7 @@ class PracticePantherCustomApiCallInput(BaseModel):
 
 class PrismicQueryDocumentsInput(BaseModel):
     """Prismic — Query Documents"""
-    query: Optional[str] = Field(None, description="Prismic query predicate (e.g., [[at(document.type, 'blog_post')]])")
+    query: Optional[str] = Field(None, description="Prismic query predicate (e.g., [[at(document.type, \"blog_post\")]])")
     pageSize: Optional[float] = Field(None, description="Number of results per page (max 100)")
     page: Optional[float] = Field(None, description="Page number to retrieve")
     orderings: Optional[str] = Field(None, description="Order results (e.g., [document.first_publication_date desc])")
@@ -20595,7 +21173,7 @@ class PrismicGetDocumentByIdInput(BaseModel):
 
 class PrismicGetDocumentByUidInput(BaseModel):
     """Prismic — Get Document by UID"""
-    type: str = Field(..., description="The custom type of the document (e.g., 'blog_post')")
+    type_: str = Field(..., alias="type", description="The custom type of the document (e.g., \"blog_post\")")
     uid: str = Field(..., description="The UID of the document")
 
     model_config = {"populate_by_name": True}
@@ -20603,7 +21181,7 @@ class PrismicGetDocumentByUidInput(BaseModel):
 
 class PrismicGetDocumentsByTypeInput(BaseModel):
     """Prismic — Get Documents by Type"""
-    type: str = Field(..., description="The custom type to filter by (e.g., 'blog_post', 'page')")
+    type_: str = Field(..., alias="type", description="The custom type to filter by (e.g., \"blog_post\", \"page\")")
     pageSize: Optional[float] = Field(None, description="Number of results per page (max 100)")
     page: Optional[float] = Field(None, description="Page number to retrieve")
 
@@ -20937,10 +21515,10 @@ class QdrantCustomCustomApiCallInput(BaseModel):
 class QrCodeGenerateQrCodeInput(BaseModel):
     """QR Code — Generate QR Code"""
     data: str = Field(..., description="The text or URL to encode in the QR code")
-    size: Optional[str] = Field(None, description="Width x height in pixels (e.g. '200x200')")
+    size: Optional[str] = Field(None, description="Width x height in pixels (e.g. \"200x200\")")
     format: Optional[str] = Field(None, description="Output image format")
-    color: Optional[str] = Field(None, description="Foreground color in hex without # (e.g. '000000' for black)")
-    bgcolor: Optional[str] = Field(None, description="Background color in hex without # (e.g. 'ffffff' for white)")
+    color: Optional[str] = Field(None, description="Foreground color in hex without # (e.g. \"000000\" for black)")
+    bgcolor: Optional[str] = Field(None, description="Background color in hex without # (e.g. \"ffffff\" for white)")
     margin: Optional[float] = Field(None, description="Margin around the QR code (in pixels)")
     errorCorrectionLevel: Optional[str] = Field(None, description="QR code error correction level")
 
@@ -20982,7 +21560,7 @@ class QuickbooksCreateInvoiceInput(BaseModel):
     customerRef: str = Field(..., description="Customer")
     lineItems: list[Any] = Field(..., description="Line items for the invoice")
     emailStatus: Optional[str] = Field(None, description="Specify whether the invoice should be emailed after creation.")
-    billEmail: Optional[str] = Field(None, description="Email address to send the invoice to. Required if Email Status is 'Needs To Be Sent'. Overrides customer default.")
+    billEmail: Optional[str] = Field(None, description="Email address to send the invoice to. Required if Email Status is \"Needs To Be Sent\". Overrides customer default.")
     dueDate: Optional[str] = Field(None, description="The date when the payment for the invoice is due. If not provided, default term from customer or company is used.")
     docNumber: Optional[str] = Field(None, description="Optional reference number for the invoice. If not provided, QuickBooks assigns the next sequential number.")
     txnDate: Optional[str] = Field(None, description="The date entered on the transaction. Defaults to the current date if not specified.")
@@ -21217,7 +21795,7 @@ class RecurlyListInvoicesInput(BaseModel):
     """Recurly — List Invoices"""
     limit: Optional[float] = Field(None, description="Limit")
     state: Optional[str] = Field(None, description="Filter by state (pending, processing, past_due, paid, failed, voided)")
-    type: Optional[str] = Field(None, description="Filter by type (charge, credit, legacy)")
+    type_: Optional[str] = Field(None, alias="type", description="Filter by type (charge, credit, legacy)")
 
     model_config = {"populate_by_name": True}
 
@@ -21240,7 +21818,7 @@ class RedditRetrieveRedditPostInput(BaseModel):
 
 class RedditGetRedditPostDetailsInput(BaseModel):
     """Reddit — Get Post Details"""
-    post_id: str = Field(..., description="The ID of the Reddit post (e.g. 't3_abc123' or 'abc123')")
+    post_id: str = Field(..., description="The ID of the Reddit post (e.g. \"t3_abc123\" or \"abc123\")")
 
     model_config = {"populate_by_name": True}
 
@@ -21264,7 +21842,7 @@ class RedditCreateRedditCommentInput(BaseModel):
 
 class RedditFetchPostCommentsInput(BaseModel):
     """Reddit — Fetch Post Comments"""
-    post_id: str = Field(..., description="The ID of the Reddit post (e.g. 'abc123' or 't3_abc123').")
+    post_id: str = Field(..., description="The ID of the Reddit post (e.g. \"abc123\" or \"t3_abc123\").")
     sort: Optional[str] = Field(None, description="Sorting method for comments")
     limit: Optional[float] = Field(None, description="Maximum number of top-level comments to fetch")
 
@@ -21273,7 +21851,7 @@ class RedditFetchPostCommentsInput(BaseModel):
 
 class RedditEditRedditPostInput(BaseModel):
     """Reddit — Edit Post"""
-    post_id: str = Field(..., description="ID of the Reddit post to edit (e.g., 'abc123' or 't3_abc123').")
+    post_id: str = Field(..., description="ID of the Reddit post to edit (e.g., \"abc123\" or \"t3_abc123\").")
     content: str = Field(..., description="Updated text content for the post.")
 
     model_config = {"populate_by_name": True}
@@ -21281,7 +21859,7 @@ class RedditEditRedditPostInput(BaseModel):
 
 class RedditEditRedditCommentInput(BaseModel):
     """Reddit — Edit Comment"""
-    comment_id: str = Field(..., description="ID of the Reddit comment to edit (e.g., 'def456' or 't1_def456').")
+    comment_id: str = Field(..., description="ID of the Reddit comment to edit (e.g., \"def456\" or \"t1_def456\").")
     content: str = Field(..., description="Updated text content for the comment.")
 
     model_config = {"populate_by_name": True}
@@ -21289,14 +21867,14 @@ class RedditEditRedditCommentInput(BaseModel):
 
 class RedditDeleteRedditPostInput(BaseModel):
     """Reddit — Delete Post"""
-    post_id: str = Field(..., description="ID of the Reddit post to delete (e.g., 'abc123' or 't3_abc123').")
+    post_id: str = Field(..., description="ID of the Reddit post to delete (e.g., \"abc123\" or \"t3_abc123\").")
 
     model_config = {"populate_by_name": True}
 
 
 class RedditDeleteRedditCommentInput(BaseModel):
     """Reddit — Delete Comment"""
-    comment_id: str = Field(..., description="ID of the Reddit comment to delete (e.g., 'def456' or 't1_def456').")
+    comment_id: str = Field(..., description="ID of the Reddit comment to delete (e.g., \"def456\" or \"t1_def456\").")
 
     model_config = {"populate_by_name": True}
 
@@ -21319,7 +21897,7 @@ class RedditCustomApiCallInput(BaseModel):
 
 class RenderListServicesInput(BaseModel):
     """Render — List Services"""
-    type: Optional[str] = Field(None, description="Service Type")
+    type_: Optional[str] = Field(None, alias="type", description="Service Type")
     limit: Optional[float] = Field(None, description="Limit")
 
     model_config = {"populate_by_name": True}
@@ -21489,7 +22067,7 @@ class RingcentralSendSmsInput(BaseModel):
 class RingcentralGetCallLogInput(BaseModel):
     """RingCentral — Get Call Log"""
     direction: Optional[str] = Field(None, description="Direction")
-    type: Optional[str] = Field(None, description="Type")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
     perPage: Optional[float] = Field(None, description="Per Page")
 
     model_config = {"populate_by_name": True}
@@ -21732,10 +22310,10 @@ class SalesforceAddContactToCampaignInput(BaseModel):
 
 class SalesforceAddFileToRecordInput(BaseModel):
     """Salesforce — Add File to Record"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     record_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
     file: str = Field(..., description="The file to upload.")
-    file_name: str = Field(..., description="The name of the file, including its extension (e.g., 'report.pdf').")
+    file_name: str = Field(..., description="The name of the file, including its extension (e.g., \"report.pdf\").")
 
     model_config = {"populate_by_name": True}
 
@@ -21751,10 +22329,10 @@ class SalesforceAddLeadToCampaignInput(BaseModel):
 
 class SalesforceCreateAttachmentInput(BaseModel):
     """Salesforce — Create Attachment (Legacy)"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     parent_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
     file: str = Field(..., description="The file to attach.")
-    file_name: str = Field(..., description="The name of the file, including its extension (e.g., 'attachment.pdf').")
+    file_name: str = Field(..., description="The name of the file, including its extension (e.g., \"attachment.pdf\").")
 
     model_config = {"populate_by_name": True}
 
@@ -21794,14 +22372,14 @@ class SalesforceCreateLeadInput(BaseModel):
     Email: Optional[str] = Field(None, description="Email")
     Phone: Optional[str] = Field(None, description="Phone")
     LeadSource: Optional[str] = Field(None, description="Lead Source")
-    other_fields: Optional[Any] = Field(None, description="Enter additional fields as a JSON object (e.g., {'Title': 'Manager', 'Website': 'http://example.com'}).")
+    other_fields: Optional[Any] = Field(None, description="Enter additional fields as a JSON object (e.g., {\"Title\": \"Manager\", \"Website\": \"http://example.com\"}).")
 
     model_config = {"populate_by_name": True}
 
 
 class SalesforceCreateNoteInput(BaseModel):
     """Salesforce — Create Note"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     parent_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
     Title: str = Field(..., description="Title")
     Body: str = Field(..., description="The content of the note.")
@@ -21823,8 +22401,8 @@ class SalesforceCreateOpportunityInput(BaseModel):
 
 class SalesforceCreateRecordInput(BaseModel):
     """Salesforce — Create Record"""
-    object: str = Field(..., description="Select the Object")
-    data: Any = Field(..., description="Enter the fields for the new record as a JSON object. For example: {'Name': 'My New Account', 'Industry': 'Technology'}")
+    object_: str = Field(..., alias="object", description="Select the Object")
+    data: Any = Field(..., description="Enter the fields for the new record as a JSON object. For example: {\"Name\": \"My New Account\", \"Industry\": \"Technology\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -21851,7 +22429,7 @@ class SalesforceDeleteOpportunityInput(BaseModel):
 
 class SalesforceDeleteRecordInput(BaseModel):
     """Salesforce — Delete Record"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     record_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
 
     model_config = {"populate_by_name": True}
@@ -21875,7 +22453,7 @@ class SalesforceFindChildRecordsInput(BaseModel):
 
 class SalesforceFindRecordInput(BaseModel):
     """Salesforce — Find Record"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     field: str = Field(..., description="Select the Field")
     search_value: str = Field(..., description="The value to search for in the selected field.")
 
@@ -21884,7 +22462,7 @@ class SalesforceFindRecordInput(BaseModel):
 
 class SalesforceFindRecordsByQueryInput(BaseModel):
     """Salesforce — Find Records by Query (Advanced)"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     where_clause: str = Field(..., description="Enter the WHERE clause for your SOQL query. For example: `Name = 'Acme' AND Industry = 'Technology'`. Do not include the 'WHERE' keyword.")
 
     model_config = {"populate_by_name": True}
@@ -21892,7 +22470,7 @@ class SalesforceFindRecordsByQueryInput(BaseModel):
 
 class SalesforceGetRecordAttachmentsInput(BaseModel):
     """Salesforce — Get Record Attachments"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     record_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
 
     model_config = {"populate_by_name": True}
@@ -21953,16 +22531,16 @@ class SalesforceUpdateLeadInput(BaseModel):
 
 class SalesforceUpdateRecordInput(BaseModel):
     """Salesforce — Update Record"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     record_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
-    data: Any = Field(..., description="Enter the fields to update as a JSON object. For example: {'BillingCity': 'San Francisco'}")
+    data: Any = Field(..., description="Enter the fields to update as a JSON object. For example: {\"BillingCity\": \"San Francisco\"}")
 
     model_config = {"populate_by_name": True}
 
 
 class SalesforceUpsertByExternalIdInput(BaseModel):
     """Salesforce — Batch Upsert (Advanced)"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     external_field: str = Field(..., description="Select the External Field")
     records: Any = Field(..., description="Select the Records")
 
@@ -21971,7 +22549,7 @@ class SalesforceUpsertByExternalIdInput(BaseModel):
 
 class SalesforceUpsertByExternalIdBulkInput(BaseModel):
     """Salesforce — Bulk Upsert (Advanced)"""
-    object: str = Field(..., description="Select the Object")
+    object_: str = Field(..., alias="object", description="Select the Object")
     external_field: str = Field(..., description="Select the External Field")
     records: str = Field(..., description="Select the Records (CSV format)")
 
@@ -22028,7 +22606,7 @@ class SalesloftListCadencesInput(BaseModel):
 
 class SanityQueryInput(BaseModel):
     """Sanity — Query (GROQ)"""
-    query: str = Field(..., description="The GROQ query to execute (e.g., *[_type == 'post'])")
+    query: str = Field(..., description="The GROQ query to execute (e.g., *[_type == \"post\"])")
     params: Optional[str] = Field(None, description="Optional query parameters as a JSON object")
 
     model_config = {"populate_by_name": True}
@@ -22036,7 +22614,7 @@ class SanityQueryInput(BaseModel):
 
 class SanityCreateDocumentInput(BaseModel):
     """Sanity — Create Document"""
-    type: str = Field(..., description="The _type of the document to create")
+    type_: str = Field(..., alias="type", description="The _type of the document to create")
     documentId: Optional[str] = Field(None, description="Optional custom document ID")
     body: str = Field(..., description="JSON object with the document fields")
 
@@ -22046,7 +22624,7 @@ class SanityCreateDocumentInput(BaseModel):
 class SanityUpdateDocumentInput(BaseModel):
     """Sanity — Update Document"""
     documentId: str = Field(..., description="Document ID")
-    set: Optional[str] = Field(None, description="JSON object with fields to set")
+    set_: Optional[str] = Field(None, alias="set", description="JSON object with fields to set")
     unset: Optional[str] = Field(None, description="JSON array of field names to unset")
 
     model_config = {"populate_by_name": True}
@@ -22092,7 +22670,7 @@ class SchoologyCreateAssignmentInput(BaseModel):
     description: Optional[str] = Field(None, description="Description")
     dueDate: Optional[str] = Field(None, description="Due date in YYYY-MM-DD format")
     maxPoints: Optional[float] = Field(None, description="Max Points")
-    type: Optional[str] = Field(None, description="Type")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
 
     model_config = {"populate_by_name": True}
 
@@ -22345,7 +22923,7 @@ class SequentialThinkingAddThoughtInput(BaseModel):
     chainId: str = Field(..., description="Identifier for the thinking chain")
     content: str = Field(..., description="The thought content")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -22357,7 +22935,7 @@ class SequentialThinkingBranchThoughtInput(BaseModel):
     branchName: str = Field(..., description="Name for this branch of thinking")
     content: str = Field(..., description="The first thought in this branch")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -22368,7 +22946,7 @@ class SequentialThinkingReviseThoughtInput(BaseModel):
     thoughtId: float = Field(..., description="ID of the thought to revise")
     content: str = Field(..., description="The revised thought content")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -22378,7 +22956,7 @@ class SequentialThinkingGetChainInput(BaseModel):
     chainId: str = Field(..., description="Identifier for the thinking chain")
     includeBranches: Optional[bool] = Field(None, description="Include branch thoughts in the response")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -22387,7 +22965,7 @@ class SequentialThinkingSummarizeChainInput(BaseModel):
     """Sequential Thinking — Summarize Chain"""
     chainId: str = Field(..., description="Identifier for the thinking chain")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -22579,7 +23157,7 @@ class ShipstationCreateLabelInput(BaseModel):
     carrierCode: str = Field(..., description="Carrier code (e.g., stamps_com, fedex, ups)")
     serviceCode: str = Field(..., description="Service code (e.g., usps_priority_mail)")
     packageCode: str = Field(..., description="Package code (e.g., package)")
-    weight: str = Field(..., description="Weight object as JSON, e.g., {'value': 24, 'units': 'ounces'}")
+    weight: str = Field(..., description="Weight object as JSON, e.g., {\"value\": 24, \"units\": \"ounces\"}")
     testLabel: Optional[bool] = Field(None, description="Create a test label")
 
     model_config = {"populate_by_name": True}
@@ -22696,7 +23274,7 @@ class ShopifyGetCustomerOrdersInput(BaseModel):
 
 class ShopifyCreateOrderInput(BaseModel):
     """Shopify — Create Order"""
-    line_items: Any = Field(..., description="Array of line items, e.g. [{'variant_id': 123, 'quantity': 1}]")
+    line_items: Any = Field(..., description="Array of line items, e.g. [{\"variant_id\": 123, \"quantity\": 1}]")
     customer_id: Optional[str] = Field(None, description="Existing customer ID")
     email: Optional[str] = Field(None, description="Customer email if no customer_id")
     financial_status: Optional[str] = Field(None, description="Financial Status")
@@ -23285,7 +23863,7 @@ class SmartsheetFindRowsByQueryInput(BaseModel):
     """Smartsheet — Find Row"""
     search_scope: str = Field(..., description="Choose whether to search within a specific sheet or across all accessible sheets.")
     sheet_id: Optional[str] = Field(None, description="Select a sheet")
-    query: str = Field(..., description="Text to search for. Use double quotes for exact phrase matching (e.g., 'project status')")
+    query: str = Field(..., description="Text to search for. Use double quotes for exact phrase matching (e.g., \"project status\")")
     search_scopes: Optional[list[str]] = Field(None, description="Specify what types of content to search in (leave empty to search all)")
     include_favorites: Optional[bool] = Field(None, description="Include information about which items are marked as favorites")
     modified_since: Optional[str] = Field(None, description="Only return results modified on or after this date/time")
@@ -23300,8 +23878,8 @@ class SmartsheetFindAttachmentByRowIdInput(BaseModel):
     sheet_id: str = Field(..., description="Select a sheet")
     row_id: str = Field(..., description="Row")
     include_all: Optional[bool] = Field(None, description="If true, include all results without pagination (overrides page and page size)")
-    page: Optional[float] = Field(None, description="Which page to return (defaults to 1, ignored if 'Include All Results' is true)")
-    page_size: Optional[float] = Field(None, description="Maximum number of items to return per page (defaults to 100, max 10000, ignored if 'Include All Results' is true)")
+    page: Optional[float] = Field(None, description="Which page to return (defaults to 1, ignored if \"Include All Results\" is true)")
+    page_size: Optional[float] = Field(None, description="Maximum number of items to return per page (defaults to 100, max 10000, ignored if \"Include All Results\" is true)")
     attachment_type_filter: Optional[list[str]] = Field(None, description="Only return attachments of specific types (leave empty for all types)")
     parent_type_filter: Optional[list[str]] = Field(None, description="Only return attachments from specific parent types (leave empty for all)")
     min_file_size_kb: Optional[float] = Field(None, description="Only return files with size greater than or equal to this value (applies to FILE type only)")
@@ -23315,8 +23893,8 @@ class SmartsheetFindSheetByNameInput(BaseModel):
     sheet_name: Optional[str] = Field(None, description="Filter sheets by name (partial or exact match). Leave empty to list all sheets.")
     exact_match: Optional[bool] = Field(None, description="When filtering by name, require exact match instead of partial match")
     include_all: Optional[bool] = Field(None, description="If true, include all results without pagination (overrides page and page size)")
-    page: Optional[float] = Field(None, description="Which page to return (defaults to 1, ignored if 'Include All Results' is true)")
-    page_size: Optional[float] = Field(None, description="Maximum number of items to return per page (defaults to 100, max 10000, ignored if 'Include All Results' is true)")
+    page: Optional[float] = Field(None, description="Which page to return (defaults to 1, ignored if \"Include All Results\" is true)")
+    page_size: Optional[float] = Field(None, description="Maximum number of items to return per page (defaults to 100, max 10000, ignored if \"Include All Results\" is true)")
     access_api_level: Optional[str] = Field(None, description="API access level for viewing and filtering permissions")
     access_level_filter: Optional[list[str]] = Field(None, description="Only return sheets where you have specific access levels (leave empty for all)")
     modified_since: Optional[str] = Field(None, description="Only return sheets modified on or after this date/time")
@@ -23382,7 +23960,7 @@ class SmtpSendEmailInput(BaseModel):
 class SnovIoFindEmailInput(BaseModel):
     """Snov.io — Find Email"""
     domain: str = Field(..., description="The domain to search (e.g. stripe.com)")
-    type: Optional[str] = Field(None, description="Filter by email type")
+    type_: Optional[str] = Field(None, alias="type", description="Filter by email type")
     limit: Optional[float] = Field(None, description="Maximum number of results")
 
     model_config = {"populate_by_name": True}
@@ -23425,7 +24003,7 @@ class SnowflakeExecuteQueryInput(BaseModel):
     """Snowflake — Execute Query"""
     statement: str = Field(..., description="The SQL query to execute")
     database: Optional[str] = Field(None, description="Override default database")
-    schema: Optional[str] = Field(None, description="Override default schema")
+    schema_: Optional[str] = Field(None, alias="schema", description="Override default schema")
     warehouse: Optional[str] = Field(None, description="Override default warehouse")
     role: Optional[str] = Field(None, description="Override default role")
     timeout: Optional[float] = Field(None, description="Query timeout in seconds")
@@ -23463,7 +24041,7 @@ class SnowflakeListSchemasInput(BaseModel):
 class SnowflakeListTablesInput(BaseModel):
     """Snowflake — List Tables"""
     database: Optional[str] = Field(None, description="Database name (uses default if empty)")
-    schema: Optional[str] = Field(None, description="Schema name (uses default if empty)")
+    schema_: Optional[str] = Field(None, alias="schema", description="Schema name (uses default if empty)")
 
     model_config = {"populate_by_name": True}
 
@@ -23707,7 +24285,7 @@ class SproutSocialGetAnalyticsInput(BaseModel):
     """Sprout Social — Get Analytics"""
     customerId: str = Field(..., description="Customer ID")
     profileIds: Any = Field(..., description="Array of profile IDs")
-    metrics: Any = Field(..., description="Array of metric names (e.g., ['impressions', 'engagements'])")
+    metrics: Any = Field(..., description="Array of metric names (e.g., [\"impressions\", \"engagements\"])")
     startDate: str = Field(..., description="Start date in YYYY-MM-DD format")
     endDate: str = Field(..., description="End date in YYYY-MM-DD format")
 
@@ -23819,7 +24397,7 @@ class SquareCreateInvoiceInput(BaseModel):
     """Square — Create Invoice"""
     location_id: str = Field(..., description="Location ID")
     order_id: str = Field(..., description="Order ID")
-    primary_recipient: Any = Field(..., description="Object with customer_id, e.g. {'customer_id': '...'}")
+    primary_recipient: Any = Field(..., description="Object with customer_id, e.g. {\"customer_id\": \"...\"}")
     payment_requests: Any = Field(..., description="Array of payment request objects")
 
     model_config = {"populate_by_name": True}
@@ -23868,7 +24446,7 @@ class SquarespaceGetInventoryInput(BaseModel):
 
 class SquarespaceListPagesInput(BaseModel):
     """Squarespace — List Pages"""
-    type: Optional[str] = Field(None, description="Page Type")
+    type_: Optional[str] = Field(None, alias="type", description="Page Type")
 
     model_config = {"populate_by_name": True}
 
@@ -23917,9 +24495,9 @@ class StabilityAiCustomApiCallInput(BaseModel):
 
 class StorageReadFileInput(BaseModel):
     """Storage — Read File"""
-    path: str = Field(..., description="File path within the storage scope (e.g. 'config.json', 'data/users.csv')")
+    path: str = Field(..., description="File path within the storage scope (e.g. \"config.json\", \"data/users.csv\")")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
     outputEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
 
     model_config = {"populate_by_name": True}
@@ -23929,10 +24507,10 @@ class StorageWriteFileInput(BaseModel):
     """Storage — Write File"""
     path: str = Field(..., description="File path within the storage scope")
     content: str = Field(..., description="File content to write")
-    contentType: Optional[str] = Field(None, description="MIME type (e.g. 'application/json', 'text/plain')")
+    contentType: Optional[str] = Field(None, description="MIME type (e.g. \"application/json\", \"text/plain\")")
     contentEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -23941,16 +24519,26 @@ class StorageDeleteFileInput(BaseModel):
     """Storage — Delete File"""
     path: str = Field(..., description="File path to delete")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
 
 class StorageListFilesInput(BaseModel):
     """Storage — List Files"""
-    prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. 'data/' to list all files in data folder). Leave empty for all files.")
+    prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. \"data/\" to list all files in data folder). Leave empty for all files.")
     scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
-    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when 'External ID Bound' selected).")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
+
+    model_config = {"populate_by_name": True}
+
+
+class StorageGetDownloadUrlInput(BaseModel):
+    """Storage — Get Download URL"""
+    path: str = Field(..., description="File path within the storage scope")
+    expiresInSeconds: Optional[float] = Field(None, description="URL lifetime from 60 to 3600 seconds.")
+    scope: Optional[str] = Field(None, description="Data isolation scope. Workspace shares data across the workspace. End User isolates data per calling end user. External ID uses a custom identifier.")
+    externalId: Optional[str] = Field(None, description="Custom identifier for external scope (only when \"External ID Bound\" selected).")
 
     model_config = {"populate_by_name": True}
 
@@ -24232,7 +24820,7 @@ class StripeCreatePaymentLinkInput(BaseModel):
     """Stripe — Create Payment Link"""
     line_items: list[Any] = Field(..., description="The products and quantities to include in the payment link.")
     after_completion_type: Optional[str] = Field(None, description="Controls the behavior after the purchase is complete. Defaults to showing Stripe's hosted confirmation page.")
-    after_completion_redirect_url: Optional[str] = Field(None, description="The URL to redirect the customer to after a successful purchase. Only used if the behavior is set to 'Redirect to URL'.")
+    after_completion_redirect_url: Optional[str] = Field(None, description="The URL to redirect the customer to after a successful purchase. Only used if the behavior is set to \"Redirect to URL\".")
     allow_promotion_codes: Optional[bool] = Field(None, description="Enables the user to enter a promotion code on the Payment Link page.")
     billing_address_collection: Optional[str] = Field(None, description="Describes whether Checkout should collect the customer’s billing address.")
     metadata: Optional[Any] = Field(None, description="Metadata")
@@ -24330,8 +24918,8 @@ class SupabaseUpdateRowInput(BaseModel):
     table_name: str = Field(..., description="Select a table from your database")
     filter_type: str = Field(..., description="How to identify rows to update")
     filter_column: str = Field(..., description="Select the column to filter on")
-    filter_value: Optional[str] = Field(None, description="The value to match against (not used for 'in list' filter)")
-    filter_values: Optional[list[Any]] = Field(None, description="List of values for 'in list' filter type")
+    filter_value: Optional[str] = Field(None, description="The value to match against (not used for \"in list\" filter)")
+    filter_values: Optional[list[Any]] = Field(None, description="List of values for \"in list\" filter type")
     update_data: dict[str, Any] = Field(..., description="Select which columns to update (auto-generated fields excluded)")
     count_updated: Optional[bool] = Field(None, description="Whether to count the number of updated rows")
     return_updated: Optional[bool] = Field(None, description="Whether to return the updated rows data")
@@ -24356,7 +24944,7 @@ class SupabaseDeleteRowsInput(BaseModel):
     filter_type: str = Field(..., description="How to filter rows for deletion")
     filter_column: str = Field(..., description="Select the column to filter on")
     filter_value: Optional[str] = Field(None, description="The value to match against (not used for null checks)")
-    filter_values: Optional[list[Any]] = Field(None, description="List of values for 'in' filter type")
+    filter_values: Optional[list[Any]] = Field(None, description="List of values for \"in\" filter type")
     count_deleted: Optional[bool] = Field(None, description="Whether to count the number of deleted rows")
     return_deleted: Optional[bool] = Field(None, description="Whether to return the deleted rows data")
 
@@ -24606,9 +25194,9 @@ class TallyGetSubmissionsInput(BaseModel):
 class TavilySearchInput(BaseModel):
     """Tavily — Search"""
     query: str = Field(..., description="The search query you want to execute with Tavily.")
-    search_depth: Optional[str] = Field(None, description="The depth of the search. It can be 'basic' or 'advanced'.")
+    search_depth: Optional[str] = Field(None, description="The depth of the search. It can be \"basic\" or \"advanced\".")
     topic: Optional[str] = Field(None, description="The category of the search. This will determine which of our agents will be used for the search.")
-    days: Optional[float] = Field(None, description="The number of days back from the current date to include in the search results. Only available when using the 'news' search topic. Default is 3.")
+    days: Optional[float] = Field(None, description="The number of days back from the current date to include in the search results. Only available when using the \"news\" search topic. Default is 3.")
     time_range: Optional[str] = Field(None, description="The time range back from the current date to include in the search results.")
     max_results: Optional[float] = Field(None, description="The maximum number of search results to return.")
     include_images: Optional[bool] = Field(None, description="Include a list of query-related images in the response.")
@@ -24919,7 +25507,7 @@ class TeamworkFindNotebookOrCommentInput(BaseModel):
 
 class TelegramBotSendTextMessageInput(BaseModel):
     """Telegram Bot — Send Text Message"""
-    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot '@getmyid_bot' in Telegram. 2. Start a conversation with the bot. 3. Send the command '/my_id' to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for 'chat not found.** ")
+    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
     chat_id: str = Field(..., description="Chat Id")
     message_thread_id: Optional[str] = Field(None, description="Unique identifier for the target message thread of the forums; for forums supergroups only")
     format: Optional[str] = Field(None, description="Choose format you want ")
@@ -24933,7 +25521,7 @@ class TelegramBotSendTextMessageInput(BaseModel):
 
 class TelegramBotSendMediaInput(BaseModel):
     """Telegram Bot — Send Media"""
-    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot '@getmyid_bot' in Telegram. 2. Start a conversation with the bot. 3. Send the command '/my_id' to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for 'chat not found.** ")
+    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
     chat_id: str = Field(..., description="Chat Id")
     message_thread_id: Optional[str] = Field(None, description="Unique identifier for the target message thread of the forums; for forums supergroups only")
     media_type: Optional[str] = Field(None, description="Media Type")
@@ -24948,7 +25536,7 @@ class TelegramBotSendMediaInput(BaseModel):
 
 class TelegramBotGetChatMemberInput(BaseModel):
     """Telegram Bot — Get Chat Member"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot '@getmyid_bot' in Telegram. 2. Start a conversation with the bot. 3. Send the command '/my_id' to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for 'chat not found.** ")
+    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
     chat_id: str = Field(..., description="Chat Id")
     user_id: str = Field(..., description="Unique identifier for the user")
 
@@ -24965,7 +25553,7 @@ class TelegramBotGetFileInput(BaseModel):
 
 class TelegramBotCreateInviteLinkInput(BaseModel):
     """Telegram Bot — Create Invite Link"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot '@getmyid_bot' in Telegram. 2. Start a conversation with the bot. 3. Send the command '/my_id' to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for 'chat not found.** ")
+    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
     chat_id: str = Field(..., description="Chat Id")
     name: Optional[str] = Field(None, description="Name of the invite link (max 32 chars)")
     expire_date: Optional[str] = Field(None, description="Point in time when the link will expire")
@@ -24976,7 +25564,7 @@ class TelegramBotCreateInviteLinkInput(BaseModel):
 
 class TelegramBotRequestApprovalMessageInput(BaseModel):
     """Telegram Bot — Request Approval Message"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot '@getmyid_bot' in Telegram. 2. Start a conversation with the bot. 3. Send the command '/my_id' to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for 'chat not found.'** ")
+    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.\"** ")
     chat_id: str = Field(..., description="Chat Id")
     message: str = Field(..., description="The approval message to be sent")
     parse_mode: Optional[str] = Field(None, description="Choose format for the message")
@@ -25338,7 +25926,7 @@ class TiktokListVideosInput(BaseModel):
 
 class TiktokGetVideoInput(BaseModel):
     """TikTok — Get Video"""
-    video_ids: Any = Field(..., description="Array of video ID strings (e.g. ['123', '456'])")
+    video_ids: Any = Field(..., description="Array of video ID strings (e.g. [\"123\", \"456\"])")
 
     model_config = {"populate_by_name": True}
 
@@ -25393,8 +25981,8 @@ class TiktokAdsGetAdReportInput(BaseModel):
     dataLevel: str = Field(..., description="Granularity of the report data")
     startDate: str = Field(..., description="Start date in YYYY-MM-DD format")
     endDate: str = Field(..., description="End date in YYYY-MM-DD format")
-    metrics: list[Any] = Field(..., description="Metrics to include (e.g., 'spend', 'impressions', 'clicks', 'ctr', 'cpc', 'conversions')")
-    dimensions: Optional[list[Any]] = Field(None, description="Dimensions for grouping (e.g., 'campaign_id', 'adgroup_id', 'stat_time_day')")
+    metrics: list[Any] = Field(..., description="Metrics to include (e.g., \"spend\", \"impressions\", \"clicks\", \"ctr\", \"cpc\", \"conversions\")")
+    dimensions: Optional[list[Any]] = Field(None, description="Dimensions for grouping (e.g., \"campaign_id\", \"adgroup_id\", \"stat_time_day\")")
     pageSize: Optional[float] = Field(None, description="Page Size")
 
     model_config = {"populate_by_name": True}
@@ -25617,7 +26205,7 @@ class TotangoCreateTouchpointInput(BaseModel):
     accountId: str = Field(..., description="Account ID")
     content: str = Field(..., description="Content")
     subject: str = Field(..., description="Subject")
-    type: str = Field(..., description="Type")
+    type_: str = Field(..., alias="type", description="Type")
 
     model_config = {"populate_by_name": True}
 
@@ -25826,14 +26414,14 @@ class TwilioMakeCallInput(BaseModel):
 
 class TwilioGetMessageInput(BaseModel):
     """Twilio — Get Message"""
-    message_sid: str = Field(..., description="The unique identifier (SID) of the message to retrieve. It starts with 'SM' or 'MM'.")
+    message_sid: str = Field(..., description="The unique identifier (SID) of the message to retrieve. It starts with \"SM\" or \"MM\".")
 
     model_config = {"populate_by_name": True}
 
 
 class TwilioDownloadRecordingMediaInput(BaseModel):
     """Twilio — Download Recording Media"""
-    recording_sid: str = Field(..., description="The unique identifier (SID) of the recording to download. It starts with 'RE'.")
+    recording_sid: str = Field(..., description="The unique identifier (SID) of the recording to download. It starts with \"RE\".")
     format: Optional[str] = Field(None, description="The desired audio format for the download file.")
     channels: Optional[str] = Field(None, description="Specify whether to download a mono or dual-channel file. Note: Dual-channel may not be available for all recordings.")
 
@@ -26115,7 +26703,7 @@ class UpstashCustomApiCallInput(BaseModel):
     """Upstash — Custom API Call"""
     method: str = Field(..., description="Method")
     path: Optional[str] = Field(None, description="Path appended to REST URL (leave empty for root)")
-    body: Optional[Any] = Field(None, description="Redis command array (e.g. ['GET', 'mykey'])")
+    body: Optional[Any] = Field(None, description="Redis command array (e.g. [\"GET\", \"mykey\"])")
 
     model_config = {"populate_by_name": True}
 
@@ -26141,7 +26729,7 @@ class UptimeRobotCreateMonitorInput(BaseModel):
     """UptimeRobot — Create Monitor"""
     friendlyName: str = Field(..., description="A human-readable name for the monitor")
     url: str = Field(..., description="The URL or IP address to monitor")
-    type: str = Field(..., description="Monitor Type")
+    type_: str = Field(..., alias="type", description="Monitor Type")
     interval: Optional[float] = Field(None, description="How often to check the monitor (minimum 60)")
 
     model_config = {"populate_by_name": True}
@@ -26149,7 +26737,7 @@ class UptimeRobotCreateMonitorInput(BaseModel):
 
 class UptimeRobotCustomApiCallInput(BaseModel):
     """UptimeRobot — Custom API Call"""
-    endpoint: str = Field(..., description="The UptimeRobot API endpoint (e.g. 'getMonitors', 'newMonitor')")
+    endpoint: str = Field(..., description="The UptimeRobot API endpoint (e.g. \"getMonitors\", \"newMonitor\")")
     body: Optional[Any] = Field(None, description="Additional parameters to include in the request body (api_key is added automatically)")
 
     model_config = {"populate_by_name": True}
@@ -26238,7 +26826,7 @@ class VapiListAssistantsInput(BaseModel):
 class VapiCreateCallInput(BaseModel):
     """Vapi — Create Call"""
     assistantId: str = Field(..., description="Assistant ID")
-    customer: Any = Field(..., description="Customer object with phone number, e.g. {'number': '+1234567890'}")
+    customer: Any = Field(..., description="Customer object with phone number, e.g. {\"number\": \"+1234567890\"}")
 
     model_config = {"populate_by_name": True}
 
@@ -26710,7 +27298,7 @@ class WeaviateCustomCreateClassInput(BaseModel):
     """Weaviate (Custom) — Create Class"""
     className: str = Field(..., description="Name for the new collection (must start with uppercase)")
     description: Optional[str] = Field(None, description="Description")
-    properties: Optional[Any] = Field(None, description="Array of property definitions: [{name: 'title', dataType: ['text']}, ...]")
+    properties: Optional[Any] = Field(None, description="Array of property definitions: [{name: \"title\", dataType: [\"text\"]}, ...]")
     vectorizer: Optional[str] = Field(None, description="Module name (e.g., text2vec-openai)")
 
     model_config = {"populate_by_name": True}
@@ -26731,7 +27319,7 @@ class WeaviateCustomSearchObjectsInput(BaseModel):
     className: str = Field(..., description="Class Name")
     fields: str = Field(..., description="Comma-separated property fields to return")
     nearVector: Optional[Any] = Field(None, description="Query vector as array of floats (for vector search)")
-    nearText: Optional[Any] = Field(None, description="Text concepts for semantic search: {'concepts': ['example']}")
+    nearText: Optional[Any] = Field(None, description="Text concepts for semantic search: {\"concepts\": [\"example\"]}")
     limit: Optional[float] = Field(None, description="Limit")
     where: Optional[Any] = Field(None, description="Filter object as JSON")
 
@@ -26771,7 +27359,7 @@ class WebReaderFetchAsTextInput(BaseModel):
 class WebReaderExtractLinksInput(BaseModel):
     """Web Reader — Extract Links"""
     url: str = Field(..., description="The URL to extract links from")
-    filterPattern: Optional[str] = Field(None, description="Optional regex pattern to filter link URLs (e.g. '\.pdf$' to find PDF links)")
+    filterPattern: Optional[str] = Field(None, description="Optional regex pattern to filter link URLs (e.g. \"\\.pdf$\" to find PDF links)")
 
     model_config = {"populate_by_name": True}
 
@@ -26794,7 +27382,7 @@ class WebReaderFetchMultipleInput(BaseModel):
 class WebexListRoomsInput(BaseModel):
     """Webex — List Rooms"""
     max: Optional[float] = Field(None, description="Max Results")
-    type: Optional[str] = Field(None, description="Room Type")
+    type_: Optional[str] = Field(None, alias="type", description="Room Type")
 
     model_config = {"populate_by_name": True}
 
@@ -26819,7 +27407,7 @@ class WebexListPeopleInput(BaseModel):
 
 class WebexGetPersonInput(BaseModel):
     """Webex — Get Person"""
-    personId: str = Field(..., description="The unique ID of the person (use 'me' for the authenticated user)")
+    personId: str = Field(..., description="The unique ID of the person (use \"me\" for the authenticated user)")
 
     model_config = {"populate_by_name": True}
 
@@ -26988,7 +27576,7 @@ class WhatsappSendMediaInput(BaseModel):
     """WhatsApp Business — Send Media"""
     phone_number_id: str = Field(..., description="Phone number ID that will be used to send the message.")
     to: str = Field(..., description="The recipient of the message")
-    type: str = Field(..., description="The type of media to send")
+    type_: str = Field(..., alias="type", description="The type of media to send")
     media: str = Field(..., description="The URL of the media to send")
     caption: Optional[str] = Field(None, description="A caption for the media")
     filename: Optional[str] = Field(None, description="Filename of the document to send")
@@ -27122,7 +27710,7 @@ class WoocommerceCreateCouponInput(BaseModel):
 class WoocommerceCreateProductInput(BaseModel):
     """WooCommerce — Create Product"""
     name: str = Field(..., description="Enter the name")
-    type: str = Field(..., description="Select the type")
+    type_: str = Field(..., alias="type", description="Select the type")
     regular_price: float = Field(..., description="Enter the regular price")
     description: str = Field(..., description="Enter the description")
     short_description: str = Field(..., description="Enter the short description")
@@ -27219,7 +27807,7 @@ class WordpressListPostsInput(BaseModel):
 class WordpressSearchContentInput(BaseModel):
     """WordPress — Search Content"""
     search: str = Field(..., description="Search query")
-    type: str = Field(..., description="Content Type")
+    type_: str = Field(..., alias="type", description="Content Type")
     per_page: Optional[float] = Field(None, description="Number of results to return")
 
     model_config = {"populate_by_name": True}
@@ -27628,7 +28216,7 @@ class XeroXeroUploadAttachmentInput(BaseModel):
     resource_type: str = Field(..., description="The Xero resource to attach the file to.")
     resource_id: str = Field(..., description="Select the specific resource to attach the file to.")
     file: str = Field(..., description="The file to upload. Max 10MB per Xero limits.")
-    file_name: Optional[str] = Field(None, description="Optional file name to use in Xero. Avoid characters: < > : ' / \ | ? *")
+    file_name: Optional[str] = Field(None, description="Optional file name to use in Xero. Avoid characters: < > : \" / \\ | ? *")
     content_type: Optional[str] = Field(None, description="MIME type of the file (e.g., image/png). If not set, will be inferred or default to application/octet-stream.")
     include_online: Optional[bool] = Field(None, description="Only applicable to ACCREC invoices and ACCREC credit notes. Adds IncludeOnline=true query parameter.")
 
@@ -27648,7 +28236,7 @@ class XeroXeroAddItemsToSalesInvoiceInput(BaseModel):
 class XeroXeroCreateCreditNoteInput(BaseModel):
     """Xero — Create Credit Note"""
     tenant_id: str = Field(..., description="Organization")
-    type: str = Field(..., description="Type")
+    type_: str = Field(..., alias="type", description="Type")
     contact_id: str = Field(..., description="Select a contact")
     date: Optional[str] = Field(None, description="YYYY-MM-DD. Defaults to today if not provided.")
     status: Optional[str] = Field(None, description="Status")
@@ -27803,7 +28391,7 @@ class XeroCustomApiCallInput(BaseModel):
 
 class XmlConvertJsonToXmlInput(BaseModel):
     """XML — Convert JSON to XML"""
-    json: Any = Field(..., description="JSON")
+    json_: Any = Field(..., alias="json", description="JSON")
     attributes_key: Optional[str] = Field(None, description="Field to add your tag's attributes")
     header: Optional[bool] = Field(None, description="Add XML header")
 
@@ -27916,7 +28504,7 @@ class ZendeskCreateTicketInput(BaseModel):
     requester_name: Optional[str] = Field(None, description="Name of the ticket requester (used when creating a new user).")
     assignee_email: Optional[str] = Field(None, description="Email address of the agent to assign the ticket to.")
     priority: Optional[str] = Field(None, description="The priority of the ticket.")
-    type: Optional[str] = Field(None, description="The type of ticket.")
+    type_: Optional[str] = Field(None, alias="type", description="The type of ticket.")
     status: Optional[str] = Field(None, description="The status of the ticket.")
     tags: Optional[list[Any]] = Field(None, description="Array of tags to apply to the ticket.")
     organization_id: str = Field(..., description="Select the organization to work with")
@@ -27943,9 +28531,9 @@ class ZendeskUpdateTicketInput(BaseModel):
     comment_public: Optional[bool] = Field(None, description="Whether the comment is public (visible to the requester). Defaults to true.")
     assignee_email: Optional[str] = Field(None, description="Email address of the agent to assign the ticket to")
     priority: Optional[str] = Field(None, description="Update the priority of the ticket")
-    type: Optional[str] = Field(None, description="Update the type of ticket")
+    type_: Optional[str] = Field(None, alias="type", description="Update the type of ticket")
     status: Optional[str] = Field(None, description="Update the status of the ticket")
-    tags: Optional[list[Any]] = Field(None, description="Replace all tags with this array. Use 'Add Tag to Ticket' action to add tags without replacing existing ones.")
+    tags: Optional[list[Any]] = Field(None, description="Replace all tags with this array. Use \"Add Tag to Ticket\" action to add tags without replacing existing ones.")
     organization_id: str = Field(..., description="Select the organization to work with")
     group_id: Optional[str] = Field(None, description="Select the group to assign")
     external_id: Optional[str] = Field(None, description="Update the external ID for the ticket")
@@ -28024,7 +28612,7 @@ class ZendeskCreateUserInput(BaseModel):
     """Zendesk — Create User"""
     name: str = Field(..., description="The name of the user")
     email: Optional[str] = Field(None, description="The primary email address of the user")
-    role: Optional[str] = Field(None, description="The role of the user. Defaults to 'end-user' if not specified.")
+    role: Optional[str] = Field(None, description="The role of the user. Defaults to \"end-user\" if not specified.")
     custom_role_id: Optional[str] = Field(None, description="Select the custom role for the agent")
     organization_id: str = Field(..., description="Select the organization to work with")
     organization_name: Optional[str] = Field(None, description="Create and associate user with a new organization by name (alternative to Organization ID)")
@@ -28033,8 +28621,8 @@ class ZendeskCreateUserInput(BaseModel):
     details: Optional[str] = Field(None, description="Additional details about the user")
     notes: Optional[str] = Field(None, description="Internal notes about the user")
     external_id: Optional[str] = Field(None, description="A unique external ID for the user (useful for integrations)")
-    time_zone: Optional[str] = Field(None, description="The time zone of the user (e.g., 'America/New_York')")
-    locale: Optional[str] = Field(None, description="The locale of the user (e.g., 'en-US')")
+    time_zone: Optional[str] = Field(None, description="The time zone of the user (e.g., \"America/New_York\")")
+    locale: Optional[str] = Field(None, description="The locale of the user (e.g., \"en-US\")")
     verified: Optional[bool] = Field(None, description="Whether the user is verified")
     active: Optional[bool] = Field(None, description="Whether the user is active. Defaults to true.")
     shared: Optional[bool] = Field(None, description="Whether the user is shared from a different Zendesk Support instance")
@@ -28051,7 +28639,7 @@ class ZendeskCreateUserInput(BaseModel):
     agent_brand_ids: Optional[list[str]] = Field(None, description="Select the brands that the agent can access (for agents only)")
     tags: Optional[list[Any]] = Field(None, description="Array of tags to apply to the user")
     user_fields: Optional[dict[str, Any]] = Field(None, description="Custom user field values")
-    identities: Optional[Any] = Field(None, description="Array of identity objects with type and value. Example: [{'type': 'email', 'value': 'test@user.com'}, {'type': 'twitter', 'value': 'username'}]")
+    identities: Optional[Any] = Field(None, description="Array of identity objects with type and value. Example: [{\"type\": \"email\", \"value\": \"test@user.com\"}, {\"type\": \"twitter\", \"value\": \"username\"}]")
 
     model_config = {"populate_by_name": True}
 
@@ -28072,7 +28660,7 @@ class ZendeskFindOrganizationInput(BaseModel):
     external_id: Optional[str] = Field(None, description="Search organizations by external ID")
     tag: Optional[str] = Field(None, description="Search organizations containing this tag")
     details: Optional[str] = Field(None, description="Search in organization details/notes")
-    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., 'type:organization domain:example.com')")
+    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., \"type:organization domain:example.com\")")
     sort_by: Optional[str] = Field(None, description="How to sort the results")
     sort_order: Optional[str] = Field(None, description="Sort order for results")
 
@@ -28091,7 +28679,7 @@ class ZendeskFindTicketsInput(BaseModel):
     requester_email: Optional[str] = Field(None, description="Search tickets by requester email address")
     assignee_email: Optional[str] = Field(None, description="Search tickets by assignee email address")
     content: Optional[str] = Field(None, description="Search in ticket subject and content")
-    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., 'type:ticket status:open priority:high')")
+    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., \"type:ticket status:open priority:high\")")
     sort_by: Optional[str] = Field(None, description="How to sort the results")
     sort_order: Optional[str] = Field(None, description="Sort order for results")
 
@@ -28107,7 +28695,7 @@ class ZendeskFindUserInput(BaseModel):
     organization: Optional[str] = Field(None, description="Search users by organization name")
     tag: Optional[str] = Field(None, description="Search users containing this tag")
     external_id: Optional[str] = Field(None, description="Search users by external ID")
-    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., 'type:user role:agent')")
+    custom_query: Optional[str] = Field(None, description="Custom search query using Zendesk search syntax (e.g., \"type:user role:agent\")")
     sort_by: Optional[str] = Field(None, description="How to sort the results")
     sort_order: Optional[str] = Field(None, description="Sort order for results")
 
@@ -28162,7 +28750,7 @@ class ZillowGetPropertyInput(BaseModel):
 
 class ZillowSearchPropertiesInput(BaseModel):
     """Zillow — Search Properties"""
-    location: str = Field(..., description="City, neighborhood, zip code, or address (e.g., 'Austin, TX')")
+    location: str = Field(..., description="City, neighborhood, zip code, or address (e.g., \"Austin, TX\")")
     page: Optional[float] = Field(None, description="Page")
     status: Optional[str] = Field(None, description="Status")
     minPrice: Optional[float] = Field(None, description="Min Price")
@@ -28242,7 +28830,7 @@ class ZohoBooksCreateInvoiceInput(BaseModel):
     customerId: str = Field(..., description="Customer ID")
     invoiceDate: Optional[str] = Field(None, description="Invoice date in YYYY-MM-DD format")
     dueDate: Optional[str] = Field(None, description="Payment due date in YYYY-MM-DD format")
-    lineItems: Any = Field(..., description="Array of line items: [{'item_id': '...', 'quantity': 1, 'rate': 100}]")
+    lineItems: Any = Field(..., description="Array of line items: [{\"item_id\": \"...\", \"quantity\": 1, \"rate\": 100}]")
     notes: Optional[str] = Field(None, description="Notes")
 
     model_config = {"populate_by_name": True}
@@ -28546,7 +29134,7 @@ class ZohoInvoiceCreateInvoiceInput(BaseModel):
     customerId: str = Field(..., description="Customer ID")
     invoiceDate: Optional[str] = Field(None, description="Invoice date in YYYY-MM-DD format")
     dueDate: Optional[str] = Field(None, description="Payment due date in YYYY-MM-DD format")
-    lineItems: Any = Field(..., description="Array of line items: [{'item_id': '...', 'quantity': 1, 'rate': 100}]")
+    lineItems: Any = Field(..., description="Array of line items: [{\"item_id\": \"...\", \"quantity\": 1, \"rate\": 100}]")
     notes: Optional[str] = Field(None, description="Notes")
     termsAndConditions: Optional[str] = Field(None, description="Terms & Conditions")
 
@@ -28919,7 +29507,7 @@ class ZoomZoomCreateMeetingInput(BaseModel):
     duration: Optional[float] = Field(None, description="Duration of the meeting in minutes")
     agenda: Optional[str] = Field(None, description="The meeting's agenda")
     password: Optional[str] = Field(None, description="Password to join the meeting (max 10 chars, alphanumeric + @-_*)")
-    type: Optional[str] = Field(None, description="Meeting Type")
+    type_: Optional[str] = Field(None, alias="type", description="Meeting Type")
     auto_recording: Optional[str] = Field(None, description="Auto Recording")
 
     model_config = {"populate_by_name": True}
@@ -28947,7 +29535,7 @@ class ZoomGetMeetingInput(BaseModel):
 
 class ZoomListMeetingsInput(BaseModel):
     """Zoom — List Meetings"""
-    type: Optional[str] = Field(None, description="Meeting Type")
+    type_: Optional[str] = Field(None, alias="type", description="Meeting Type")
     page_size: Optional[float] = Field(None, description="Page Size")
 
     model_config = {"populate_by_name": True}
@@ -29902,10 +30490,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fly-io.list_machines": FlyIoListMachinesInput,
     "fly-io.get_machine": FlyIoGetMachineInput,
     "fly-io.create_machine": FlyIoCreateMachineInput,
-    "folk-crm.create_contact": FolkCrmCreateContactInput,
-    "folk-crm.list_contacts": FolkCrmListContactsInput,
-    "folk-crm.get_contact": FolkCrmGetContactInput,
-    "folk-crm.create_group": FolkCrmCreateGroupInput,
+    "folk-crm.create_person": FolkCrmCreatePersonInput,
+    "folk-crm.find_person": FolkCrmFindPersonInput,
+    "folk-crm.get_person": FolkCrmGetPersonInput,
+    "folk-crm.update_person": FolkCrmUpdatePersonInput,
+    "folk-crm.create_company": FolkCrmCreateCompanyInput,
+    "folk-crm.find_company": FolkCrmFindCompanyInput,
+    "folk-crm.get_company": FolkCrmGetCompanyInput,
+    "folk-crm.update_company": FolkCrmUpdateCompanyInput,
     "folk-crm.custom_api_call": FolkCrmCustomApiCallInput,
     "follow-up-boss.list_people": FollowUpBossListPeopleInput,
     "follow-up-boss.get_person": FollowUpBossGetPersonInput,
@@ -30137,11 +30729,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "google-search-console.custom_api_call": GoogleSearchConsoleCustomApiCallInput,
     "google-sheets.list_spreadsheets": GoogleSheetsListSpreadsheetsInput,
     "google-sheets.get_spreadsheet": GoogleSheetsGetSpreadsheetInput,
+    "google-sheets.list_sheets": GoogleSheetsListSheetsInput,
+    "google-sheets.get_sheet": GoogleSheetsGetSheetInput,
     "google-sheets.read_range": GoogleSheetsReadRangeInput,
+    "google-sheets.list_rows": GoogleSheetsListRowsInput,
+    "google-sheets.get_row": GoogleSheetsGetRowInput,
     "google-sheets.write_range": GoogleSheetsWriteRangeInput,
     "google-sheets.append_row": GoogleSheetsAppendRowInput,
-    "google-sheets.create_spreadsheet": GoogleSheetsCreateSpreadsheetInput,
+    "google-sheets.append_rows": GoogleSheetsAppendRowsInput,
+    "google-sheets.update_row": GoogleSheetsUpdateRowInput,
+    "google-sheets.find_rows": GoogleSheetsFindRowsInput,
     "google-sheets.clear_range": GoogleSheetsClearRangeInput,
+    "google-sheets.clear_row": GoogleSheetsClearRowInput,
+    "google-sheets.delete_row": GoogleSheetsDeleteRowInput,
+    "google-sheets.create_spreadsheet": GoogleSheetsCreateSpreadsheetInput,
     "google-sheets.custom_api_call": GoogleSheetsCustomApiCallInput,
     "google-slides.get_presentation": GoogleSlidesGetPresentationInput,
     "google-slides.create_presentation": GoogleSlidesCreatePresentationInput,
@@ -30173,8 +30774,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "graphql.send_request": GraphqlSendRequestInput,
     "greenhouse.list_candidates": GreenhouseListCandidatesInput,
     "greenhouse.get_candidate": GreenhouseGetCandidateInput,
+    "greenhouse.create_candidate": GreenhouseCreateCandidateInput,
+    "greenhouse.update_candidate": GreenhouseUpdateCandidateInput,
+    "greenhouse.create_prospect": GreenhouseCreateProspectInput,
+    "greenhouse.create_candidate_note": GreenhouseCreateCandidateNoteInput,
+    "greenhouse.find_candidate": GreenhouseFindCandidateInput,
+    "greenhouse.find_or_create_candidate": GreenhouseFindOrCreateCandidateInput,
+    "greenhouse.find_due_scorecard": GreenhouseFindDueScorecardInput,
     "greenhouse.list_jobs": GreenhouseListJobsInput,
+    "greenhouse.get_job": GreenhouseGetJobInput,
     "greenhouse.list_applications": GreenhouseListApplicationsInput,
+    "greenhouse.get_application": GreenhouseGetApplicationInput,
+    "greenhouse.list_job_posts": GreenhouseListJobPostsInput,
+    "greenhouse.list_interviews": GreenhouseListInterviewsInput,
+    "greenhouse.custom_api_call": GreenhouseCustomApiCallInput,
     "grist.grist-create-record": GristGristCreateRecordInput,
     "grist.grist-search-record": GristGristSearchRecordInput,
     "grist.grist-update-record": GristGristUpdateRecordInput,
@@ -30318,6 +30931,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "housecall-pro.convert_lead_to_estimate_or_job": HousecallProConvertLeadToEstimateOrJobInput,
     "housecall-pro.custom_api_call": HousecallProCustomApiCallInput,
     "http.send_request": HttpSendRequestInput,
+    "hubspot.list_crm_objects": HubspotListCrmObjectsInput,
+    "hubspot.get_crm_object": HubspotGetCrmObjectInput,
+    "hubspot.create_crm_object": HubspotCreateCrmObjectInput,
+    "hubspot.update_crm_object": HubspotUpdateCrmObjectInput,
+    "hubspot.search_crm_objects": HubspotSearchCrmObjectsInput,
     "hubspot.list_contacts": HubspotListContactsInput,
     "hubspot.get_contact": HubspotGetContactInput,
     "hubspot.create_contact": HubspotCreateContactInput,
@@ -30331,8 +30949,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hubspot.create_deal": HubspotCreateDealInput,
     "hubspot.update_deal": HubspotUpdateDealInput,
     "hubspot.list_tickets": HubspotListTicketsInput,
+    "hubspot.get_ticket": HubspotGetTicketInput,
+    "hubspot.create_ticket": HubspotCreateTicketInput,
+    "hubspot.update_ticket": HubspotUpdateTicketInput,
     "hubspot.search_crm": HubspotSearchCrmInput,
     "hubspot.list_properties": HubspotListPropertiesInput,
+    "hubspot.list_association_labels": HubspotListAssociationLabelsInput,
+    "hubspot.list_associations": HubspotListAssociationsInput,
+    "hubspot.create_association": HubspotCreateAssociationInput,
+    "hubspot.remove_association": HubspotRemoveAssociationInput,
     "hubspot.create_engagement": HubspotCreateEngagementInput,
     "hubspot.custom_api_call": HubspotCustomApiCallInput,
     "hugging-face.document_question_answering": HuggingFaceDocumentQuestionAnsweringInput,
@@ -31512,6 +32137,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "storage.write_file": StorageWriteFileInput,
     "storage.delete_file": StorageDeleteFileInput,
     "storage.list_files": StorageListFilesInput,
+    "storage.get_download_url": StorageGetDownloadUrlInput,
     "storyblok.list_spaces": StoryblokListSpacesInput,
     "storyblok.list_stories": StoryblokListStoriesInput,
     "storyblok.get_story": StoryblokGetStoryInput,
