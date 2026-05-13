@@ -30,13 +30,14 @@ class WorkspaceIntegration(BaseModel):
 
 
 class InputPartial(BaseModel):
-    """An input partial — reusable pre-filled input values for integration actions."""
+    """An input partial — reusable pre-filled input values for actions or triggers."""
 
     id: str
     org_id: str = Field(alias="orgId")
     workspace_id: str = Field(alias="workspaceId")
     integration_name: str = Field(alias="integrationName")
     action_name: Optional[str] = Field(default=None, alias="actionName")
+    trigger_name: Optional[str] = Field(default=None, alias="triggerName")
     name: str
     description: Optional[str] = None
     values: dict[str, Any] = Field(default_factory=dict)

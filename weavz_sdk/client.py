@@ -572,7 +572,7 @@ class IntegrationsResource(_BaseResource):
 
 
 class PartialsResource(_BaseResource):
-    """Input partials — reusable pre-filled input values for integration actions."""
+    """Input partials — reusable pre-filled input values for actions or triggers."""
 
     def list(
         self,
@@ -580,12 +580,15 @@ class PartialsResource(_BaseResource):
         *,
         integration_name: str | None = None,
         action_name: str | None = None,
+        trigger_name: str | None = None,
     ) -> dict[str, Any]:
         params: dict[str, Any] = {"workspaceId": workspace_id}
         if integration_name is not None:
             params["integrationName"] = integration_name
         if action_name is not None:
             params["actionName"] = action_name
+        if trigger_name is not None:
+            params["triggerName"] = trigger_name
         return self._get("/api/v1/partials", params=params)
 
     def get(self, partial_id: str) -> dict[str, Any]:
@@ -598,6 +601,7 @@ class PartialsResource(_BaseResource):
         name: str,
         *,
         action_name: str | None = None,
+        trigger_name: str | None = None,
         description: str | None = None,
         values: dict[str, Any] | None = None,
         enforced_keys: list[str] | None = None,
@@ -612,6 +616,8 @@ class PartialsResource(_BaseResource):
         }
         if action_name is not None:
             body["actionName"] = action_name
+        if trigger_name is not None:
+            body["triggerName"] = trigger_name
         if description is not None:
             body["description"] = description
         if enforced_keys is not None:
