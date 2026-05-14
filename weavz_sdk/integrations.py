@@ -15569,62 +15569,283 @@ class LeonardoAiCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class LeverListOpportunitiesInput(BaseModel):
+    """Lever — List Opportunities"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+    contact_id: Optional[str] = Field(None, description="Comma-separated contact IDs.")
+    posting_id: Optional[str] = Field(None, description="Comma-separated posting IDs.")
+    archived_posting_id: Optional[str] = Field(None, description="Comma-separated posting IDs whose applications were archived.")
+    stage_id: Optional[str] = Field(None, description="Comma-separated stage IDs.")
+    archive_reason_id: Optional[str] = Field(None, description="Comma-separated archive reason IDs.")
+    email: Optional[str] = Field(None, description="Email Address")
+    tag: Optional[str] = Field(None, description="Comma-separated tags. Lever tag filters are case-sensitive.")
+    source: Optional[str] = Field(None, description="Comma-separated source names.")
+    origin: Optional[list[str]] = Field(None, description="Origins")
+    confidentiality: Optional[str] = Field(None, description="Confidentiality")
+    archived: Optional[str] = Field(None, description="Archived State")
+    snoozed: Optional[str] = Field(None, description="Snoozed State")
+    created_at_start: Optional[str] = Field(None, description="Created At Start")
+    created_at_end: Optional[str] = Field(None, description="Created At End")
+    updated_at_start: Optional[str] = Field(None, description="Updated At Start")
+    updated_at_end: Optional[str] = Field(None, description="Updated At End")
+    advanced_at_start: Optional[str] = Field(None, description="Advanced At Start")
+    advanced_at_end: Optional[str] = Field(None, description="Advanced At End")
+    archived_at_start: Optional[str] = Field(None, description="Archived At Start")
+    archived_at_end: Optional[str] = Field(None, description="Archived At End")
+    include: Optional[list[Any]] = Field(None, description="Fields to include in each Lever response. Examples: contact, applications, resumes, stage.")
+    expand: Optional[list[Any]] = Field(None, description="Fields to expand in each Lever response. Examples: applications, contact, stage, owner.")
+
+    model_config = {"populate_by_name": True}
+
+
 class LeverGetOpportunityInput(BaseModel):
-    """Lever — Get opportunity"""
-    opportunityId: str = Field(..., description="Opportunity ID")
-    expand: Optional[list[Any]] = Field(None, description="Expand")
+    """Lever — Get Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    include: Optional[list[Any]] = Field(None, description="Fields to include in each Lever response. Examples: contact, applications, resumes, stage.")
+    expand: Optional[list[Any]] = Field(None, description="Fields to expand in each Lever response. Examples: applications, contact, stage, owner.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverFindOpportunityByEmailInput(BaseModel):
+    """Lever — Find Opportunity by Email"""
+    email: str = Field(..., description="Email Address")
+    include: Optional[list[Any]] = Field(None, description="Fields to include in each Lever response. Examples: contact, applications, resumes, stage.")
+    expand: Optional[list[Any]] = Field(None, description="Fields to expand in each Lever response. Examples: applications, contact, stage, owner.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverCreateOpportunityInput(BaseModel):
+    """Lever — Create Opportunity"""
+    name: str = Field(..., description="Candidate Name")
+    perform_as: str = Field(..., description="Lever user ID used for this create action. Lever requires perform_as when creating opportunities.")
+    headline: Optional[str] = Field(None, description="Headline")
+    email: Optional[str] = Field(None, description="Email Address")
+    phone: Optional[str] = Field(None, description="Phone Number")
+    phone_type: Optional[str] = Field(None, description="Phone Type")
+    location: Optional[str] = Field(None, description="Location")
+    origin: Optional[str] = Field(None, description="Origin")
+    owner_id: Optional[str] = Field(None, description="Owner/User ID")
+    contact_id: Optional[str] = Field(None, description="Existing Contact ID")
+    stage_id: Optional[str] = Field(None, description="Stage ID")
+    created_at: Optional[str] = Field(None, description="Historical opportunity creation time. Future dates are not allowed by Lever.")
+    parse_resume: Optional[bool] = Field(None, description="Only applies when a resume file is provided through raw payload or custom API usage.")
+    perform_as_posting_owner: Optional[bool] = Field(None, description="When exactly one posting ID is provided, set the owner to the posting owner.")
+    posting_ids: Optional[list[Any]] = Field(None, description="Posting IDs")
+    follower_ids: Optional[list[Any]] = Field(None, description="Follower User IDs")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    sources: Optional[list[Any]] = Field(None, description="Sources")
+    links: Optional[list[Any]] = Field(None, description="Candidate links such as LinkedIn, portfolio, or GitHub URLs.")
+    archived_reason_id: Optional[str] = Field(None, description="Optional archive reason to create this opportunity as archived.")
+    archived_at: Optional[str] = Field(None, description="Optional historical archive time. Requires an archive reason.")
+    raw_payload: Optional[Any] = Field(None, description="Advanced Lever opportunity fields to merge into the request body.")
 
     model_config = {"populate_by_name": True}
 
 
 class LeverUpdateOpportunityStageInput(BaseModel):
-    """Lever — Update opportunity stage"""
-    opportunityId: str = Field(..., description="Opportunity ID")
+    """Lever — Update Opportunity Stage"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
     stage: str = Field(..., description="Stage")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
 
     model_config = {"populate_by_name": True}
 
 
-class LeverListOpportunityFormsInput(BaseModel):
-    """Lever — List opportunity forms"""
-    opportunityId: str = Field(..., description="Opportunity ID")
-    template: Optional[str] = Field(None, description="Form template")
+class LeverUpdateOpportunityArchiveStateInput(BaseModel):
+    """Lever — Update Opportunity Archive State"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    reason_id: Optional[str] = Field(None, description="Leave empty to unarchive.")
+    clean_interviews: Optional[bool] = Field(None, description="Remove pending interviews from the opportunity when archiving.")
+    requisition_id: Optional[str] = Field(None, description="Optional requisition used when hiring against a requisition.")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverAddNoteToOpportunityInput(BaseModel):
+    """Lever — Add Note to Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    note: str = Field(..., description="Note")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListOpportunityNotesInput(BaseModel):
+    """Lever — List Opportunity Notes"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverAddLinksToOpportunityInput(BaseModel):
+    """Lever — Add Links to Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Links")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverRemoveLinksFromOpportunityInput(BaseModel):
+    """Lever — Remove Links from Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Links")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverAddTagsToOpportunityInput(BaseModel):
+    """Lever — Add Tags to Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Tags")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverRemoveTagsFromOpportunityInput(BaseModel):
+    """Lever — Remove Tags from Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Tags")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverAddSourcesToOpportunityInput(BaseModel):
+    """Lever — Add Sources to Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Sources")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverRemoveSourcesFromOpportunityInput(BaseModel):
+    """Lever — Remove Sources from Opportunity"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    values: list[Any] = Field(..., description="Sources")
+    perform_as: Optional[str] = Field(None, description="Lever user ID used for write actions.")
 
     model_config = {"populate_by_name": True}
 
 
 class LeverListOpportunityFeedbackInput(BaseModel):
-    """Lever — List opportunity feedback"""
-    opportunityId: str = Field(..., description="Opportunity ID")
-    template: Optional[str] = Field(None, description="Feedback template")
+    """Lever — List Opportunity Feedback"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    template_id: Optional[str] = Field(None, description="Feedback Template")
 
     model_config = {"populate_by_name": True}
 
 
-class LeverAddFeedbackToOpportunityInput(BaseModel):
-    """Lever — Add feedback to opportunity"""
-    performAs: str = Field(..., description="Feedback author")
-    opportunityId: str = Field(..., description="Opportunity ID")
-    panelId: Optional[str] = Field(None, description="If you select one, you must select an interview too")
-    interviewId: Optional[str] = Field(None, description="Mandatory is you select an interview panel")
-    feedbackTemplateId: Optional[str] = Field(None, description="Ignored if you select an interview panel and an interview")
-    feedbackFields: dict[str, Any] = Field(..., description="Fields")
+class LeverListOpportunityFormsInput(BaseModel):
+    """Lever — List Opportunity Forms"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    template_id: Optional[str] = Field(None, description="Form Template")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListOpportunityInterviewsInput(BaseModel):
+    """Lever — List Opportunity Interviews"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListOpportunityFileActionsInput(BaseModel):
+    """Lever — List Opportunity File Actions"""
+    opportunity_id: str = Field(..., description="Opportunity ID")
+    limit: Optional[float] = Field(None, description="Number of file actions to return, up to 100.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+    occurred_at_start: Optional[str] = Field(None, description="Occurred At Start")
+    occurred_at_end: Optional[str] = Field(None, description="Occurred At End")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListDeletedOpportunitiesInput(BaseModel):
+    """Lever — List Deleted Opportunities"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+    deleted_at_start: Optional[str] = Field(None, description="Deleted At Start")
+    deleted_at_end: Optional[str] = Field(None, description="Deleted At End")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListPostingsInput(BaseModel):
+    """Lever — List Postings"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+    state: Optional[str] = Field(None, description="State")
+    include: Optional[list[Any]] = Field(None, description="Fields to include in each Lever response. Examples: contact, applications, resumes, stage.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverGetPostingInput(BaseModel):
+    """Lever — Get Posting"""
+    posting_id: str = Field(..., description="Posting ID")
+    include: Optional[list[Any]] = Field(None, description="Fields to include in each Lever response. Examples: contact, applications, resumes, stage.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListStagesInput(BaseModel):
+    """Lever — List Stages"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListUsersInput(BaseModel):
+    """Lever — List Users"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListArchiveReasonsInput(BaseModel):
+    """Lever — List Archive Reasons"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListTagsInput(BaseModel):
+    """Lever — List Tags"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LeverListSourcesInput(BaseModel):
+    """Lever — List Sources"""
+    limit: Optional[float] = Field(None, description="Number of records to return.")
+    offset: Optional[str] = Field(None, description="Pagination cursor returned as next from a previous Lever response.")
 
     model_config = {"populate_by_name": True}
 
 
 class LeverCustomApiCallInput(BaseModel):
     """Lever — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    path: str = Field(..., description="Relative Lever API path, for example /opportunities or /postings/{id}.")
+    query_params: Optional[dict[str, Any]] = Field(None, description="Query parameters to append to the request.")
+    headers: Optional[dict[str, Any]] = Field(None, description="Extra headers. Authorization is always injected from the connection.")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -31187,11 +31408,32 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "leonardo-ai.get_generation": LeonardoAiGetGenerationInput,
     "leonardo-ai.list_models": LeonardoAiListModelsInput,
     "leonardo-ai.custom_api_call": LeonardoAiCustomApiCallInput,
-    "lever.getOpportunity": LeverGetOpportunityInput,
-    "lever.updateOpportunityStage": LeverUpdateOpportunityStageInput,
-    "lever.listOpportunityForms": LeverListOpportunityFormsInput,
-    "lever.listOpportunityFeedback": LeverListOpportunityFeedbackInput,
-    "lever.addFeedbackToOpportunity": LeverAddFeedbackToOpportunityInput,
+    "lever.list_opportunities": LeverListOpportunitiesInput,
+    "lever.get_opportunity": LeverGetOpportunityInput,
+    "lever.find_opportunity_by_email": LeverFindOpportunityByEmailInput,
+    "lever.create_opportunity": LeverCreateOpportunityInput,
+    "lever.update_opportunity_stage": LeverUpdateOpportunityStageInput,
+    "lever.update_opportunity_archive_state": LeverUpdateOpportunityArchiveStateInput,
+    "lever.add_note_to_opportunity": LeverAddNoteToOpportunityInput,
+    "lever.list_opportunity_notes": LeverListOpportunityNotesInput,
+    "lever.add_links_to_opportunity": LeverAddLinksToOpportunityInput,
+    "lever.remove_links_from_opportunity": LeverRemoveLinksFromOpportunityInput,
+    "lever.add_tags_to_opportunity": LeverAddTagsToOpportunityInput,
+    "lever.remove_tags_from_opportunity": LeverRemoveTagsFromOpportunityInput,
+    "lever.add_sources_to_opportunity": LeverAddSourcesToOpportunityInput,
+    "lever.remove_sources_from_opportunity": LeverRemoveSourcesFromOpportunityInput,
+    "lever.list_opportunity_feedback": LeverListOpportunityFeedbackInput,
+    "lever.list_opportunity_forms": LeverListOpportunityFormsInput,
+    "lever.list_opportunity_interviews": LeverListOpportunityInterviewsInput,
+    "lever.list_opportunity_file_actions": LeverListOpportunityFileActionsInput,
+    "lever.list_deleted_opportunities": LeverListDeletedOpportunitiesInput,
+    "lever.list_postings": LeverListPostingsInput,
+    "lever.get_posting": LeverGetPostingInput,
+    "lever.list_stages": LeverListStagesInput,
+    "lever.list_users": LeverListUsersInput,
+    "lever.list_archive_reasons": LeverListArchiveReasonsInput,
+    "lever.list_tags": LeverListTagsInput,
+    "lever.list_sources": LeverListSourcesInput,
     "lever.custom_api_call": LeverCustomApiCallInput,
     "libretranslate.translate_text": LibretranslateTranslateTextInput,
     "libretranslate.detect_language": LibretranslateDetectLanguageInput,
