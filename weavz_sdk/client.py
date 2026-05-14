@@ -325,6 +325,7 @@ class ActionsResource(_BaseResource):
         end_user_id: str | None = None,
         integration_alias: str | None = None,
         partial_ids: list[str] | None = None,
+        idempotency_key: str | None = None,
     ) -> Any:
         body: dict[str, Any] = {
             "integrationName": integration_name,
@@ -340,7 +341,120 @@ class ActionsResource(_BaseResource):
             body["integrationAlias"] = integration_alias
         if partial_ids is not None:
             body["partialIds"] = partial_ids
+        if idempotency_key is not None:
+            body["idempotencyKey"] = idempotency_key
         return self._post("/api/v1/actions/execute", json=body)
+
+
+class ApprovalPoliciesResource(_BaseResource):
+    """Human Gates policies for guarded action execution."""
+
+    def list(self, *, workspace_id: str | None = None) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if workspace_id is not None:
+            params["workspaceId"] = workspace_id
+        return self._get("/api/v1/approval-policies", params=params or None)
+
+    def create(self, **policy: Any) -> dict[str, Any]:
+        return self._post("/api/v1/approval-policies", json=policy)
+
+    def get(self, policy_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/approval-policies/{policy_id}")
+
+    def update(self, policy_id: str, **updates: Any) -> dict[str, Any]:
+        return self._patch(f"/api/v1/approval-policies/{policy_id}", json=updates)
+
+    def delete(self, policy_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/approval-policies/{policy_id}")
+
+    def test(self, *, policy: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
+        return self._post(
+            "/api/v1/approval-policies/test",
+            json={"policy": policy, "context": context},
+        )
+
+
+class ApprovalsResource(_BaseResource):
+    """Approval request inbox and decision APIs."""
+
+    def list(
+        self,
+        *,
+        workspace_id: str | None = None,
+        status: str | None = None,
+        source: str | None = None,
+        integration_name: str | None = None,
+        action_name: str | None = None,
+        limit: int | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if workspace_id is not None:
+            params["workspaceId"] = workspace_id
+        if status is not None:
+            params["status"] = status
+        if source is not None:
+            params["source"] = source
+        if integration_name is not None:
+            params["integrationName"] = integration_name
+        if action_name is not None:
+            params["actionName"] = action_name
+        if limit is not None:
+            params["limit"] = limit
+        return self._get("/api/v1/approvals", params=params or None)
+
+    def get(self, approval_id: str) -> dict[str, Any]:
+        return self._get(f"/api/v1/approvals/{approval_id}")
+
+    def approve(
+        self,
+        approval_id: str,
+        *,
+        reason: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        return self._post(
+            f"/api/v1/approvals/{approval_id}/approve",
+            json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
+        )
+
+    def reject(
+        self,
+        approval_id: str,
+        *,
+        reason: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        return self._post(
+            f"/api/v1/approvals/{approval_id}/reject",
+            json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
+        )
+
+    def cancel(
+        self,
+        approval_id: str,
+        *,
+        reason: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        return self._post(
+            f"/api/v1/approvals/{approval_id}/cancel",
+            json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
+        )
+
+    def wait(
+        self,
+        approval_id: str,
+        *,
+        timeout: float = 120.0,
+        interval: float = 1.0,
+    ) -> dict[str, Any]:
+        deadline = time.monotonic() + timeout
+        while time.monotonic() <= deadline:
+            result = self.get(approval_id)
+            if result.get("approval", {}).get("status") != "pending":
+                return result
+            time.sleep(interval)
+        raise WeavzError("Approval wait timed out", code="APPROVAL_TIMEOUT", status=408)
 
 
 class TriggersResource(_BaseResource):
@@ -935,6 +1049,8 @@ class WeavzClient:
         self.connections = ConnectionsResource(self)
         self.connect = ConnectResource(self)
         self.actions = ActionsResource(self)
+        self.approval_policies = ApprovalPoliciesResource(self)
+        self.approvals = ApprovalsResource(self)
         self.triggers = TriggersResource(self)
         self.mcp_servers = McpServersResource(self)
         self.api_keys = ApiKeysResource(self)
