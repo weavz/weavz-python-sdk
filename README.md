@@ -50,31 +50,23 @@ The client provides namespaced access to all API resources:
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
 | `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `create_oauth_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `get_declarations()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
-| `client.activity` | `list()` |
-| `client.oauth_apps` | `list()`, `create()`, `delete()` |
-| `client.webhook_secrets` | `list()`, `set()`, `delete()` |
 | `client.integrations` | `list()`, `list_summary()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
-| `client.connect` | `create_token()`, `poll()`, `wait()`, `get_session()`, `available_oauth_apps()` |
+| `client.connect` | `create_token()`, `poll()`, `wait()`, `get_session()` |
 | `client.end_users` | `create()`, `list()`, `get()`, `update()`, `delete()`, `create_connect_token()`, `invite()` |
 | `client.partials` | `list()`, `get()`, `create()`, `update()`, `delete()` |
 
 ## Building SaaS on Weavz
 
-Org-wide API keys can provision the integration control plane for your own product: create workspaces, register end users, configure tenant-owned OAuth apps, set webhook secrets, create hosted connect sessions, expose MCP servers, and read activity events.
+Org-wide API keys can provision the integration control plane for your own product: create workspaces, register end users, create hosted connect sessions, expose MCP servers, configure workspace integrations, and execute actions.
 
 ```python
-import os
+workspace = client.workspaces.create(name="Production", slug="production")["workspace"]
 
-client.oauth_apps.create(
-    integration_name="google-sheets",
-    display_name="Customer Google OAuth",
-    client_id=os.environ["GOOGLE_CLIENT_ID"],
-    client_secret=os.environ["GOOGLE_CLIENT_SECRET"],
-)
-
-client.webhook_secrets.set(
+client.workspaces.add_integration(
+    workspace["id"],
     integration_name="slack",
-    secret=os.environ["SLACK_SIGNING_SECRET"],
+    integration_alias="customer_slack",
+    connection_strategy="per_user",
 )
 ```
 

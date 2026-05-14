@@ -283,10 +283,6 @@ class ConnectResource(_BaseResource):
             body["errorRedirectUri"] = error_redirect_uri
         return self._post("/api/v1/connect/token", json=body)
 
-    def available_oauth_apps(self, integration_name: str) -> dict[str, Any]:
-        """List available OAuth apps for an integration (platform default + org custom)."""
-        return self._get(f"/api/v1/oauth-apps/available/{integration_name}")
-
     def get_session(self, session_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/connect/session/{session_id}")
 
@@ -626,87 +622,6 @@ class ApiKeysResource(_BaseResource):
         return self._delete(f"/api/v1/api-keys/{key_id}")
 
 
-class ActivityResource(_BaseResource):
-    def list(
-        self,
-        *,
-        workspace_id: str | None = None,
-        type: str | None = None,
-        integration_name: str | None = None,
-        since: str | None = None,
-        limit: int | None = None,
-        offset: int | None = None,
-    ) -> dict[str, Any]:
-        params: dict[str, Any] = {}
-        if workspace_id is not None:
-            params["workspaceId"] = workspace_id
-        if type is not None:
-            params["type"] = type
-        if integration_name is not None:
-            params["integrationName"] = integration_name
-        if since is not None:
-            params["since"] = since
-        if limit is not None:
-            params["limit"] = limit
-        if offset is not None:
-            params["offset"] = offset
-        return self._get("/api/v1/activity", params=params or None)
-
-
-class OAuthAppsResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/oauth-apps")
-
-    def create(
-        self,
-        *,
-        integration_name: str,
-        client_id: str,
-        client_secret: str,
-        display_name: str | None = None,
-        auth_url: str | None = None,
-        token_url: str | None = None,
-        scope: str | None = None,
-        extra_params: dict[str, str] | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {
-            "integrationName": integration_name,
-            "clientId": client_id,
-            "clientSecret": client_secret,
-        }
-        if display_name is not None:
-            body["displayName"] = display_name
-        if auth_url is not None:
-            body["authUrl"] = auth_url
-        if token_url is not None:
-            body["tokenUrl"] = token_url
-        if scope is not None:
-            body["scope"] = scope
-        if extra_params is not None:
-            body["extraParams"] = extra_params
-        return self._post("/api/v1/oauth-apps", json=body)
-
-    def delete(self, app_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/oauth-apps/{app_id}")
-
-
-class WebhookSecretsResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/webhook-secrets")
-
-    def set(self, *, integration_name: str, secret: str) -> dict[str, Any]:
-        return self._post(
-            "/api/v1/webhook-secrets",
-            json={"integrationName": integration_name, "secret": secret},
-        )
-
-    def delete(self, integration_name: str) -> dict[str, Any]:
-        return self._delete(
-            "/api/v1/webhook-secrets/by-integration",
-            params={"integrationName": integration_name},
-        )
-
-
 class IntegrationsResource(_BaseResource):
     def list(self, *, summary: bool | None = None) -> dict[str, Any]:
         params = {"summary": summary} if summary is not None else None
@@ -1017,9 +932,6 @@ class WeavzClient:
         self.triggers = TriggersResource(self)
         self.mcp_servers = McpServersResource(self)
         self.api_keys = ApiKeysResource(self)
-        self.activity = ActivityResource(self)
-        self.oauth_apps = OAuthAppsResource(self)
-        self.webhook_secrets = WebhookSecretsResource(self)
         self.integrations = IntegrationsResource(self)
         self.partials = PartialsResource(self)
         self.end_users = EndUsersResource(self)
