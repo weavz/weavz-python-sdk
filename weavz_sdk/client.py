@@ -10,6 +10,12 @@ from pydantic import BaseModel
 
 from weavz_sdk.errors import WeavzError
 
+class _UnsetType:
+    pass
+
+
+UNSET = _UnsetType()
+
 
 def _to_jsonable(value: Any) -> Any:
     if isinstance(value, BaseModel):
@@ -465,16 +471,16 @@ class McpServersResource(_BaseResource):
         server_id: str,
         *,
         name: str | None = None,
-        description: str | None = None,
+        description: str | None | _UnsetType = UNSET,
         mode: str | None = None,
         auth_mode: str | None = None,
         end_user_access: str | None = None,
-        end_user_id: str | None = None,
+        end_user_id: str | None | _UnsetType = UNSET,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if name is not None:
             body["name"] = name
-        if description is not None:
+        if description is not UNSET:
             body["description"] = description
         if mode is not None:
             body["mode"] = mode
@@ -482,7 +488,7 @@ class McpServersResource(_BaseResource):
             body["authMode"] = auth_mode
         if end_user_access is not None:
             body["endUserAccess"] = end_user_access
-        if end_user_id is not None:
+        if end_user_id is not UNSET:
             body["endUserId"] = end_user_id
         return self._patch(f"/api/v1/mcp/servers/{server_id}", json=body)
 
@@ -550,9 +556,9 @@ class McpServersResource(_BaseResource):
         tool_id: str,
         *,
         display_name: str | None = None,
-        description: str | None = None,
+        description: str | None | _UnsetType = UNSET,
         input_defaults: dict[str, Any] | None = None,
-        connection_id: str | None = None,
+        connection_id: str | None | _UnsetType = UNSET,
         sort_order: int | None = None,
         integration_alias: str | None = None,
         partial_ids: list[str] | None = None,
@@ -560,11 +566,11 @@ class McpServersResource(_BaseResource):
         body: dict[str, Any] = {}
         if display_name is not None:
             body["displayName"] = display_name
-        if description is not None:
+        if description is not UNSET:
             body["description"] = description
         if input_defaults is not None:
             body["inputDefaults"] = input_defaults
-        if connection_id is not None:
+        if connection_id is not UNSET:
             body["connectionId"] = connection_id
         if sort_order is not None:
             body["sortOrder"] = sort_order
