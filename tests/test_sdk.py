@@ -29,6 +29,8 @@ _connection_id: str = ""
 _mcp_server_id: str = ""
 _integration_instance_id: str = ""
 _openai_integration_instance_id: str = ""
+_bearer_workspace_id: str = ""
+_bearer_mcp_server_id: str = ""
 
 
 def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
@@ -107,8 +109,18 @@ def setup_client():
     except Exception:
         pass
     try:
+        if _bearer_mcp_server_id:
+            _client.mcp_servers.delete(_bearer_mcp_server_id)
+    except Exception:
+        pass
+    try:
         if _connection_id:
             _client.connections.delete(_connection_id)
+    except Exception:
+        pass
+    try:
+        if _bearer_workspace_id:
+            _client.workspaces.delete(_bearer_workspace_id)
     except Exception:
         pass
     try:
@@ -271,11 +283,10 @@ class TestMcpServers:
             description="Integration test server",
             workspace_id=_workspace_id,
             mode="TOOLS",
-            auth_mode="oauth_and_bearer",
         )
         assert "server" in result
-        assert "bearerToken" in result
-        assert result["bearerToken"].startswith("mcp_")
+        assert "bearerToken" not in result
+        assert result["server"]["authMode"] == "oauth"
         assert "mcpEndpoint" in result
         _mcp_server_id = result["server"]["id"]
 
@@ -312,8 +323,58 @@ class TestMcpServers:
         )
         assert result["server"]["name"] == "Python SDK Test Server (updated)"
 
-    def test_regenerate_token(self):
-        result = _client.mcp_servers.regenerate_token(_mcp_server_id)
+    def test_create_end_user_oauth_mcp_token(self):
+        import time
+        external_id = f"py-mcp-eu-{int(time.time() * 1000)}"
+        end_user = _client.end_users.create(
+            workspace_id=_workspace_id,
+            external_id=external_id,
+            display_name="Python MCP OAuth End User",
+            email="py-mcp-oauth@example.com",
+        )
+
+        try:
+            result = _client.mcp_servers.create_oauth_token(
+                _mcp_server_id,
+                end_user_id=external_id,
+                scopes=["mcp:tools"],
+                expires_in=3600,
+            )
+            assert "accessToken" in result
+            assert result["accessToken"].startswith("mcpo_")
+            assert "mcpEndpoint" in result
+            assert "mcp:tools" in result["token"]["scopes"]
+            assert result["token"]["endUserId"] == external_id
+        finally:
+            _client.end_users.delete(end_user["endUser"]["id"])
+
+    def test_reject_regenerate_token_when_bearer_disabled(self):
+        with pytest.raises(WeavzError) as exc_info:
+            _client.mcp_servers.regenerate_token(_mcp_server_id)
+        assert exc_info.value.status == 409
+
+    def test_bearer_auth_in_workspace_without_per_user_integrations(self):
+        global _bearer_workspace_id, _bearer_mcp_server_id
+        import time
+        workspace = _client.workspaces.create(
+            name="Python SDK Bearer Workspace",
+            slug=f"py-sdk-bearer-{int(time.time() * 1000)}",
+        )
+        _bearer_workspace_id = workspace["workspace"]["id"]
+
+        server = _client.mcp_servers.create(
+            name="Python SDK Bearer Server",
+            workspace_id=_bearer_workspace_id,
+            mode="TOOLS",
+            auth_mode="bearer",
+        )
+        _bearer_mcp_server_id = server["server"]["id"]
+
+        assert "bearerToken" in server
+        assert server["bearerToken"].startswith("mcp_")
+        assert server["server"]["authMode"] == "bearer"
+
+        result = _client.mcp_servers.regenerate_token(_bearer_mcp_server_id)
         assert "bearerToken" in result
         assert result["bearerToken"].startswith("mcp_")
 
