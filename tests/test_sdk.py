@@ -31,6 +31,8 @@ _integration_instance_id: str = ""
 _openai_integration_instance_id: str = ""
 _bearer_workspace_id: str = ""
 _bearer_mcp_server_id: str = ""
+_approval_workspace_id: str = ""
+_approval_policy_id: str = ""
 
 
 def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
@@ -119,6 +121,16 @@ def setup_client():
     except Exception:
         pass
     try:
+        if _approval_policy_id:
+            _client.approval_policies.delete(_approval_policy_id)
+    except Exception:
+        pass
+    try:
+        if _approval_workspace_id:
+            _client.workspaces.delete(_approval_workspace_id)
+    except Exception:
+        pass
+    try:
         if _bearer_workspace_id:
             _client.workspaces.delete(_bearer_workspace_id)
     except Exception:
@@ -172,6 +184,70 @@ class TestWorkspaces:
     def test_get_workspace(self):
         result = _client.workspaces.get(_workspace_id)
         assert result["workspace"]["id"] == _workspace_id
+
+
+# ── Human Gates / Approvals ─────────────────────────────────────────────────
+
+class TestApprovals:
+    def test_manage_approval_policies_and_list_requests(self):
+        global _approval_workspace_id, _approval_policy_id
+        import time
+
+        workspace = _client.workspaces.create(
+            name="Python Approval Workspace",
+            slug=f"py-approval-{int(time.time())}",
+        )
+        _approval_workspace_id = workspace["workspace"]["id"]
+
+        policy = {
+            "workspace_id": _approval_workspace_id,
+            "name": "Python approval policy",
+            "description": "Created by the Python SDK test suite",
+            "sources": ["sdk"],
+            "decision": "require_approval",
+            "risk_mode": "always",
+            "approvers": [{"type": "org_role", "roles": ["owner", "admin"]}],
+            "timeout_seconds": 3600,
+            "default_on_timeout": "reject",
+        }
+
+        created = _client.approval_policies.create(**policy)
+        _approval_policy_id = created["policy"]["id"]
+        assert created["policy"]["name"] == policy["name"]
+        assert created["policy"]["workspaceId"] == _approval_workspace_id
+
+        listed = _client.approval_policies.list(workspace_id=_approval_workspace_id)
+        assert any(item["id"] == _approval_policy_id for item in listed["policies"])
+
+        fetched = _client.approval_policies.get(_approval_policy_id)
+        assert fetched["policy"]["id"] == _approval_policy_id
+
+        tested = _client.approval_policies.test(
+            policy=policy,
+            context={
+                "workspace_id": _approval_workspace_id,
+                "source": "sdk",
+                "integration_name": "openai",
+                "action_name": "chat_completion",
+                "input": {"prompt": "hello"},
+            },
+        )
+        assert tested["matched"] is True
+        assert tested["decision"] == "require_approval"
+
+        updated = _client.approval_policies.update(_approval_policy_id, enabled=False)
+        assert updated["policy"]["enabled"] is False
+
+        approvals = _client.approvals.list(
+            workspace_id=_approval_workspace_id,
+            status="pending",
+            limit=5,
+        )
+        assert isinstance(approvals["approvals"], list)
+
+        deleted = _client.approval_policies.delete(_approval_policy_id)
+        assert deleted["deleted"] is True
+        _approval_policy_id = ""
 
 
 # ── Integrations ─────────────────────────────────────────────────────────────

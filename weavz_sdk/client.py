@@ -22,6 +22,52 @@ def _to_jsonable(value: Any) -> Any:
         return value.model_dump(by_alias=True, exclude_none=True)
     return value
 
+_APPROVAL_CAMEL_KEYS = {
+    "workspace_id": "workspaceId",
+    "mcp_server_ids": "mcpServerIds",
+    "workspace_integration_ids": "workspaceIntegrationIds",
+    "integration_aliases": "integrationAliases",
+    "integration_names": "integrationNames",
+    "action_names": "actionNames",
+    "connection_strategies": "connectionStrategies",
+    "end_user_mode": "endUserMode",
+    "risk_mode": "riskMode",
+    "timeout_seconds": "timeoutSeconds",
+    "default_on_timeout": "defaultOnTimeout",
+    "reuse_window_seconds": "reuseWindowSeconds",
+    "action_categories": "actionCategories",
+    "amount_thresholds": "amountThresholds",
+    "recipient_allowlist": "recipientAllowlist",
+    "recipient_denylist": "recipientDenylist",
+    "domain_allowlist": "domainAllowlist",
+    "domain_denylist": "domainDenylist",
+    "storage_path_prefixes": "storagePathPrefixes",
+    "end_user_id": "endUserId",
+    "mcp_server_id": "mcpServerId",
+    "workspace_integration_id": "workspaceIntegrationId",
+    "integration_name": "integrationName",
+    "integration_alias": "integrationAlias",
+    "action_name": "actionName",
+    "connection_strategy": "connectionStrategy",
+    "connection_scope_summary": "connectionScopeSummary",
+    "partial_ids": "partialIds",
+    "enforced_keys": "enforcedKeys",
+    "idempotency_key": "idempotencyKey",
+}
+
+
+def _approval_json(value: Any) -> Any:
+    if isinstance(value, BaseModel):
+        return value.model_dump(by_alias=True, exclude_none=True)
+    if isinstance(value, list):
+        return [_approval_json(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            _APPROVAL_CAMEL_KEYS.get(str(key), key): _approval_json(item)
+            for key, item in value.items()
+        }
+    return value
+
 
 class _BaseResource:
     """Base class for API resources."""
@@ -356,13 +402,13 @@ class ApprovalPoliciesResource(_BaseResource):
         return self._get("/api/v1/approval-policies", params=params or None)
 
     def create(self, **policy: Any) -> dict[str, Any]:
-        return self._post("/api/v1/approval-policies", json=policy)
+        return self._post("/api/v1/approval-policies", json=_approval_json(policy))
 
     def get(self, policy_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/approval-policies/{policy_id}")
 
     def update(self, policy_id: str, **updates: Any) -> dict[str, Any]:
-        return self._patch(f"/api/v1/approval-policies/{policy_id}", json=updates)
+        return self._patch(f"/api/v1/approval-policies/{policy_id}", json=_approval_json(updates))
 
     def delete(self, policy_id: str) -> dict[str, Any]:
         return self._delete(f"/api/v1/approval-policies/{policy_id}")
@@ -370,7 +416,7 @@ class ApprovalPoliciesResource(_BaseResource):
     def test(self, *, policy: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
         return self._post(
             "/api/v1/approval-policies/test",
-            json={"policy": policy, "context": context},
+            json={"policy": _approval_json(policy), "context": _approval_json(context)},
         )
 
 
