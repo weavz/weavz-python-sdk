@@ -10010,8 +10010,7 @@ class GmailListMessagesInput(BaseModel):
     query: Optional[str] = Field(None, description="Gmail search query (e.g., is:unread, from:user@example.com)")
     maxResults: Optional[float] = Field(None, description="Max Results")
     pageToken: Optional[str] = Field(None, description="Page Token")
-    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to filter by (e.g., \"INBOX,UNREAD\")")
-    label: Optional[str] = Field(None, description="Select a label to filter by. Alternative to Label IDs.")
+    labelIds: Optional[list[str]] = Field(None, description="Filter by one or more labels.")
 
     model_config = {"populate_by_name": True}
 
@@ -10060,8 +10059,7 @@ class GmailForwardEmailInput(BaseModel):
 class GmailAddLabelInput(BaseModel):
     """Gmail — Add Label"""
     messageId: str = Field(..., description="Message ID")
-    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to add (e.g., \"Label_1,Label_2\"). Use the list_labels action to find label IDs.")
-    label: Optional[str] = Field(None, description="Select a label to add. Alternative to Label IDs — use one or the other.")
+    labelIds: list[str] = Field(..., description="Labels to Add")
 
     model_config = {"populate_by_name": True}
 
@@ -10069,8 +10067,7 @@ class GmailAddLabelInput(BaseModel):
 class GmailRemoveLabelInput(BaseModel):
     """Gmail — Remove Label"""
     messageId: str = Field(..., description="Message ID")
-    labelIds: Optional[str] = Field(None, description="Comma-separated label IDs to remove. Use the list_labels action to find label IDs.")
-    label: Optional[str] = Field(None, description="Select a label to remove. Alternative to Label IDs — use one or the other.")
+    labelIds: list[str] = Field(..., description="Labels to Remove")
 
     model_config = {"populate_by_name": True}
 
