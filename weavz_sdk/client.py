@@ -78,8 +78,13 @@ class _BaseResource:
     def _get(self, path: str, params: dict[str, Any] | None = None) -> Any:
         return self._client.request("GET", path, params=params)
 
-    def _post(self, path: str, json: Any = None) -> Any:
-        return self._client.request("POST", path, json=json)
+    def _post(
+        self,
+        path: str,
+        json: Any = None,
+        headers: dict[str, str] | None = None,
+    ) -> Any:
+        return self._client.request("POST", path, json=json, headers=headers)
 
     def _patch(self, path: str, json: Any = None) -> Any:
         return self._client.request("PATCH", path, json=json)
@@ -389,7 +394,11 @@ class ActionsResource(_BaseResource):
             body["partialIds"] = partial_ids
         if idempotency_key is not None:
             body["idempotencyKey"] = idempotency_key
-        return self._post("/api/v1/actions/execute", json=body)
+        return self._post(
+            "/api/v1/actions/execute",
+            json=body,
+            headers={"X-Weavz-Source": "sdk"},
+        )
 
 
 class ApprovalPoliciesResource(_BaseResource):
@@ -1111,6 +1120,7 @@ class WeavzClient:
         *,
         params: dict[str, Any] | None = None,
         json: Any = None,
+        headers: dict[str, str] | None = None,
     ) -> Any:
         """Make an authenticated request to the Weavz API."""
         is_idempotent = method.upper() in ("GET", "PUT", "DELETE", "PATCH")
@@ -1118,7 +1128,7 @@ class WeavzClient:
 
         for attempt in range(self._max_retries + 1):
             try:
-                response = self._http.request(method, path, params=params, json=json)
+                response = self._http.request(method, path, params=params, json=json, headers=headers)
             except httpx.RequestError as exc:
                 last_error = WeavzError(
                     str(exc),
