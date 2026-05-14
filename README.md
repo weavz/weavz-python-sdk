@@ -1,6 +1,6 @@
 # weavz-sdk
 
-Python SDK for the [Weavz](https://weavz.io) API — an embedded iPaaS for connection management, MCP servers, triggers, and action execution.
+Python SDK for the [Weavz](https://weavz.io) API — integration and MCP infrastructure for connection management, MCP servers, triggers, and action execution.
 
 ## Installation
 
@@ -25,16 +25,17 @@ result = client.actions.execute(
     "send_channel_message",
     input={"channel": "#general", "text": "Hello from Weavz!"},
     connection_external_id="my-slack",
-    workspace_id="your-workspace-id",
+    workspace_id="550e8400-e29b-41d4-a716-446655440000",
 )
 
-# Create an MCP server
+# Create an OAuth-enabled MCP server
 result = client.mcp_servers.create(
     name="My MCP Server",
-    mode="TOOLS",
-    workspace_id="your-workspace-id",
+    mode="CODE",
+    workspace_id="550e8400-e29b-41d4-a716-446655440000",
+    auth_mode="oauth",
 )
-print(result["bearerToken"])
+print(result["mcpEndpoint"])
 ```
 
 ## Resources
@@ -43,17 +44,52 @@ The client provides namespaced access to all API resources:
 
 | Resource | Methods |
 |----------|---------|
-| `client.workspaces` | `list()`, `create()`, `get()`, `delete()`, `list_integrations()`, `add_integration()`, `update_integration()`, `remove_integration()` |
-| `client.connections` | `list()`, `create()`, `delete()`, `resolve()` |
+| `client.workspaces` | `list()`, `create()`, `get()`, `update()`, `delete()`, `list_integrations()`, `add_integration()`, `update_integration()`, `remove_integration()` |
+| `client.connections` | `list()`, `get()`, `create()`, `delete()`, `resolve()` |
 | `client.actions` | `execute()` |
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
-| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()` |
+| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `create_oauth_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `get_declarations()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
-| `client.members` | `list()`, `create()`, `update()`, `delete()` |
-| `client.integrations` | `list()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
+| `client.activity` | `list()` |
+| `client.oauth_apps` | `list()`, `create()`, `delete()` |
+| `client.webhook_secrets` | `list()`, `set()`, `delete()` |
+| `client.integrations` | `list()`, `list_summary()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
+| `client.connect` | `create_token()`, `poll()`, `wait()`, `get_session()`, `available_oauth_apps()` |
 | `client.end_users` | `create()`, `list()`, `get()`, `update()`, `delete()`, `create_connect_token()`, `invite()` |
 | `client.partials` | `list()`, `get()`, `create()`, `update()`, `delete()` |
-| `client.invitations` | `send()`, `list()`, `revoke()`, `accept()` |
+
+## Building SaaS on Weavz
+
+Org-wide API keys can provision the integration control plane for your own product: create workspaces, register end users, configure tenant-owned OAuth apps, set webhook secrets, create hosted connect sessions, expose MCP servers, and read activity events.
+
+```python
+import os
+
+client.oauth_apps.create(
+    integration_name="google-sheets",
+    display_name="Customer Google OAuth",
+    client_id=os.environ["GOOGLE_CLIENT_ID"],
+    client_secret=os.environ["GOOGLE_CLIENT_SECRET"],
+)
+
+client.webhook_secrets.set(
+    integration_name="slack",
+    secret=os.environ["SLACK_SIGNING_SECRET"],
+)
+```
+
+## AI Framework Adapters
+
+MCP is the primary hosted agent surface. These adapters are a local compatibility layer for SaaS builders who need configured workspace actions as framework-native tools while keeping framework packages optional.
+
+```python
+from weavz_sdk import create_mcp_server_action_tools, to_openai_responses_tool, to_anthropic_tool, to_google_adk_tool
+
+tools = create_mcp_server_action_tools(client, "660e8400-e29b-41d4-a716-446655440000")
+openai_tools = [to_openai_responses_tool(tool) for tool in tools]
+anthropic_tools = [to_anthropic_tool(tool) for tool in tools]
+google_adk_tools = [to_google_adk_tool(tool) for tool in tools]  # Requires google-adk
+```
 
 ## Error Handling
 
@@ -63,7 +99,12 @@ from weavz_sdk import WeavzClient, WeavzError
 client = WeavzClient(api_key="wvz_...")
 
 try:
-    client.actions.execute("slack", "send_channel_message", input={})
+    client.actions.execute(
+        "slack",
+        "send_channel_message",
+        workspace_id="550e8400-e29b-41d4-a716-446655440000",
+        input={},
+    )
 except WeavzError as e:
     print(e.code)    # 'ACTION_FAILED'
     print(e.status)  # 400

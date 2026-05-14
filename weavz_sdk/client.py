@@ -6,8 +6,15 @@ import time
 from typing import Any
 
 import httpx
+from pydantic import BaseModel
 
 from weavz_sdk.errors import WeavzError
+
+
+def _to_jsonable(value: Any) -> Any:
+    if isinstance(value, BaseModel):
+        return value.model_dump(by_alias=True, exclude_none=True)
+    return value
 
 
 class _BaseResource:
@@ -30,14 +37,41 @@ class _BaseResource:
 
 
 class WorkspacesResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/workspaces")
+    def list(
+        self,
+        *,
+        limit: int | None = None,
+        offset: int | None = None,
+        include_suspended: bool | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        if include_suspended is not None:
+            params["includeSuspended"] = include_suspended
+        return self._get("/api/v1/workspaces", params=params or None)
 
     def create(self, *, name: str, slug: str) -> dict[str, Any]:
         return self._post("/api/v1/workspaces", json={"name": name, "slug": slug})
 
     def get(self, workspace_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/workspaces/{workspace_id}")
+
+    def update(
+        self,
+        workspace_id: str,
+        *,
+        name: str | None = None,
+        slug: str | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {}
+        if name is not None:
+            body["name"] = name
+        if slug is not None:
+            body["slug"] = slug
+        return self._patch(f"/api/v1/workspaces/{workspace_id}", json=body)
 
     def delete(self, workspace_id: str) -> dict[str, Any]:
         return self._delete(f"/api/v1/workspaces/{workspace_id}")
@@ -113,10 +147,27 @@ class WorkspacesResource(_BaseResource):
 
 
 class ConnectionsResource(_BaseResource):
-    def list(self, *, id: str | None = None) -> dict[str, Any]:
+    def list(
+        self,
+        *,
+        id: str | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
+        include_suspended: bool | None = None,
+    ) -> dict[str, Any]:
         if id is not None:
             return self._get("/api/v1/connections", params={"id": id})
-        return self._get("/api/v1/connections")
+        params: dict[str, Any] = {}
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        if include_suspended is not None:
+            params["includeSuspended"] = include_suspended
+        return self._get("/api/v1/connections", params=params or None)
+
+    def get(self, connection_id: str) -> dict[str, Any]:
+        return self._get("/api/v1/connections", params={"id": connection_id})
 
     def create(
         self,
@@ -128,6 +179,7 @@ class ConnectionsResource(_BaseResource):
         workspace_id: str | None = None,
         end_user_id: str | None = None,
         scope: str | None = None,
+        oauth_app_id: str | None = None,
         secret_text: str | None = None,
         username: str | None = None,
         password: str | None = None,
@@ -151,6 +203,8 @@ class ConnectionsResource(_BaseResource):
             body["endUserId"] = end_user_id
         if scope is not None:
             body["scope"] = scope
+        if oauth_app_id is not None:
+            body["oauthAppId"] = oauth_app_id
         if secret_text is not None:
             body["secretText"] = secret_text
         if username is not None:
@@ -236,6 +290,26 @@ class ConnectResource(_BaseResource):
     def get_session(self, session_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/connect/session/{session_id}")
 
+    def poll(self, token: str) -> dict[str, Any]:
+        """Poll connect status using the cst_ token returned by create_token."""
+        return self._post("/api/v1/connect/session/poll", json={"token": token})
+
+    def wait(
+        self,
+        token: str,
+        *,
+        timeout: float = 120.0,
+        interval: float = 1.0,
+    ) -> dict[str, Any]:
+        """Wait until a connect session completes or fails."""
+        deadline = time.monotonic() + timeout
+        while time.monotonic() <= deadline:
+            result = self.poll(token)
+            if result.get("status") in ("COMPLETED", "FAILED"):
+                return result
+            time.sleep(interval)
+        raise WeavzError("Connect session timed out", code="CONNECT_TIMEOUT", status=408)
+
 
 class ActionsResource(_BaseResource):
     def execute(
@@ -244,7 +318,7 @@ class ActionsResource(_BaseResource):
         action_name: str,
         *,
         workspace_id: str,
-        input: dict[str, Any] | None = None,
+        input: dict[str, Any] | BaseModel | None = None,
         connection_external_id: str | None = None,
         end_user_id: str | None = None,
         integration_alias: str | None = None,
@@ -253,7 +327,7 @@ class ActionsResource(_BaseResource):
         body: dict[str, Any] = {
             "integrationName": integration_name,
             "actionName": action_name,
-            "input": input or {},
+            "input": _to_jsonable(input) if input is not None else {},
             "workspaceId": workspace_id,
         }
         if connection_external_id is not None:
@@ -268,8 +342,21 @@ class ActionsResource(_BaseResource):
 
 
 class TriggersResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/triggers")
+    def list(
+        self,
+        *,
+        workspace_id: str | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if workspace_id is not None:
+            params["workspaceId"] = workspace_id
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        return self._get("/api/v1/triggers", params=params or None)
 
     def enable(
         self,
@@ -286,6 +373,7 @@ class TriggersResource(_BaseResource):
         input: dict[str, Any] | None = None,
         partial_ids: list[str] | None = None,
         simulate: bool | None = None,
+        polling_interval_minutes: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
             "integrationName": integration_name,
@@ -309,6 +397,8 @@ class TriggersResource(_BaseResource):
             body["partialIds"] = partial_ids
         if simulate is not None:
             body["simulate"] = simulate
+        if polling_interval_minutes is not None:
+            body["pollingIntervalMinutes"] = polling_interval_minutes
         return self._post("/api/v1/triggers/enable", json=body)
 
     def disable(self, trigger_source_id: str) -> dict[str, Any]:
@@ -325,8 +415,24 @@ class TriggersResource(_BaseResource):
 
 
 class McpServersResource(_BaseResource):
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/mcp/servers")
+    def list(
+        self,
+        *,
+        workspace_id: str | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
+        include_suspended: bool | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if workspace_id is not None:
+            params["workspaceId"] = workspace_id
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        if include_suspended is not None:
+            params["includeSuspended"] = include_suspended
+        return self._get("/api/v1/mcp/servers", params=params or None)
 
     def create(
         self,
@@ -336,6 +442,8 @@ class McpServersResource(_BaseResource):
         description: str | None = None,
         created_by: str | None = None,
         mode: str | None = None,
+        auth_mode: str | None = None,
+        end_user_access: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"name": name, "workspaceId": workspace_id}
@@ -345,6 +453,10 @@ class McpServersResource(_BaseResource):
             body["createdBy"] = created_by
         if mode is not None:
             body["mode"] = mode
+        if auth_mode is not None:
+            body["authMode"] = auth_mode
+        if end_user_access is not None:
+            body["endUserAccess"] = end_user_access
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         return self._post("/api/v1/mcp/servers", json=body)
@@ -359,6 +471,8 @@ class McpServersResource(_BaseResource):
         name: str | None = None,
         description: str | None = None,
         mode: str | None = None,
+        auth_mode: str | None = None,
+        end_user_access: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
@@ -368,6 +482,10 @@ class McpServersResource(_BaseResource):
             body["description"] = description
         if mode is not None:
             body["mode"] = mode
+        if auth_mode is not None:
+            body["authMode"] = auth_mode
+        if end_user_access is not None:
+            body["endUserAccess"] = end_user_access
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         return self._patch(f"/api/v1/mcp/servers/{server_id}", json=body)
@@ -377,6 +495,21 @@ class McpServersResource(_BaseResource):
 
     def regenerate_token(self, server_id: str) -> dict[str, Any]:
         return self._post(f"/api/v1/mcp/servers/{server_id}/regenerate-token")
+
+    def create_oauth_token(
+        self,
+        server_id: str,
+        *,
+        end_user_id: str,
+        scopes: list[str] | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {"endUserId": end_user_id}
+        if scopes is not None:
+            body["scopes"] = scopes
+        if expires_in is not None:
+            body["expiresIn"] = expires_in
+        return self._post(f"/api/v1/mcp/servers/{server_id}/oauth-tokens", json=body)
 
     def add_tool(
         self,
@@ -493,9 +626,94 @@ class ApiKeysResource(_BaseResource):
         return self._delete(f"/api/v1/api-keys/{key_id}")
 
 
-class IntegrationsResource(_BaseResource):
+class ActivityResource(_BaseResource):
+    def list(
+        self,
+        *,
+        workspace_id: str | None = None,
+        type: str | None = None,
+        integration_name: str | None = None,
+        since: str | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {}
+        if workspace_id is not None:
+            params["workspaceId"] = workspace_id
+        if type is not None:
+            params["type"] = type
+        if integration_name is not None:
+            params["integrationName"] = integration_name
+        if since is not None:
+            params["since"] = since
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        return self._get("/api/v1/activity", params=params or None)
+
+
+class OAuthAppsResource(_BaseResource):
     def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/integrations")
+        return self._get("/api/v1/oauth-apps")
+
+    def create(
+        self,
+        *,
+        integration_name: str,
+        client_id: str,
+        client_secret: str,
+        display_name: str | None = None,
+        auth_url: str | None = None,
+        token_url: str | None = None,
+        scope: str | None = None,
+        extra_params: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {
+            "integrationName": integration_name,
+            "clientId": client_id,
+            "clientSecret": client_secret,
+        }
+        if display_name is not None:
+            body["displayName"] = display_name
+        if auth_url is not None:
+            body["authUrl"] = auth_url
+        if token_url is not None:
+            body["tokenUrl"] = token_url
+        if scope is not None:
+            body["scope"] = scope
+        if extra_params is not None:
+            body["extraParams"] = extra_params
+        return self._post("/api/v1/oauth-apps", json=body)
+
+    def delete(self, app_id: str) -> dict[str, Any]:
+        return self._delete(f"/api/v1/oauth-apps/{app_id}")
+
+
+class WebhookSecretsResource(_BaseResource):
+    def list(self) -> dict[str, Any]:
+        return self._get("/api/v1/webhook-secrets")
+
+    def set(self, *, integration_name: str, secret: str) -> dict[str, Any]:
+        return self._post(
+            "/api/v1/webhook-secrets",
+            json={"integrationName": integration_name, "secret": secret},
+        )
+
+    def delete(self, integration_name: str) -> dict[str, Any]:
+        return self._delete(
+            "/api/v1/webhook-secrets/by-integration",
+            params={"integrationName": integration_name},
+        )
+
+
+class IntegrationsResource(_BaseResource):
+    def list(self, *, summary: bool | None = None) -> dict[str, Any]:
+        params = {"summary": summary} if summary is not None else None
+        return self._get("/api/v1/integrations", params=params)
+
+    def list_summary(self) -> dict[str, Any]:
+        return self._get("/api/v1/integrations", params={"summary": True})
 
     def get(self, name: str) -> dict[str, Any]:
         return self._get("/api/v1/integrations", params={"name": name})
@@ -512,6 +730,7 @@ class IntegrationsResource(_BaseResource):
         workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
+        partial_ids: list[str] | None = None,
         search_value: str | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"propertyName": property_name}
@@ -529,6 +748,8 @@ class IntegrationsResource(_BaseResource):
             body["endUserId"] = end_user_id
         if input is not None:
             body["input"] = input
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         if search_value is not None:
             body["searchValue"] = search_value
         return self._post(
@@ -547,6 +768,7 @@ class IntegrationsResource(_BaseResource):
         workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
+        partial_ids: list[str] | None = None,
     ) -> Any:
         body: dict[str, Any] = {"propertyName": property_name}
         if action_name is not None:
@@ -563,6 +785,8 @@ class IntegrationsResource(_BaseResource):
             body["endUserId"] = end_user_id
         if input is not None:
             body["input"] = input
+        if partial_ids is not None:
+            body["partialIds"] = partial_ids
         return self._post(
             f"/api/v1/integrations/{integration_name}/properties/resolve", json=body
         )
@@ -681,8 +905,19 @@ class EndUsersResource(_BaseResource):
             body["metadata"] = metadata
         return self._post("/api/v1/end-users", json=body)
 
-    def list(self, workspace_id: str) -> dict[str, Any]:
-        return self._get("/api/v1/end-users", params={"workspaceId": workspace_id})
+    def list(
+        self,
+        workspace_id: str,
+        *,
+        limit: int | None = None,
+        offset: int | None = None,
+    ) -> dict[str, Any]:
+        params: dict[str, Any] = {"workspaceId": workspace_id}
+        if limit is not None:
+            params["limit"] = limit
+        if offset is not None:
+            params["offset"] = offset
+        return self._get("/api/v1/end-users", params=params)
 
     def get(self, end_user_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/end-users/{end_user_id}")
@@ -782,6 +1017,9 @@ class WeavzClient:
         self.triggers = TriggersResource(self)
         self.mcp_servers = McpServersResource(self)
         self.api_keys = ApiKeysResource(self)
+        self.activity = ActivityResource(self)
+        self.oauth_apps = OAuthAppsResource(self)
+        self.webhook_secrets = WebhookSecretsResource(self)
         self.integrations = IntegrationsResource(self)
         self.partials = PartialsResource(self)
         self.end_users = EndUsersResource(self)
@@ -799,9 +1037,23 @@ class WeavzClient:
         last_error: WeavzError | None = None
 
         for attempt in range(self._max_retries + 1):
-            response = self._http.request(method, path, params=params, json=json)
+            try:
+                response = self._http.request(method, path, params=params, json=json)
+            except httpx.RequestError as exc:
+                last_error = WeavzError(
+                    str(exc),
+                    code="NETWORK_ERROR",
+                    status=0,
+                    details={"request": str(exc.request.url) if exc.request else None},
+                )
+                if not is_idempotent or attempt >= self._max_retries:
+                    raise last_error from exc
+                time.sleep(0.5 * (2 ** attempt))
+                continue
 
             if response.is_success:
+                if response.status_code == 204 or not response.content:
+                    return None
                 return response.json()
 
             body: dict[str, Any] = {}

@@ -269,6 +269,7 @@ class TestMcpServerEdgeCases:
             description="Testing tools mode",
             workspace_id=self._workspace_id,
             mode="TOOLS",
+            auth_mode="oauth_and_bearer",
         )
         assert "server" in result
         assert "bearerToken" in result
