@@ -36,6 +36,17 @@ result = client.mcp_servers.create(
     auth_mode="oauth",
 )
 print(result["mcpEndpoint"])
+
+run = client.mcp_servers.execute_code(
+    result["server"]["id"],
+    'return await weavz.slack.send_channel_message({ channel: "C123", text: "Hello" })',
+)
+
+# If Human Gates returns approval_required, approve it and fetch the stored run:
+approved = client.mcp_servers.execute_code(
+    result["server"]["id"],
+    approval_id="apr_9b36d3f761d84bb2b6f9a0c4b9d1f7e0",
+)
 ```
 
 ## Resources

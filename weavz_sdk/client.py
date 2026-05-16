@@ -754,9 +754,17 @@ class McpServersResource(_BaseResource):
     def delete_tool(self, server_id: str, tool_id: str) -> dict[str, Any]:
         return self._delete(f"/api/v1/mcp/servers/{server_id}/tools/{tool_id}")
 
-    def execute_code(self, server_id: str, code: str) -> dict[str, Any]:
+    def execute_code(
+        self,
+        server_id: str,
+        code: str | None = None,
+        approval_id: str | None = None,
+    ) -> dict[str, Any]:
+        if bool(code) == bool(approval_id):
+            raise ValueError("Pass exactly one of code or approval_id")
+        body = {"approvalId": approval_id} if approval_id else {"code": code}
         return self._post(
-            f"/api/v1/mcp/servers/{server_id}/execute-code", json={"code": code}
+            f"/api/v1/mcp/servers/{server_id}/execute-code", json=body
         )
 
     def get_declarations(
