@@ -2,7 +2,15 @@
 
 from weavz_sdk.client import WeavzClient
 from weavz_sdk.errors import WeavzError
-from weavz_sdk.models import InputPartial, WorkspaceIntegration
+from weavz_sdk.models import (
+    ApprovalCodeRunGroup,
+    ApprovalCodeRunPreview,
+    ApprovalCodeRunToolPlanItem,
+    ApprovalWebhookApiUrls,
+    ApprovalWebhookPayload,
+    InputPartial,
+    WorkspaceIntegration,
+)
 from weavz_sdk.adapters import (
     WeavzActionTool,
     create_action_tool,
@@ -23,6 +31,11 @@ __all__ = [
     "WeavzError",
     "InputPartial",
     "WorkspaceIntegration",
+    "ApprovalCodeRunToolPlanItem",
+    "ApprovalCodeRunGroup",
+    "ApprovalCodeRunPreview",
+    "ApprovalWebhookApiUrls",
+    "ApprovalWebhookPayload",
     "WeavzActionTool",
     "create_action_tool",
     "create_mcp_server_action_tools",

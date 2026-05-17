@@ -36,6 +36,8 @@ class InputPartial(BaseModel):
     org_id: str = Field(alias="orgId")
     workspace_id: str = Field(alias="workspaceId")
     integration_name: str = Field(alias="integrationName")
+    workspace_integration_id: Optional[str] = Field(default=None, alias="workspaceIntegrationId")
+    integration_alias: Optional[str] = Field(default=None, alias="integrationAlias")
     action_name: Optional[str] = Field(default=None, alias="actionName")
     trigger_name: Optional[str] = Field(default=None, alias="triggerName")
     name: str
@@ -45,5 +47,81 @@ class InputPartial(BaseModel):
     is_default: bool = Field(default=False, alias="isDefault")
     created_at: str = Field(alias="createdAt")
     updated_at: str = Field(alias="updatedAt")
+
+    model_config = {"populate_by_name": True}
+
+
+class ApprovalCodeRunToolPlanItem(BaseModel):
+    """A predicted or policy-gated Code Mode tool call."""
+
+    integration_name: str = Field(alias="integrationName")
+    integration_alias: str = Field(alias="integrationAlias")
+    action_name: str = Field(alias="actionName")
+    namespace: str
+    matched: bool
+    approval_policy_id: Optional[str] = Field(default=None, alias="approvalPolicyId")
+    approval_policy_name: Optional[str] = Field(default=None, alias="approvalPolicyName")
+    approval_access_mode: Optional[str] = Field(default=None, alias="approvalAccessMode")
+
+    model_config = {"populate_by_name": True}
+
+
+class ApprovalCodeRunGroup(BaseModel):
+    """A Code Mode approval decision group keyed by policy."""
+
+    approval_policy_id: str = Field(alias="approvalPolicyId")
+    approval_policy_name: str = Field(alias="approvalPolicyName")
+    approval_access_mode: str = Field(alias="approvalAccessMode")
+    tools: list[ApprovalCodeRunToolPlanItem] = Field(default_factory=list)
+
+    model_config = {"populate_by_name": True}
+
+
+class ApprovalCodeRunPreview(BaseModel):
+    """Structured redacted reviewer context for MCP Code Mode approvals."""
+
+    type: str
+    server_id: Optional[str] = Field(default=None, alias="serverId")
+    server_name: Optional[str] = Field(default=None, alias="serverName")
+    workspace_id: Optional[str] = Field(default=None, alias="workspaceId")
+    code: Optional[str] = None
+    code_hash: Optional[str] = Field(default=None, alias="codeHash")
+    tool_surface_hash: Optional[str] = Field(default=None, alias="toolSurfaceHash")
+    intent_summary: Optional[str] = Field(default=None, alias="intentSummary")
+    impact_summary: list[str] = Field(default_factory=list, alias="impactSummary")
+    predicted_tools: list[ApprovalCodeRunToolPlanItem] = Field(default_factory=list, alias="predictedTools")
+    approval_required_tools: list[ApprovalCodeRunToolPlanItem] = Field(default_factory=list, alias="approvalRequiredTools")
+    approval_groups: list[ApprovalCodeRunGroup] = Field(default_factory=list, alias="approvalGroups")
+    available_apps: list[dict[str, Any]] = Field(default_factory=list, alias="availableApps")
+    external_domains: list[str] = Field(default_factory=list, alias="externalDomains")
+    storage_indicators: list[str] = Field(default_factory=list, alias="storageIndicators")
+    analysis_confidence: Optional[str] = Field(default=None, alias="analysisConfidence")
+    dynamic_signals: list[str] = Field(default_factory=list, alias="dynamicSignals")
+    limitations: list[str] = Field(default_factory=list)
+    triggered_action: Optional[dict[str, Any]] = Field(default=None, alias="triggeredAction")
+
+    model_config = {"populate_by_name": True}
+
+
+class ApprovalWebhookApiUrls(BaseModel):
+    """Authenticated API endpoints included in approval webhook payloads."""
+
+    detail_url: str = Field(alias="detailUrl")
+    approve_url: str = Field(alias="approveUrl")
+    reject_url: str = Field(alias="rejectUrl")
+    cancel_url: str = Field(alias="cancelUrl")
+
+    model_config = {"populate_by_name": True}
+
+
+class ApprovalWebhookPayload(BaseModel):
+    """Payload sent to webhook approvers for approval lifecycle events."""
+
+    event: str
+    created_at: str = Field(alias="createdAt")
+    approval: dict[str, Any]
+    context: dict[str, Any] = Field(default_factory=dict)
+    receipt: Optional[dict[str, Any]] = None
+    decision: Optional[dict[str, Any]] = None
 
     model_config = {"populate_by_name": True}

@@ -373,6 +373,7 @@ class ActionsResource(_BaseResource):
         workspace_id: str,
         input: dict[str, Any] | BaseModel | None = None,
         connection_external_id: str | None = None,
+        workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         integration_alias: str | None = None,
         partial_ids: list[str] | None = None,
@@ -386,6 +387,8 @@ class ActionsResource(_BaseResource):
         }
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if integration_alias is not None:
@@ -540,6 +543,7 @@ class TriggersResource(_BaseResource):
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
         workspace_integration_id: str | None = None,
+        integration_alias: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         partial_ids: list[str] | None = None,
@@ -560,6 +564,8 @@ class TriggersResource(_BaseResource):
             body["connectionExternalId"] = connection_external_id
         if workspace_integration_id is not None:
             body["workspaceIntegrationId"] = workspace_integration_id
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -826,6 +832,7 @@ class IntegrationsResource(_BaseResource):
         connection_external_id: str | None = None,
         workspace_id: str | None = None,
         workspace_integration_id: str | None = None,
+        integration_alias: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         partial_ids: list[str] | None = None,
@@ -842,6 +849,8 @@ class IntegrationsResource(_BaseResource):
             body["workspaceId"] = workspace_id
         if workspace_integration_id is not None:
             body["workspaceIntegrationId"] = workspace_integration_id
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -864,6 +873,7 @@ class IntegrationsResource(_BaseResource):
         connection_external_id: str | None = None,
         workspace_id: str | None = None,
         workspace_integration_id: str | None = None,
+        integration_alias: str | None = None,
         end_user_id: str | None = None,
         input: dict[str, Any] | None = None,
         partial_ids: list[str] | None = None,
@@ -879,6 +889,8 @@ class IntegrationsResource(_BaseResource):
             body["workspaceId"] = workspace_id
         if workspace_integration_id is not None:
             body["workspaceIntegrationId"] = workspace_integration_id
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if input is not None:
@@ -901,12 +913,18 @@ class PartialsResource(_BaseResource):
         workspace_id: str,
         *,
         integration_name: str | None = None,
+        workspace_integration_id: str | None = None,
+        integration_alias: str | None = None,
         action_name: str | None = None,
         trigger_name: str | None = None,
     ) -> dict[str, Any]:
         params: dict[str, Any] = {"workspaceId": workspace_id}
         if integration_name is not None:
             params["integrationName"] = integration_name
+        if workspace_integration_id is not None:
+            params["workspaceIntegrationId"] = workspace_integration_id
+        if integration_alias is not None:
+            params["integrationAlias"] = integration_alias
         if action_name is not None:
             params["actionName"] = action_name
         if trigger_name is not None:
@@ -922,6 +940,8 @@ class PartialsResource(_BaseResource):
         integration_name: str,
         name: str,
         *,
+        workspace_integration_id: str | None = None,
+        integration_alias: str | None = None,
         action_name: str | None = None,
         trigger_name: str | None = None,
         description: str | None = None,
@@ -938,6 +958,10 @@ class PartialsResource(_BaseResource):
         }
         if action_name is not None:
             body["actionName"] = action_name
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
+        if integration_alias is not None:
+            body["integrationAlias"] = integration_alias
         if trigger_name is not None:
             body["triggerName"] = trigger_name
         if description is not None:
