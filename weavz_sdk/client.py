@@ -35,6 +35,7 @@ _APPROVAL_CAMEL_KEYS = {
     "timeout_seconds": "timeoutSeconds",
     "default_on_timeout": "defaultOnTimeout",
     "reuse_window_seconds": "reuseWindowSeconds",
+    "approval_access_mode": "approvalAccessMode",
     "action_categories": "actionCategories",
     "amount_thresholds": "amountThresholds",
     "recipient_allowlist": "recipientAllowlist",

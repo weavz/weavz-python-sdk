@@ -209,12 +209,14 @@ class TestApprovals:
             "approvers": [{"type": "org_role", "roles": ["owner", "admin"]}],
             "timeout_seconds": 3600,
             "default_on_timeout": "reject",
+            "approval_access_mode": "dashboard_only",
         }
 
         created = _client.approval_policies.create(**policy)
         _approval_policy_id = created["policy"]["id"]
         assert created["policy"]["name"] == policy["name"]
         assert created["policy"]["workspaceId"] == _approval_workspace_id
+        assert created["policy"]["approvalAccessMode"] == "dashboard_only"
 
         listed = _client.approval_policies.list(workspace_id=_approval_workspace_id)
         assert any(item["id"] == _approval_policy_id for item in listed["policies"])

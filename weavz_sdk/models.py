@@ -81,6 +81,7 @@ class ApprovalCodeRunPreview(BaseModel):
     """Structured redacted reviewer context for MCP Code Mode approvals."""
 
     type: str
+    code_run_id: Optional[str] = Field(default=None, alias="codeRunId")
     server_id: Optional[str] = Field(default=None, alias="serverId")
     server_name: Optional[str] = Field(default=None, alias="serverName")
     workspace_id: Optional[str] = Field(default=None, alias="workspaceId")
