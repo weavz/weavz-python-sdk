@@ -3,12 +3,18 @@
 from weavz_sdk.client import WeavzClient
 from weavz_sdk.errors import WeavzError
 from weavz_sdk.models import (
+    AdvancedCodeSettings,
+    AdvancedCodeSandboxPersistence,
+    AdvancedCodeStorageMountScope,
+    PersistenceScope,
+    PersistenceSettings,
     ApprovalCodeRunGroup,
     ApprovalCodeRunPreview,
     ApprovalCodeRunToolPlanItem,
     ApprovalWebhookApiUrls,
     ApprovalWebhookPayload,
     InputPartial,
+    WorkspaceIntegrationSettings,
     WorkspaceIntegration,
 )
 from weavz_sdk.adapters import (
@@ -31,6 +37,12 @@ __all__ = [
     "WeavzError",
     "InputPartial",
     "WorkspaceIntegration",
+    "WorkspaceIntegrationSettings",
+    "AdvancedCodeSettings",
+    "AdvancedCodeSandboxPersistence",
+    "AdvancedCodeStorageMountScope",
+    "PersistenceScope",
+    "PersistenceSettings",
     "ApprovalCodeRunToolPlanItem",
     "ApprovalCodeRunGroup",
     "ApprovalCodeRunPreview",

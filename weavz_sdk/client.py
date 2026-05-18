@@ -9,6 +9,7 @@ import httpx
 from pydantic import BaseModel
 
 from weavz_sdk.errors import WeavzError
+from weavz_sdk.models import WorkspaceIntegrationSettings
 
 class _UnsetType:
     pass
@@ -147,6 +148,7 @@ class WorkspacesResource(_BaseResource):
         connection_id: str | None = None,
         display_name: str | None = None,
         enabled_actions: list[str] | None = None,
+        settings: WorkspaceIntegrationSettings | dict[str, Any] | BaseModel | None = None,
         sort_order: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {"integrationName": integration_name}
@@ -160,6 +162,8 @@ class WorkspacesResource(_BaseResource):
             body["displayName"] = display_name
         if enabled_actions is not None:
             body["enabledActions"] = enabled_actions
+        if settings is not None:
+            body["settings"] = _to_jsonable(settings)
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._post(
@@ -176,6 +180,7 @@ class WorkspacesResource(_BaseResource):
         connection_id: str | None = None,
         display_name: str | None = None,
         enabled_actions: list[str] | None = None,
+        settings: WorkspaceIntegrationSettings | dict[str, Any] | BaseModel | None = None,
         sort_order: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
@@ -189,6 +194,8 @@ class WorkspacesResource(_BaseResource):
             body["displayName"] = display_name
         if enabled_actions is not None:
             body["enabledActions"] = enabled_actions
+        if settings is not None:
+            body["settings"] = _to_jsonable(settings)
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._patch(

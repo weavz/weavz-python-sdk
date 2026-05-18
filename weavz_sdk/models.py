@@ -2,9 +2,48 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
+
+AdvancedCodeSandboxPersistence = Literal["ephemeral", "persistent"]
+AdvancedCodeStorageMountScope = Literal["none", "end_user", "workspace", "external"]
+PersistenceScope = Literal["end_user", "workspace", "external"]
+
+
+class AdvancedCodeSettings(BaseModel):
+    """Owner-controlled Advanced Code sandbox policy for a workspace integration."""
+
+    timeout_seconds: int = Field(default=30, alias="timeoutSeconds")
+    sandbox_persistence: AdvancedCodeSandboxPersistence = Field(
+        default="ephemeral", alias="sandboxPersistence"
+    )
+    storage_mount_scope: AdvancedCodeStorageMountScope = Field(
+        default="none", alias="storageMountScope"
+    )
+    storage_external_id: Optional[str] = Field(default=None, alias="storageExternalId")
+
+    model_config = {"populate_by_name": True}
+
+
+class PersistenceSettings(BaseModel):
+    """Owner-controlled state scope for a stateful built-in workspace integration."""
+
+    scope: PersistenceScope = "end_user"
+    external_id: Optional[str] = Field(default=None, alias="externalId")
+
+    model_config = {"populate_by_name": True}
+
+
+class WorkspaceIntegrationSettings(BaseModel):
+    """Owner-controlled settings for a workspace integration instance."""
+
+    advanced_code: Optional[AdvancedCodeSettings] = Field(
+        default=None, alias="advancedCode"
+    )
+    persistence: Optional[PersistenceSettings] = None
+
+    model_config = {"populate_by_name": True}
 
 
 class WorkspaceIntegration(BaseModel):
@@ -18,6 +57,9 @@ class WorkspaceIntegration(BaseModel):
     connection_id: Optional[str] = Field(default=None, alias="connectionId")
     display_name: Optional[str] = Field(default=None, alias="displayName")
     enabled_actions: Optional[list[str]] = Field(default=None, alias="enabledActions")
+    settings: WorkspaceIntegrationSettings = Field(
+        default_factory=WorkspaceIntegrationSettings
+    )
     sort_order: int = Field(default=0, alias="sortOrder")
     created_at: str = Field(alias="createdAt")
     updated_at: str = Field(alias="updatedAt")

@@ -543,8 +543,6 @@ class AgencyzoomCustomApiCallInput(BaseModel):
 class AgentMemoryCreateEntitiesInput(BaseModel):
     """Agent Memory — Create Entities"""
     entities: Any = Field(..., description="Array of entities to create. Each entity: { name: string, type: string, observations?: string[] }")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -552,8 +550,6 @@ class AgentMemoryCreateEntitiesInput(BaseModel):
 class AgentMemoryAddObservationsInput(BaseModel):
     """Agent Memory — Add Observations"""
     observations: Any = Field(..., description="Array of observation batches. Each: { entityName: string, contents: string[] }")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -561,8 +557,6 @@ class AgentMemoryAddObservationsInput(BaseModel):
 class AgentMemoryCreateRelationsInput(BaseModel):
     """Agent Memory — Create Relations"""
     relations: Any = Field(..., description="Array of relations. Each: { from: string, to: string, type: string }")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -570,25 +564,18 @@ class AgentMemoryCreateRelationsInput(BaseModel):
 class AgentMemorySearchInput(BaseModel):
     """Agent Memory — Search"""
     query: str = Field(..., description="Text to search for in entity names, types, and observations")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
 
 class AgentMemoryReadGraphInput(BaseModel):
     """Agent Memory — Read Graph"""
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
-
-    model_config = {"populate_by_name": True}
+    pass
 
 
 class AgentMemoryGetEntityInput(BaseModel):
     """Agent Memory — Get Entity"""
     name: str = Field(..., description="Name of the entity to retrieve")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -596,8 +583,6 @@ class AgentMemoryGetEntityInput(BaseModel):
 class AgentMemoryDeleteEntitiesInput(BaseModel):
     """Agent Memory — Delete Entities"""
     names: Any = Field(..., description="Array of entity names to delete (string array)")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -606,8 +591,6 @@ class AgentMemoryDeleteObservationsInput(BaseModel):
     """Agent Memory — Delete Observations"""
     entityName: str = Field(..., description="Name of the entity to remove observations from")
     observations: Any = Field(..., description="Array of observation strings to remove")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -615,8 +598,6 @@ class AgentMemoryDeleteObservationsInput(BaseModel):
 class AgentMemoryDeleteRelationsInput(BaseModel):
     """Agent Memory — Delete Relations"""
     relations: Any = Field(..., description="Array of relations to delete. Each: { from: string, to: string, type: string }")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -624,8 +605,6 @@ class AgentMemoryDeleteRelationsInput(BaseModel):
 class AgentScratchpadReadPageInput(BaseModel):
     """Agent Scratchpad — Read Page"""
     pageName: str = Field(..., description="Name of the page to read")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -634,8 +613,6 @@ class AgentScratchpadWritePageInput(BaseModel):
     """Agent Scratchpad — Write Page"""
     pageName: str = Field(..., description="Name of the page to write")
     content: str = Field(..., description="Content to write to the page")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -644,25 +621,18 @@ class AgentScratchpadAppendPageInput(BaseModel):
     """Agent Scratchpad — Append to Page"""
     pageName: str = Field(..., description="Name of the page to append to")
     content: str = Field(..., description="Content to append to the page")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
 
 class AgentScratchpadListPagesInput(BaseModel):
     """Agent Scratchpad — List Pages"""
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
-
-    model_config = {"populate_by_name": True}
+    pass
 
 
 class AgentScratchpadSearchPagesInput(BaseModel):
     """Agent Scratchpad — Search Pages"""
     query: str = Field(..., description="Text to search for across all pages")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -670,18 +640,13 @@ class AgentScratchpadSearchPagesInput(BaseModel):
 class AgentScratchpadDeletePageInput(BaseModel):
     """Agent Scratchpad — Delete Page"""
     pageName: str = Field(..., description="Name of the page to delete")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
 
 class AgentScratchpadClearAllInput(BaseModel):
     """Agent Scratchpad — Clear All Pages"""
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
-
-    model_config = {"populate_by_name": True}
+    pass
 
 
 class AhrefsGetBacklinksInput(BaseModel):
@@ -14896,8 +14861,6 @@ class KvStorePutInput(BaseModel):
     """KV Store — Put"""
     key: str = Field(..., description="The key to store the value under")
     value: Any = Field(..., description="The value to store (any JSON-serializable value)")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -14905,8 +14868,6 @@ class KvStorePutInput(BaseModel):
 class KvStoreGetInput(BaseModel):
     """KV Store — Get"""
     key: str = Field(..., description="The key to retrieve")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -14914,8 +14875,6 @@ class KvStoreGetInput(BaseModel):
 class KvStoreDeleteInput(BaseModel):
     """KV Store — Delete"""
     key: str = Field(..., description="The key to delete")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -14924,8 +14883,6 @@ class KvStoreAddToListInput(BaseModel):
     """KV Store — Add to List"""
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to append to the list")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -14934,8 +14891,6 @@ class KvStoreRemoveFromListInput(BaseModel):
     """KV Store — Remove from List"""
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to remove from the list")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -23140,8 +23095,6 @@ class SequentialThinkingAddThoughtInput(BaseModel):
     """Sequential Thinking — Add Thought"""
     chainId: str = Field(..., description="Identifier for the thinking chain")
     content: str = Field(..., description="The thought content")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -23152,8 +23105,6 @@ class SequentialThinkingBranchThoughtInput(BaseModel):
     thoughtId: float = Field(..., description="ID of the thought to branch from")
     branchName: str = Field(..., description="Name for this branch of thinking")
     content: str = Field(..., description="The first thought in this branch")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -23163,8 +23114,6 @@ class SequentialThinkingReviseThoughtInput(BaseModel):
     chainId: str = Field(..., description="Identifier for the thinking chain")
     thoughtId: float = Field(..., description="ID of the thought to revise")
     content: str = Field(..., description="The revised thought content")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -23173,8 +23122,6 @@ class SequentialThinkingGetChainInput(BaseModel):
     """Sequential Thinking — Get Chain"""
     chainId: str = Field(..., description="Identifier for the thinking chain")
     includeBranches: Optional[bool] = Field(None, description="Include branch thoughts in the response")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -23182,8 +23129,6 @@ class SequentialThinkingGetChainInput(BaseModel):
 class SequentialThinkingSummarizeChainInput(BaseModel):
     """Sequential Thinking — Summarize Chain"""
     chainId: str = Field(..., description="Identifier for the thinking chain")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -24714,8 +24659,6 @@ class StabilityAiCustomApiCallInput(BaseModel):
 class StorageReadFileInput(BaseModel):
     """Storage — Read File"""
     path: str = Field(..., description="File path within the storage scope (e.g. \"config.json\", \"data/users.csv\")")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
     outputEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
 
     model_config = {"populate_by_name": True}
@@ -24727,8 +24670,6 @@ class StorageWriteFileInput(BaseModel):
     content: str = Field(..., description="File content to write")
     contentType: Optional[str] = Field(None, description="MIME type (e.g. \"application/json\", \"text/plain\")")
     contentEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -24736,8 +24677,6 @@ class StorageWriteFileInput(BaseModel):
 class StorageDeleteFileInput(BaseModel):
     """Storage — Delete File"""
     path: str = Field(..., description="File path to delete")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -24745,8 +24684,6 @@ class StorageDeleteFileInput(BaseModel):
 class StorageListFilesInput(BaseModel):
     """Storage — List Files"""
     prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. \"data/\" to list all files in data folder). Leave empty for all files.")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
@@ -24755,8 +24692,6 @@ class StorageGetDownloadUrlInput(BaseModel):
     """Storage — Get Download URL"""
     path: str = Field(..., description="File path within the storage scope")
     expiresInSeconds: Optional[float] = Field(None, description="URL lifetime from 60 to 3600 seconds.")
-    scope: Optional[str] = Field(None, description="Where persistent state is stored. Current end user is private to the request or MCP token user. Shared workspace is visible to all users and agents in the workspace. Custom namespace is shared by calls using the same namespace key.")
-    externalId: Optional[str] = Field(None, description="Required when Persistence Scope is Custom namespace. Calls with the same namespace key share the same state within this workspace.")
 
     model_config = {"populate_by_name": True}
 
