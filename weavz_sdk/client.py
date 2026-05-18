@@ -681,6 +681,51 @@ class McpServersResource(_BaseResource):
     def regenerate_token(self, server_id: str) -> dict[str, Any]:
         return self._post(f"/api/v1/mcp/servers/{server_id}/regenerate-token")
 
+    def create_access_token(
+        self,
+        server_id: str,
+        *,
+        end_user_id: str,
+        scopes: list[str] | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {"endUserId": end_user_id}
+        if scopes is not None:
+            body["scopes"] = scopes
+        if expires_in is not None:
+            body["expiresIn"] = expires_in
+        return self._post(f"/api/v1/mcp/servers/{server_id}/access-tokens", json=body)
+
+    def create_bearer_token(
+        self,
+        server_id: str,
+        *,
+        end_user_id: str,
+        scopes: list[str] | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        return self.create_access_token(
+            server_id,
+            end_user_id=end_user_id,
+            scopes=scopes,
+            expires_in=expires_in,
+        )
+
+    def create_end_user_token(
+        self,
+        server_id: str,
+        *,
+        end_user_id: str,
+        scopes: list[str] | None = None,
+        expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        return self.create_access_token(
+            server_id,
+            end_user_id=end_user_id,
+            scopes=scopes,
+            expires_in=expires_in,
+        )
+
     def create_oauth_token(
         self,
         server_id: str,

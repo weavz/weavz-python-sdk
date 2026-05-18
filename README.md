@@ -37,6 +37,18 @@ result = client.mcp_servers.create(
 )
 print(result["mcpEndpoint"])
 
+# For provisioned clients, enable bearer auth and issue one token per end user:
+bearer_server = client.mcp_servers.create(
+    name="Provisioned MCP Server",
+    mode="CODE",
+    workspace_id="550e8400-e29b-41d4-a716-446655440000",
+    auth_mode="oauth_and_bearer",
+)["server"]
+bearer_token = client.mcp_servers.create_bearer_token(
+    bearer_server["id"],
+    end_user_id="user_123",
+)["bearerToken"]
+
 run = client.mcp_servers.execute_code(
     result["server"]["id"],
     'return await weavz.slack.send_channel_message({ channel: "C123", text: "Hello" })',
@@ -59,7 +71,7 @@ The client provides namespaced access to all API resources:
 | `client.connections` | `list()`, `get()`, `create()`, `delete()`, `resolve()` |
 | `client.actions` | `execute()` |
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
-| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `create_oauth_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `get_declarations()` |
+| `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `create_bearer_token()`, `create_access_token()`, `create_end_user_token()`, `create_oauth_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `get_declarations()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
 | `client.integrations` | `list()`, `list_summary()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
 | `client.connect` | `create_token()`, `poll()`, `wait()`, `get_session()` |

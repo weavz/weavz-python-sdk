@@ -456,6 +456,32 @@ class TestMcpServers:
         assert "bearerToken" in result
         assert result["bearerToken"].startswith("mcp_")
 
+    def test_create_end_user_bearer_token_for_bearer_mcp_server(self):
+        import time
+        external_id = f"py-bearer-eu-{int(time.time() * 1000)}"
+        end_user = _client.end_users.create(
+            workspace_id=_bearer_workspace_id,
+            external_id=external_id,
+            display_name="Python Bearer MCP End User",
+            email="py-bearer-mcp@example.com",
+        )
+
+        try:
+            result = _client.mcp_servers.create_bearer_token(
+                _bearer_mcp_server_id,
+                end_user_id=external_id,
+                scopes=["mcp:tools"],
+                expires_in=3600,
+            )
+            assert "bearerToken" in result
+            assert result["bearerToken"].startswith("mcp_")
+            assert result["accessToken"] == result["bearerToken"]
+            assert result["token"]["endUserId"] == external_id
+            assert result["token"]["authMethod"] == "bearer"
+            assert result["token"]["tokenType"] == "mcp_bearer"
+        finally:
+            _client.end_users.delete(end_user["endUser"]["id"])
+
     def test_delete_tool(self):
         result = _client.mcp_servers.delete_tool(_mcp_server_id, TestMcpServers._tool_id)
         assert result["deleted"] is True
