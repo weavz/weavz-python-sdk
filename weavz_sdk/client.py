@@ -627,6 +627,7 @@ class McpServersResource(_BaseResource):
         description: str | None = None,
         created_by: str | None = None,
         mode: str | None = None,
+        settings: dict[str, Any] | None = None,
         auth_mode: str | None = None,
         end_user_access: str | None = None,
         end_user_id: str | None = None,
@@ -638,6 +639,8 @@ class McpServersResource(_BaseResource):
             body["createdBy"] = created_by
         if mode is not None:
             body["mode"] = mode
+        if settings is not None:
+            body["settings"] = settings
         if auth_mode is not None:
             body["authMode"] = auth_mode
         if end_user_access is not None:
@@ -656,6 +659,7 @@ class McpServersResource(_BaseResource):
         name: str | None = None,
         description: str | None | _UnsetType = UNSET,
         mode: str | None = None,
+        settings: dict[str, Any] | None = None,
         auth_mode: str | None = None,
         end_user_access: str | None = None,
         end_user_id: str | None | _UnsetType = UNSET,
@@ -667,6 +671,8 @@ class McpServersResource(_BaseResource):
             body["description"] = description
         if mode is not None:
             body["mode"] = mode
+        if settings is not None:
+            body["settings"] = settings
         if auth_mode is not None:
             body["authMode"] = auth_mode
         if end_user_access is not None:
@@ -818,10 +824,13 @@ class McpServersResource(_BaseResource):
         server_id: str,
         code: str | None = None,
         approval_id: str | None = None,
+        wait_for_approval_seconds: int | None = None,
     ) -> dict[str, Any]:
         if bool(code) == bool(approval_id):
             raise ValueError("Pass exactly one of code or approval_id")
         body = {"approvalId": approval_id} if approval_id else {"code": code}
+        if wait_for_approval_seconds is not None:
+            body["waitForApprovalSeconds"] = wait_for_approval_seconds
         return self._post(
             f"/api/v1/mcp/servers/{server_id}/execute-code", json=body
         )

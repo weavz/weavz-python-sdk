@@ -14,26 +14,36 @@ pip install weavz-sdk
 from weavz_sdk import WeavzClient
 
 client = WeavzClient(api_key="wvz_your_api_key")
+workspace_id = "550e8400-e29b-41d4-a716-446655440000"
 
 # List connections
 result = client.connections.list()
 print(result["connections"])
 
-# Execute an action
+# Expose configured Slack tools to MCP Code Mode through the `slack` alias
+client.workspaces.add_integration(
+    workspace_id,
+    integration_name="slack",
+    integration_alias="slack",
+    connection_strategy="per_user",
+)
+
+# Execute an action through the configured alias
 result = client.actions.execute(
     "slack",
     "send_channel_message",
     input={"channel": "#general", "text": "Hello from Weavz!"},
-    connection_external_id="my-slack",
-    workspace_id="550e8400-e29b-41d4-a716-446655440000",
+    workspace_id=workspace_id,
+    integration_alias="slack",
 )
 
 # Create an OAuth-enabled MCP server
 result = client.mcp_servers.create(
     name="My MCP Server",
     mode="CODE",
-    workspace_id="550e8400-e29b-41d4-a716-446655440000",
+    workspace_id=workspace_id,
     auth_mode="oauth",
+    settings={"codeMode": {"approvalWaitSeconds": 30}},
 )
 print(result["mcpEndpoint"])
 
@@ -41,7 +51,7 @@ print(result["mcpEndpoint"])
 bearer_server = client.mcp_servers.create(
     name="Provisioned MCP Server",
     mode="CODE",
-    workspace_id="550e8400-e29b-41d4-a716-446655440000",
+    workspace_id=workspace_id,
     auth_mode="oauth_and_bearer",
 )["server"]
 bearer_token = client.mcp_servers.create_bearer_token(
@@ -58,6 +68,7 @@ run = client.mcp_servers.execute_code(
 approved = client.mcp_servers.execute_code(
     result["server"]["id"],
     approval_id="apr_9b36d3f761d84bb2b6f9a0c4b9d1f7e0",
+    wait_for_approval_seconds=30,
 )
 ```
 
@@ -76,7 +87,9 @@ The client provides namespaced access to all API resources:
 | `client.integrations` | `list()`, `list_summary()`, `get()`, `resolve_options()`, `resolve_property()`, `oauth_status()` |
 | `client.connect` | `create_token()`, `poll()`, `wait()`, `get_session()` |
 | `client.end_users` | `create()`, `list()`, `get()`, `update()`, `delete()`, `create_connect_token()`, `invite()` |
-| `client.partials` | `list()`, `get()`, `create()`, `update()`, `delete()` |
+| `client.partials` | `list()`, `get()`, `create()`, `update()`, `delete()`, `set_default()` |
+| `client.approval_policies` | `list()`, `create()`, `get()`, `update()`, `delete()`, `test()` |
+| `client.approvals` | `list()`, `get()`, `approve()`, `reject()`, `cancel()`, `wait()` |
 
 ## Building SaaS on Weavz
 
