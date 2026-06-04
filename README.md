@@ -80,7 +80,7 @@ The client provides namespaced access to all API resources:
 |----------|---------|
 | `client.workspaces` | `list()`, `create()`, `get()`, `update()`, `delete()`, `list_integrations()`, `add_integration()`, `update_integration()`, `remove_integration()` |
 | `client.connections` | `list()`, `get()`, `create()`, `delete()`, `resolve()` |
-| `client.actions` | `execute()` |
+| `client.actions` | `execute()`, `execute_typed()`, `action_names()`, `input_model()`, `validate_input()` |
 | `client.triggers` | `list()`, `enable()`, `disable()`, `test()` |
 | `client.mcp_servers` | `list()`, `create()`, `get()`, `update()`, `delete()`, `regenerate_token()`, `create_bearer_token()`, `create_access_token()`, `create_end_user_token()`, `create_oauth_token()`, `add_tool()`, `update_tool()`, `delete_tool()`, `execute_code()`, `get_declarations()` |
 | `client.api_keys` | `list()`, `create()`, `delete()` |
@@ -138,6 +138,54 @@ except WeavzError as e:
     print(e.status)  # 400
     print(e.details) # additional context
 ```
+
+## Generated Integration Input Models
+
+The SDK ships with generated Pydantic models and lookup helpers for all generated integration action inputs:
+
+```python
+from weavz_sdk import WeavzClient
+from weavz_sdk.integrations import (
+    INTEGRATION_ACTIONS,
+    SlackSendChannelMessageInput,
+    get_action_input_model,
+    get_action_names,
+    validate_action_input,
+)
+
+client = WeavzClient(api_key="wvz_...")
+workspace_id = "550e8400-e29b-41d4-a716-446655440000"
+
+print(get_action_names("slack"))
+print(INTEGRATION_ACTIONS["slack"])
+
+input_data = SlackSendChannelMessageInput(
+    channel="#general",
+    text="Hello from typed Python input!",
+)
+
+validated = validate_action_input(
+    "slack",
+    "send_channel_message",
+    input_data,
+)
+
+result = client.actions.execute_typed(
+    "slack",
+    "send_channel_message",
+    workspace_id=workspace_id,
+    input=validated,
+)
+
+model = client.actions.input_model("slack", "send_channel_message")
+if model is not None:
+    dynamic_input = model.model_validate({
+        "channel": "#general",
+        "text": "Validated at runtime",
+    })
+```
+
+The model naming pattern is `{IntegrationName}{ActionName}Input` in PascalCase. Use `execute()` for dynamic or future integrations and `execute_typed()` when you want the generated Pydantic model to validate before the request is sent.
 
 ## Context Manager
 

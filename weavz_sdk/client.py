@@ -373,6 +373,29 @@ class ConnectResource(_BaseResource):
 
 
 class ActionsResource(_BaseResource):
+    def action_names(self, integration_name: str) -> tuple[str, ...]:
+        """Return action names generated into this SDK for an integration."""
+        from weavz_sdk.integrations import get_action_names
+
+        return get_action_names(integration_name)
+
+    def input_model(self, integration_name: str, action_name: str) -> type[BaseModel] | None:
+        """Return the generated Pydantic input model for an integration action."""
+        from weavz_sdk.integrations import get_action_input_model
+
+        return get_action_input_model(integration_name, action_name)
+
+    def validate_input(
+        self,
+        integration_name: str,
+        action_name: str,
+        input: dict[str, Any] | BaseModel | None = None,
+    ) -> BaseModel:
+        """Validate action input with the generated Pydantic model."""
+        from weavz_sdk.integrations import validate_action_input
+
+        return validate_action_input(integration_name, action_name, input)
+
     def execute(
         self,
         integration_name: str,
@@ -409,6 +432,35 @@ class ActionsResource(_BaseResource):
             "/api/v1/actions/execute",
             json=body,
             headers={"X-Weavz-Source": "sdk"},
+        )
+
+    def execute_typed(
+        self,
+        integration_name: str,
+        action_name: str,
+        *,
+        workspace_id: str,
+        input: dict[str, Any] | BaseModel | None = None,
+        connection_external_id: str | None = None,
+        workspace_integration_id: str | None = None,
+        end_user_id: str | None = None,
+        integration_alias: str | None = None,
+        partial_ids: list[str] | None = None,
+        idempotency_key: str | None = None,
+    ) -> Any:
+        """Validate input against the generated model, then execute the action."""
+        validated_input = self.validate_input(integration_name, action_name, input)
+        return self.execute(
+            integration_name,
+            action_name,
+            workspace_id=workspace_id,
+            input=validated_input,
+            connection_external_id=connection_external_id,
+            workspace_integration_id=workspace_integration_id,
+            end_user_id=end_user_id,
+            integration_alias=integration_alias,
+            partial_ids=partial_ids,
+            idempotency_key=idempotency_key,
         )
 
 
