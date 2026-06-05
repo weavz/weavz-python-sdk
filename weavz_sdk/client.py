@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 from pydantic import BaseModel
@@ -806,7 +806,7 @@ class McpServersResource(_BaseResource):
         integration_name: str,
         action_name: str,
         integration_alias: str | None = None,
-        tool_type: str | None = None,
+        tool_type: Literal["ACTION"] | None = None,
         connection_id: str | None = None,
         display_name: str | None = None,
         description: str | None = None,
@@ -821,6 +821,8 @@ class McpServersResource(_BaseResource):
         if integration_alias is not None:
             body["integrationAlias"] = integration_alias
         if tool_type is not None:
+            if tool_type != "ACTION":
+                raise ValueError("MCP server tools only support tool_type='ACTION'")
             body["toolType"] = tool_type
         if connection_id is not None:
             body["connectionId"] = connection_id
