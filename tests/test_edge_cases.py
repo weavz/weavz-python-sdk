@@ -363,7 +363,7 @@ class TestMcpServerEdgeCases:
             _client.mcp_servers.add_tool(
                 self._tools_server_id,
                 integration_name="discord",
-                action_name="sendMessageWithBot",
+                action_name="send_channel_message",
                 integration_alias="openai-primary",
             )
         assert exc_info.value.status == 409

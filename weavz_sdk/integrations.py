@@ -6651,151 +6651,148 @@ class DigitalOceanCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class DiscordSendMessageWithBotInput(BaseModel):
-    """Discord — Send Message with Bot"""
-    channel_id: str = Field(..., description="List of channels")
-    message: Optional[str] = Field(None, description="Message content to send.")
-    files: Optional[list[Any]] = Field(None, description="Attachments")
+class DiscordSendChannelMessageInput(BaseModel):
+    """Discord — Send Channel Message"""
+    guild_id: str = Field(..., description="Discord server.")
+    channel_id: str = Field(..., description="Discord channel.")
+    content: Optional[str] = Field(None, description="Message")
+    thread_id: Optional[str] = Field(None, description="Thread ID")
+    embeds: Optional[Any] = Field(None, description="Optional Discord embeds as a JSON array.")
+    file_urls: Optional[Any] = Field(None, description="Optional JSON array of file URLs or { \"url\": \"...\", \"name\": \"...\" } objects.")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscordSendMessageWebhookInput(BaseModel):
-    """Discord — Send Message Webhook"""
+class DiscordSendWebhookMessageInput(BaseModel):
+    """Discord — Send Webhook Message"""
     webhook_url: str = Field(..., description="Webhook URL")
-    username: Optional[str] = Field(None, description="Name")
-    content: str = Field(..., description="Message")
-    avatar_url: Optional[str] = Field(None, description="The avatar url for webhook")
-    embeds: Optional[Any] = Field(None, description="Embeds to send along with the message")
-    tts: Optional[bool] = Field(None, description="Robot reads the message")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordRequestApprovalMessageInput(BaseModel):
-    """Discord — Request Approval in a Channel"""
-    content: str = Field(..., description="The message you want to send")
-    channel: str = Field(..., description="List of channels")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordAddRoleToMemberInput(BaseModel):
-    """Discord — Add role to member"""
-    guild_id: str = Field(..., description="List of guilds")
-    user_id: str = Field(..., description="The user id of the member")
-    role_id: str = Field(..., description="List of roles")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordRemoveRoleFromMemberInput(BaseModel):
-    """Discord — Remove role from member"""
-    guild_id: str = Field(..., description="List of guilds")
-    user_id: str = Field(..., description="The user id of the member")
-    role_id: str = Field(..., description="List of roles")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordRemoveMemberFromGuildInput(BaseModel):
-    """Discord — Remove member from guild"""
-    guild_id: str = Field(..., description="List of guilds")
-    user_id: str = Field(..., description="The user id of the member")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordListGuildMembersInput(BaseModel):
-    """Discord — List guild members"""
-    guild_id: str = Field(..., description="List of guilds")
-    shortText: str = Field(..., description="Search for a member")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordRenameChannelInput(BaseModel):
-    """Discord — Rename channel"""
-    channel_id: str = Field(..., description="List of channels")
-    name: str = Field(..., description="The new name of the channel")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordCreateChannelInput(BaseModel):
-    """Discord — Create channel"""
-    guild_id: str = Field(..., description="List of guilds")
-    name: str = Field(..., description="The name of the new channel")
-
-    model_config = {"populate_by_name": True}
-
-
-class DiscordDeleteChannelInput(BaseModel):
-    """Discord — Delete channel"""
-    channel_id: str = Field(..., description="List of channels")
+    content: Optional[str] = Field(None, description="Message")
+    username: Optional[str] = Field(None, description="Username Override")
+    avatar_url: Optional[str] = Field(None, description="Avatar URL Override")
+    embeds: Optional[Any] = Field(None, description="Optional Discord embeds as a JSON array.")
 
     model_config = {"populate_by_name": True}
 
 
 class DiscordFindChannelInput(BaseModel):
-    """Discord — Find channel"""
-    guild_id: str = Field(..., description="List of guilds")
-    name: str = Field(..., description="The name of the channel")
+    """Discord — Find Channel"""
+    guild_id: str = Field(..., description="Discord server.")
+    name: str = Field(..., description="Channel Name")
+    exact_match: Optional[bool] = Field(None, description="Exact Match")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscordRemoveBanFromUserInput(BaseModel):
-    """Discord — Remove ban from user"""
-    guild_id: str = Field(..., description="List of guilds")
-    user_id: str = Field(..., description="The ID of the user")
-    unban_reason: Optional[str] = Field(None, description="The reason for unbanning the user")
+class DiscordCreateChannelInput(BaseModel):
+    """Discord — Create Channel"""
+    guild_id: str = Field(..., description="Discord server.")
+    name: str = Field(..., description="Channel Name")
+    type_: Optional[str] = Field(None, alias="type", description="Channel Type")
+    topic: Optional[str] = Field(None, description="Topic")
+    parent_id: Optional[str] = Field(None, description="Discord channel.")
+    nsfw: Optional[bool] = Field(None, description="NSFW")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscordCreateGuildRoleInput(BaseModel):
-    """Discord — Create guild role"""
-    guild_id: str = Field(..., description="List of guilds")
-    role_name: str = Field(..., description="The name of the role")
-    role_color: Optional[str] = Field(None, description="The RGB color of the role (may be better to set manually on the server)")
-    display_separated: Optional[bool] = Field(None, description="Whether the role should be displayed separately in the sidebar")
-    role_mentionable: Optional[bool] = Field(None, description="Whether the role can be mentioned by other users")
-    creation_reason: Optional[str] = Field(None, description="The reason for creating the role")
+class DiscordRenameChannelInput(BaseModel):
+    """Discord — Rename Channel"""
+    guild_id: str = Field(..., description="Discord server.")
+    channel_id: str = Field(..., description="Discord channel.")
+    name: str = Field(..., description="New Channel Name")
+    topic: Optional[str] = Field(None, description="Topic")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscordDeleteGuildRoleInput(BaseModel):
-    """Discord — Delete guild role"""
-    guild_id: str = Field(..., description="List of guilds")
-    role_id: str = Field(..., description="List of roles")
-    deletion_reason: Optional[str] = Field(None, description="The reason for deleting the role")
+class DiscordDeleteChannelInput(BaseModel):
+    """Discord — Delete Channel"""
+    guild_id: str = Field(..., description="Discord server.")
+    channel_id: str = Field(..., description="Discord channel.")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscordBanGuildMemberInput(BaseModel):
-    """Discord — Ban guild member"""
-    guild_id: str = Field(..., description="List of guilds")
-    user_id: str = Field(..., description="The user id of the member")
-    ban_reason: Optional[str] = Field(None, description="The reason for banning the member")
+class DiscordListGuildMembersInput(BaseModel):
+    """Discord — List Guild Members"""
+    guild_id: str = Field(..., description="Discord server.")
+    query: Optional[str] = Field(None, description="Search Query")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordAddRoleToMemberInput(BaseModel):
+    """Discord — Add Role To Member"""
+    guild_id: str = Field(..., description="Discord server.")
+    member_id: str = Field(..., description="Discord guild member.")
+    role_id: str = Field(..., description="Discord role.")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordRemoveRoleFromMemberInput(BaseModel):
+    """Discord — Remove Role From Member"""
+    guild_id: str = Field(..., description="Discord server.")
+    member_id: str = Field(..., description="Discord guild member.")
+    role_id: str = Field(..., description="Discord role.")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordBanMemberInput(BaseModel):
+    """Discord — Ban Member"""
+    guild_id: str = Field(..., description="Discord server.")
+    user_id: str = Field(..., description="User ID")
+    delete_message_seconds: Optional[float] = Field(None, description="Delete Message Seconds")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordUnbanMemberInput(BaseModel):
+    """Discord — Unban Member"""
+    guild_id: str = Field(..., description="Discord server.")
+    user_id: str = Field(..., description="User ID")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordCreateRoleInput(BaseModel):
+    """Discord — Create Role"""
+    guild_id: str = Field(..., description="Discord server.")
+    name: str = Field(..., description="Role Name")
+    color: Optional[float] = Field(None, description="Decimal RGB color value.")
+    hoist: Optional[bool] = Field(None, description="Display Separately")
+    mentionable: Optional[bool] = Field(None, description="Mentionable")
+    permissions: Optional[str] = Field(None, description="Permissions Bitset")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscordDeleteRoleInput(BaseModel):
+    """Discord — Delete Role"""
+    guild_id: str = Field(..., description="Discord server.")
+    role_id: str = Field(..., description="Discord role.")
+    reason: Optional[str] = Field(None, description="Audit Log Reason")
 
     model_config = {"populate_by_name": True}
 
 
 class DiscordCustomApiCallInput(BaseModel):
     """Discord — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    path: str = Field(..., description="Example: /guilds/{guild_id}/channels")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    query_params: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -25660,85 +25657,66 @@ class TeamworkFindNotebookOrCommentInput(BaseModel):
 
 class TelegramBotSendTextMessageInput(BaseModel):
     """Telegram Bot — Send Text Message"""
-    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
-    chat_id: str = Field(..., description="Chat Id")
-    message_thread_id: Optional[str] = Field(None, description="Unique identifier for the target message thread of the forums; for forums supergroups only")
-    format: Optional[str] = Field(None, description="Choose format you want ")
-    instructions_format: Optional[str] = Field(None, description=" [Link example](https://core.telegram.org/bots/api#formatting-options) ")
-    web_page_preview: Optional[bool] = Field(None, description="Disable link previews for links in this message")
-    message: str = Field(..., description="The message to be sent")
-    reply_markup: Optional[Any] = Field(None, description="Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user. Use special actions such as Build Inline Keyboard to generate this JSON object.")
+    chat_id: str = Field(..., description="Chat ID")
+    text: str = Field(..., description="Message Text")
+    message_thread_id: Optional[float] = Field(None, description="Message Thread ID")
+    parse_mode: Optional[str] = Field(None, description="Parse Mode")
+    disable_web_page_preview: Optional[bool] = Field(None, description="Disable Web Preview")
+    reply_markup: Optional[Any] = Field(None, description="Optional Telegram reply_markup JSON.")
 
     model_config = {"populate_by_name": True}
 
 
 class TelegramBotSendMediaInput(BaseModel):
     """Telegram Bot — Send Media"""
-    instructions: Optional[str] = Field(None, description="  **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
-    chat_id: str = Field(..., description="Chat Id")
-    message_thread_id: Optional[str] = Field(None, description="Unique identifier for the target message thread of the forums; for forums supergroups only")
-    media_type: Optional[str] = Field(None, description="Media Type")
-    media: Optional[dict[str, Any]] = Field(None, description="Media Properties")
-    format: Optional[str] = Field(None, description="Choose format you want ")
-    instructions_format: Optional[str] = Field(None, description=" [Link example](https://core.telegram.org/bots/api#formatting-options) ")
-    message: str = Field(..., description="The message to be sent")
-    reply_markup: Optional[Any] = Field(None, description="Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user. Use special actions such as Build Inline Keyboard to generate this JSON object.")
+    chat_id: str = Field(..., description="Chat ID")
+    media_type: str = Field(..., description="Media Type")
+    media: str = Field(..., description="Media URL Or File ID")
+    caption: Optional[str] = Field(None, description="Caption")
+    message_thread_id: Optional[float] = Field(None, description="Message Thread ID")
+    parse_mode: Optional[str] = Field(None, description="Parse Mode")
+    reply_markup: Optional[Any] = Field(None, description="Optional Telegram reply_markup JSON.")
 
     model_config = {"populate_by_name": True}
 
 
 class TelegramBotGetChatMemberInput(BaseModel):
     """Telegram Bot — Get Chat Member"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
-    chat_id: str = Field(..., description="Chat Id")
-    user_id: str = Field(..., description="Unique identifier for the user")
+    chat_id: str = Field(..., description="Chat ID")
+    user_id: str = Field(..., description="User ID")
 
     model_config = {"populate_by_name": True}
 
 
 class TelegramBotGetFileInput(BaseModel):
     """Telegram Bot — Get File"""
-    file_id: str = Field(..., description="File identifier to get information about")
-    download: Optional[bool] = Field(None, description="If enabled, the file will be downloaded and returned as base64")
+    file_id: str = Field(..., description="File ID")
 
     model_config = {"populate_by_name": True}
 
 
 class TelegramBotCreateInviteLinkInput(BaseModel):
     """Telegram Bot — Create Invite Link"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.** ")
-    chat_id: str = Field(..., description="Chat Id")
-    name: Optional[str] = Field(None, description="Name of the invite link (max 32 chars)")
-    expire_date: Optional[str] = Field(None, description="Point in time when the link will expire")
-    member_limit: Optional[float] = Field(None, description="Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999")
+    chat_id: str = Field(..., description="Chat ID")
+    name: Optional[str] = Field(None, description="Name")
+    expire_date: Optional[str] = Field(None, description="Unix timestamp in seconds.")
+    member_limit: Optional[float] = Field(None, description="Member Limit")
+    creates_join_request: Optional[bool] = Field(None, description="Creates Join Request")
 
     model_config = {"populate_by_name": True}
 
 
-class TelegramBotRequestApprovalMessageInput(BaseModel):
-    """Telegram Bot — Request Approval Message"""
-    instructions: Optional[str] = Field(None, description=" **How to obtain Chat ID:** 1. Search for the bot \"@getmyid_bot\" in Telegram. 2. Start a conversation with the bot. 3. Send the command \"/my_id\" to the bot. 4. The bot will reply with your chat ID.  **Note: Remember to initiate the chat with the bot, or you'll get an error for \"chat not found.\"** ")
-    chat_id: str = Field(..., description="Chat Id")
-    message: str = Field(..., description="The approval message to be sent")
-    parse_mode: Optional[str] = Field(None, description="Choose format for the message")
-    approve_button_text: Optional[str] = Field(None, description="Text for the approve button")
-    disapprove_button_text: Optional[str] = Field(None, description="Text for the disapprove button")
-
-    model_config = {"populate_by_name": True}
+class TelegramBotGetBotInfoInput(BaseModel):
+    """Telegram Bot — Get Bot Info"""
+    pass
 
 
 class TelegramBotCustomApiCallInput(BaseModel):
     """Telegram Bot — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    method_name: str = Field(..., description="Example: sendMessage")
+    http_method: str = Field(..., description="HTTP Method")
+    query_params: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -30946,21 +30924,19 @@ IntegrationActionKey = Literal[
     "digital-ocean.list_database_clusters",
     "digital-ocean.list_database_events",
     "digital-ocean.custom_api_call",
-    "discord.sendMessageWithBot",
-    "discord.send_message_webhook",
-    "discord.request_approval_message",
+    "discord.send_channel_message",
+    "discord.send_webhook_message",
+    "discord.find_channel",
+    "discord.create_channel",
+    "discord.rename_channel",
+    "discord.delete_channel",
+    "discord.list_guild_members",
     "discord.add_role_to_member",
     "discord.remove_role_from_member",
-    "discord.remove_member_from_guild",
-    "discord.list_guild_members",
-    "discord.rename_channel",
-    "discord.create_channel",
-    "discord.delete_channel",
-    "discord.find_channel",
-    "discord.remove_ban_from_user",
-    "discord.createGuildRole",
-    "discord.deleteGuildRole",
-    "discord.ban_guild_member",
+    "discord.ban_member",
+    "discord.unban_member",
+    "discord.create_role",
+    "discord.delete_role",
     "discord.custom_api_call",
     "discourse.create_post",
     "discourse.create_topic",
@@ -32924,7 +32900,7 @@ IntegrationActionKey = Literal[
     "telegram-bot.get_chat_member",
     "telegram-bot.get_file",
     "telegram-bot.create_invite_link",
-    "telegram-bot.request_approval_message",
+    "telegram-bot.get_bot_info",
     "telegram-bot.custom_api_call",
     "telnyx.send_message",
     "telnyx.list_messaging_profiles",
@@ -34259,21 +34235,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "discord": (
-        "sendMessageWithBot",
-        "send_message_webhook",
-        "request_approval_message",
+        "send_channel_message",
+        "send_webhook_message",
+        "find_channel",
+        "create_channel",
+        "rename_channel",
+        "delete_channel",
+        "list_guild_members",
         "add_role_to_member",
         "remove_role_from_member",
-        "remove_member_from_guild",
-        "list_guild_members",
-        "rename_channel",
-        "create_channel",
-        "delete_channel",
-        "find_channel",
-        "remove_ban_from_user",
-        "createGuildRole",
-        "deleteGuildRole",
-        "ban_guild_member",
+        "ban_member",
+        "unban_member",
+        "create_role",
+        "delete_role",
         "custom_api_call",
     ),
     "discourse": (
@@ -36881,7 +36855,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_chat_member",
         "get_file",
         "create_invite_link",
-        "request_approval_message",
+        "get_bot_info",
         "custom_api_call",
     ),
     "telnyx": (
@@ -38112,21 +38086,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "digital-ocean.list_database_clusters": DigitalOceanListDatabaseClustersInput,
     "digital-ocean.list_database_events": DigitalOceanListDatabaseEventsInput,
     "digital-ocean.custom_api_call": DigitalOceanCustomApiCallInput,
-    "discord.sendMessageWithBot": DiscordSendMessageWithBotInput,
-    "discord.send_message_webhook": DiscordSendMessageWebhookInput,
-    "discord.request_approval_message": DiscordRequestApprovalMessageInput,
+    "discord.send_channel_message": DiscordSendChannelMessageInput,
+    "discord.send_webhook_message": DiscordSendWebhookMessageInput,
+    "discord.find_channel": DiscordFindChannelInput,
+    "discord.create_channel": DiscordCreateChannelInput,
+    "discord.rename_channel": DiscordRenameChannelInput,
+    "discord.delete_channel": DiscordDeleteChannelInput,
+    "discord.list_guild_members": DiscordListGuildMembersInput,
     "discord.add_role_to_member": DiscordAddRoleToMemberInput,
     "discord.remove_role_from_member": DiscordRemoveRoleFromMemberInput,
-    "discord.remove_member_from_guild": DiscordRemoveMemberFromGuildInput,
-    "discord.list_guild_members": DiscordListGuildMembersInput,
-    "discord.rename_channel": DiscordRenameChannelInput,
-    "discord.create_channel": DiscordCreateChannelInput,
-    "discord.delete_channel": DiscordDeleteChannelInput,
-    "discord.find_channel": DiscordFindChannelInput,
-    "discord.remove_ban_from_user": DiscordRemoveBanFromUserInput,
-    "discord.createGuildRole": DiscordCreateGuildRoleInput,
-    "discord.deleteGuildRole": DiscordDeleteGuildRoleInput,
-    "discord.ban_guild_member": DiscordBanGuildMemberInput,
+    "discord.ban_member": DiscordBanMemberInput,
+    "discord.unban_member": DiscordUnbanMemberInput,
+    "discord.create_role": DiscordCreateRoleInput,
+    "discord.delete_role": DiscordDeleteRoleInput,
     "discord.custom_api_call": DiscordCustomApiCallInput,
     "discourse.create_post": DiscourseCreatePostInput,
     "discourse.create_topic": DiscourseCreateTopicInput,
@@ -40090,7 +40062,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "telegram-bot.get_chat_member": TelegramBotGetChatMemberInput,
     "telegram-bot.get_file": TelegramBotGetFileInput,
     "telegram-bot.create_invite_link": TelegramBotCreateInviteLinkInput,
-    "telegram-bot.request_approval_message": TelegramBotRequestApprovalMessageInput,
+    "telegram-bot.get_bot_info": TelegramBotGetBotInfoInput,
     "telegram-bot.custom_api_call": TelegramBotCustomApiCallInput,
     "telnyx.send_message": TelnyxSendMessageInput,
     "telnyx.list_messaging_profiles": TelnyxListMessagingProfilesInput,
