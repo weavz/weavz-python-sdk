@@ -14,7 +14,7 @@ PersistenceScope = Literal["end_user", "workspace", "external"]
 class AdvancedCodeSettings(BaseModel):
     """Owner-controlled Advanced Code sandbox policy for a workspace integration."""
 
-    timeout_seconds: int = Field(default=30, alias="timeoutSeconds")
+    timeout_seconds: int = Field(default=300, alias="timeoutSeconds")
     sandbox_persistence: AdvancedCodeSandboxPersistence = Field(
         default="ephemeral", alias="sandboxPersistence"
     )

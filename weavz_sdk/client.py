@@ -1236,7 +1236,7 @@ class WeavzClient:
         api_key: str,
         *,
         base_url: str = "https://api.weavz.io",
-        timeout: float = 30.0,
+        timeout: float = 310.0,
         max_retries: int = 2,
     ) -> None:
         self._api_key = api_key
