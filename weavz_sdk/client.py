@@ -889,11 +889,9 @@ class McpServersResource(_BaseResource):
             f"/api/v1/mcp/servers/{server_id}/execute-code", json=body
         )
 
-    def get_declarations(
-        self, server_id: str, integration_or_alias: str
-    ) -> dict[str, Any]:
+    def get_declarations(self, server_id: str, alias: str) -> dict[str, Any]:
         return self._get(
-            f"/api/v1/mcp/servers/{server_id}/declarations/{integration_or_alias}"
+            f"/api/v1/mcp/servers/{server_id}/declarations/{alias}"
         )
 
 
