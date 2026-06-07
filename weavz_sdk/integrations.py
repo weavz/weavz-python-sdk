@@ -27504,7 +27504,7 @@ class WebReaderExtractStructuredDataInput(BaseModel):
 
 class WebReaderFetchMultipleInput(BaseModel):
     """Web Reader — Fetch Multiple URLs"""
-    urls: Any = Field(..., description="Array of URLs to fetch (string array)")
+    urls: list[str] = Field(..., description="URLs to fetch, one URL string per item")
     format: Optional[str] = Field(None, description="Output format for fetched content")
 
     model_config = {"populate_by_name": True}
