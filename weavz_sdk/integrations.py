@@ -683,6 +683,15 @@ class AhrefsCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AiToolkitAskJsonInput(BaseModel):
+    """AI Toolkit — Ask JSON"""
+    prompt: str = Field(..., description="The task or question to answer as JSON.")
+    schema_: Optional[Any] = Field(None, alias="schema", description="Optional JSON object describing the expected output shape, e.g. {\"summary\": \"string\", \"claims\": \"array\"}.")
+    instructions: Optional[str] = Field(None, description="Optional extra constraints for the JSON response.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AiToolkitExtractStructuredDataInput(BaseModel):
     """AI Toolkit — Extract Structured Data"""
     text: str = Field(..., description="Text to extract data from")
@@ -6443,17 +6452,29 @@ class DeeplCustomApiCallInput(BaseModel):
 
 
 class DeepseekAskDeepseekInput(BaseModel):
-    """DeepSeek — Ask Deepseek"""
-    model: str = Field(..., description="The model which will generate the completion.")
+    """DeepSeek — Ask DeepSeek"""
+    model: str = Field(..., description="The DeepSeek model which will generate the completion.")
     prompt: str = Field(..., description="Question")
-    frequencyPenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.")
+    frequencyPenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency.")
     maxTokens: float = Field(..., description="The maximum number of tokens to generate. Possible values are between 1 and 8192.")
-    presencePenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the mode's likelihood to talk about new topics.")
-    responseFormat: str = Field(..., description="The format of the response. IMPORTANT: When using JSON Output, you must also instruct the model to produce JSON yourself")
-    temperature: Optional[float] = Field(None, description="Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive. Between 0 and 2. We generally recommend altering this or top_p but not both.")
-    topP: Optional[float] = Field(None, description="An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. Values <=1. We generally recommend altering this or temperature but not both.")
-    memoryKey: Optional[str] = Field(None, description="A memory key that will keep the chat history shared across runs and flows. Keep it empty to leave Deepseek without memory of previous messages.")
-    roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response")
+    presencePenalty: Optional[float] = Field(None, description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far.")
+    responseFormat: str = Field(..., description="Use JSON when your prompt explicitly asks DeepSeek to produce JSON.")
+    temperature: Optional[float] = Field(None, description="Controls randomness. Between 0 and 2.")
+    topP: Optional[float] = Field(None, description="Nucleus sampling. Use either top_p or temperature for most runs.")
+    memoryKey: Optional[str] = Field(None, description="A memory key that keeps chat history shared across runs. Leave empty for stateless calls.")
+    roles: Optional[Any] = Field(None, description="Array of role messages for system, user, or assistant context.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeepseekAskJsonInput(BaseModel):
+    """DeepSeek — Ask JSON"""
+    model: str = Field(..., description="The DeepSeek model which will generate the completion.")
+    prompt: str = Field(..., description="The task or question to answer as JSON.")
+    schema_: Optional[Any] = Field(None, alias="schema", description="Optional JSON object describing the expected output shape. Keep it compact.")
+    instructions: Optional[str] = Field(None, description="Optional extra constraints for the JSON response.")
+    temperature: Optional[float] = Field(None, description="Sampling temperature between 0 and 2.")
+    maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate.")
 
     model_config = {"populate_by_name": True}
 
@@ -19213,6 +19234,18 @@ class OpenaiChatCompletionInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class OpenaiAskJsonInput(BaseModel):
+    """OpenAI — Ask JSON"""
+    model: str = Field(..., description="The OpenAI model to use for JSON output.")
+    prompt: str = Field(..., description="The task or question to answer as JSON.")
+    schema_: Optional[Any] = Field(None, alias="schema", description="Optional JSON object describing the expected output shape. Keep it compact.")
+    instructions: Optional[str] = Field(None, description="Optional extra constraints for the JSON response.")
+    temperature: Optional[float] = Field(None, description="Sampling temperature between 0 and 2.")
+    max_tokens: Optional[float] = Field(None, description="Maximum number of tokens to generate.")
+
+    model_config = {"populate_by_name": True}
+
+
 class OpenaiCreateEmbeddingInput(BaseModel):
     """OpenAI — Create Embedding"""
     model: str = Field(..., description="Model")
@@ -30310,6 +30343,7 @@ IntegrationActionKey = Literal[
     "ahrefs.get_organic_keywords",
     "ahrefs.get_domain_rating",
     "ahrefs.custom_api_call",
+    "ai-toolkit.ask_json",
     "ai-toolkit.extract_structured_data",
     "ai-toolkit.classify_text",
     "ai-toolkit.transform_data",
@@ -30902,6 +30936,7 @@ IntegrationActionKey = Literal[
     "deepl.translate_text",
     "deepl.custom_api_call",
     "deepseek.ask_deepseek",
+    "deepseek.ask_json",
     "descript.list_projects",
     "descript.get_project",
     "descript.export_media",
@@ -32201,6 +32236,7 @@ IntegrationActionKey = Literal[
     "onfleet.get_teams",
     "onfleet.custom_api_call",
     "openai.chat_completion",
+    "openai.ask_json",
     "openai.create_embedding",
     "openai.generate_image",
     "openai.transcribe_audio",
@@ -33417,6 +33453,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "ai-toolkit": (
+        "ask_json",
         "extract_structured_data",
         "classify_text",
         "transform_data",
@@ -34205,6 +34242,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "deepseek": (
         "ask_deepseek",
+        "ask_json",
     ),
     "descript": (
         "list_projects",
@@ -35912,6 +35950,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "openai": (
         "chat_completion",
+        "ask_json",
         "create_embedding",
         "generate_image",
         "transcribe_audio",
@@ -37472,6 +37511,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "ahrefs.get_organic_keywords": AhrefsGetOrganicKeywordsInput,
     "ahrefs.get_domain_rating": AhrefsGetDomainRatingInput,
     "ahrefs.custom_api_call": AhrefsCustomApiCallInput,
+    "ai-toolkit.ask_json": AiToolkitAskJsonInput,
     "ai-toolkit.extract_structured_data": AiToolkitExtractStructuredDataInput,
     "ai-toolkit.classify_text": AiToolkitClassifyTextInput,
     "ai-toolkit.transform_data": AiToolkitTransformDataInput,
@@ -38064,6 +38104,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "deepl.translate_text": DeeplTranslateTextInput,
     "deepl.custom_api_call": DeeplCustomApiCallInput,
     "deepseek.ask_deepseek": DeepseekAskDeepseekInput,
+    "deepseek.ask_json": DeepseekAskJsonInput,
     "descript.list_projects": DescriptListProjectsInput,
     "descript.get_project": DescriptGetProjectInput,
     "descript.export_media": DescriptExportMediaInput,
@@ -39363,6 +39404,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "onfleet.get_teams": OnfleetGetTeamsInput,
     "onfleet.custom_api_call": OnfleetCustomApiCallInput,
     "openai.chat_completion": OpenaiChatCompletionInput,
+    "openai.ask_json": OpenaiAskJsonInput,
     "openai.create_embedding": OpenaiCreateEmbeddingInput,
     "openai.generate_image": OpenaiGenerateImageInput,
     "openai.transcribe_audio": OpenaiTranscribeAudioInput,
