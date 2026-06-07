@@ -20,11 +20,13 @@ workspace_id = "550e8400-e29b-41d4-a716-446655440000"
 result = client.connections.list()
 print(result["connections"])
 
-# Expose configured Slack tools to MCP Code Mode through the `slack` alias
+# Expose configured Slack tools through a purpose-readable alias.
+# Agents see this as `weavz.office_slack` in Code Mode and
+# `office_slack__send_channel_message` in Tool Mode.
 client.workspaces.add_integration(
     workspace_id,
     integration_name="slack",
-    integration_alias="slack",
+    integration_alias="office_slack",
     connection_strategy="per_user",
 )
 
@@ -34,7 +36,7 @@ result = client.actions.execute(
     "send_channel_message",
     input={"channel": "#general", "text": "Hello from Weavz!"},
     workspace_id=workspace_id,
-    integration_alias="slack",
+    integration_alias="office_slack",
 )
 
 # Create an OAuth-enabled MCP server
@@ -61,7 +63,7 @@ bearer_token = client.mcp_servers.create_bearer_token(
 
 run = client.mcp_servers.execute_code(
     result["server"]["id"],
-    'return await weavz.slack.send_channel_message({ channel: "C123", text: "Hello" })',
+    'await weavz.office_slack.send_channel_message({ channel: "C123", text: "Hello" })',
 )
 
 # If Human Gates returns approval_required, approve it and fetch the stored run:
@@ -144,6 +146,7 @@ try:
         "slack",
         "send_channel_message",
         workspace_id="550e8400-e29b-41d4-a716-446655440000",
+        integration_alias="office_slack",
         input={},
     )
 except WeavzError as e:
@@ -187,6 +190,7 @@ result = client.actions.execute_typed(
     "slack",
     "send_channel_message",
     workspace_id=workspace_id,
+    integration_alias="office_slack",
     input=validated,
 )
 
