@@ -31,8 +31,9 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://weavz.io"
-Repository = "https://github.com/weavz/weavz"
-Documentation = "https://docs.weavz.io"
+Repository = "https://github.com/weavz/weavz-python-sdk"
+Documentation = "https://weavz.io/docs/sdks/python"
+Issues = "https://github.com/weavz/weavz-python-sdk/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["weavz_sdk"]
