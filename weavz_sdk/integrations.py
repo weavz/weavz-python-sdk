@@ -5895,14 +5895,6 @@ class CodacyCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class CodeRunCodeInput(BaseModel):
-    """Code — Run Code"""
-    code: str = Field(..., description="JavaScript code to execute. The return value of the last expression is captured as output. `inputs` variable contains your input data.")
-    inputs: Optional[Any] = Field(None, description="Data to pass as the `inputs` variable inside the code")
-
-    model_config = {"populate_by_name": True}
-
-
 class CognitoFormsListFormsInput(BaseModel):
     """Cognito Forms — List Forms"""
     pass
@@ -10207,6 +10199,46 @@ class FigmaCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class StorageReadFileInput(BaseModel):
+    """Filesystem — Read File"""
+    path: str = Field(..., description="File path within the storage scope (e.g. \"config.json\", \"data/users.csv\")")
+    outputEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StorageWriteFileInput(BaseModel):
+    """Filesystem — Write File"""
+    path: str = Field(..., description="File path within the storage scope")
+    content: str = Field(..., description="File content to write")
+    contentType: Optional[str] = Field(None, description="MIME type (e.g. \"application/json\", \"text/plain\")")
+    contentEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StorageDeleteFileInput(BaseModel):
+    """Filesystem — Delete File"""
+    path: str = Field(..., description="File path to delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class StorageListFilesInput(BaseModel):
+    """Filesystem — List Files"""
+    prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. \"data/\" to list all files in data folder). Leave empty for all files.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StorageGetDownloadUrlInput(BaseModel):
+    """Filesystem — Get Download URL"""
+    path: str = Field(..., description="File path within the storage scope")
+    expiresInSeconds: Optional[float] = Field(None, description="URL lifetime from 60 to 3600 seconds.")
+
+    model_config = {"populate_by_name": True}
+
+
 class FilevineGetProjectInput(BaseModel):
     """Filevine — Get Project"""
     projectId: float = Field(..., description="Project ID")
@@ -11948,6 +11980,7 @@ class GmailGetMessageInput(BaseModel):
 class GmailSendEmailInput(BaseModel):
     """Gmail — Send Email"""
     to: str = Field(..., description="Recipient email addresses (comma-separated)")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as email address for this account")
     subject: str = Field(..., description="Subject")
     body: str = Field(..., description="Body")
     cc: Optional[str] = Field(None, description="CC")
@@ -16314,6 +16347,14 @@ class IpinfoCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CodeRunCodeInput(BaseModel):
+    """JavaScript Sandbox — Run Code"""
+    code: str = Field(..., description="JavaScript code to execute. The return value of the last expression is captured as output. `inputs` variable contains your input data.")
+    inputs: Optional[Any] = Field(None, description="Data to pass as the `inputs` variable inside the code")
+
+    model_config = {"populate_by_name": True}
+
+
 class JazzhrListApplicantsInput(BaseModel):
     """JazzHR — List Applicants"""
     page: Optional[float] = Field(None, description="Page number (results limited to 100 per page)")
@@ -17273,44 +17314,6 @@ class KplerCustomApiCallInput(BaseModel):
     path: str = Field(..., description="Path under the REST API base URL, for example /cargo/trades.")
     queryParams: Optional[Any] = Field(None, description="Query Parameters")
     body: Optional[Any] = Field(None, description="Body")
-
-    model_config = {"populate_by_name": True}
-
-
-class KvStorePutInput(BaseModel):
-    """KV Store — Put"""
-    key: str = Field(..., description="The key to store the value under")
-    value: Any = Field(..., description="The value to store (any JSON-serializable value)")
-
-    model_config = {"populate_by_name": True}
-
-
-class KvStoreGetInput(BaseModel):
-    """KV Store — Get"""
-    key: str = Field(..., description="The key to retrieve")
-
-    model_config = {"populate_by_name": True}
-
-
-class KvStoreDeleteInput(BaseModel):
-    """KV Store — Delete"""
-    key: str = Field(..., description="The key to delete")
-
-    model_config = {"populate_by_name": True}
-
-
-class KvStoreAddToListInput(BaseModel):
-    """KV Store — Add to List"""
-    key: str = Field(..., description="The key of the list")
-    value: Any = Field(..., description="The value to append to the list")
-
-    model_config = {"populate_by_name": True}
-
-
-class KvStoreRemoveFromListInput(BaseModel):
-    """KV Store — Remove from List"""
-    key: str = Field(..., description="The key of the list")
-    value: Any = Field(..., description="The value to remove from the list")
 
     model_config = {"populate_by_name": True}
 
@@ -28097,6 +28100,14 @@ class SalesloftListCadencesInput(BaseModel):
     pass
 
 
+class AdvancedCodeRunCodeInput(BaseModel):
+    """Sandbox — Run Code"""
+    language: str = Field(..., description="The language or mode to execute")
+    code: str = Field(..., description="Code or command to execute")
+
+    model_config = {"populate_by_name": True}
+
+
 class SanityQueryInput(BaseModel):
     """Sanity — Query (GROQ)"""
     query: str = Field(..., description="The GROQ query to execute (e.g., *[_type == \"post\"])")
@@ -30359,42 +30370,40 @@ class StabilityAiCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class StorageReadFileInput(BaseModel):
-    """Storage — Read File"""
-    path: str = Field(..., description="File path within the storage scope (e.g. \"config.json\", \"data/users.csv\")")
-    outputEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
+class KvStorePutInput(BaseModel):
+    """State KV — Put"""
+    key: str = Field(..., description="The key to store the value under")
+    value: Any = Field(..., description="The value to store (any JSON-serializable value)")
 
     model_config = {"populate_by_name": True}
 
 
-class StorageWriteFileInput(BaseModel):
-    """Storage — Write File"""
-    path: str = Field(..., description="File path within the storage scope")
-    content: str = Field(..., description="File content to write")
-    contentType: Optional[str] = Field(None, description="MIME type (e.g. \"application/json\", \"text/plain\")")
-    contentEncoding: Optional[str] = Field(None, description="Use Base64 for binary files downloaded from integrations.")
+class KvStoreGetInput(BaseModel):
+    """State KV — Get"""
+    key: str = Field(..., description="The key to retrieve")
 
     model_config = {"populate_by_name": True}
 
 
-class StorageDeleteFileInput(BaseModel):
-    """Storage — Delete File"""
-    path: str = Field(..., description="File path to delete")
+class KvStoreDeleteInput(BaseModel):
+    """State KV — Delete"""
+    key: str = Field(..., description="The key to delete")
 
     model_config = {"populate_by_name": True}
 
 
-class StorageListFilesInput(BaseModel):
-    """Storage — List Files"""
-    prefix: Optional[str] = Field(None, description="Path prefix to filter files (e.g. \"data/\" to list all files in data folder). Leave empty for all files.")
+class KvStoreAddToListInput(BaseModel):
+    """State KV — Add to List"""
+    key: str = Field(..., description="The key of the list")
+    value: Any = Field(..., description="The value to append to the list")
 
     model_config = {"populate_by_name": True}
 
 
-class StorageGetDownloadUrlInput(BaseModel):
-    """Storage — Get Download URL"""
-    path: str = Field(..., description="File path within the storage scope")
-    expiresInSeconds: Optional[float] = Field(None, description="URL lifetime from 60 to 3600 seconds.")
+class KvStoreRemoveFromListInput(BaseModel):
+    """State KV — Remove from List"""
+    key: str = Field(..., description="The key of the list")
+    value: Any = Field(..., description="The value to remove from the list")
 
     model_config = {"populate_by_name": True}
 
@@ -37424,7 +37433,6 @@ IntegrationName = Literal[
     "cloudinary",
     "coda",
     "codacy",
-    "code",
     "cognito-forms",
     "cohere",
     "companycam",
@@ -37483,6 +37491,7 @@ IntegrationName = Literal[
     "fellow",
     "fieldwire",
     "figma",
+    "storage",
     "filevine",
     "fillout-forms",
     "firebase",
@@ -37569,6 +37578,7 @@ IntegrationName = Literal[
     "intakeq",
     "intercom",
     "ipinfo",
+    "code",
     "jazzhr",
     "jina-ai",
     "jira-cloud",
@@ -37584,7 +37594,6 @@ IntegrationName = Literal[
     "knock",
     "kommo",
     "kpler",
-    "kv-store",
     "kvcore",
     "langchain",
     "langfuse",
@@ -37733,6 +37742,7 @@ IntegrationName = Literal[
     "saleor",
     "salesforce",
     "salesloft",
+    "advanced-code",
     "sanity",
     "schoology",
     "scraperapi",
@@ -37769,7 +37779,7 @@ IntegrationName = Literal[
     "square",
     "squarespace",
     "stability-ai",
-    "storage",
+    "kv-store",
     "storyblok",
     "strapi",
     "strava",
@@ -38488,7 +38498,6 @@ IntegrationActionKey = Literal[
     "codacy.get_quality",
     "codacy.list_issues",
     "codacy.custom_api_call",
-    "code.run_code",
     "cognito-forms.list_forms",
     "cognito-forms.get_form_schema",
     "cognito-forms.set_public_link_availability",
@@ -38928,6 +38937,11 @@ IntegrationActionKey = Literal[
     "figma.delete_webhook",
     "figma.list_webhook_requests",
     "figma.custom_api_call",
+    "storage.read_file",
+    "storage.write_file",
+    "storage.delete_file",
+    "storage.list_files",
+    "storage.get_download_url",
     "filevine.get_project",
     "filevine.create_project",
     "filevine.get_contact",
@@ -39539,6 +39553,7 @@ IntegrationActionKey = Literal[
     "ipinfo.lookup_ip",
     "ipinfo.get_asn",
     "ipinfo.custom_api_call",
+    "code.run_code",
     "jazzhr.list_applicants",
     "jazzhr.get_applicant",
     "jazzhr.list_jobs",
@@ -39636,11 +39651,6 @@ IntegrationActionKey = Literal[
     "kpler.get_power_unit_availability",
     "kpler.execute_vessels_graphql",
     "kpler.custom_api_call",
-    "kv-store.put",
-    "kv-store.get",
-    "kv-store.delete",
-    "kv-store.add_to_list",
-    "kv-store.remove_from_list",
     "kvcore.list_leads",
     "kvcore.get_lead",
     "kvcore.create_lead",
@@ -40825,6 +40835,7 @@ IntegrationActionKey = Literal[
     "salesloft.get_person",
     "salesloft.create_person",
     "salesloft.list_cadences",
+    "advanced-code.run_code",
     "sanity.query",
     "sanity.create_document",
     "sanity.update_document",
@@ -41068,11 +41079,11 @@ IntegrationActionKey = Literal[
     "squarespace.custom_api_call",
     "stability-ai.text-to-image",
     "stability-ai.custom_api_call",
-    "storage.read_file",
-    "storage.write_file",
-    "storage.delete_file",
-    "storage.list_files",
-    "storage.get_download_url",
+    "kv-store.put",
+    "kv-store.get",
+    "kv-store.delete",
+    "kv-store.add_to_list",
+    "kv-store.remove_from_list",
     "storyblok.list_spaces",
     "storyblok.list_stories",
     "storyblok.get_story",
@@ -42600,9 +42611,6 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_issues",
         "custom_api_call",
     ),
-    "code": (
-        "run_code",
-    ),
     "cognito-forms": (
         "list_forms",
         "get_form_schema",
@@ -43157,6 +43165,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "delete_webhook",
         "list_webhook_requests",
         "custom_api_call",
+    ),
+    "storage": (
+        "read_file",
+        "write_file",
+        "delete_file",
+        "list_files",
+        "get_download_url",
     ),
     "filevine": (
         "get_project",
@@ -43941,6 +43956,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_asn",
         "custom_api_call",
     ),
+    "code": (
+        "run_code",
+    ),
     "jazzhr": (
         "list_applicants",
         "get_applicant",
@@ -44067,13 +44085,6 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_power_unit_availability",
         "execute_vessels_graphql",
         "custom_api_call",
-    ),
-    "kv-store": (
-        "put",
-        "get",
-        "delete",
-        "add_to_list",
-        "remove_from_list",
     ),
     "kvcore": (
         "list_leads",
@@ -45555,6 +45566,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_person",
         "list_cadences",
     ),
+    "advanced-code": (
+        "run_code",
+    ),
     "sanity": (
         "query",
         "create_document",
@@ -45870,12 +45884,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "text-to-image",
         "custom_api_call",
     ),
-    "storage": (
-        "read_file",
-        "write_file",
-        "delete_file",
-        "list_files",
-        "get_download_url",
+    "kv-store": (
+        "put",
+        "get",
+        "delete",
+        "add_to_list",
+        "remove_from_list",
     ),
     "storyblok": (
         "list_spaces",
@@ -47392,7 +47406,6 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "codacy.get_quality": CodacyGetQualityInput,
     "codacy.list_issues": CodacyListIssuesInput,
     "codacy.custom_api_call": CodacyCustomApiCallInput,
-    "code.run_code": CodeRunCodeInput,
     "cognito-forms.list_forms": CognitoFormsListFormsInput,
     "cognito-forms.get_form_schema": CognitoFormsGetFormSchemaInput,
     "cognito-forms.set_public_link_availability": CognitoFormsSetPublicLinkAvailabilityInput,
@@ -47832,6 +47845,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "figma.delete_webhook": FigmaDeleteWebhookInput,
     "figma.list_webhook_requests": FigmaListWebhookRequestsInput,
     "figma.custom_api_call": FigmaCustomApiCallInput,
+    "storage.read_file": StorageReadFileInput,
+    "storage.write_file": StorageWriteFileInput,
+    "storage.delete_file": StorageDeleteFileInput,
+    "storage.list_files": StorageListFilesInput,
+    "storage.get_download_url": StorageGetDownloadUrlInput,
     "filevine.get_project": FilevineGetProjectInput,
     "filevine.create_project": FilevineCreateProjectInput,
     "filevine.get_contact": FilevineGetContactInput,
@@ -48443,6 +48461,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "ipinfo.lookup_ip": IpinfoLookupIpInput,
     "ipinfo.get_asn": IpinfoGetAsnInput,
     "ipinfo.custom_api_call": IpinfoCustomApiCallInput,
+    "code.run_code": CodeRunCodeInput,
     "jazzhr.list_applicants": JazzhrListApplicantsInput,
     "jazzhr.get_applicant": JazzhrGetApplicantInput,
     "jazzhr.list_jobs": JazzhrListJobsInput,
@@ -48540,11 +48559,6 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "kpler.get_power_unit_availability": KplerGetPowerUnitAvailabilityInput,
     "kpler.execute_vessels_graphql": KplerExecuteVesselsGraphqlInput,
     "kpler.custom_api_call": KplerCustomApiCallInput,
-    "kv-store.put": KvStorePutInput,
-    "kv-store.get": KvStoreGetInput,
-    "kv-store.delete": KvStoreDeleteInput,
-    "kv-store.add_to_list": KvStoreAddToListInput,
-    "kv-store.remove_from_list": KvStoreRemoveFromListInput,
     "kvcore.list_leads": KvcoreListLeadsInput,
     "kvcore.get_lead": KvcoreGetLeadInput,
     "kvcore.create_lead": KvcoreCreateLeadInput,
@@ -49729,6 +49743,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "salesloft.get_person": SalesloftGetPersonInput,
     "salesloft.create_person": SalesloftCreatePersonInput,
     "salesloft.list_cadences": SalesloftListCadencesInput,
+    "advanced-code.run_code": AdvancedCodeRunCodeInput,
     "sanity.query": SanityQueryInput,
     "sanity.create_document": SanityCreateDocumentInput,
     "sanity.update_document": SanityUpdateDocumentInput,
@@ -49972,11 +49987,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "squarespace.custom_api_call": SquarespaceCustomApiCallInput,
     "stability-ai.text-to-image": StabilityAiTextToImageInput,
     "stability-ai.custom_api_call": StabilityAiCustomApiCallInput,
-    "storage.read_file": StorageReadFileInput,
-    "storage.write_file": StorageWriteFileInput,
-    "storage.delete_file": StorageDeleteFileInput,
-    "storage.list_files": StorageListFilesInput,
-    "storage.get_download_url": StorageGetDownloadUrlInput,
+    "kv-store.put": KvStorePutInput,
+    "kv-store.get": KvStoreGetInput,
+    "kv-store.delete": KvStoreDeleteInput,
+    "kv-store.add_to_list": KvStoreAddToListInput,
+    "kv-store.remove_from_list": KvStoreRemoveFromListInput,
     "storyblok.list_spaces": StoryblokListSpacesInput,
     "storyblok.list_stories": StoryblokListStoriesInput,
     "storyblok.get_story": StoryblokGetStoryInput,
