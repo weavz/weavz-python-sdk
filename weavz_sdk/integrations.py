@@ -11980,7 +11980,7 @@ class GmailGetMessageInput(BaseModel):
 class GmailSendEmailInput(BaseModel):
     """Gmail — Send Email"""
     to: str = Field(..., description="Recipient email addresses (comma-separated)")
-    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as email address for this account")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
     subject: str = Field(..., description="Subject")
     body: str = Field(..., description="Body")
     cc: Optional[str] = Field(None, description="CC")
@@ -11993,6 +11993,7 @@ class GmailSendEmailInput(BaseModel):
 class GmailReplyToEmailInput(BaseModel):
     """Gmail — Reply to Email"""
     messageId: str = Field(..., description="The message to reply to")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
     body: str = Field(..., description="Reply Body")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
 
@@ -12002,11 +12003,117 @@ class GmailReplyToEmailInput(BaseModel):
 class GmailForwardEmailInput(BaseModel):
     """Gmail — Forward Email"""
     messageId: str = Field(..., description="The ID of the email to forward")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
     to: str = Field(..., description="Recipient email addresses (comma-separated)")
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     additionalMessage: Optional[str] = Field(None, description="Optional text to prepend above the forwarded content")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailModifyLabelsInput(BaseModel):
+    """Gmail — Modify Labels"""
+    messageId: str = Field(..., description="Message ID")
+    addLabelIds: Optional[list[str]] = Field(None, description="Labels to Add")
+    removeLabelIds: Optional[list[str]] = Field(None, description="Labels to Remove")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailBatchModifyMessagesInput(BaseModel):
+    """Gmail — Batch Modify Messages"""
+    messageIds: list[Any] = Field(..., description="Gmail message IDs to modify.")
+    addLabelIds: Optional[list[str]] = Field(None, description="Labels to Add")
+    removeLabelIds: Optional[list[str]] = Field(None, description="Labels to Remove")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailBatchDeleteMessagesInput(BaseModel):
+    """Gmail — Batch Delete Messages"""
+    messageIds: list[Any] = Field(..., description="Message IDs")
+    confirmPermanentDelete: bool = Field(..., description="Required. Permanently deletes these messages without moving them to Trash.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailTrashMessageInput(BaseModel):
+    """Gmail — Trash Message"""
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailUntrashMessageInput(BaseModel):
+    """Gmail — Untrash Message"""
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailDeleteMessageInput(BaseModel):
+    """Gmail — Delete Message"""
+    messageId: str = Field(..., description="Message ID")
+    confirmPermanentDelete: bool = Field(..., description="Required. Permanently deletes this message without moving it to Trash.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetAttachmentInput(BaseModel):
+    """Gmail — Get Attachment"""
+    messageId: str = Field(..., description="Message ID")
+    attachmentId: str = Field(..., description="Attachment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailListThreadsInput(BaseModel):
+    """Gmail — List Threads"""
+    query: Optional[str] = Field(None, description="Gmail search query.")
+    maxResults: Optional[float] = Field(None, description="Max Results")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    labelIds: Optional[list[str]] = Field(None, description="Filter by one or more labels.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetThreadInput(BaseModel):
+    """Gmail — Get Thread"""
+    threadId: str = Field(..., description="Thread ID")
+    format: Optional[str] = Field(None, description="Format")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailModifyThreadLabelsInput(BaseModel):
+    """Gmail — Modify Thread Labels"""
+    threadId: str = Field(..., description="Thread ID")
+    addLabelIds: Optional[list[str]] = Field(None, description="Labels to Add")
+    removeLabelIds: Optional[list[str]] = Field(None, description="Labels to Remove")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailTrashThreadInput(BaseModel):
+    """Gmail — Trash Thread"""
+    threadId: str = Field(..., description="Thread ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailUntrashThreadInput(BaseModel):
+    """Gmail — Untrash Thread"""
+    threadId: str = Field(..., description="Thread ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailDeleteThreadInput(BaseModel):
+    """Gmail — Delete Thread"""
+    threadId: str = Field(..., description="Thread ID")
+    confirmPermanentDelete: bool = Field(..., description="Required. Permanently deletes this thread without moving it to Trash.")
 
     model_config = {"populate_by_name": True}
 
@@ -12030,6 +12137,168 @@ class GmailRemoveLabelInput(BaseModel):
 class GmailListLabelsInput(BaseModel):
     """Gmail — List Labels"""
     pass
+
+
+class GmailCreateLabelInput(BaseModel):
+    """Gmail — Create Label"""
+    name: str = Field(..., description="Name")
+    labelListVisibility: Optional[str] = Field(None, description="Label List Visibility")
+    messageListVisibility: Optional[str] = Field(None, description="Message List Visibility")
+    textColor: Optional[str] = Field(None, description="Optional hex color such as #ffffff.")
+    backgroundColor: Optional[str] = Field(None, description="Optional hex color such as #4285f4.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetLabelInput(BaseModel):
+    """Gmail — Get Label"""
+    labelId: str = Field(..., description="Label")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailPatchLabelInput(BaseModel):
+    """Gmail — Patch Label"""
+    labelId: str = Field(..., description="Label")
+    name: Optional[str] = Field(None, description="Name")
+    labelListVisibility: Optional[str] = Field(None, description="Label List Visibility")
+    messageListVisibility: Optional[str] = Field(None, description="Message List Visibility")
+    textColor: Optional[str] = Field(None, description="Optional hex color such as #ffffff.")
+    backgroundColor: Optional[str] = Field(None, description="Optional hex color such as #4285f4.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailUpdateLabelInput(BaseModel):
+    """Gmail — Update Label"""
+    labelId: str = Field(..., description="Label")
+    body: Any = Field(..., description="Gmail label resource fields to send with PUT.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailDeleteLabelInput(BaseModel):
+    """Gmail — Delete Label"""
+    labelId: str = Field(..., description="Label")
+    confirmPermanentDelete: bool = Field(..., description="Required. Permanently deletes this label from the account.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailCreateDraftInput(BaseModel):
+    """Gmail — Create Draft"""
+    to: str = Field(..., description="Recipient email addresses (comma-separated)")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
+    subject: str = Field(..., description="Subject")
+    body: str = Field(..., description="Body")
+    cc: Optional[str] = Field(None, description="CC")
+    bcc: Optional[str] = Field(None, description="BCC")
+    isHtml: Optional[bool] = Field(None, description="Send as HTML")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailListDraftsInput(BaseModel):
+    """Gmail — List Drafts"""
+    maxResults: Optional[float] = Field(None, description="Max Results")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetDraftInput(BaseModel):
+    """Gmail — Get Draft"""
+    draftId: str = Field(..., description="Draft ID")
+    format: Optional[str] = Field(None, description="Format")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailUpdateDraftInput(BaseModel):
+    """Gmail — Update Draft"""
+    draftId: str = Field(..., description="Draft ID")
+    to: str = Field(..., description="Recipient email addresses (comma-separated)")
+    from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
+    subject: str = Field(..., description="Subject")
+    body: str = Field(..., description="Body")
+    cc: Optional[str] = Field(None, description="CC")
+    bcc: Optional[str] = Field(None, description="BCC")
+    isHtml: Optional[bool] = Field(None, description="Send as HTML")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailSendDraftInput(BaseModel):
+    """Gmail — Send Draft"""
+    draftId: str = Field(..., description="Draft ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailDeleteDraftInput(BaseModel):
+    """Gmail — Delete Draft"""
+    draftId: str = Field(..., description="Draft ID")
+    confirmPermanentDelete: bool = Field(..., description="Required. Permanently deletes this draft.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetProfileInput(BaseModel):
+    """Gmail — Get Profile"""
+    pass
+
+
+class GmailListHistoryInput(BaseModel):
+    """Gmail — List History"""
+    startHistoryId: str = Field(..., description="Start History ID")
+    historyTypes: Optional[list[Any]] = Field(None, description="Examples: messageAdded, messageDeleted, labelAdded, labelRemoved.")
+    labelId: Optional[str] = Field(None, description="Optional label to filter history.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    maxResults: Optional[float] = Field(None, description="Max Results")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailListSendAsAliasesInput(BaseModel):
+    """Gmail — List Send-As Aliases"""
+    pass
+
+
+class GmailGetSendAsAliasInput(BaseModel):
+    """Gmail — Get Send-As Alias"""
+    sendAsEmail: str = Field(..., description="Send-As Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetContactsInput(BaseModel):
+    """Gmail — Get Contacts"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    personFields: Optional[str] = Field(None, description="Comma-separated People API fields to return.")
+    sortOrder: Optional[str] = Field(None, description="Sort Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailGetPeopleInput(BaseModel):
+    """Gmail — Get People"""
+    resourceName: Optional[str] = Field(None, description="Examples: people/me or people/c1234567890.")
+    otherContacts: Optional[bool] = Field(None, description="List Other Contacts instead of fetching one person resource.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    personFields: Optional[str] = Field(None, description="Comma-separated People API fields to return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GmailSearchPeopleInput(BaseModel):
+    """Gmail — Search People"""
+    query: str = Field(..., description="Search Query")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    personFields: Optional[str] = Field(None, description="Comma-separated People API fields to return.")
+
+    model_config = {"populate_by_name": True}
 
 
 class GmailCustomApiCallInput(BaseModel):
@@ -39122,9 +39391,40 @@ IntegrationActionKey = Literal[
     "gmail.send_email",
     "gmail.reply_to_email",
     "gmail.forward_email",
+    "gmail.modify_labels",
+    "gmail.batch_modify_messages",
+    "gmail.batch_delete_messages",
+    "gmail.trash_message",
+    "gmail.untrash_message",
+    "gmail.delete_message",
+    "gmail.get_attachment",
+    "gmail.list_threads",
+    "gmail.get_thread",
+    "gmail.modify_thread_labels",
+    "gmail.trash_thread",
+    "gmail.untrash_thread",
+    "gmail.delete_thread",
     "gmail.add_label",
     "gmail.remove_label",
     "gmail.list_labels",
+    "gmail.create_label",
+    "gmail.get_label",
+    "gmail.patch_label",
+    "gmail.update_label",
+    "gmail.delete_label",
+    "gmail.create_draft",
+    "gmail.list_drafts",
+    "gmail.get_draft",
+    "gmail.update_draft",
+    "gmail.send_draft",
+    "gmail.delete_draft",
+    "gmail.get_profile",
+    "gmail.list_history",
+    "gmail.list_send_as_aliases",
+    "gmail.get_send_as_alias",
+    "gmail.get_contacts",
+    "gmail.get_people",
+    "gmail.search_people",
     "gmail.custom_api_call",
     "gong.list_calls",
     "gong.get_call_transcript",
@@ -43406,9 +43706,40 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "send_email",
         "reply_to_email",
         "forward_email",
+        "modify_labels",
+        "batch_modify_messages",
+        "batch_delete_messages",
+        "trash_message",
+        "untrash_message",
+        "delete_message",
+        "get_attachment",
+        "list_threads",
+        "get_thread",
+        "modify_thread_labels",
+        "trash_thread",
+        "untrash_thread",
+        "delete_thread",
         "add_label",
         "remove_label",
         "list_labels",
+        "create_label",
+        "get_label",
+        "patch_label",
+        "update_label",
+        "delete_label",
+        "create_draft",
+        "list_drafts",
+        "get_draft",
+        "update_draft",
+        "send_draft",
+        "delete_draft",
+        "get_profile",
+        "list_history",
+        "list_send_as_aliases",
+        "get_send_as_alias",
+        "get_contacts",
+        "get_people",
+        "search_people",
         "custom_api_call",
     ),
     "gong": (
@@ -48030,9 +48361,40 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gmail.send_email": GmailSendEmailInput,
     "gmail.reply_to_email": GmailReplyToEmailInput,
     "gmail.forward_email": GmailForwardEmailInput,
+    "gmail.modify_labels": GmailModifyLabelsInput,
+    "gmail.batch_modify_messages": GmailBatchModifyMessagesInput,
+    "gmail.batch_delete_messages": GmailBatchDeleteMessagesInput,
+    "gmail.trash_message": GmailTrashMessageInput,
+    "gmail.untrash_message": GmailUntrashMessageInput,
+    "gmail.delete_message": GmailDeleteMessageInput,
+    "gmail.get_attachment": GmailGetAttachmentInput,
+    "gmail.list_threads": GmailListThreadsInput,
+    "gmail.get_thread": GmailGetThreadInput,
+    "gmail.modify_thread_labels": GmailModifyThreadLabelsInput,
+    "gmail.trash_thread": GmailTrashThreadInput,
+    "gmail.untrash_thread": GmailUntrashThreadInput,
+    "gmail.delete_thread": GmailDeleteThreadInput,
     "gmail.add_label": GmailAddLabelInput,
     "gmail.remove_label": GmailRemoveLabelInput,
     "gmail.list_labels": GmailListLabelsInput,
+    "gmail.create_label": GmailCreateLabelInput,
+    "gmail.get_label": GmailGetLabelInput,
+    "gmail.patch_label": GmailPatchLabelInput,
+    "gmail.update_label": GmailUpdateLabelInput,
+    "gmail.delete_label": GmailDeleteLabelInput,
+    "gmail.create_draft": GmailCreateDraftInput,
+    "gmail.list_drafts": GmailListDraftsInput,
+    "gmail.get_draft": GmailGetDraftInput,
+    "gmail.update_draft": GmailUpdateDraftInput,
+    "gmail.send_draft": GmailSendDraftInput,
+    "gmail.delete_draft": GmailDeleteDraftInput,
+    "gmail.get_profile": GmailGetProfileInput,
+    "gmail.list_history": GmailListHistoryInput,
+    "gmail.list_send_as_aliases": GmailListSendAsAliasesInput,
+    "gmail.get_send_as_alias": GmailGetSendAsAliasInput,
+    "gmail.get_contacts": GmailGetContactsInput,
+    "gmail.get_people": GmailGetPeopleInput,
+    "gmail.search_people": GmailSearchPeopleInput,
     "gmail.custom_api_call": GmailCustomApiCallInput,
     "gong.list_calls": GongListCallsInput,
     "gong.get_call_transcript": GongGetCallTranscriptInput,
