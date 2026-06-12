@@ -661,6 +661,8 @@ class AgentBrowserReadHtmlInput(BaseModel):
 class AgentBrowserScreenshotInput(BaseModel):
     """Agent Browser — Screenshot"""
     fullPage: Optional[bool] = Field(None, description="Full page")
+    fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
     target: Optional[str] = Field(None, description="Optional element ref or selector.")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
