@@ -635,6 +635,235 @@ class AgencyzoomCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserSnapshotInput(BaseModel):
+    """Agent Browser — Snapshot Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserReadTextInput(BaseModel):
+    """Agent Browser — Read Text"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserReadHtmlInput(BaseModel):
+    """Agent Browser — Read HTML"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserScreenshotInput(BaseModel):
+    """Agent Browser — Screenshot"""
+    fullPage: Optional[bool] = Field(None, description="Full page")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserCurrentPageInput(BaseModel):
+    """Agent Browser — Current Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserNavigateInput(BaseModel):
+    """Agent Browser — Navigate"""
+    url: str = Field(..., description="URL")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserNavigateBackInput(BaseModel):
+    """Agent Browser — Navigate Back"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserClickInput(BaseModel):
+    """Agent Browser — Click"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserTypeInput(BaseModel):
+    """Agent Browser — Type"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    text: str = Field(..., description="Text")
+    submit: Optional[bool] = Field(None, description="Submit")
+    slowly: Optional[bool] = Field(None, description="Type slowly")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserFillFormInput(BaseModel):
+    """Agent Browser — Fill Form"""
+    fields: Any = Field(..., description="[{ \"target\": \"e5\", \"type\": \"textbox\", \"value\": \"...\" }]")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserSelectOptionInput(BaseModel):
+    """Agent Browser — Select Option"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    values: list[Any] = Field(..., description="Values")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserHoverInput(BaseModel):
+    """Agent Browser — Hover"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserDragInput(BaseModel):
+    """Agent Browser — Drag and Drop"""
+    startTarget: str = Field(..., description="Element ref or selector.")
+    endTarget: str = Field(..., description="Element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserPressKeyInput(BaseModel):
+    """Agent Browser — Press Key"""
+    key: str = Field(..., description="Key")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserFileUploadInput(BaseModel):
+    """Agent Browser — Upload File"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    file: str = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    fileName: Optional[str] = Field(None, description="Optional filename override.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserEvaluateInput(BaseModel):
+    """Agent Browser — Evaluate JavaScript"""
+    function: str = Field(..., description="For example: () => document.title")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserWaitForInput(BaseModel):
+    """Agent Browser — Wait For"""
+    text: Optional[str] = Field(None, description="Text appears")
+    textGone: Optional[str] = Field(None, description="Text disappears")
+    time: Optional[float] = Field(None, description="Seconds")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserHandleDialogInput(BaseModel):
+    """Agent Browser — Handle Dialog"""
+    accept: bool = Field(..., description="Accept")
+    promptText: Optional[str] = Field(None, description="Prompt text")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserTabsInput(BaseModel):
+    """Agent Browser — Tabs"""
+    action: str = Field(..., description="Action")
+    index: Optional[float] = Field(None, description="Tab index")
+    url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserRequestHumanInput(BaseModel):
+    """Agent Browser — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserResumeInput(BaseModel):
+    """Agent Browser — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserSessionStatusInput(BaseModel):
+    """Agent Browser — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStartSessionInput(BaseModel):
+    """Agent Browser — Start Session"""
+    allowedHosts: Optional[list[Any]] = Field(None, description="Restrict browsing to these hosts. Empty means unrestricted.")
+    headless: Optional[bool] = Field(None, description="Headless")
+    restoreFromKey: Optional[str] = Field(None, description="Restore from key")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserEndSessionInput(BaseModel):
+    """Agent Browser — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiActInput(BaseModel):
+    """Agent Browser AI — Act"""
+    instruction: str = Field(..., description="Instruction")
+    maxSteps: Optional[float] = Field(None, description="Max steps")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiExtractInput(BaseModel):
+    """Agent Browser AI — Extract"""
+    instruction: str = Field(..., description="What to extract")
+    schema_: Optional[Any] = Field(None, alias="schema", description="Optional JSON Schema for the result shape.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiObserveInput(BaseModel):
+    """Agent Browser AI — Observe"""
+    instruction: str = Field(..., description="Instruction")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentMemoryCreateEntitiesInput(BaseModel):
     """Agent Memory — Create Entities"""
     entities: Any = Field(..., description="Array of entities to create. Each entity: { name: string, type: string, observations?: string[] }")
@@ -37622,6 +37851,8 @@ IntegrationName = Literal[
     "affinity",
     "aftership",
     "agencyzoom",
+    "agent-browser",
+    "agent-browser-ai",
     "agent-memory",
     "agent-scratchpad",
     "ahrefs",
@@ -38205,6 +38436,33 @@ IntegrationActionKey = Literal[
     "agencyzoom.update_status",
     "agencyzoom.create_note",
     "agencyzoom.custom_api_call",
+    "agent-browser.snapshot",
+    "agent-browser.read_text",
+    "agent-browser.read_html",
+    "agent-browser.screenshot",
+    "agent-browser.current_page",
+    "agent-browser.navigate",
+    "agent-browser.navigate_back",
+    "agent-browser.click",
+    "agent-browser.type",
+    "agent-browser.fill_form",
+    "agent-browser.select_option",
+    "agent-browser.hover",
+    "agent-browser.drag",
+    "agent-browser.press_key",
+    "agent-browser.file_upload",
+    "agent-browser.evaluate",
+    "agent-browser.wait_for",
+    "agent-browser.handle_dialog",
+    "agent-browser.tabs",
+    "agent-browser.request_human",
+    "agent-browser.resume",
+    "agent-browser.session_status",
+    "agent-browser.start_session",
+    "agent-browser.end_session",
+    "agent-browser-ai.act",
+    "agent-browser-ai.extract",
+    "agent-browser-ai.observe",
     "agent-memory.create_entities",
     "agent-memory.add_observations",
     "agent-memory.create_relations",
@@ -42188,6 +42446,37 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "update_status",
         "create_note",
         "custom_api_call",
+    ),
+    "agent-browser": (
+        "snapshot",
+        "read_text",
+        "read_html",
+        "screenshot",
+        "current_page",
+        "navigate",
+        "navigate_back",
+        "click",
+        "type",
+        "fill_form",
+        "select_option",
+        "hover",
+        "drag",
+        "press_key",
+        "file_upload",
+        "evaluate",
+        "wait_for",
+        "handle_dialog",
+        "tabs",
+        "request_human",
+        "resume",
+        "session_status",
+        "start_session",
+        "end_session",
+    ),
+    "agent-browser-ai": (
+        "act",
+        "extract",
+        "observe",
     ),
     "agent-memory": (
         "create_entities",
@@ -47175,6 +47464,33 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agencyzoom.update_status": AgencyzoomUpdateStatusInput,
     "agencyzoom.create_note": AgencyzoomCreateNoteInput,
     "agencyzoom.custom_api_call": AgencyzoomCustomApiCallInput,
+    "agent-browser.snapshot": AgentBrowserSnapshotInput,
+    "agent-browser.read_text": AgentBrowserReadTextInput,
+    "agent-browser.read_html": AgentBrowserReadHtmlInput,
+    "agent-browser.screenshot": AgentBrowserScreenshotInput,
+    "agent-browser.current_page": AgentBrowserCurrentPageInput,
+    "agent-browser.navigate": AgentBrowserNavigateInput,
+    "agent-browser.navigate_back": AgentBrowserNavigateBackInput,
+    "agent-browser.click": AgentBrowserClickInput,
+    "agent-browser.type": AgentBrowserTypeInput,
+    "agent-browser.fill_form": AgentBrowserFillFormInput,
+    "agent-browser.select_option": AgentBrowserSelectOptionInput,
+    "agent-browser.hover": AgentBrowserHoverInput,
+    "agent-browser.drag": AgentBrowserDragInput,
+    "agent-browser.press_key": AgentBrowserPressKeyInput,
+    "agent-browser.file_upload": AgentBrowserFileUploadInput,
+    "agent-browser.evaluate": AgentBrowserEvaluateInput,
+    "agent-browser.wait_for": AgentBrowserWaitForInput,
+    "agent-browser.handle_dialog": AgentBrowserHandleDialogInput,
+    "agent-browser.tabs": AgentBrowserTabsInput,
+    "agent-browser.request_human": AgentBrowserRequestHumanInput,
+    "agent-browser.resume": AgentBrowserResumeInput,
+    "agent-browser.session_status": AgentBrowserSessionStatusInput,
+    "agent-browser.start_session": AgentBrowserStartSessionInput,
+    "agent-browser.end_session": AgentBrowserEndSessionInput,
+    "agent-browser-ai.act": AgentBrowserAiActInput,
+    "agent-browser-ai.extract": AgentBrowserAiExtractInput,
+    "agent-browser-ai.observe": AgentBrowserAiObserveInput,
     "agent-memory.create_entities": AgentMemoryCreateEntitiesInput,
     "agent-memory.add_observations": AgentMemoryAddObservationsInput,
     "agent-memory.create_relations": AgentMemoryCreateRelationsInput,
