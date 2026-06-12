@@ -828,7 +828,6 @@ class AgentBrowserStartSessionInput(BaseModel):
     """Agent Browser — Start Session"""
     allowedHosts: Optional[list[Any]] = Field(None, description="Restrict browsing to these hosts. Empty means unrestricted.")
     headless: Optional[bool] = Field(None, description="Headless")
-    restoreFromKey: Optional[str] = Field(None, description="Restore from key")
 
     model_config = {"populate_by_name": True}
 
