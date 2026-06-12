@@ -242,6 +242,10 @@ return { parsed }
 )
 ```
 
+Code Mode responses include `structuredContent.timings` for total execution and per-action latency.
+For Agent Browser workflows, batch several browser actions inside one Code Mode script instead of
+calling `execute_code()` once per click or screenshot.
+
 Read more:
 
 - [MCP servers](https://weavz.io/docs/concepts/mcp-servers)
