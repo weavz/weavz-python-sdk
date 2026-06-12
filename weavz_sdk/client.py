@@ -1218,57 +1218,6 @@ class EndUsersResource(_BaseResource):
         )
 
 
-class BrowserSessionsResource(_BaseResource):
-    """Hosted browser sessions with live human handoff."""
-
-    def list(self) -> dict[str, Any]:
-        return self._get("/api/v1/browser-sessions")
-
-    def create(
-        self,
-        *,
-        workspace_id: str,
-        end_user_id: str | None = None,
-        allowed_hosts: list[str] | None = None,
-        headless: bool | None = None,
-        restore_from_key: str | None = None,
-        ttl_minutes: int | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {"workspaceId": workspace_id}
-        if end_user_id is not None:
-            body["endUserId"] = end_user_id
-        if allowed_hosts is not None:
-            body["allowedHosts"] = allowed_hosts
-        if headless is not None:
-            body["headless"] = headless
-        if restore_from_key is not None:
-            body["restoreFromKey"] = restore_from_key
-        if ttl_minutes is not None:
-            body["ttlMinutes"] = ttl_minutes
-        return self._post("/api/v1/browser-sessions", json=body)
-
-    def get(self, session_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/browser-sessions/{session_id}")
-
-    def handoff(
-        self,
-        session_id: str,
-        event: Literal["to_agent", "to_user", "pause"],
-        *,
-        reason: str | None = None,
-    ) -> dict[str, Any]:
-        body: dict[str, Any] = {"event": event}
-        if reason is not None:
-            body["reason"] = reason
-        return self._post(f"/api/v1/browser-sessions/{session_id}/handoff", json=body)
-
-    def revoke(self, session_id: str) -> dict[str, Any]:
-        return self._post(f"/api/v1/browser-sessions/{session_id}/revoke")
-
-    def delete(self, session_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/browser-sessions/{session_id}")
-
-
 class WeavzClient:
     """Weavz API client.
 
@@ -1309,7 +1258,6 @@ class WeavzClient:
         self.integrations = IntegrationsResource(self)
         self.partials = PartialsResource(self)
         self.end_users = EndUsersResource(self)
-        self.browser_sessions = BrowserSessionsResource(self)
 
     def request(
         self,
