@@ -817,6 +817,14 @@ class AgentBrowserResumeInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserEnsureConnectedInput(BaseModel):
+    """Agent Browser — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentBrowserSessionStatusInput(BaseModel):
     """Agent Browser — Session Status"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
@@ -834,6 +842,218 @@ class AgentBrowserStartSessionInput(BaseModel):
 
 class AgentBrowserEndSessionInput(BaseModel):
     """Agent Browser — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiSnapshotInput(BaseModel):
+    """Agent Browser AI — Snapshot Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiReadTextInput(BaseModel):
+    """Agent Browser AI — Read Text"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiReadHtmlInput(BaseModel):
+    """Agent Browser AI — Read HTML"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiScreenshotInput(BaseModel):
+    """Agent Browser AI — Screenshot"""
+    fullPage: Optional[bool] = Field(None, description="Full page")
+    fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiCurrentPageInput(BaseModel):
+    """Agent Browser AI — Current Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiNavigateInput(BaseModel):
+    """Agent Browser AI — Navigate"""
+    url: str = Field(..., description="URL")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiNavigateBackInput(BaseModel):
+    """Agent Browser AI — Navigate Back"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiClickInput(BaseModel):
+    """Agent Browser AI — Click"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiTypeInput(BaseModel):
+    """Agent Browser AI — Type"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    text: str = Field(..., description="Text")
+    submit: Optional[bool] = Field(None, description="Submit")
+    slowly: Optional[bool] = Field(None, description="Type slowly")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiFillFormInput(BaseModel):
+    """Agent Browser AI — Fill Form"""
+    fields: Any = Field(..., description="[{ \"target\": \"e5\", \"type\": \"textbox\", \"value\": \"...\" }]")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiSelectOptionInput(BaseModel):
+    """Agent Browser AI — Select Option"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    values: list[Any] = Field(..., description="Values")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiHoverInput(BaseModel):
+    """Agent Browser AI — Hover"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiDragInput(BaseModel):
+    """Agent Browser AI — Drag and Drop"""
+    startTarget: str = Field(..., description="Element ref or selector.")
+    endTarget: str = Field(..., description="Element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiPressKeyInput(BaseModel):
+    """Agent Browser AI — Press Key"""
+    key: str = Field(..., description="Key")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiFileUploadInput(BaseModel):
+    """Agent Browser AI — Upload File"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    file: str = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    fileName: Optional[str] = Field(None, description="Optional filename override.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiEvaluateInput(BaseModel):
+    """Agent Browser AI — Evaluate JavaScript"""
+    function: str = Field(..., description="For example: () => document.title")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiWaitForInput(BaseModel):
+    """Agent Browser AI — Wait For"""
+    text: Optional[str] = Field(None, description="Text appears")
+    textGone: Optional[str] = Field(None, description="Text disappears")
+    time: Optional[float] = Field(None, description="Seconds")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiHandleDialogInput(BaseModel):
+    """Agent Browser AI — Handle Dialog"""
+    accept: bool = Field(..., description="Accept")
+    promptText: Optional[str] = Field(None, description="Prompt text")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiTabsInput(BaseModel):
+    """Agent Browser AI — Tabs"""
+    action: str = Field(..., description="Action")
+    index: Optional[float] = Field(None, description="Tab index")
+    url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiRequestHumanInput(BaseModel):
+    """Agent Browser AI — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiResumeInput(BaseModel):
+    """Agent Browser AI — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiEnsureConnectedInput(BaseModel):
+    """Agent Browser AI — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiSessionStatusInput(BaseModel):
+    """Agent Browser AI — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiStartSessionInput(BaseModel):
+    """Agent Browser AI — Start Session"""
+    allowedHosts: Optional[list[Any]] = Field(None, description="Restrict browsing to these hosts. Empty means unrestricted.")
+    headless: Optional[bool] = Field(None, description="Headless")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiEndSessionInput(BaseModel):
+    """Agent Browser AI — End Session"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1042,6 +1262,14 @@ class AgentLocalBrowserControlRequestHumanInput(BaseModel):
 
 class AgentLocalBrowserControlResumeInput(BaseModel):
     """Agent Local Browser Control — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalBrowserControlEnsureConnectedInput(BaseModel):
+    """Agent Local Browser Control — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -38663,9 +38891,35 @@ IntegrationActionKey = Literal[
     "agent-browser.tabs",
     "agent-browser.request_human",
     "agent-browser.resume",
+    "agent-browser.ensure_connected",
     "agent-browser.session_status",
     "agent-browser.start_session",
     "agent-browser.end_session",
+    "agent-browser-ai.snapshot",
+    "agent-browser-ai.read_text",
+    "agent-browser-ai.read_html",
+    "agent-browser-ai.screenshot",
+    "agent-browser-ai.current_page",
+    "agent-browser-ai.navigate",
+    "agent-browser-ai.navigate_back",
+    "agent-browser-ai.click",
+    "agent-browser-ai.type",
+    "agent-browser-ai.fill_form",
+    "agent-browser-ai.select_option",
+    "agent-browser-ai.hover",
+    "agent-browser-ai.drag",
+    "agent-browser-ai.press_key",
+    "agent-browser-ai.file_upload",
+    "agent-browser-ai.evaluate",
+    "agent-browser-ai.wait_for",
+    "agent-browser-ai.handle_dialog",
+    "agent-browser-ai.tabs",
+    "agent-browser-ai.request_human",
+    "agent-browser-ai.resume",
+    "agent-browser-ai.ensure_connected",
+    "agent-browser-ai.session_status",
+    "agent-browser-ai.start_session",
+    "agent-browser-ai.end_session",
     "agent-browser-ai.act",
     "agent-browser-ai.extract",
     "agent-browser-ai.observe",
@@ -38690,6 +38944,7 @@ IntegrationActionKey = Literal[
     "agent-local-browser-control.tabs",
     "agent-local-browser-control.request_human",
     "agent-local-browser-control.resume",
+    "agent-local-browser-control.ensure_connected",
     "agent-local-browser-control.session_status",
     "agent-local-browser-control.start_session",
     "agent-local-browser-control.end_session",
@@ -42699,11 +42954,37 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "tabs",
         "request_human",
         "resume",
+        "ensure_connected",
         "session_status",
         "start_session",
         "end_session",
     ),
     "agent-browser-ai": (
+        "snapshot",
+        "read_text",
+        "read_html",
+        "screenshot",
+        "current_page",
+        "navigate",
+        "navigate_back",
+        "click",
+        "type",
+        "fill_form",
+        "select_option",
+        "hover",
+        "drag",
+        "press_key",
+        "file_upload",
+        "evaluate",
+        "wait_for",
+        "handle_dialog",
+        "tabs",
+        "request_human",
+        "resume",
+        "ensure_connected",
+        "session_status",
+        "start_session",
+        "end_session",
         "act",
         "extract",
         "observe",
@@ -42730,6 +43011,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "tabs",
         "request_human",
         "resume",
+        "ensure_connected",
         "session_status",
         "start_session",
         "end_session",
@@ -47741,9 +48023,35 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser.tabs": AgentBrowserTabsInput,
     "agent-browser.request_human": AgentBrowserRequestHumanInput,
     "agent-browser.resume": AgentBrowserResumeInput,
+    "agent-browser.ensure_connected": AgentBrowserEnsureConnectedInput,
     "agent-browser.session_status": AgentBrowserSessionStatusInput,
     "agent-browser.start_session": AgentBrowserStartSessionInput,
     "agent-browser.end_session": AgentBrowserEndSessionInput,
+    "agent-browser-ai.snapshot": AgentBrowserAiSnapshotInput,
+    "agent-browser-ai.read_text": AgentBrowserAiReadTextInput,
+    "agent-browser-ai.read_html": AgentBrowserAiReadHtmlInput,
+    "agent-browser-ai.screenshot": AgentBrowserAiScreenshotInput,
+    "agent-browser-ai.current_page": AgentBrowserAiCurrentPageInput,
+    "agent-browser-ai.navigate": AgentBrowserAiNavigateInput,
+    "agent-browser-ai.navigate_back": AgentBrowserAiNavigateBackInput,
+    "agent-browser-ai.click": AgentBrowserAiClickInput,
+    "agent-browser-ai.type": AgentBrowserAiTypeInput,
+    "agent-browser-ai.fill_form": AgentBrowserAiFillFormInput,
+    "agent-browser-ai.select_option": AgentBrowserAiSelectOptionInput,
+    "agent-browser-ai.hover": AgentBrowserAiHoverInput,
+    "agent-browser-ai.drag": AgentBrowserAiDragInput,
+    "agent-browser-ai.press_key": AgentBrowserAiPressKeyInput,
+    "agent-browser-ai.file_upload": AgentBrowserAiFileUploadInput,
+    "agent-browser-ai.evaluate": AgentBrowserAiEvaluateInput,
+    "agent-browser-ai.wait_for": AgentBrowserAiWaitForInput,
+    "agent-browser-ai.handle_dialog": AgentBrowserAiHandleDialogInput,
+    "agent-browser-ai.tabs": AgentBrowserAiTabsInput,
+    "agent-browser-ai.request_human": AgentBrowserAiRequestHumanInput,
+    "agent-browser-ai.resume": AgentBrowserAiResumeInput,
+    "agent-browser-ai.ensure_connected": AgentBrowserAiEnsureConnectedInput,
+    "agent-browser-ai.session_status": AgentBrowserAiSessionStatusInput,
+    "agent-browser-ai.start_session": AgentBrowserAiStartSessionInput,
+    "agent-browser-ai.end_session": AgentBrowserAiEndSessionInput,
     "agent-browser-ai.act": AgentBrowserAiActInput,
     "agent-browser-ai.extract": AgentBrowserAiExtractInput,
     "agent-browser-ai.observe": AgentBrowserAiObserveInput,
@@ -47768,6 +48076,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-browser-control.tabs": AgentLocalBrowserControlTabsInput,
     "agent-local-browser-control.request_human": AgentLocalBrowserControlRequestHumanInput,
     "agent-local-browser-control.resume": AgentLocalBrowserControlResumeInput,
+    "agent-local-browser-control.ensure_connected": AgentLocalBrowserControlEnsureConnectedInput,
     "agent-local-browser-control.session_status": AgentLocalBrowserControlSessionStatusInput,
     "agent-local-browser-control.start_session": AgentLocalBrowserControlStartSessionInput,
     "agent-local-browser-control.end_session": AgentLocalBrowserControlEndSessionInput,
