@@ -663,7 +663,22 @@ class AgentBrowserScreenshotInput(BaseModel):
     fullPage: Optional[bool] = Field(None, description="Full page")
     fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    mode: Optional[str] = Field(None, description="Fast viewport uses the browser frame capture path for the common current-view screenshot.")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL. Leave off for faster agent/MCP use.")
     target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserRunStepsInput(BaseModel):
+    """Agent Browser — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"navigate\", \"params\": { \"url\": \"https://example.com\" } }, { \"op\": \"snapshot\" }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Adds a final inline MCP image. Screenshot steps inside the batch are summarized to avoid large JSON blobs.")
+    finalScreenshotQuality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    finalScreenshotFullPage: Optional[bool] = Field(None, description="Final screenshot full page")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -875,7 +890,22 @@ class AgentBrowserAiScreenshotInput(BaseModel):
     fullPage: Optional[bool] = Field(None, description="Full page")
     fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    mode: Optional[str] = Field(None, description="Fast viewport uses the browser frame capture path for the common current-view screenshot.")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL. Leave off for faster agent/MCP use.")
     target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiRunStepsInput(BaseModel):
+    """Agent Browser AI — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"navigate\", \"params\": { \"url\": \"https://example.com\" } }, { \"op\": \"snapshot\" }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Adds a final inline MCP image. Screenshot steps inside the batch are summarized to avoid large JSON blobs.")
+    finalScreenshotQuality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    finalScreenshotFullPage: Optional[bool] = Field(None, description="Final screenshot full page")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1113,7 +1143,22 @@ class AgentLocalBrowserControlScreenshotInput(BaseModel):
     fullPage: Optional[bool] = Field(None, description="Full page")
     fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    mode: Optional[str] = Field(None, description="Fast viewport uses the browser frame capture path for the common current-view screenshot.")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL. Leave off for faster agent/MCP use.")
     target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalBrowserControlRunStepsInput(BaseModel):
+    """Agent Local Browser Control — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"navigate\", \"params\": { \"url\": \"https://example.com\" } }, { \"op\": \"snapshot\" }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Adds a final inline MCP image. Screenshot steps inside the batch are summarized to avoid large JSON blobs.")
+    finalScreenshotQuality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    finalScreenshotFullPage: Optional[bool] = Field(None, description="Final screenshot full page")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -38874,6 +38919,7 @@ IntegrationActionKey = Literal[
     "agent-browser.read_text",
     "agent-browser.read_html",
     "agent-browser.screenshot",
+    "agent-browser.run_steps",
     "agent-browser.current_page",
     "agent-browser.navigate",
     "agent-browser.navigate_back",
@@ -38899,6 +38945,7 @@ IntegrationActionKey = Literal[
     "agent-browser-ai.read_text",
     "agent-browser-ai.read_html",
     "agent-browser-ai.screenshot",
+    "agent-browser-ai.run_steps",
     "agent-browser-ai.current_page",
     "agent-browser-ai.navigate",
     "agent-browser-ai.navigate_back",
@@ -38927,6 +38974,7 @@ IntegrationActionKey = Literal[
     "agent-local-browser-control.read_text",
     "agent-local-browser-control.read_html",
     "agent-local-browser-control.screenshot",
+    "agent-local-browser-control.run_steps",
     "agent-local-browser-control.current_page",
     "agent-local-browser-control.navigate",
     "agent-local-browser-control.navigate_back",
@@ -42937,6 +42985,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "read_text",
         "read_html",
         "screenshot",
+        "run_steps",
         "current_page",
         "navigate",
         "navigate_back",
@@ -42964,6 +43013,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "read_text",
         "read_html",
         "screenshot",
+        "run_steps",
         "current_page",
         "navigate",
         "navigate_back",
@@ -42994,6 +43044,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "read_text",
         "read_html",
         "screenshot",
+        "run_steps",
         "current_page",
         "navigate",
         "navigate_back",
@@ -48006,6 +48057,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser.read_text": AgentBrowserReadTextInput,
     "agent-browser.read_html": AgentBrowserReadHtmlInput,
     "agent-browser.screenshot": AgentBrowserScreenshotInput,
+    "agent-browser.run_steps": AgentBrowserRunStepsInput,
     "agent-browser.current_page": AgentBrowserCurrentPageInput,
     "agent-browser.navigate": AgentBrowserNavigateInput,
     "agent-browser.navigate_back": AgentBrowserNavigateBackInput,
@@ -48031,6 +48083,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser-ai.read_text": AgentBrowserAiReadTextInput,
     "agent-browser-ai.read_html": AgentBrowserAiReadHtmlInput,
     "agent-browser-ai.screenshot": AgentBrowserAiScreenshotInput,
+    "agent-browser-ai.run_steps": AgentBrowserAiRunStepsInput,
     "agent-browser-ai.current_page": AgentBrowserAiCurrentPageInput,
     "agent-browser-ai.navigate": AgentBrowserAiNavigateInput,
     "agent-browser-ai.navigate_back": AgentBrowserAiNavigateBackInput,
@@ -48059,6 +48112,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-browser-control.read_text": AgentLocalBrowserControlReadTextInput,
     "agent-local-browser-control.read_html": AgentLocalBrowserControlReadHtmlInput,
     "agent-local-browser-control.screenshot": AgentLocalBrowserControlScreenshotInput,
+    "agent-local-browser-control.run_steps": AgentLocalBrowserControlRunStepsInput,
     "agent-local-browser-control.current_page": AgentLocalBrowserControlCurrentPageInput,
     "agent-local-browser-control.navigate": AgentLocalBrowserControlNavigateInput,
     "agent-local-browser-control.navigate_back": AgentLocalBrowserControlNavigateBackInput,
