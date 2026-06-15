@@ -7,7 +7,7 @@ Weavz gives your product one API for connection management, end-user identity, h
 ## Links
 
 - [Weavz](https://weavz.io)
-- [Dashboard](https://platform.weavz.io)
+- [Dashboard](https://dashboard.weavz.io)
 - [Documentation](https://weavz.io/docs)
 - [Python SDK docs](https://weavz.io/docs/sdks/python)
 - [API reference](https://weavz.io/docs/api-reference)
@@ -16,7 +16,7 @@ Weavz gives your product one API for connection management, end-user identity, h
 ## Installation
 
 ```bash
-pip install weavz-sdk
+pip install weavz-io-sdk
 ```
 
 The SDK supports Python 3.10 and newer.
@@ -86,7 +86,7 @@ For a guided Slack setup, see the [Quick Start](https://weavz.io/docs/getting-st
 ```python
 client = WeavzClient(
     api_key="wvz_your_api_key",
-    base_url="https://api.weavz.io",
+    base_url="https://platform.weavz.io",
     timeout=310.0,
     max_retries=2,
 )
@@ -95,7 +95,7 @@ client = WeavzClient(
 | Option | Required | Default | Description |
 | --- | --- | --- | --- |
 | `api_key` | Yes | - | Weavz API key with the `wvz_` prefix |
-| `base_url` | No | `https://api.weavz.io` | API base URL |
+| `base_url` | No | `https://platform.weavz.io` | API base URL |
 | `timeout` | No | `310.0` | Request timeout in seconds |
 | `max_retries` | No | `2` | Retry count for transient failures |
 
