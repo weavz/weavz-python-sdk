@@ -1,0 +1,132 @@
+name: Release Python SDK
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build and validate without publishing
+        required: true
+        default: true
+        type: boolean
+      confirm_release:
+        description: Type release-sdk to publish
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: python-sdk-release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release weavz-sdk
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: pypi-release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Validate release request
+        run: |
+          if [ "$GITHUB_REF_NAME" != "main" ]; then
+            echo "SDK releases must run from main. Current ref: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
+
+          if [ "$DRY_RUN" = "false" ] && [ "$CONFIRM_RELEASE" != "release-sdk" ]; then
+            echo "Real SDK release requires confirm_release=release-sdk"
+            exit 1
+          fi
+        env:
+          CONFIRM_RELEASE: ${{ inputs.confirm_release }}
+          DRY_RUN: ${{ inputs.dry_run }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build pytest twine
+          python -m pip install -e .
+
+      - name: Run package checks
+        run: |
+          python -m pytest tests/test_generated_integrations.py
+          python -m build
+          python -m twine check dist/*
+
+      - name: Check package version
+        id: package
+        run: |
+          version="$(python - <<'PY'
+          import tomllib
+          with open("pyproject.toml", "rb") as f:
+              print(tomllib.load(f)["project"]["version"])
+          PY
+          )"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+          VERSION="$version" python - <<'PY'
+          import os
+          import sys
+          import urllib.error
+          import urllib.request
+
+          version = os.environ["VERSION"]
+          url = f"https://pypi.org/pypi/weavz-sdk/{version}/json"
+          try:
+              urllib.request.urlopen(url, timeout=10).close()
+          except urllib.error.HTTPError as exc:
+              if exc.code == 404:
+                  sys.exit(0)
+              raise
+
+          print(f"weavz-sdk {version} is already published")
+          sys.exit(1)
+          PY
+
+      - name: Publish to PyPI
+        if: inputs.dry_run == false
+        run: |
+          if [ -z "$TWINE_PASSWORD" ]; then
+            echo "PYPI_API_TOKEN is required for PyPI publishing"
+            exit 1
+          fi
+
+          python -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Tag release
+        if: inputs.dry_run == false
+        run: |
+          tag="v${VERSION}"
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            echo "Git tag ${tag} already exists"
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$tag"
+          git push origin "$tag"
+        env:
+          VERSION: ${{ steps.package.outputs.version }}
+
+      - name: Create GitHub release
+        if: inputs.dry_run == false
+        run: |
+          gh release create "v${VERSION}" \
+            --title "weavz-sdk v${VERSION}" \
+            --notes "Published weavz-sdk ${VERSION} to PyPI."
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.package.outputs.version }}
