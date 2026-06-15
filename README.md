@@ -1,5 +1,12 @@
 # Weavz Python SDK
 
+[![PyPI version](https://img.shields.io/pypi/v/weavz-io-sdk?label=PyPI)](https://pypi.org/project/weavz-io-sdk/)
+[![Python versions](https://img.shields.io/pypi/pyversions/weavz-io-sdk)](https://pypi.org/project/weavz-io-sdk/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/weavz-io-sdk?label=downloads)](https://pypi.org/project/weavz-io-sdk/)
+[![GitHub release](https://img.shields.io/github/v/release/weavz/weavz-python-sdk?label=release)](https://github.com/weavz/weavz-python-sdk/releases)
+[![Release workflow](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml)
+[![License](https://img.shields.io/pypi/l/weavz-io-sdk?label=license)](https://github.com/weavz/weavz-python-sdk/blob/main/LICENSE)
+
 Official Python SDK for [Weavz](https://weavz.io), the stateful agent runtime for SaaS and AI products.
 
 Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, Human Gates, input partials, Filesystem, State KV, Sandbox execution, and 500+ integrations.
