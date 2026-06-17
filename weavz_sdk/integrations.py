@@ -772,7 +772,7 @@ class AgentBrowserPressKeyInput(BaseModel):
 class AgentBrowserFileUploadInput(BaseModel):
     """Agent Browser — Upload File"""
     target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
-    file: str = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
     fileName: Optional[str] = Field(None, description="Optional filename override.")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
@@ -999,7 +999,7 @@ class AgentBrowserAiPressKeyInput(BaseModel):
 class AgentBrowserAiFileUploadInput(BaseModel):
     """Agent Browser AI — Upload File"""
     target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
-    file: str = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
     fileName: Optional[str] = Field(None, description="Optional filename override.")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
@@ -1252,7 +1252,7 @@ class AgentLocalBrowserControlPressKeyInput(BaseModel):
 class AgentLocalBrowserControlFileUploadInput(BaseModel):
     """Agent Local Browser Control — Upload File"""
     target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
-    file: str = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
     fileName: Optional[str] = Field(None, description="Optional filename override.")
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
@@ -1913,7 +1913,7 @@ class AlmaCustomMcpRequestInput(BaseModel):
 
 class AmazonS3UploadFileInput(BaseModel):
     """Amazon S3 — Upload File"""
-    file: str = Field(..., description="The file to upload to S3.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload to S3.")
     fileName: Optional[str] = Field(None, description="File Name (Optional)")
     acl: Optional[str] = Field(None, description="Access Control (ACL)")
     type_: Optional[str] = Field(None, alias="type", description="Content Type")
@@ -2194,7 +2194,7 @@ class ClaudeAskClaudeInput(BaseModel):
     temperature: Optional[float] = Field(None, description="Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive.")
     maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
     prompt: str = Field(..., description="Question")
-    image: Optional[str] = Field(None, description="URL of image to be used as input for the model.")
+    image: Optional[Union[str, dict[str, Any]]] = Field(None, description="URL of image to be used as input for the model.")
     roles: Optional[Any] = Field(None, description="Array of roles to specify more accurate response.")
     thinkingMode: Optional[bool] = Field(None, description="Uses claude 3.7 sonnet enhanced reasoning capabilities for complex tasks.")
     thinkingModeParams: Optional[dict[str, Any]] = Field(None, description="thinkingModeParams")
@@ -2206,7 +2206,7 @@ class ClaudeExtractStructuredDataInput(BaseModel):
     """Anthropic Claude — Extract Structured Data"""
     model: str = Field(..., description="The model which will generate the completion. Some models are suitable for natural language tasks, others specialize in code.")
     text: Optional[str] = Field(None, description="Text to extract structured data from.")
-    image: Optional[str] = Field(None, description="Image or PDF to extract structured data from.")
+    image: Optional[Union[str, dict[str, Any]]] = Field(None, description="Image or PDF to extract structured data from.")
     prompt: Optional[str] = Field(None, description="Prompt to guide the AI.")
     mode: str = Field(..., description="For complex schema, you can use advanced mode.")
     schema_: dict[str, Any] = Field(..., alias="schema", description="Data Definition")
@@ -2609,7 +2609,7 @@ class AshbyCustomApiCallInput(BaseModel):
 
 class AssemblyaiUploadFileInput(BaseModel):
     """AssemblyAI — Upload File"""
-    file: str = Field(..., description="The File or URL of the audio or video file.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The File or URL of the audio or video file.")
 
     model_config = {"populate_by_name": True}
 
@@ -2960,7 +2960,7 @@ class AtlassianJiraAddAttachmentInput(BaseModel):
     """Atlassian — Jira Add Attachment"""
     cloudId: str = Field(..., description="Use Jira List Sites to resolve the Atlassian cloud ID.")
     issueIdOrKey: str = Field(..., description="Issue ID or Key")
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
 
     model_config = {"populate_by_name": True}
 
@@ -3159,7 +3159,7 @@ class AtlassianConfluenceUploadAttachmentInput(BaseModel):
     """Atlassian — Confluence Upload Attachment"""
     cloudId: str = Field(..., description="Use Jira List Sites to resolve the Atlassian cloud ID.")
     pageId: str = Field(..., description="Page ID")
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
     comment: Optional[str] = Field(None, description="Comment")
 
     model_config = {"populate_by_name": True}
@@ -5183,7 +5183,7 @@ class CanvaGetDesignAutofillJobInput(BaseModel):
 
 class CanvaCreateAssetUploadJobInput(BaseModel):
     """Canva — Create Asset Upload Job"""
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
     name: str = Field(..., description="Asset Name")
 
     model_config = {"populate_by_name": True}
@@ -6821,7 +6821,7 @@ class CognitoFormsGetImportStatusInput(BaseModel):
 
 class CognitoFormsUploadFileInput(BaseModel):
     """Cognito Forms — Upload File"""
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
     fieldName: Optional[str] = Field(None, description="Field Name")
 
     model_config = {"populate_by_name": True}
@@ -8174,7 +8174,7 @@ class DeelCreateInvoiceInput(BaseModel):
 
 class DeepgramCreateSummaryInput(BaseModel):
     """Deepgram — Create Summary"""
-    audioFile: str = Field(..., description="Audio File")
+    audioFile: Union[str, dict[str, Any]] = Field(..., description="Audio File")
     model: Optional[str] = Field(None, description="Model")
     language: Optional[str] = Field(None, description="en")
     fallbackToTranscript: Optional[bool] = Field(None, description="Return full transcript if summary is not available.")
@@ -8184,7 +8184,7 @@ class DeepgramCreateSummaryInput(BaseModel):
 
 class DeepgramCreateTranscriptionCallbackInput(BaseModel):
     """Deepgram — Create Transcription (Callback)"""
-    audioFile: str = Field(..., description="Audio File")
+    audioFile: Union[str, dict[str, Any]] = Field(..., description="Audio File")
     model: Optional[str] = Field(None, description="Model")
     language: Optional[str] = Field(None, description="en")
     callbackUrl: str = Field(..., description="URL to receive the transcription when ready.")
@@ -8330,7 +8330,7 @@ class DescriptImportMediaInput(BaseModel):
 class DescriptUploadDirectMediaFileInput(BaseModel):
     """Descript — Upload Direct Media File"""
     uploadUrl: str = Field(..., description="Signed Upload URL")
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
     contentType: Optional[str] = Field(None, description="Content Type")
 
     model_config = {"populate_by_name": True}
@@ -9437,7 +9437,7 @@ class DropboxCreateNewDropboxTextFileInput(BaseModel):
 class DropboxUploadDropboxFileInput(BaseModel):
     """Dropbox — Upload file"""
     path: str = Field(..., description="The path where the file should be saved (e.g. /folder1/file.txt)")
-    file: str = Field(..., description="The file URL or base64 to upload")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file URL or base64 to upload")
     autorename: Optional[bool] = Field(None, description="If there's a conflict, as determined by mode, have the Dropbox server try to autorename the file to avoid conflict.")
     mute: Optional[bool] = Field(None, description="Normally, users are made aware of any file modifications in their Dropbox account via notifications in the client software. If true, this tells the clients that this modification shouldn't result in a user notification.")
     strict_conflict: Optional[bool] = Field(None, description="Be more strict about how each WriteMode detects conflict. For example, always return a conflict error when mode = WriteMode.update and the given \"rev\" doesn't match the existing file's \"rev\", even if the existing file has been deleted.")
@@ -11979,7 +11979,7 @@ class FrontCreateContactInput(BaseModel):
     name: Optional[str] = Field(None, description="The name of the contact.")
     description: Optional[str] = Field(None, description="A description for the contact.")
     handles: list[Any] = Field(..., description="List of contact handles (e.g., email, phone).")
-    avatar_url: Optional[str] = Field(None, description="URL of the contact’s avatar image.")
+    avatar_url: Optional[Union[str, dict[str, Any]]] = Field(None, description="URL of the contact’s avatar image.")
     links: Optional[list[Any]] = Field(None, description="List of URLs associated with the contact.")
     group_names: Optional[list[Any]] = Field(None, description="List of group names to associate with the contact.")
     list_names: Optional[list[Any]] = Field(None, description="List of contact list names this contact belongs to. Front will create any that do not exist.")
@@ -12163,7 +12163,7 @@ class SftpCreateFileInput(BaseModel):
 class SftpUploadFileInput(BaseModel):
     """FTP/SFTP — Upload File"""
     fileName: str = Field(..., description="The path on the sftp server to store the file. e.g. `./myfolder/test.mp3`")
-    fileContent: str = Field(..., description="File content")
+    fileContent: Union[str, dict[str, Any]] = Field(..., description="File content")
 
     model_config = {"populate_by_name": True}
 
@@ -14852,7 +14852,7 @@ class GristGristUploadAttachmentsToDocumentInput(BaseModel):
     """Grist — Upload Attachment to Document"""
     workspace_id: str = Field(..., description="Workspace")
     document_id: str = Field(..., description="Document")
-    attachment: str = Field(..., description="Attachment")
+    attachment: Union[str, dict[str, Any]] = Field(..., description="Attachment")
     attachment_name: Optional[str] = Field(None, description="In case you want to change the name of the attachment.")
 
     model_config = {"populate_by_name": True}
@@ -14891,7 +14891,7 @@ class GroqAskAiInput(BaseModel):
 
 class GroqTranscribeAudioInput(BaseModel):
     """Groq — Transcribe Audio"""
-    file: str = Field(..., description="The audio file to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The audio file to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
     model: str = Field(..., description="The model to use for transcription.")
     language: Optional[str] = Field(None, description="The language of the input audio in ISO-639-1 format (e.g., \"en\" for English). This will improve accuracy and latency.")
     prompt: Optional[str] = Field(None, description="An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.")
@@ -14903,7 +14903,7 @@ class GroqTranscribeAudioInput(BaseModel):
 
 class GroqTranslateAudioInput(BaseModel):
     """Groq — Translate Audio"""
-    file: str = Field(..., description="The audio file to translate. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The audio file to translate. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.")
     model: str = Field(..., description="The model to use for translation.")
     prompt: Optional[str] = Field(None, description="An optional text in English to guide the model's style or continue a previous audio segment.")
     temperature: Optional[float] = Field(None, description="The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.")
@@ -15554,7 +15554,7 @@ class HeygenRetrieveSharableVideoUrlInput(BaseModel):
 
 class HeygenUploadAssetInput(BaseModel):
     """HeyGen — Upload an Asset"""
-    file: str = Field(..., description="The file to upload (JPEG, PNG, MP4, WEBM, or MPEG).")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload (JPEG, PNG, MP4, WEBM, or MPEG).")
 
     model_config = {"populate_by_name": True}
 
@@ -15955,7 +15955,7 @@ class HousecallProDeleteJobNoteInput(BaseModel):
 class HousecallProAddJobAttachmentInput(BaseModel):
     """Housecall Pro — Add an attachment to a job"""
     job_id: str = Field(..., description="The ID of the job to add attachment to")
-    file: str = Field(..., description="The file to upload")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload")
 
     model_config = {"populate_by_name": True}
 
@@ -16153,7 +16153,7 @@ class HousecallProCreateEstimateOptionAttachmentInput(BaseModel):
     """Housecall Pro — Create estimate option attachment"""
     estimate_id: str = Field(..., description="Estimate ID")
     option_id: str = Field(..., description="Option ID")
-    file: str = Field(..., description="File")
+    file: Union[str, dict[str, Any]] = Field(..., description="File")
 
     model_config = {"populate_by_name": True}
 
@@ -16587,7 +16587,7 @@ class HubspotCustomApiCallInput(BaseModel):
 class HuggingFaceDocumentQuestionAnsweringInput(BaseModel):
     """Hugging Face — Document Question Answering"""
     model: str = Field(..., description="Hugging Face document question answering model")
-    image: str = Field(..., description="Image of the document to analyze.")
+    image: Union[str, dict[str, Any]] = Field(..., description="Image of the document to analyze.")
     question: str = Field(..., description="Question to ask about the document.")
     top_k: Optional[float] = Field(None, description="Number of Answers")
     max_answer_len: Optional[float] = Field(None, description="Max Answer Length")
@@ -16690,7 +16690,7 @@ class HuggingFaceObjectDetectionInput(BaseModel):
     """Hugging Face — Object Detection"""
     useCase: str = Field(..., description="What type of object detection do you need?")
     model: str = Field(..., description="Select an object detection model.")
-    image: str = Field(..., description="Image to Analyze")
+    image: Union[str, dict[str, Any]] = Field(..., description="Image to Analyze")
     confidenceThreshold: Optional[float] = Field(None, description="Confidence Threshold")
     maxDetections: Optional[float] = Field(None, description="Max Detections")
     filterSettings: Optional[str] = Field(None, description="How to handle detection results")
@@ -16705,7 +16705,7 @@ class HuggingFaceImageClassificationInput(BaseModel):
     useCase: str = Field(..., description="What type of image classification do you need?")
     model: str = Field(..., description="Select an image classification model.")
     imageSource: str = Field(..., description="How do you want to provide the image?")
-    imageFile: str = Field(..., description="Image File")
+    imageFile: Union[str, dict[str, Any]] = Field(..., description="Image File")
     imageUrl: Optional[str] = Field(None, description="Image URL")
     customCategories: Optional[list[Any]] = Field(None, description="Custom Categories")
     hypothesisTemplate: Optional[str] = Field(None, description="Classification Template")
@@ -19546,7 +19546,7 @@ class LinkedinCreateShareUpdateInput(BaseModel):
     """LinkedIn — Create Share Update"""
     text: str = Field(..., description="Text")
     visibility: str = Field(..., description="Visibility")
-    imageUrl: Optional[str] = Field(None, description="Image")
+    imageUrl: Optional[Union[str, dict[str, Any]]] = Field(None, description="Image")
     link: Optional[str] = Field(None, description="Content - URL")
     linkTitle: Optional[str] = Field(None, description="Content - Title")
     linkDescription: Optional[str] = Field(None, description="Content - Description")
@@ -19557,7 +19557,7 @@ class LinkedinCreateShareUpdateInput(BaseModel):
 class LinkedinCreateCompanyUpdateInput(BaseModel):
     """LinkedIn — Create Company Update"""
     company: str = Field(..., description="Company Page")
-    imageUrl: Optional[str] = Field(None, description="Image")
+    imageUrl: Optional[Union[str, dict[str, Any]]] = Field(None, description="Image")
     text: str = Field(..., description="Text")
     link: Optional[str] = Field(None, description="Content - URL")
     linkTitle: Optional[str] = Field(None, description="Content - Title")
@@ -20224,7 +20224,7 @@ class ManychatSetCustomFieldInput(BaseModel):
 class MastodonPostStatusInput(BaseModel):
     """Mastodon — Post Status"""
     status: str = Field(..., description="The text of your status")
-    media: Optional[str] = Field(None, description="The media attachment for your status")
+    media: Optional[Union[str, dict[str, Any]]] = Field(None, description="The media attachment for your status")
 
     model_config = {"populate_by_name": True}
 
@@ -20320,7 +20320,7 @@ class MeistertaskCreateTaskLabelInput(BaseModel):
 class MeistertaskCreateAttachmentInput(BaseModel):
     """MeisterTask — Create Attachment"""
     task_id: str = Field(..., description="Task")
-    file_url: str = Field(..., description="URL of the file to attach")
+    file_url: Union[str, dict[str, Any]] = Field(..., description="URL of the file to attach")
     name: Optional[str] = Field(None, description="Attachment Name")
 
     model_config = {"populate_by_name": True}
@@ -20387,7 +20387,7 @@ class MeistertaskFindOrCreateAttachmentInput(BaseModel):
     """MeisterTask — Find or Create Attachment"""
     task_id: str = Field(..., description="Task")
     name: str = Field(..., description="Attachment Name")
-    file_url: str = Field(..., description="URL of the file to attach (used if creating)")
+    file_url: Union[str, dict[str, Any]] = Field(..., description="URL of the file to attach (used if creating)")
 
     model_config = {"populate_by_name": True}
 
@@ -21872,7 +21872,7 @@ class MicrosoftSharepointMicrosoftSharepointUploadFileInput(BaseModel):
     """Microsoft SharePoint — Upload File"""
     siteId: str = Field(..., description="Site")
     driveId: str = Field(..., description="Drive")
-    file: str = Field(..., description="The file or url you want to upload")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file or url you want to upload")
     parentFolder: str = Field(..., description="Parent folder, like \"/demo/\" or \"/docs/assignment/\".Leave it default if you want to create folder at the root (**CHANGE THIS BACK//**) level.")
     fileName: str = Field(..., description="File Name")
 
@@ -22104,7 +22104,7 @@ class MicrosoftTodoAddAttachmentInput(BaseModel):
     """Microsoft To Do — Add an Attachment"""
     task_list_id: str = Field(..., description="The task list that contains the task.")
     task_id: str = Field(..., description="The task to which you are adding the attachment.")
-    file: str = Field(..., description="The file to attach (up to 25 MB supported).")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to attach (up to 25 MB supported).")
     filename: Optional[str] = Field(None, description="The name to display for the attachment. If left blank, the original filename will be used.")
 
     model_config = {"populate_by_name": True}
@@ -22791,7 +22791,7 @@ class MondayMondayUploadFileToColumnInput(BaseModel):
     board_id: str = Field(..., description="Board ID")
     item_id: str = Field(..., description="Item ID")
     file_column_id: str = Field(..., description="File Column ID")
-    file: str = Field(..., description="The file URL or base64 to upload.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file URL or base64 to upload.")
     file_name: str = Field(..., description="File Name")
 
     model_config = {"populate_by_name": True}
@@ -27158,7 +27158,7 @@ class PushoverGetReceiptInput(BaseModel):
 class QdrantAddPointsToCollectionInput(BaseModel):
     """Qdrant — Add points to collection"""
     collectionName: str = Field(..., description="The name of the collection needed for this action")
-    embeddings: str = Field(..., description="Embeddings (= vectors) for the points")
+    embeddings: Union[str, dict[str, Any]] = Field(..., description="Embeddings (= vectors) for the points")
     embeddingsIds: Optional[list[Any]] = Field(None, description="The ids of the embeddings for the points. If not provided, the ids will be generated automatically")
     distance: str = Field(..., description="The calculation method helps to rank vectors when you want to find the closest points, the method to use depends on the model that's created the embeddings.")
     payload: Optional[Any] = Field(None, description="Additional payload to store with every point.")
@@ -27207,10 +27207,10 @@ class QdrantGetPointsInput(BaseModel):
 class QdrantSearchPointsInput(BaseModel):
     """Qdrant — Search Points"""
     collectionName: str = Field(..., description="The name of the collection needed for this action")
-    vector: str = Field(..., description="The vector (= embedding) you want to search for.")
+    vector: Union[str, dict[str, Any]] = Field(..., description="The vector (= embedding) you want to search for.")
     must: Optional[dict[str, Any]] = Field(None, description="If the point has this property in its payload it will be selected")
     must_not: Optional[dict[str, Any]] = Field(None, description="If the point has this property in its payload it will not be selected")
-    negativeVector: Optional[str] = Field(None, description="The vector (= embedding) you want to be the farthest.")
+    negativeVector: Optional[Union[str, dict[str, Any]]] = Field(None, description="The vector (= embedding) you want to be the farthest.")
     limitResult: Optional[float] = Field(None, description="The max number of results you want to get.")
 
     model_config = {"populate_by_name": True}
@@ -28936,7 +28936,7 @@ class SalesforceAddFileToRecordInput(BaseModel):
     """Salesforce — Add File to Record"""
     object_: str = Field(..., alias="object", description="Select the Object")
     record_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
-    file: str = Field(..., description="The file to upload.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload.")
     file_name: str = Field(..., description="The name of the file, including its extension (e.g., \"report.pdf\").")
 
     model_config = {"populate_by_name": True}
@@ -28955,7 +28955,7 @@ class SalesforceCreateAttachmentInput(BaseModel):
     """Salesforce — Create Attachment (Legacy)"""
     object_: str = Field(..., alias="object", description="Select the Object")
     parent_id: str = Field(..., description="The record to select. The list shows the 20 most recently created records.")
-    file: str = Field(..., description="The file to attach.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to attach.")
     file_name: str = Field(..., description="The name of the file, including its extension (e.g., \"attachment.pdf\").")
 
     model_config = {"populate_by_name": True}
@@ -29690,7 +29690,7 @@ class SentryUploadReleaseFileInput(BaseModel):
     """Sentry — Upload Release File"""
     organization: str = Field(..., description="Organization Slug")
     version: str = Field(..., description="Release Version")
-    file: str = Field(..., description="File URL, base64 payload, or inline file object to upload")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, or inline file object to upload")
     name: Optional[str] = Field(None, description="Optional absolute path or URI Sentry should reference for this file")
     dist: Optional[str] = Field(None, description="Optional release distribution name")
     headers: Optional[list[Any]] = Field(None, description="Optional header strings in key:value format, such as Content-Type:application/javascript")
@@ -30855,7 +30855,7 @@ class SmartsheetAttachFileToRowInput(BaseModel):
     sheet_id: str = Field(..., description="Select a sheet")
     row_id: str = Field(..., description="Row")
     attachment_type: str = Field(..., description="Type of attachment to add")
-    file: Optional[str] = Field(None, description="The file to attach (required for FILE type)")
+    file: Optional[Union[str, dict[str, Any]]] = Field(None, description="The file to attach (required for FILE type)")
     url: Optional[str] = Field(None, description="The URL to attach (required for URL-based attachment types)")
     attachment_name: Optional[str] = Field(None, description="Name for the attachment (optional, will use file name or URL if not provided)")
     attachment_sub_type: Optional[str] = Field(None, description="Sub type for Google Drive and Egnyte attachments")
@@ -31842,7 +31842,7 @@ class StravaGetSegmentEffortInput(BaseModel):
 
 class StravaUploadActivityInput(BaseModel):
     """Strava — Upload Activity File"""
-    file: str = Field(..., description="Activity File")
+    file: Union[str, dict[str, Any]] = Field(..., description="Activity File")
     dataType: str = Field(..., description="Data Type")
     name: Optional[str] = Field(None, description="Name")
     description: Optional[str] = Field(None, description="Description")
@@ -32175,7 +32175,7 @@ class SupabaseUploadFileInput(BaseModel):
     """Supabase — Upload File"""
     filePath: str = Field(..., description="File path")
     bucket: str = Field(..., description="Bucket")
-    file: str = Field(..., description="Base64 or URL")
+    file: Union[str, dict[str, Any]] = Field(..., description="Base64 or URL")
 
     model_config = {"populate_by_name": True}
 
@@ -33445,7 +33445,7 @@ class TeamworkCreateTaskInput(BaseModel):
     description: Optional[str] = Field(None, description="A description for the task.")
     priority: Optional[str] = Field(None, description="The priority of the task.")
     tagIds: Optional[list[str]] = Field(None, description="Tags to associate with the task.")
-    attachment: Optional[str] = Field(None, description="A file to attach to the task.")
+    attachment: Optional[Union[str, dict[str, Any]]] = Field(None, description="A file to attach to the task.")
     customFields: Optional[dict[str, Any]] = Field(None, description="Custom fields for this task.")
 
     model_config = {"populate_by_name": True}
@@ -33511,7 +33511,7 @@ class TeamworkCreateTaskCommentInput(BaseModel):
     """Teamwork — Create Task Comment"""
     taskId: str = Field(..., description="The task to add a comment to.")
     body: str = Field(..., description="The content of the comment.")
-    attachment: Optional[str] = Field(None, description="A file to attach to the comment.")
+    attachment: Optional[Union[str, dict[str, Any]]] = Field(None, description="A file to attach to the comment.")
     notify: Optional[str] = Field(None, description="Who to notify about this comment.")
     isprivate: Optional[bool] = Field(None, description="Set to true to make the comment private.")
 
@@ -33545,7 +33545,7 @@ class TeamworkCreateExpenseInput(BaseModel):
 class TeamworkUploadFileToProjectInput(BaseModel):
     """Teamwork — Upload File to Project"""
     projectId: str = Field(..., description="The project to upload the file to.")
-    file: str = Field(..., description="The file to upload.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload.")
     description: Optional[str] = Field(None, description="A description for the file.")
     categoryId: Optional[str] = Field(None, description="The category to assign the file to.")
     private: Optional[bool] = Field(None, description="Set to true to make the file private.")
@@ -34441,7 +34441,7 @@ class TrelloGetCardAttachmentsInput(BaseModel):
 class TrelloAddCardAttachmentInput(BaseModel):
     """Trello — Add Card Attachment"""
     card_id: str = Field(..., description="The ID of the card to add attachment to")
-    attachment: str = Field(..., description="Attachment File")
+    attachment: Union[str, dict[str, Any]] = Field(..., description="Attachment File")
     name: Optional[str] = Field(None, description="Attachment Name")
     mime_type: Optional[str] = Field(None, description="MIME Type")
     set_cover: Optional[bool] = Field(None, description="Set this attachment as the card cover")
@@ -36583,7 +36583,7 @@ class WrikeUploadAttachmentInput(BaseModel):
     """Wrike — Upload Attachment"""
     entityType: str = Field(..., description="Select whether to attach the file to a task or folder")
     entityId: str = Field(..., description="The ID of the task or folder to attach the file to")
-    file: str = Field(..., description="The file to upload and attach")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload and attach")
     fileName: Optional[str] = Field(None, description="Optional custom name for the uploaded file")
 
     model_config = {"populate_by_name": True}
@@ -36819,7 +36819,7 @@ class XeroXeroUploadAttachmentInput(BaseModel):
     tenant_id: str = Field(..., description="Organization")
     resource_type: str = Field(..., description="The Xero resource to attach the file to.")
     resource_id: str = Field(..., description="Select the specific resource to attach the file to.")
-    file: str = Field(..., description="The file to upload. Max 10MB per Xero limits.")
+    file: Union[str, dict[str, Any]] = Field(..., description="The file to upload. Max 10MB per Xero limits.")
     file_name: Optional[str] = Field(None, description="Optional file name to use in Xero. Avoid characters: < > : \" / \\ | ? *")
     content_type: Optional[str] = Field(None, description="MIME type of the file (e.g., image/png). If not set, will be inferred or default to application/octet-stream.")
     include_online: Optional[bool] = Field(None, description="Only applicable to ACCREC invoices and ACCREC credit notes. Adds IncludeOnline=true query parameter.")
@@ -38190,7 +38190,7 @@ class ZohoMailDeleteEmailInput(BaseModel):
 class ZohoMailUploadAttachmentInput(BaseModel):
     """Zoho Mail — Upload Attachment"""
     accountId: str = Field(..., description="Account")
-    attachment: str = Field(..., description="Attachment")
+    attachment: Union[str, dict[str, Any]] = Field(..., description="Attachment")
     attachmentName: Optional[str] = Field(None, description="Attachment Name")
 
     model_config = {"populate_by_name": True}
@@ -38207,7 +38207,7 @@ class ZohoMailSendEmailInput(BaseModel):
     ccAddress: Optional[str] = Field(None, description="CC recipient's email address.")
     bccAddress: Optional[str] = Field(None, description="BCC recipient's email address.")
     askReceipt: Optional[str] = Field(None, description="Ask for Read Receipt")
-    attachment: Optional[str] = Field(None, description="Attachment")
+    attachment: Optional[Union[str, dict[str, Any]]] = Field(None, description="Attachment")
     attachmentName: Optional[str] = Field(None, description="In case you want to change the name of the attachment.")
 
     model_config = {"populate_by_name": True}
@@ -38226,7 +38226,7 @@ class ZohoMailReplyEmailInput(BaseModel):
     ccAddress: Optional[str] = Field(None, description="CC Email Address")
     bccAddress: Optional[str] = Field(None, description="BCC Email Address")
     askReceipt: Optional[str] = Field(None, description="Ask for Read Receipt")
-    attachment: Optional[str] = Field(None, description="Attachment")
+    attachment: Optional[Union[str, dict[str, Any]]] = Field(None, description="Attachment")
     attachmentName: Optional[str] = Field(None, description="Attachment Name")
 
     model_config = {"populate_by_name": True}
