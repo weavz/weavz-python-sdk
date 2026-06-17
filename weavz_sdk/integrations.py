@@ -2,7 +2,7 @@
 # Run: npx tsx scripts/generate-integration-schemas.ts
 
 from __future__ import annotations
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, Union
 from pydantic import BaseModel, Field
 
 
@@ -1345,7 +1345,7 @@ class AgentLocalBrowserControlEndSessionInput(BaseModel):
 class AgentLocalComputerControlStartSessionInput(BaseModel):
     """Agent Local Computer Control — Start Session"""
     targetScope: Optional[str] = Field(None, description="Target scope")
-    allowedApplications: Optional[list[Any]] = Field(None, description="Optional macOS bundle identifiers the local app may control.")
+    allowedApplications: Optional[list[str]] = Field(None, description="Optional macOS bundle identifiers the local app may control.")
     autoPauseOnFocusLoss: Optional[bool] = Field(None, description="Auto-pause on focus loss")
 
     model_config = {"populate_by_name": True}
@@ -1383,13 +1383,30 @@ class AgentLocalComputerControlScreenshotInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentLocalComputerControlMoveMouseInput(BaseModel):
+    """Agent Local Computer Control — Move Mouse"""
+    x: float = Field(..., description="X coordinate in screenshot/display space.")
+    y: float = Field(..., description="Y coordinate in screenshot/display space.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentLocalComputerControlClickInput(BaseModel):
     """Agent Local Computer Control — Click"""
-    target: Optional[str] = Field(None, description="Optional element ref from snapshot.")
-    x: Optional[float] = Field(None, description="Optional x coordinate when no target ref is provided.")
-    y: Optional[float] = Field(None, description="Optional y coordinate when no target ref is provided.")
+    x: float = Field(..., description="X coordinate in screenshot/display space.")
+    y: float = Field(..., description="Y coordinate in screenshot/display space.")
     button: Optional[str] = Field(None, description="Button")
     doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlDragInput(BaseModel):
+    """Agent Local Computer Control — Drag"""
+    path: list[Union[dict[str, float], tuple[float, float]]] = Field(..., description="Array of coordinate pairs or objects, for example [{ \"x\": 120, \"y\": 180 }, { \"x\": 360, \"y\": 180 }].")
+    durationMs: Optional[float] = Field(None, description="Optional total drag duration. Defaults to 400 ms.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1398,7 +1415,6 @@ class AgentLocalComputerControlClickInput(BaseModel):
 class AgentLocalComputerControlTypeInput(BaseModel):
     """Agent Local Computer Control — Type"""
     text: str = Field(..., description="Text")
-    target: Optional[str] = Field(None, description="Target ref")
     submit: Optional[bool] = Field(None, description="Submit with Enter")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
@@ -1408,7 +1424,7 @@ class AgentLocalComputerControlTypeInput(BaseModel):
 class AgentLocalComputerControlPressKeyInput(BaseModel):
     """Agent Local Computer Control — Press Key"""
     key: str = Field(..., description="Examples: Enter, Escape, Tab, ArrowDown, a.")
-    modifiers: Optional[list[Any]] = Field(None, description="Optional modifiers such as cmd, shift, option, control.")
+    modifiers: Optional[list[str]] = Field(None, description="Optional modifiers such as cmd, shift, option, control.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1418,7 +1434,6 @@ class AgentLocalComputerControlScrollInput(BaseModel):
     """Agent Local Computer Control — Scroll"""
     deltaX: Optional[float] = Field(None, description="Delta X")
     deltaY: Optional[float] = Field(None, description="Delta Y")
-    target: Optional[str] = Field(None, description="Target ref")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1434,7 +1449,7 @@ class AgentLocalComputerControlWaitInput(BaseModel):
 
 class AgentLocalComputerControlRunStepsInput(BaseModel):
     """Agent Local Computer Control — Run Steps"""
-    steps: Any = Field(..., description="[{ \"op\": \"snapshot\" }, { \"op\": \"click\", \"params\": { \"target\": \"e1\" } }]")
+    steps: list[dict[str, Any]] = Field(..., description="[{ \"op\": \"screenshot\" }, { \"op\": \"click\", \"params\": { \"x\": 120, \"y\": 180 } }]")
     stopOnError: Optional[bool] = Field(None, description="Stop on error")
     includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
     includeFinalScreenshot: Optional[bool] = Field(None, description="Include final screenshot")
@@ -39186,7 +39201,9 @@ IntegrationActionKey = Literal[
     "agent-local-computer-control.session_status",
     "agent-local-computer-control.snapshot",
     "agent-local-computer-control.screenshot",
+    "agent-local-computer-control.move_mouse",
     "agent-local-computer-control.click",
+    "agent-local-computer-control.drag",
     "agent-local-computer-control.type",
     "agent-local-computer-control.press_key",
     "agent-local-computer-control.scroll",
@@ -43276,7 +43293,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "session_status",
         "snapshot",
         "screenshot",
+        "move_mouse",
         "click",
+        "drag",
         "type",
         "press_key",
         "scroll",
@@ -48364,7 +48383,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-computer-control.session_status": AgentLocalComputerControlSessionStatusInput,
     "agent-local-computer-control.snapshot": AgentLocalComputerControlSnapshotInput,
     "agent-local-computer-control.screenshot": AgentLocalComputerControlScreenshotInput,
+    "agent-local-computer-control.move_mouse": AgentLocalComputerControlMoveMouseInput,
     "agent-local-computer-control.click": AgentLocalComputerControlClickInput,
+    "agent-local-computer-control.drag": AgentLocalComputerControlDragInput,
     "agent-local-computer-control.type": AgentLocalComputerControlTypeInput,
     "agent-local-computer-control.press_key": AgentLocalComputerControlPressKeyInput,
     "agent-local-computer-control.scroll": AgentLocalComputerControlScrollInput,
