@@ -1342,6 +1342,129 @@ class AgentLocalBrowserControlEndSessionInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentLocalComputerControlStartSessionInput(BaseModel):
+    """Agent Local Computer Control — Start Session"""
+    targetScope: Optional[str] = Field(None, description="Target scope")
+    allowedApplications: Optional[list[Any]] = Field(None, description="Optional macOS bundle identifiers the local app may control.")
+    autoPauseOnFocusLoss: Optional[bool] = Field(None, description="Auto-pause on focus loss")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlEnsureConnectedInput(BaseModel):
+    """Agent Local Computer Control — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlSessionStatusInput(BaseModel):
+    """Agent Local Computer Control — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlSnapshotInput(BaseModel):
+    """Agent Local Computer Control — Snapshot"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlScreenshotInput(BaseModel):
+    """Agent Local Computer Control — Screenshot"""
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    fullResolution: Optional[bool] = Field(None, description="Full resolution")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlClickInput(BaseModel):
+    """Agent Local Computer Control — Click"""
+    target: Optional[str] = Field(None, description="Optional element ref from snapshot.")
+    x: Optional[float] = Field(None, description="Optional x coordinate when no target ref is provided.")
+    y: Optional[float] = Field(None, description="Optional y coordinate when no target ref is provided.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlTypeInput(BaseModel):
+    """Agent Local Computer Control — Type"""
+    text: str = Field(..., description="Text")
+    target: Optional[str] = Field(None, description="Target ref")
+    submit: Optional[bool] = Field(None, description="Submit with Enter")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlPressKeyInput(BaseModel):
+    """Agent Local Computer Control — Press Key"""
+    key: str = Field(..., description="Examples: Enter, Escape, Tab, ArrowDown, a.")
+    modifiers: Optional[list[Any]] = Field(None, description="Optional modifiers such as cmd, shift, option, control.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlScrollInput(BaseModel):
+    """Agent Local Computer Control — Scroll"""
+    deltaX: Optional[float] = Field(None, description="Delta X")
+    deltaY: Optional[float] = Field(None, description="Delta Y")
+    target: Optional[str] = Field(None, description="Target ref")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlWaitInput(BaseModel):
+    """Agent Local Computer Control — Wait"""
+    seconds: Optional[float] = Field(None, description="Seconds")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlRunStepsInput(BaseModel):
+    """Agent Local Computer Control — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"snapshot\" }, { \"op\": \"click\", \"params\": { \"target\": \"e1\" } }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Include final screenshot")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlRequestHumanInput(BaseModel):
+    """Agent Local Computer Control — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlResumeInput(BaseModel):
+    """Agent Local Computer Control — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlEndSessionInput(BaseModel):
+    """Agent Local Computer Control — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentMemoryCreateEntitiesInput(BaseModel):
     """Agent Memory — Create Entities"""
     entities: Any = Field(..., description="Array of entities to create. Each entity: { name: string, type: string, observations?: string[] }")
@@ -38332,6 +38455,7 @@ IntegrationName = Literal[
     "agent-browser",
     "agent-browser-ai",
     "agent-local-browser-control",
+    "agent-local-computer-control",
     "agent-memory",
     "agent-scratchpad",
     "ahrefs",
@@ -38996,6 +39120,20 @@ IntegrationActionKey = Literal[
     "agent-local-browser-control.session_status",
     "agent-local-browser-control.start_session",
     "agent-local-browser-control.end_session",
+    "agent-local-computer-control.start_session",
+    "agent-local-computer-control.ensure_connected",
+    "agent-local-computer-control.session_status",
+    "agent-local-computer-control.snapshot",
+    "agent-local-computer-control.screenshot",
+    "agent-local-computer-control.click",
+    "agent-local-computer-control.type",
+    "agent-local-computer-control.press_key",
+    "agent-local-computer-control.scroll",
+    "agent-local-computer-control.wait",
+    "agent-local-computer-control.run_steps",
+    "agent-local-computer-control.request_human",
+    "agent-local-computer-control.resume",
+    "agent-local-computer-control.end_session",
     "agent-memory.create_entities",
     "agent-memory.add_observations",
     "agent-memory.create_relations",
@@ -43065,6 +43203,22 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "ensure_connected",
         "session_status",
         "start_session",
+        "end_session",
+    ),
+    "agent-local-computer-control": (
+        "start_session",
+        "ensure_connected",
+        "session_status",
+        "snapshot",
+        "screenshot",
+        "click",
+        "type",
+        "press_key",
+        "scroll",
+        "wait",
+        "run_steps",
+        "request_human",
+        "resume",
         "end_session",
     ),
     "agent-memory": (
@@ -48134,6 +48288,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-browser-control.session_status": AgentLocalBrowserControlSessionStatusInput,
     "agent-local-browser-control.start_session": AgentLocalBrowserControlStartSessionInput,
     "agent-local-browser-control.end_session": AgentLocalBrowserControlEndSessionInput,
+    "agent-local-computer-control.start_session": AgentLocalComputerControlStartSessionInput,
+    "agent-local-computer-control.ensure_connected": AgentLocalComputerControlEnsureConnectedInput,
+    "agent-local-computer-control.session_status": AgentLocalComputerControlSessionStatusInput,
+    "agent-local-computer-control.snapshot": AgentLocalComputerControlSnapshotInput,
+    "agent-local-computer-control.screenshot": AgentLocalComputerControlScreenshotInput,
+    "agent-local-computer-control.click": AgentLocalComputerControlClickInput,
+    "agent-local-computer-control.type": AgentLocalComputerControlTypeInput,
+    "agent-local-computer-control.press_key": AgentLocalComputerControlPressKeyInput,
+    "agent-local-computer-control.scroll": AgentLocalComputerControlScrollInput,
+    "agent-local-computer-control.wait": AgentLocalComputerControlWaitInput,
+    "agent-local-computer-control.run_steps": AgentLocalComputerControlRunStepsInput,
+    "agent-local-computer-control.request_human": AgentLocalComputerControlRequestHumanInput,
+    "agent-local-computer-control.resume": AgentLocalComputerControlResumeInput,
+    "agent-local-computer-control.end_session": AgentLocalComputerControlEndSessionInput,
     "agent-memory.create_entities": AgentMemoryCreateEntitiesInput,
     "agent-memory.add_observations": AgentMemoryAddObservationsInput,
     "agent-memory.create_relations": AgentMemoryCreateRelationsInput,
