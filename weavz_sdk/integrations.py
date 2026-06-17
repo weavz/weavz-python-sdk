@@ -35659,6 +35659,66 @@ class WeaviateCustomCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class WeavzDynamicDashboardProfileDataInput(BaseModel):
+    """Weavz Dynamic Dashboard — Profile Data"""
+    datasets: Any = Field(..., description="Array of named datasets: [{ id, label?, data, source?, role? }]. Data should be JSON from other tools. Do not include credentials, raw request headers, or secrets.")
+    redactionMode: Optional[str] = Field(None, description="Default masks sensitive field names; strict also masks token-like values. Use off only for already sanitized data.")
+    maxRows: Optional[float] = Field(None, description="Maximum display rows per dataset. Default and maximum are 1000.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeavzDynamicDashboardSuggestDashboardInput(BaseModel):
+    """Weavz Dynamic Dashboard — Suggest Dashboard"""
+    datasets: Any = Field(..., description="Array of named datasets: [{ id, label?, data, source?, role? }]. Data should be JSON from other tools. Do not include credentials, raw request headers, or secrets.")
+    title: Optional[str] = Field(None, description="Optional dashboard title.")
+    description: Optional[str] = Field(None, description="Optional dashboard description.")
+    intent: Optional[str] = Field(None, description="Dashboard shape to optimize for.")
+    audience: Optional[str] = Field(None, description="Who will read this dashboard, such as ops, finance, support, or leadership.")
+    layoutHint: Optional[str] = Field(None, description="Preferred layout density.")
+    timeField: Optional[str] = Field(None, description="Preferred date/time field for trend charts.")
+    primaryMetric: Optional[str] = Field(None, description="Preferred numeric field for metric cards and charts.")
+    primaryDimension: Optional[str] = Field(None, description="Preferred category field for breakdown charts.")
+    groupBy: Optional[str] = Field(None, description="Optional grouping field for grouped or stacked charts.")
+    compareBy: Optional[str] = Field(None, description="Optional comparison field for multi-series charts.")
+    baselineDatasetId: Optional[str] = Field(None, description="Dataset id to use as a baseline for comparisons.")
+    maxRows: Optional[float] = Field(None, description="Maximum display rows per dataset. Default and maximum are 1000.")
+    theme: Optional[str] = Field(None, description="Renderer theme preference.")
+    redactionMode: Optional[str] = Field(None, description="Default masks sensitive field names; strict also masks token-like values. Use off only for already sanitized data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeavzDynamicDashboardValidateDashboardInput(BaseModel):
+    """Weavz Dynamic Dashboard — Validate Dashboard"""
+    datasets: Any = Field(..., description="Array of named datasets: [{ id, label?, data, source?, role? }]. Data should be JSON from other tools. Do not include credentials, raw request headers, or secrets.")
+    spec: Any = Field(..., description="Dashboard spec with layout sections, widgets, filters, and formatting.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeavzDynamicDashboardRenderDashboardInput(BaseModel):
+    """Weavz Dynamic Dashboard — Render Dashboard"""
+    datasets: Any = Field(..., description="Array of named datasets: [{ id, label?, data, source?, role? }]. Data should be JSON from other tools. Do not include credentials, raw request headers, or secrets.")
+    spec: Optional[Any] = Field(None, description="Optional dashboard spec. If omitted, Weavz infers one from datasets and hints.")
+    title: Optional[str] = Field(None, description="Optional dashboard title.")
+    description: Optional[str] = Field(None, description="Optional dashboard description.")
+    intent: Optional[str] = Field(None, description="Dashboard shape to optimize for.")
+    audience: Optional[str] = Field(None, description="Who will read this dashboard, such as ops, finance, support, or leadership.")
+    layoutHint: Optional[str] = Field(None, description="Preferred layout density.")
+    timeField: Optional[str] = Field(None, description="Preferred date/time field for trend charts.")
+    primaryMetric: Optional[str] = Field(None, description="Preferred numeric field for metric cards and charts.")
+    primaryDimension: Optional[str] = Field(None, description="Preferred category field for breakdown charts.")
+    groupBy: Optional[str] = Field(None, description="Optional grouping field for grouped or stacked charts.")
+    compareBy: Optional[str] = Field(None, description="Optional comparison field for multi-series charts.")
+    baselineDatasetId: Optional[str] = Field(None, description="Dataset id to use as a baseline for comparisons.")
+    maxRows: Optional[float] = Field(None, description="Maximum display rows per dataset. Default and maximum are 1000.")
+    theme: Optional[str] = Field(None, description="Renderer theme preference.")
+    redactionMode: Optional[str] = Field(None, description="Default masks sensitive field names; strict also masks token-like values. Use off only for already sanitized data.")
+
+    model_config = {"populate_by_name": True}
+
+
 class WebReaderFetchAsMarkdownInput(BaseModel):
     """Web Reader — Fetch as Markdown"""
     url: str = Field(..., description="The URL to fetch")
@@ -38938,6 +38998,7 @@ IntegrationName = Literal[
     "vtex",
     "weaviate",
     "weaviate-custom",
+    "weavz-dynamic-dashboard",
     "web-reader",
     "webex",
     "webflow",
@@ -42757,6 +42818,10 @@ IntegrationActionKey = Literal[
     "weaviate-custom.search_objects",
     "weaviate-custom.list_classes",
     "weaviate-custom.custom_api_call",
+    "weavz-dynamic-dashboard.profile_data",
+    "weavz-dynamic-dashboard.suggest_dashboard",
+    "weavz-dynamic-dashboard.validate_dashboard",
+    "weavz-dynamic-dashboard.render_dashboard",
     "web-reader.fetch_as_markdown",
     "web-reader.fetch_as_text",
     "web-reader.extract_links",
@@ -47808,6 +47873,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_classes",
         "custom_api_call",
     ),
+    "weavz-dynamic-dashboard": (
+        "profile_data",
+        "suggest_dashboard",
+        "validate_dashboard",
+        "render_dashboard",
+    ),
     "web-reader": (
         "fetch_as_markdown",
         "fetch_as_text",
@@ -51925,6 +51996,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "weaviate-custom.search_objects": WeaviateCustomSearchObjectsInput,
     "weaviate-custom.list_classes": WeaviateCustomListClassesInput,
     "weaviate-custom.custom_api_call": WeaviateCustomCustomApiCallInput,
+    "weavz-dynamic-dashboard.profile_data": WeavzDynamicDashboardProfileDataInput,
+    "weavz-dynamic-dashboard.suggest_dashboard": WeavzDynamicDashboardSuggestDashboardInput,
+    "weavz-dynamic-dashboard.validate_dashboard": WeavzDynamicDashboardValidateDashboardInput,
+    "weavz-dynamic-dashboard.render_dashboard": WeavzDynamicDashboardRenderDashboardInput,
     "web-reader.fetch_as_markdown": WebReaderFetchAsMarkdownInput,
     "web-reader.fetch_as_text": WebReaderFetchAsTextInput,
     "web-reader.extract_links": WebReaderExtractLinksInput,
