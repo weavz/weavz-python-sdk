@@ -12831,6 +12831,7 @@ class GmailSendEmailInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
 
     model_config = {"populate_by_name": True}
 
@@ -12841,6 +12842,7 @@ class GmailReplyToEmailInput(BaseModel):
     from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
     body: str = Field(..., description="Reply Body")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
 
     model_config = {"populate_by_name": True}
 
@@ -13039,6 +13041,7 @@ class GmailCreateDraftInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
 
     model_config = {"populate_by_name": True}
 
@@ -13069,6 +13072,7 @@ class GmailUpdateDraftInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
 
     model_config = {"populate_by_name": True}
 
