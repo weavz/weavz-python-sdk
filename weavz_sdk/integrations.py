@@ -1368,6 +1368,7 @@ class AgentLocalComputerControlSessionStatusInput(BaseModel):
 
 class AgentLocalComputerControlSnapshotInput(BaseModel):
     """Agent Local Computer Control — Snapshot"""
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1378,6 +1379,7 @@ class AgentLocalComputerControlScreenshotInput(BaseModel):
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
     fullResolution: Optional[bool] = Field(None, description="Full resolution")
     saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1387,6 +1389,7 @@ class AgentLocalComputerControlMoveMouseInput(BaseModel):
     """Agent Local Computer Control — Move Mouse"""
     x: float = Field(..., description="X coordinate in screenshot/display space.")
     y: float = Field(..., description="Y coordinate in screenshot/display space.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1398,6 +1401,7 @@ class AgentLocalComputerControlClickInput(BaseModel):
     y: float = Field(..., description="Y coordinate in screenshot/display space.")
     button: Optional[str] = Field(None, description="Button")
     doubleClick: Optional[bool] = Field(None, description="Double click")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1407,6 +1411,7 @@ class AgentLocalComputerControlDragInput(BaseModel):
     """Agent Local Computer Control — Drag"""
     path: list[Union[dict[str, float], tuple[float, float]]] = Field(..., description="Array of coordinate pairs or objects, for example [{ \"x\": 120, \"y\": 180 }, { \"x\": 360, \"y\": 180 }].")
     durationMs: Optional[float] = Field(None, description="Optional total drag duration. Defaults to 400 ms.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1416,6 +1421,7 @@ class AgentLocalComputerControlTypeInput(BaseModel):
     """Agent Local Computer Control — Type"""
     text: str = Field(..., description="Text")
     submit: Optional[bool] = Field(None, description="Submit with Enter")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1425,6 +1431,7 @@ class AgentLocalComputerControlPressKeyInput(BaseModel):
     """Agent Local Computer Control — Press Key"""
     key: str = Field(..., description="Examples: Enter, Escape, Tab, ArrowDown, a.")
     modifiers: Optional[list[str]] = Field(None, description="Optional modifiers such as cmd, shift, option, control.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1434,6 +1441,7 @@ class AgentLocalComputerControlScrollInput(BaseModel):
     """Agent Local Computer Control — Scroll"""
     deltaX: Optional[float] = Field(None, description="Delta X")
     deltaY: Optional[float] = Field(None, description="Delta Y")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1442,6 +1450,7 @@ class AgentLocalComputerControlScrollInput(BaseModel):
 class AgentLocalComputerControlWaitInput(BaseModel):
     """Agent Local Computer Control — Wait"""
     seconds: Optional[float] = Field(None, description="Seconds")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1453,6 +1462,7 @@ class AgentLocalComputerControlRunStepsInput(BaseModel):
     stopOnError: Optional[bool] = Field(None, description="Stop on error")
     includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
     includeFinalScreenshot: Optional[bool] = Field(None, description="Include final screenshot")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
