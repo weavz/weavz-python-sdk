@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 AdvancedCodeSandboxPersistence = Literal["ephemeral", "persistent"]
 AdvancedCodeStorageMountScope = Literal["none", "end_user", "workspace", "external"]
 PersistenceScope = Literal["end_user", "workspace", "external"]
+LocalBrowserRuntime = Literal["chrome_extension", "managed_profile"]
 
 
 class AdvancedCodeSettings(BaseModel):
@@ -35,6 +36,14 @@ class PersistenceSettings(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class LocalBrowserSettings(BaseModel):
+    """Owner-controlled runtime policy for Agent Local Browser Control."""
+
+    runtime: LocalBrowserRuntime = "chrome_extension"
+
+    model_config = {"populate_by_name": True}
+
+
 class WorkspaceIntegrationSettings(BaseModel):
     """Owner-controlled settings for a workspace integration instance."""
 
@@ -42,6 +51,9 @@ class WorkspaceIntegrationSettings(BaseModel):
         default=None, alias="advancedCode"
     )
     persistence: Optional[PersistenceSettings] = None
+    local_browser: Optional[LocalBrowserSettings] = Field(
+        default=None, alias="localBrowser"
+    )
 
     model_config = {"populate_by_name": True}
 
