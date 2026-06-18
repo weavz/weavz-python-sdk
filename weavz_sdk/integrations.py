@@ -1374,11 +1374,91 @@ class AgentLocalComputerControlSnapshotInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentLocalComputerControlObserveInput(BaseModel):
+    """Agent Local Computer Control — Observe"""
+    includeScreenshot: Optional[bool] = Field(None, description="Include screenshot")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentLocalComputerControlScreenshotInput(BaseModel):
     """Agent Local Computer Control — Screenshot"""
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
     fullResolution: Optional[bool] = Field(None, description="Full resolution")
     saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlListTargetsInput(BaseModel):
+    """Agent Local Computer Control — List Targets"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlActivateTargetInput(BaseModel):
+    """Agent Local Computer Control — Activate Target"""
+    targetRef: str = Field(..., description="targetRef returned by list_targets.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlFocusRefInput(BaseModel):
+    """Agent Local Computer Control — Focus Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlPressRefInput(BaseModel):
+    """Agent Local Computer Control — Press Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlSetTextRefInput(BaseModel):
+    """Agent Local Computer Control — Set Text Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    text: str = Field(..., description="Text")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlSelectRefInput(BaseModel):
+    """Agent Local Computer Control — Select Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    selection: Optional[str] = Field(None, description="Selection")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerControlScrollRefInput(BaseModel):
+    """Agent Local Computer Control — Scroll Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    deltaX: Optional[float] = Field(None, description="Delta X")
+    deltaY: Optional[float] = Field(None, description="Delta Y")
     intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
@@ -1456,9 +1536,24 @@ class AgentLocalComputerControlWaitInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentLocalComputerControlWaitForInput(BaseModel):
+    """Agent Local Computer Control — Wait For"""
+    condition: str = Field(..., description="Condition")
+    observationId: Optional[str] = Field(None, description="Observation ID")
+    ref: Optional[str] = Field(None, description="Element ref")
+    text: Optional[str] = Field(None, description="Text")
+    bundleIdentifier: Optional[str] = Field(None, description="Bundle identifier")
+    applicationName: Optional[str] = Field(None, description="Application name")
+    timeoutSeconds: Optional[float] = Field(None, description="Timeout seconds")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentLocalComputerControlRunStepsInput(BaseModel):
     """Agent Local Computer Control — Run Steps"""
-    steps: list[dict[str, Any]] = Field(..., description="[{ \"op\": \"screenshot\" }, { \"op\": \"click\", \"params\": { \"x\": 120, \"y\": 180 } }]")
+    steps: list[dict[str, Any]] = Field(..., description="[{ \"op\": \"observe\" }, { \"op\": \"press_ref\", \"params\": { \"observationId\": \"...\", \"ref\": \"...\" }, \"delayMs\": 150 }]")
     stopOnError: Optional[bool] = Field(None, description="Stop on error")
     includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
     includeFinalScreenshot: Optional[bool] = Field(None, description="Include final screenshot")
@@ -12841,7 +12936,7 @@ class GmailSendEmailInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
-    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Use uploaded file data, a data URL, valid base64 content, an inline file object, or an HTTP(S) download URL. Do not pass local filesystem paths such as /Users/...; the action cannot read local disk paths.")
 
     model_config = {"populate_by_name": True}
 
@@ -12852,7 +12947,7 @@ class GmailReplyToEmailInput(BaseModel):
     from_: Optional[str] = Field(None, alias="from", description="Optional verified Gmail send-as address. Leave blank to use Gmail's default sender.")
     body: str = Field(..., description="Reply Body")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
-    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Use uploaded file data, a data URL, valid base64 content, an inline file object, or an HTTP(S) download URL. Do not pass local filesystem paths such as /Users/...; the action cannot read local disk paths.")
 
     model_config = {"populate_by_name": True}
 
@@ -13051,7 +13146,7 @@ class GmailCreateDraftInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
-    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Use uploaded file data, a data URL, valid base64 content, an inline file object, or an HTTP(S) download URL. Do not pass local filesystem paths such as /Users/...; the action cannot read local disk paths.")
 
     model_config = {"populate_by_name": True}
 
@@ -13082,7 +13177,7 @@ class GmailUpdateDraftInput(BaseModel):
     cc: Optional[str] = Field(None, description="CC")
     bcc: Optional[str] = Field(None, description="BCC")
     isHtml: Optional[bool] = Field(None, description="Send as HTML")
-    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Each file can be an uploaded file, base64 payload, data URL, or HTTP(S) URL such as a Weavz filesystem download URL.")
+    attachments: Optional[list[Any]] = Field(None, description="Files to attach. Use uploaded file data, a data URL, valid base64 content, an inline file object, or an HTTP(S) download URL. Do not pass local filesystem paths such as /Users/...; the action cannot read local disk paths.")
 
     model_config = {"populate_by_name": True}
 
@@ -39214,7 +39309,15 @@ IntegrationActionKey = Literal[
     "agent-local-computer-control.ensure_connected",
     "agent-local-computer-control.session_status",
     "agent-local-computer-control.snapshot",
+    "agent-local-computer-control.observe",
     "agent-local-computer-control.screenshot",
+    "agent-local-computer-control.list_targets",
+    "agent-local-computer-control.activate_target",
+    "agent-local-computer-control.focus_ref",
+    "agent-local-computer-control.press_ref",
+    "agent-local-computer-control.set_text_ref",
+    "agent-local-computer-control.select_ref",
+    "agent-local-computer-control.scroll_ref",
     "agent-local-computer-control.move_mouse",
     "agent-local-computer-control.click",
     "agent-local-computer-control.drag",
@@ -39222,6 +39325,7 @@ IntegrationActionKey = Literal[
     "agent-local-computer-control.press_key",
     "agent-local-computer-control.scroll",
     "agent-local-computer-control.wait",
+    "agent-local-computer-control.wait_for",
     "agent-local-computer-control.run_steps",
     "agent-local-computer-control.request_human",
     "agent-local-computer-control.resume",
@@ -43306,7 +43410,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "ensure_connected",
         "session_status",
         "snapshot",
+        "observe",
         "screenshot",
+        "list_targets",
+        "activate_target",
+        "focus_ref",
+        "press_ref",
+        "set_text_ref",
+        "select_ref",
+        "scroll_ref",
         "move_mouse",
         "click",
         "drag",
@@ -43314,6 +43426,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "press_key",
         "scroll",
         "wait",
+        "wait_for",
         "run_steps",
         "request_human",
         "resume",
@@ -48396,7 +48509,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-computer-control.ensure_connected": AgentLocalComputerControlEnsureConnectedInput,
     "agent-local-computer-control.session_status": AgentLocalComputerControlSessionStatusInput,
     "agent-local-computer-control.snapshot": AgentLocalComputerControlSnapshotInput,
+    "agent-local-computer-control.observe": AgentLocalComputerControlObserveInput,
     "agent-local-computer-control.screenshot": AgentLocalComputerControlScreenshotInput,
+    "agent-local-computer-control.list_targets": AgentLocalComputerControlListTargetsInput,
+    "agent-local-computer-control.activate_target": AgentLocalComputerControlActivateTargetInput,
+    "agent-local-computer-control.focus_ref": AgentLocalComputerControlFocusRefInput,
+    "agent-local-computer-control.press_ref": AgentLocalComputerControlPressRefInput,
+    "agent-local-computer-control.set_text_ref": AgentLocalComputerControlSetTextRefInput,
+    "agent-local-computer-control.select_ref": AgentLocalComputerControlSelectRefInput,
+    "agent-local-computer-control.scroll_ref": AgentLocalComputerControlScrollRefInput,
     "agent-local-computer-control.move_mouse": AgentLocalComputerControlMoveMouseInput,
     "agent-local-computer-control.click": AgentLocalComputerControlClickInput,
     "agent-local-computer-control.drag": AgentLocalComputerControlDragInput,
@@ -48404,6 +48525,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-computer-control.press_key": AgentLocalComputerControlPressKeyInput,
     "agent-local-computer-control.scroll": AgentLocalComputerControlScrollInput,
     "agent-local-computer-control.wait": AgentLocalComputerControlWaitInput,
+    "agent-local-computer-control.wait_for": AgentLocalComputerControlWaitForInput,
     "agent-local-computer-control.run_steps": AgentLocalComputerControlRunStepsInput,
     "agent-local-computer-control.request_human": AgentLocalComputerControlRequestHumanInput,
     "agent-local-computer-control.resume": AgentLocalComputerControlResumeInput,
