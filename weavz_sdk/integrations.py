@@ -12455,6 +12455,71 @@ class FirecrawlCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class FirefliesValidateConnectionInput(BaseModel):
+    """Fireflies.ai — Validate Connection"""
+    pass
+
+
+class FirefliesListUsersInput(BaseModel):
+    """Fireflies.ai — List Users"""
+    pass
+
+
+class FirefliesListTranscriptsInput(BaseModel):
+    """Fireflies.ai — List Transcripts"""
+    keyword: Optional[str] = Field(None, description="Search meeting title and/or spoken words. Maximum 255 characters.")
+    scope: Optional[str] = Field(None, description="Used only when Keyword is provided. Fireflies defaults to title.")
+    fromDate: Optional[str] = Field(None, description="ISO 8601 date-time.")
+    toDate: Optional[str] = Field(None, description="ISO 8601 date-time.")
+    limit: Optional[float] = Field(None, description="Maximum 50.")
+    skip: Optional[float] = Field(None, description="Skip")
+    userId: Optional[str] = Field(None, description="User ID")
+    mine: Optional[bool] = Field(None, description="Only My Organized Meetings")
+    organizers: Optional[list[Any]] = Field(None, description="Emails to match against organizers.")
+    participants: Optional[list[Any]] = Field(None, description="Emails to match against attendees.")
+    channelId: Optional[str] = Field(None, description="Channel ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirefliesSearchTranscriptsInput(BaseModel):
+    """Fireflies.ai — Search Transcripts"""
+    keyword: str = Field(..., description="Search meeting title and/or spoken words. Maximum 255 characters.")
+    scope: Optional[str] = Field(None, description="Used only when Keyword is provided. Fireflies defaults to title.")
+    fromDate: Optional[str] = Field(None, description="ISO 8601 date-time.")
+    toDate: Optional[str] = Field(None, description="ISO 8601 date-time.")
+    limit: Optional[float] = Field(None, description="Maximum 50.")
+    skip: Optional[float] = Field(None, description="Skip")
+    userId: Optional[str] = Field(None, description="User ID")
+    mine: Optional[bool] = Field(None, description="Only My Organized Meetings")
+    organizers: Optional[list[Any]] = Field(None, description="Emails to match against organizers.")
+    participants: Optional[list[Any]] = Field(None, description="Emails to match against attendees.")
+    channelId: Optional[str] = Field(None, description="Channel ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirefliesGetTranscriptInput(BaseModel):
+    """Fireflies.ai — Get Transcript"""
+    transcriptId: str = Field(..., description="Transcript ID")
+    includeSentences: Optional[bool] = Field(None, description="Include Sentences")
+    includeSpeakers: Optional[bool] = Field(None, description="Include Speakers")
+    includeParticipants: Optional[bool] = Field(None, description="Include Participants")
+    includeMeetingAttendees: Optional[bool] = Field(None, description="Include Meeting Attendees")
+    includeAnalytics: Optional[bool] = Field(None, description="Requires a Fireflies.ai plan that can query analytics.")
+    includeMediaUrls: Optional[bool] = Field(None, description="Requests audio_url and video_url. These may require a paid Fireflies.ai plan.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirefliesGetActiveMeetingsInput(BaseModel):
+    """Fireflies.ai — Get Active Meetings"""
+    email: Optional[str] = Field(None, description="Omit to query active meetings for the authenticated user. Admin permissions are required to query another team user.")
+    states: Optional[list[str]] = Field(None, description="Omit to return both active and paused meetings.")
+
+    model_config = {"populate_by_name": True}
+
+
 class FishbowlGetProductInput(BaseModel):
     """Fishbowl — Get Product"""
     productId: str = Field(..., description="Product ID")
@@ -40092,6 +40157,7 @@ IntegrationName = Literal[
     "fillout-forms",
     "firebase",
     "firecrawl",
+    "fireflies",
     "fishbowl",
     "fleetio",
     "fly-io",
@@ -41767,6 +41833,12 @@ IntegrationActionKey = Literal[
     "firecrawl.crawlResults",
     "firecrawl.map",
     "firecrawl.custom_api_call",
+    "fireflies.validate_connection",
+    "fireflies.list_users",
+    "fireflies.list_transcripts",
+    "fireflies.search_transcripts",
+    "fireflies.get_transcript",
+    "fireflies.get_active_meetings",
     "fishbowl.get_product",
     "fishbowl.create_product",
     "fishbowl.create_sales_order",
@@ -46283,6 +46355,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "crawlResults",
         "map",
         "custom_api_call",
+    ),
+    "fireflies": (
+        "validate_connection",
+        "list_users",
+        "list_transcripts",
+        "search_transcripts",
+        "get_transcript",
+        "get_active_meetings",
     ),
     "fishbowl": (
         "get_product",
@@ -51221,6 +51301,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "firecrawl.crawlResults": FirecrawlCrawlResultsInput,
     "firecrawl.map": FirecrawlMapInput,
     "firecrawl.custom_api_call": FirecrawlCustomApiCallInput,
+    "fireflies.validate_connection": FirefliesValidateConnectionInput,
+    "fireflies.list_users": FirefliesListUsersInput,
+    "fireflies.list_transcripts": FirefliesListTranscriptsInput,
+    "fireflies.search_transcripts": FirefliesSearchTranscriptsInput,
+    "fireflies.get_transcript": FirefliesGetTranscriptInput,
+    "fireflies.get_active_meetings": FirefliesGetActiveMeetingsInput,
     "fishbowl.get_product": FishbowlGetProductInput,
     "fishbowl.create_product": FishbowlCreateProductInput,
     "fishbowl.create_sales_order": FishbowlCreateSalesOrderInput,
