@@ -7746,91 +7746,205 @@ class ClioListActivitiesInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ClockifyValidateConnectionInput(BaseModel):
+    """Clockify — Validate Connection"""
+    pass
+
+
+class ClockifyGetCurrentUserInput(BaseModel):
+    """Clockify — Get Current User"""
+    pass
+
+
+class ClockifyListWorkspacesInput(BaseModel):
+    """Clockify — List Workspaces"""
+    pass
+
+
+class ClockifyGetWorkspaceInput(BaseModel):
+    """Clockify — Get Workspace"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListUsersInput(BaseModel):
+    """Clockify — List Users"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    email: Optional[str] = Field(None, description="Email")
+    name: Optional[str] = Field(None, description="Name")
+    status: Optional[str] = Field(None, description="Status")
+    memberships: Optional[str] = Field(None, description="Memberships")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListClientsInput(BaseModel):
+    """Clockify — List Clients"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    name: Optional[str] = Field(None, description="Name")
+    archived: Optional[bool] = Field(None, description="Archived")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListProjectsInput(BaseModel):
+    """Clockify — List Projects"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    name: Optional[str] = Field(None, description="Name")
+    archived: Optional[bool] = Field(None, description="Archived")
+    billable: Optional[bool] = Field(None, description="Billable")
+    hydrated: Optional[bool] = Field(None, description="Include additional project fields when supported by Clockify.")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyGetProjectInput(BaseModel):
+    """Clockify — Get Project"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListTasksInput(BaseModel):
+    """Clockify — List Tasks"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    projectId: str = Field(..., description="Project ID")
+    name: Optional[str] = Field(None, description="Name")
+    active: Optional[bool] = Field(None, description="Filter to active tasks when true, or completed tasks when false.")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyGetTaskInput(BaseModel):
+    """Clockify — Get Task"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    projectId: str = Field(..., description="Project ID")
+    taskId: str = Field(..., description="Task ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class ClockifyCreateTaskInput(BaseModel):
     """Clockify — Create Task"""
-    workspaceId: str = Field(..., description="Workspace")
-    projectId: str = Field(..., description="Project")
-    name: str = Field(..., description="Task Name")
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    projectId: str = Field(..., description="Project ID")
+    name: str = Field(..., description="Name")
+    assigneeIds: Optional[list[Any]] = Field(None, description="Assignee User IDs")
+    estimate: Optional[str] = Field(None, description="Clockify duration value, for example PT1H30M.")
     status: Optional[str] = Field(None, description="Status")
-    assigneeIds: Optional[list[str]] = Field(None, description="Assignee")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListTagsInput(BaseModel):
+    """Clockify — List Tags"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    name: Optional[str] = Field(None, description="Name")
+    archived: Optional[bool] = Field(None, description="Archived")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyListTimeEntriesInput(BaseModel):
+    """Clockify — List Time Entries"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    userId: Optional[str] = Field(None, description="Clockify user ID. Omit to use the API key owner.")
+    description: Optional[str] = Field(None, description="Description Search")
+    start: Optional[str] = Field(None, description="ISO 8601 lower bound.")
+    end: Optional[str] = Field(None, description="ISO 8601 upper bound.")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    taskId: Optional[str] = Field(None, description="Task ID")
+    tagIds: Optional[list[Any]] = Field(None, description="Tag IDs")
+    projectRequired: Optional[bool] = Field(None, description="Project Required")
+    taskRequired: Optional[bool] = Field(None, description="Task Required")
+    hydrated: Optional[bool] = Field(None, description="Hydrated")
+    inProgress: Optional[bool] = Field(None, description="In Progress")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyGetTimeEntryInput(BaseModel):
+    """Clockify — Get Time Entry"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    timeEntryId: str = Field(..., description="Time Entry ID")
+    hydrated: Optional[bool] = Field(None, description="Hydrated")
 
     model_config = {"populate_by_name": True}
 
 
 class ClockifyCreateTimeEntryInput(BaseModel):
     """Clockify — Create Time Entry"""
-    workspaceId: str = Field(..., description="Workspace")
-    start: str = Field(..., description="Start Datetime")
-    end: str = Field(..., description="End Datetime")
-    description: Optional[str] = Field(None, description="Entry Description")
-    projectId: Optional[str] = Field(None, description="Project")
-    taskId: Optional[str] = Field(None, description="Task")
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    start: str = Field(..., description="ISO 8601 start time.")
+    end: str = Field(..., description="ISO 8601 end time.")
+    description: Optional[str] = Field(None, description="Description")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    taskId: Optional[str] = Field(None, description="Task ID")
+    tagIds: Optional[list[Any]] = Field(None, description="Tag IDs")
     billable: Optional[bool] = Field(None, description="Billable")
-    tagIds: Optional[list[str]] = Field(None, description="Tags")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClockifyUpdateTimeEntryInput(BaseModel):
+    """Clockify — Update Time Entry"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    timeEntryId: str = Field(..., description="Time Entry ID")
+    start: str = Field(..., description="ISO 8601 start time. Clockify requires this when updating a time entry.")
+    end: Optional[str] = Field(None, description="ISO 8601 end time.")
+    description: Optional[str] = Field(None, description="Description")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    taskId: Optional[str] = Field(None, description="Task ID")
+    tagIds: Optional[list[Any]] = Field(None, description="Tag IDs")
+    billable: Optional[bool] = Field(None, description="Billable")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
 
     model_config = {"populate_by_name": True}
 
 
 class ClockifyStartTimerInput(BaseModel):
     """Clockify — Start Timer"""
-    workspaceId: str = Field(..., description="Workspace")
-    description: Optional[str] = Field(None, description="Entry Description")
-    projectId: Optional[str] = Field(None, description="Project")
-    taskId: Optional[str] = Field(None, description="Task")
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    start: Optional[str] = Field(None, description="ISO 8601 start time. Defaults to the current time.")
+    description: Optional[str] = Field(None, description="Description")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    taskId: Optional[str] = Field(None, description="Task ID")
+    tagIds: Optional[list[Any]] = Field(None, description="Tag IDs")
     billable: Optional[bool] = Field(None, description="Billable")
-    tagIds: Optional[list[str]] = Field(None, description="Tags")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
 
     model_config = {"populate_by_name": True}
 
 
 class ClockifyStopTimerInput(BaseModel):
     """Clockify — Stop Timer"""
-    workspaceId: str = Field(..., description="Workspace")
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    userId: Optional[str] = Field(None, description="Clockify user ID. Omit to use the API key owner.")
+    end: Optional[str] = Field(None, description="ISO 8601 stop time. Defaults to the current time.")
 
     model_config = {"populate_by_name": True}
 
 
-class ClockifyFindTaskInput(BaseModel):
-    """Clockify — Find Task"""
-    workspaceId: str = Field(..., description="Workspace")
-    projectId: str = Field(..., description="Project")
-    name: str = Field(..., description="Task Name")
-    exactMatch: Optional[bool] = Field(None, description="Exact Match ?")
-
-    model_config = {"populate_by_name": True}
-
-
-class ClockifyFindTimeEntryInput(BaseModel):
-    """Clockify — Find Time Entry"""
-    workspaceId: str = Field(..., description="Workspace")
-    start: Optional[str] = Field(None, description="Start Datetime")
-    end: Optional[str] = Field(None, description="End Datetime")
-    description: Optional[str] = Field(None, description="Entry Description")
-    projectId: Optional[str] = Field(None, description="Project")
-    taskId: Optional[str] = Field(None, description="Task")
-
-    model_config = {"populate_by_name": True}
-
-
-class ClockifyFindRunningTimerInput(BaseModel):
-    """Clockify — Find Running Timer"""
-    workspaceId: str = Field(..., description="Workspace")
-
-    model_config = {"populate_by_name": True}
-
-
-class ClockifyCustomApiCallInput(BaseModel):
-    """Clockify — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class ClockifyListRunningTimeEntriesInput(BaseModel):
+    """Clockify — List Running Time Entries"""
+    workspaceId: str = Field(..., description="Clockify workspace ID.")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
 
     model_config = {"populate_by_name": True}
 
@@ -42122,14 +42236,25 @@ IntegrationActionKey = Literal[
     "clio.get_matter",
     "clio.list_contacts",
     "clio.list_activities",
-    "clockify.create-task",
-    "clockify.create-time-entry",
-    "clockify.start-timer",
-    "clockify.stop-timer",
-    "clockify.find-task",
-    "clockify.find-time-entry",
-    "clockify.find-running-timer",
-    "clockify.custom_api_call",
+    "clockify.validate_connection",
+    "clockify.get_current_user",
+    "clockify.list_workspaces",
+    "clockify.get_workspace",
+    "clockify.list_users",
+    "clockify.list_clients",
+    "clockify.list_projects",
+    "clockify.get_project",
+    "clockify.list_tasks",
+    "clockify.get_task",
+    "clockify.create_task",
+    "clockify.list_tags",
+    "clockify.list_time_entries",
+    "clockify.get_time_entry",
+    "clockify.create_time_entry",
+    "clockify.update_time_entry",
+    "clockify.start_timer",
+    "clockify.stop_timer",
+    "clockify.list_running_time_entries",
     "close.create_lead",
     "close.create_contact",
     "close.find_lead",
@@ -46586,14 +46711,25 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_activities",
     ),
     "clockify": (
-        "create-task",
-        "create-time-entry",
-        "start-timer",
-        "stop-timer",
-        "find-task",
-        "find-time-entry",
-        "find-running-timer",
-        "custom_api_call",
+        "validate_connection",
+        "get_current_user",
+        "list_workspaces",
+        "get_workspace",
+        "list_users",
+        "list_clients",
+        "list_projects",
+        "get_project",
+        "list_tasks",
+        "get_task",
+        "create_task",
+        "list_tags",
+        "list_time_entries",
+        "get_time_entry",
+        "create_time_entry",
+        "update_time_entry",
+        "start_timer",
+        "stop_timer",
+        "list_running_time_entries",
     ),
     "close": (
         "create_lead",
@@ -51758,14 +51894,25 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "clio.get_matter": ClioGetMatterInput,
     "clio.list_contacts": ClioListContactsInput,
     "clio.list_activities": ClioListActivitiesInput,
-    "clockify.create-task": ClockifyCreateTaskInput,
-    "clockify.create-time-entry": ClockifyCreateTimeEntryInput,
-    "clockify.start-timer": ClockifyStartTimerInput,
-    "clockify.stop-timer": ClockifyStopTimerInput,
-    "clockify.find-task": ClockifyFindTaskInput,
-    "clockify.find-time-entry": ClockifyFindTimeEntryInput,
-    "clockify.find-running-timer": ClockifyFindRunningTimerInput,
-    "clockify.custom_api_call": ClockifyCustomApiCallInput,
+    "clockify.validate_connection": ClockifyValidateConnectionInput,
+    "clockify.get_current_user": ClockifyGetCurrentUserInput,
+    "clockify.list_workspaces": ClockifyListWorkspacesInput,
+    "clockify.get_workspace": ClockifyGetWorkspaceInput,
+    "clockify.list_users": ClockifyListUsersInput,
+    "clockify.list_clients": ClockifyListClientsInput,
+    "clockify.list_projects": ClockifyListProjectsInput,
+    "clockify.get_project": ClockifyGetProjectInput,
+    "clockify.list_tasks": ClockifyListTasksInput,
+    "clockify.get_task": ClockifyGetTaskInput,
+    "clockify.create_task": ClockifyCreateTaskInput,
+    "clockify.list_tags": ClockifyListTagsInput,
+    "clockify.list_time_entries": ClockifyListTimeEntriesInput,
+    "clockify.get_time_entry": ClockifyGetTimeEntryInput,
+    "clockify.create_time_entry": ClockifyCreateTimeEntryInput,
+    "clockify.update_time_entry": ClockifyUpdateTimeEntryInput,
+    "clockify.start_timer": ClockifyStartTimerInput,
+    "clockify.stop_timer": ClockifyStopTimerInput,
+    "clockify.list_running_time_entries": ClockifyListRunningTimeEntriesInput,
     "close.create_lead": CloseCreateLeadInput,
     "close.create_contact": CloseCreateContactInput,
     "close.find_lead": CloseFindLeadInput,
