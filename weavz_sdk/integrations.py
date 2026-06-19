@@ -817,6 +817,13 @@ class AgentBrowserTabsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserShowLiveViewInput(BaseModel):
+    """Agent Browser — Show Live View"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentBrowserRequestHumanInput(BaseModel):
     """Agent Browser — Request Human Takeover"""
     reason: Optional[str] = Field(None, description="Reason")
@@ -1044,6 +1051,13 @@ class AgentBrowserStealthTabsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserStealthShowLiveViewInput(BaseModel):
+    """Agent Browser (Stealth) — Show Live View"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentBrowserStealthRequestHumanInput(BaseModel):
     """Agent Browser (Stealth) — Request Human Takeover"""
     reason: Optional[str] = Field(None, description="Reason")
@@ -1266,6 +1280,13 @@ class AgentBrowserAiTabsInput(BaseModel):
     action: str = Field(..., description="Action")
     index: Optional[float] = Field(None, description="Tab index")
     url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserAiShowLiveViewInput(BaseModel):
+    """Agent Browser AI — Show Live View"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -1519,6 +1540,13 @@ class AgentLocalBrowserControlTabsInput(BaseModel):
     action: str = Field(..., description="Action")
     index: Optional[float] = Field(None, description="Tab index")
     url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalBrowserControlShowLiveViewInput(BaseModel):
+    """Agent Local Browser Control — Show Live View"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
 
     model_config = {"populate_by_name": True}
@@ -41385,6 +41413,7 @@ IntegrationActionKey = Literal[
     "agent-browser.wait_for",
     "agent-browser.handle_dialog",
     "agent-browser.tabs",
+    "agent-browser.show_live_view",
     "agent-browser.request_human",
     "agent-browser.resume",
     "agent-browser.ensure_connected",
@@ -41411,6 +41440,7 @@ IntegrationActionKey = Literal[
     "agent-browser-stealth.wait_for",
     "agent-browser-stealth.handle_dialog",
     "agent-browser-stealth.tabs",
+    "agent-browser-stealth.show_live_view",
     "agent-browser-stealth.request_human",
     "agent-browser-stealth.resume",
     "agent-browser-stealth.ensure_connected",
@@ -41437,6 +41467,7 @@ IntegrationActionKey = Literal[
     "agent-browser-ai.wait_for",
     "agent-browser-ai.handle_dialog",
     "agent-browser-ai.tabs",
+    "agent-browser-ai.show_live_view",
     "agent-browser-ai.request_human",
     "agent-browser-ai.resume",
     "agent-browser-ai.ensure_connected",
@@ -41466,6 +41497,7 @@ IntegrationActionKey = Literal[
     "agent-local-browser-control.wait_for",
     "agent-local-browser-control.handle_dialog",
     "agent-local-browser-control.tabs",
+    "agent-local-browser-control.show_live_view",
     "agent-local-browser-control.request_human",
     "agent-local-browser-control.resume",
     "agent-local-browser-control.ensure_connected",
@@ -45689,6 +45721,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "wait_for",
         "handle_dialog",
         "tabs",
+        "show_live_view",
         "request_human",
         "resume",
         "ensure_connected",
@@ -45717,6 +45750,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "wait_for",
         "handle_dialog",
         "tabs",
+        "show_live_view",
         "request_human",
         "resume",
         "ensure_connected",
@@ -45745,6 +45779,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "wait_for",
         "handle_dialog",
         "tabs",
+        "show_live_view",
         "request_human",
         "resume",
         "ensure_connected",
@@ -45776,6 +45811,7 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "wait_for",
         "handle_dialog",
         "tabs",
+        "show_live_view",
         "request_human",
         "resume",
         "ensure_connected",
@@ -51021,6 +51057,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser.wait_for": AgentBrowserWaitForInput,
     "agent-browser.handle_dialog": AgentBrowserHandleDialogInput,
     "agent-browser.tabs": AgentBrowserTabsInput,
+    "agent-browser.show_live_view": AgentBrowserShowLiveViewInput,
     "agent-browser.request_human": AgentBrowserRequestHumanInput,
     "agent-browser.resume": AgentBrowserResumeInput,
     "agent-browser.ensure_connected": AgentBrowserEnsureConnectedInput,
@@ -51047,6 +51084,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser-stealth.wait_for": AgentBrowserStealthWaitForInput,
     "agent-browser-stealth.handle_dialog": AgentBrowserStealthHandleDialogInput,
     "agent-browser-stealth.tabs": AgentBrowserStealthTabsInput,
+    "agent-browser-stealth.show_live_view": AgentBrowserStealthShowLiveViewInput,
     "agent-browser-stealth.request_human": AgentBrowserStealthRequestHumanInput,
     "agent-browser-stealth.resume": AgentBrowserStealthResumeInput,
     "agent-browser-stealth.ensure_connected": AgentBrowserStealthEnsureConnectedInput,
@@ -51073,6 +51111,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser-ai.wait_for": AgentBrowserAiWaitForInput,
     "agent-browser-ai.handle_dialog": AgentBrowserAiHandleDialogInput,
     "agent-browser-ai.tabs": AgentBrowserAiTabsInput,
+    "agent-browser-ai.show_live_view": AgentBrowserAiShowLiveViewInput,
     "agent-browser-ai.request_human": AgentBrowserAiRequestHumanInput,
     "agent-browser-ai.resume": AgentBrowserAiResumeInput,
     "agent-browser-ai.ensure_connected": AgentBrowserAiEnsureConnectedInput,
@@ -51102,6 +51141,7 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-browser-control.wait_for": AgentLocalBrowserControlWaitForInput,
     "agent-local-browser-control.handle_dialog": AgentLocalBrowserControlHandleDialogInput,
     "agent-local-browser-control.tabs": AgentLocalBrowserControlTabsInput,
+    "agent-local-browser-control.show_live_view": AgentLocalBrowserControlShowLiveViewInput,
     "agent-local-browser-control.request_human": AgentLocalBrowserControlRequestHumanInput,
     "agent-local-browser-control.resume": AgentLocalBrowserControlResumeInput,
     "agent-local-browser-control.ensure_connected": AgentLocalBrowserControlEnsureConnectedInput,
