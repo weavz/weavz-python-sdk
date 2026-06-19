@@ -1344,11 +1344,7 @@ class AgentLocalBrowserControlEndSessionInput(BaseModel):
 
 class AgentLocalComputerControlStartSessionInput(BaseModel):
     """Agent Local Computer Control — Start Session"""
-    targetScope: Optional[str] = Field(None, description="Target scope")
-    allowedApplications: Optional[list[str]] = Field(None, description="Optional macOS bundle identifiers the local app may control.")
-    autoPauseOnFocusLoss: Optional[bool] = Field(None, description="Auto-pause on focus loss")
-
-    model_config = {"populate_by_name": True}
+    pass
 
 
 class AgentLocalComputerControlEnsureConnectedInput(BaseModel):
