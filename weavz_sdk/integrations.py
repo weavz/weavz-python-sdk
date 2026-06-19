@@ -13883,6 +13883,155 @@ class GoogleAnalyticsGetMetadataInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class GoogleBigqueryListProjectsInput(BaseModel):
+    """Google BigQuery — List Projects"""
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryListDatasetsInput(BaseModel):
+    """Google BigQuery — List Datasets"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    all: Optional[bool] = Field(None, description="Include Hidden Datasets")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryGetDatasetInput(BaseModel):
+    """Google BigQuery — Get Dataset"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    datasetId: str = Field(..., description="Dataset")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryListTablesInput(BaseModel):
+    """Google BigQuery — List Tables"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    datasetId: str = Field(..., description="Dataset")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryGetTableInput(BaseModel):
+    """Google BigQuery — Get Table"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    datasetId: str = Field(..., description="Dataset")
+    tableId: str = Field(..., description="Table")
+    selectedFields: Optional[str] = Field(None, description="Optional comma-separated table metadata fields to return.")
+    view: Optional[str] = Field(None, description="Metadata View")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryListTableRowsInput(BaseModel):
+    """Google BigQuery — List Table Rows"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    datasetId: str = Field(..., description="Dataset")
+    tableId: str = Field(..., description="Table")
+    selectedFields: Optional[str] = Field(None, description="Optional comma-separated columns to return.")
+    startIndex: Optional[str] = Field(None, description="Zero-based row offset.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryRunQueryInput(BaseModel):
+    """Google BigQuery — Run Query"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    query: str = Field(..., description="GoogleSQL query to run.")
+    location: Optional[str] = Field(None, description="Optional job location, for example US, EU, or us-central1.")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    timeoutMs: Optional[float] = Field(None, description="How long BigQuery should wait for query completion before returning jobComplete=false.")
+    maximumBytesBilled: Optional[str] = Field(None, description="Optional cost guard, expressed as an integer string.")
+    useLegacySql: Optional[bool] = Field(None, description="Use Legacy SQL")
+    dryRun: Optional[bool] = Field(None, description="Validate and estimate bytes without running the query.")
+    parameterMode: Optional[str] = Field(None, description="Parameter Mode")
+    queryParameters: Optional[Any] = Field(None, description="Optional BigQuery queryParameters JSON array.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryGetQueryResultsInput(BaseModel):
+    """Google BigQuery — Get Query Results"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    jobId: str = Field(..., description="Job ID")
+    location: Optional[str] = Field(None, description="Required for single-region jobs outside US/EU.")
+    startIndex: Optional[str] = Field(None, description="Start Index")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    timeoutMs: Optional[float] = Field(None, description="Timeout (ms)")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryListJobsInput(BaseModel):
+    """Google BigQuery — List Jobs"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    allUsers: Optional[bool] = Field(None, description="List jobs from all users when permissions allow it.")
+    stateFilter: Optional[str] = Field(None, description="State Filter")
+    projection: Optional[str] = Field(None, description="Projection")
+    minCreationTime: Optional[str] = Field(None, description="Epoch milliseconds lower bound.")
+    maxCreationTime: Optional[str] = Field(None, description="Epoch milliseconds upper bound.")
+    parentJobId: Optional[str] = Field(None, description="Parent Job ID")
+    maxResults: Optional[float] = Field(None, description="Maximum number of results to return. Capped at 1000.")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryGetJobInput(BaseModel):
+    """Google BigQuery — Get Job"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    jobId: str = Field(..., description="Job ID")
+    location: Optional[str] = Field(None, description="Location")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryCancelJobInput(BaseModel):
+    """Google BigQuery — Cancel Job"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    jobId: str = Field(..., description="Job ID")
+    location: Optional[str] = Field(None, description="Location")
+    confirmCancel: bool = Field(..., description="Required because cancelled BigQuery jobs may still incur costs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryInsertRowsInput(BaseModel):
+    """Google BigQuery — Insert Rows"""
+    projectId: str = Field(..., description="Google Cloud project available to this BigQuery account.")
+    datasetId: str = Field(..., description="Dataset")
+    tableId: str = Field(..., description="Table")
+    rows: Any = Field(..., description="JSON array of row objects to stream into the table.")
+    insertIdField: Optional[str] = Field(None, description="Optional row property to use as BigQuery insertId for deduplication.")
+    skipInvalidRows: Optional[bool] = Field(None, description="Skip Invalid Rows")
+    ignoreUnknownValues: Optional[bool] = Field(None, description="Ignore Unknown Values")
+    templateSuffix: Optional[str] = Field(None, description="Template Suffix")
+    traceId: Optional[str] = Field(None, description="Trace ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleBigqueryCustomApiCallInput(BaseModel):
+    """Google BigQuery — Custom API Call"""
+    pathOrUrl: str = Field(..., description="Relative path like /projects, /projects/{projectId}/datasets, or a https://bigquery.googleapis.com/bigquery/v2 URL.")
+    method: str = Field(..., description="Method")
+    queryParams: Optional[Any] = Field(None, description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class GoogleCalendarListCalendarsInput(BaseModel):
     """Google Calendar — List Calendars"""
     pageToken: Optional[str] = Field(None, description="Page Token")
@@ -39366,6 +39515,7 @@ IntegrationName = Literal[
     "gong",
     "google-ads",
     "google-analytics",
+    "google-bigquery",
     "google-calendar",
     "googlechat",
     "google-classroom",
@@ -41161,6 +41311,19 @@ IntegrationActionKey = Literal[
     "google-ads.search",
     "google-analytics.run_report",
     "google-analytics.get_metadata",
+    "google-bigquery.list_projects",
+    "google-bigquery.list_datasets",
+    "google-bigquery.get_dataset",
+    "google-bigquery.list_tables",
+    "google-bigquery.get_table",
+    "google-bigquery.list_table_rows",
+    "google-bigquery.run_query",
+    "google-bigquery.get_query_results",
+    "google-bigquery.list_jobs",
+    "google-bigquery.get_job",
+    "google-bigquery.cancel_job",
+    "google-bigquery.insert_rows",
+    "google-bigquery.custom_api_call",
     "google-calendar.list_calendars",
     "google-calendar.list_events",
     "google-calendar.create_event",
@@ -45647,6 +45810,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "google-analytics": (
         "run_report",
         "get_metadata",
+    ),
+    "google-bigquery": (
+        "list_projects",
+        "list_datasets",
+        "get_dataset",
+        "list_tables",
+        "get_table",
+        "list_table_rows",
+        "run_query",
+        "get_query_results",
+        "list_jobs",
+        "get_job",
+        "cancel_job",
+        "insert_rows",
+        "custom_api_call",
     ),
     "google-calendar": (
         "list_calendars",
@@ -50453,6 +50631,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "google-ads.search": GoogleAdsSearchInput,
     "google-analytics.run_report": GoogleAnalyticsRunReportInput,
     "google-analytics.get_metadata": GoogleAnalyticsGetMetadataInput,
+    "google-bigquery.list_projects": GoogleBigqueryListProjectsInput,
+    "google-bigquery.list_datasets": GoogleBigqueryListDatasetsInput,
+    "google-bigquery.get_dataset": GoogleBigqueryGetDatasetInput,
+    "google-bigquery.list_tables": GoogleBigqueryListTablesInput,
+    "google-bigquery.get_table": GoogleBigqueryGetTableInput,
+    "google-bigquery.list_table_rows": GoogleBigqueryListTableRowsInput,
+    "google-bigquery.run_query": GoogleBigqueryRunQueryInput,
+    "google-bigquery.get_query_results": GoogleBigqueryGetQueryResultsInput,
+    "google-bigquery.list_jobs": GoogleBigqueryListJobsInput,
+    "google-bigquery.get_job": GoogleBigqueryGetJobInput,
+    "google-bigquery.cancel_job": GoogleBigqueryCancelJobInput,
+    "google-bigquery.insert_rows": GoogleBigqueryInsertRowsInput,
+    "google-bigquery.custom_api_call": GoogleBigqueryCustomApiCallInput,
     "google-calendar.list_calendars": GoogleCalendarListCalendarsInput,
     "google-calendar.list_events": GoogleCalendarListEventsInput,
     "google-calendar.create_event": GoogleCalendarCreateEventInput,
