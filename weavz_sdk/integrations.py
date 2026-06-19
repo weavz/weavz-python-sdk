@@ -5321,6 +5321,282 @@ class BrevoSendSmsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class BrexGetCurrentUserInput(BaseModel):
+    """Brex — Get Current User"""
+    pass
+
+
+class BrexGetCompanyInput(BaseModel):
+    """Brex — Get Company"""
+    pass
+
+
+class BrexListUsersInput(BaseModel):
+    """Brex — List Users"""
+    email: Optional[str] = Field(None, description="Email")
+    remoteDisplayId: Optional[str] = Field(None, description="Remote Display ID")
+    expand: Optional[list[Any]] = Field(None, description="Values for the official expand[] query parameter.")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetUserInput(BaseModel):
+    """Brex — Get User"""
+    id: str = Field(..., description="User ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListDepartmentsInput(BaseModel):
+    """Brex — List Departments"""
+    name: Optional[str] = Field(None, description="Name")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetDepartmentInput(BaseModel):
+    """Brex — Get Department"""
+    id: str = Field(..., description="Department ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListLocationsInput(BaseModel):
+    """Brex — List Locations"""
+    name: Optional[str] = Field(None, description="Name")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetLocationInput(BaseModel):
+    """Brex — Get Location"""
+    id: str = Field(..., description="Location ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListTitlesInput(BaseModel):
+    """Brex — List Titles"""
+    name: Optional[str] = Field(None, description="Name")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetTitleInput(BaseModel):
+    """Brex — Get Title"""
+    id: str = Field(..., description="Title ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListLegalEntitiesInput(BaseModel):
+    """Brex — List Legal Entities"""
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetLegalEntityInput(BaseModel):
+    """Brex — Get Legal Entity"""
+    id: str = Field(..., description="Legal Entity ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCardAccountsInput(BaseModel):
+    """Brex — List Card Accounts"""
+    pass
+
+
+class BrexListCardsInput(BaseModel):
+    """Brex — List Cards"""
+    userId: Optional[str] = Field(None, description="User ID")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetCardInput(BaseModel):
+    """Brex — Get Card"""
+    id: str = Field(..., description="Card ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCashAccountsInput(BaseModel):
+    """Brex — List Cash Accounts"""
+    pass
+
+
+class BrexGetPrimaryCashAccountInput(BaseModel):
+    """Brex — Get Primary Cash Account"""
+    pass
+
+
+class BrexGetCashAccountInput(BaseModel):
+    """Brex — Get Cash Account"""
+    id: str = Field(..., description="Cash Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCardTransactionsInput(BaseModel):
+    """Brex — List Card Transactions"""
+    userIds: Optional[list[Any]] = Field(None, description="Values for the official user_ids query parameter.")
+    postedAtStart: Optional[str] = Field(None, description="Posted At Start")
+    expand: Optional[list[Any]] = Field(None, description="Values for the official expand[] query parameter.")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCashTransactionsInput(BaseModel):
+    """Brex — List Cash Transactions"""
+    id: str = Field(..., description="Cash Account ID")
+    postedAtStart: Optional[str] = Field(None, description="Posted At Start")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCardStatementsInput(BaseModel):
+    """Brex — List Card Statements"""
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCashStatementsInput(BaseModel):
+    """Brex — List Cash Statements"""
+    id: str = Field(..., description="Cash Account ID")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListExpensesInput(BaseModel):
+    """Brex — List Expenses"""
+    expand: Optional[list[Any]] = Field(None, description="Expand")
+    userIds: Optional[list[Any]] = Field(None, description="User IDs")
+    parentExpenseIds: Optional[list[Any]] = Field(None, description="Parent Expense IDs")
+    budgetIds: Optional[list[Any]] = Field(None, description="Budget IDs")
+    spendingEntityIds: Optional[list[Any]] = Field(None, description="Spending Entity IDs")
+    expenseTypes: Optional[list[Any]] = Field(None, description="Expense Types")
+    statuses: Optional[list[Any]] = Field(None, description="Statuses")
+    paymentStatuses: Optional[list[Any]] = Field(None, description="Payment Statuses")
+    purchasedAtStart: Optional[str] = Field(None, description="Purchased At Start")
+    purchasedAtEnd: Optional[str] = Field(None, description="Purchased At End")
+    updatedAtStart: Optional[str] = Field(None, description="Updated At Start")
+    updatedAtEnd: Optional[str] = Field(None, description="Updated At End")
+    paymentPostedAtStart: Optional[str] = Field(None, description="Payment Posted At Start")
+    paymentPostedAtEnd: Optional[str] = Field(None, description="Payment Posted At End")
+    loadCustomFields: Optional[bool] = Field(None, description="Load Custom Fields")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetExpenseInput(BaseModel):
+    """Brex — Get Expense"""
+    id: str = Field(..., description="Expense ID")
+    expand: Optional[list[Any]] = Field(None, description="Expand")
+    loadCustomFields: Optional[bool] = Field(None, description="Load Custom Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListCardExpensesInput(BaseModel):
+    """Brex — List Card Expenses"""
+    expand: Optional[list[Any]] = Field(None, description="Expand")
+    userIds: Optional[list[Any]] = Field(None, description="User IDs")
+    parentExpenseIds: Optional[list[Any]] = Field(None, description="Parent Expense IDs")
+    budgetIds: Optional[list[Any]] = Field(None, description="Budget IDs")
+    spendingEntityIds: Optional[list[Any]] = Field(None, description="Spending Entity IDs")
+    statuses: Optional[list[Any]] = Field(None, description="Statuses")
+    paymentStatuses: Optional[list[Any]] = Field(None, description="Payment Statuses")
+    purchasedAtStart: Optional[str] = Field(None, description="Purchased At Start")
+    purchasedAtEnd: Optional[str] = Field(None, description="Purchased At End")
+    updatedAtStart: Optional[str] = Field(None, description="Updated At Start")
+    updatedAtEnd: Optional[str] = Field(None, description="Updated At End")
+    paymentPostedAtStart: Optional[str] = Field(None, description="Payment Posted At Start")
+    paymentPostedAtEnd: Optional[str] = Field(None, description="Payment Posted At End")
+    loadCustomFields: Optional[bool] = Field(None, description="Load Custom Fields")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetCardExpenseInput(BaseModel):
+    """Brex — Get Card Expense"""
+    expenseId: str = Field(..., description="Card Expense ID")
+    expand: Optional[list[Any]] = Field(None, description="Expand")
+    loadCustomFields: Optional[bool] = Field(None, description="Load Custom Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListBudgetProgramsInput(BaseModel):
+    """Brex — List Budget Programs"""
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetBudgetProgramInput(BaseModel):
+    """Brex — Get Budget Program"""
+    id: str = Field(..., description="Budget Program ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListBudgetsInput(BaseModel):
+    """Brex — List Budgets"""
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetBudgetInput(BaseModel):
+    """Brex — Get Budget"""
+    id: str = Field(..., description="Budget ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexListSpendLimitsInput(BaseModel):
+    """Brex — List Spend Limits"""
+    memberUserIds: Optional[list[Any]] = Field(None, description="Values for the official member_user_id[] query parameter.")
+    cursor: Optional[str] = Field(None, description="Brex pagination cursor returned by the previous response.")
+    limit: Optional[float] = Field(None, description="Maximum number of results Brex should return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrexGetSpendLimitInput(BaseModel):
+    """Brex — Get Spend Limit"""
+    id: str = Field(..., description="Spend Limit ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class BufferCreatePostInput(BaseModel):
     """Buffer — Create Post"""
     profileIds: Any = Field(..., description="Array of profile IDs to post to")
@@ -39717,6 +39993,7 @@ IntegrationName = Literal[
     "brave-search",
     "breezy-hr",
     "brevo",
+    "brex",
     "buffer",
     "bugsnag",
     "buildium",
@@ -40747,6 +41024,38 @@ IntegrationActionKey = Literal[
     "brevo.list_contacts",
     "brevo.create_contact",
     "brevo.send_sms",
+    "brex.get_current_user",
+    "brex.get_company",
+    "brex.list_users",
+    "brex.get_user",
+    "brex.list_departments",
+    "brex.get_department",
+    "brex.list_locations",
+    "brex.get_location",
+    "brex.list_titles",
+    "brex.get_title",
+    "brex.list_legal_entities",
+    "brex.get_legal_entity",
+    "brex.list_card_accounts",
+    "brex.list_cards",
+    "brex.get_card",
+    "brex.list_cash_accounts",
+    "brex.get_primary_cash_account",
+    "brex.get_cash_account",
+    "brex.list_card_transactions",
+    "brex.list_cash_transactions",
+    "brex.list_card_statements",
+    "brex.list_cash_statements",
+    "brex.list_expenses",
+    "brex.get_expense",
+    "brex.list_card_expenses",
+    "brex.get_card_expense",
+    "brex.list_budget_programs",
+    "brex.get_budget_program",
+    "brex.list_budgets",
+    "brex.get_budget",
+    "brex.list_spend_limits",
+    "brex.get_spend_limit",
     "buffer.create_post",
     "buffer.list_profiles",
     "buffer.get_post",
@@ -45033,6 +45342,40 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_contacts",
         "create_contact",
         "send_sms",
+    ),
+    "brex": (
+        "get_current_user",
+        "get_company",
+        "list_users",
+        "get_user",
+        "list_departments",
+        "get_department",
+        "list_locations",
+        "get_location",
+        "list_titles",
+        "get_title",
+        "list_legal_entities",
+        "get_legal_entity",
+        "list_card_accounts",
+        "list_cards",
+        "get_card",
+        "list_cash_accounts",
+        "get_primary_cash_account",
+        "get_cash_account",
+        "list_card_transactions",
+        "list_cash_transactions",
+        "list_card_statements",
+        "list_cash_statements",
+        "list_expenses",
+        "get_expense",
+        "list_card_expenses",
+        "get_card_expense",
+        "list_budget_programs",
+        "get_budget_program",
+        "list_budgets",
+        "get_budget",
+        "list_spend_limits",
+        "get_spend_limit",
     ),
     "buffer": (
         "create_post",
@@ -50135,6 +50478,38 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "brevo.list_contacts": BrevoListContactsInput,
     "brevo.create_contact": BrevoCreateContactInput,
     "brevo.send_sms": BrevoSendSmsInput,
+    "brex.get_current_user": BrexGetCurrentUserInput,
+    "brex.get_company": BrexGetCompanyInput,
+    "brex.list_users": BrexListUsersInput,
+    "brex.get_user": BrexGetUserInput,
+    "brex.list_departments": BrexListDepartmentsInput,
+    "brex.get_department": BrexGetDepartmentInput,
+    "brex.list_locations": BrexListLocationsInput,
+    "brex.get_location": BrexGetLocationInput,
+    "brex.list_titles": BrexListTitlesInput,
+    "brex.get_title": BrexGetTitleInput,
+    "brex.list_legal_entities": BrexListLegalEntitiesInput,
+    "brex.get_legal_entity": BrexGetLegalEntityInput,
+    "brex.list_card_accounts": BrexListCardAccountsInput,
+    "brex.list_cards": BrexListCardsInput,
+    "brex.get_card": BrexGetCardInput,
+    "brex.list_cash_accounts": BrexListCashAccountsInput,
+    "brex.get_primary_cash_account": BrexGetPrimaryCashAccountInput,
+    "brex.get_cash_account": BrexGetCashAccountInput,
+    "brex.list_card_transactions": BrexListCardTransactionsInput,
+    "brex.list_cash_transactions": BrexListCashTransactionsInput,
+    "brex.list_card_statements": BrexListCardStatementsInput,
+    "brex.list_cash_statements": BrexListCashStatementsInput,
+    "brex.list_expenses": BrexListExpensesInput,
+    "brex.get_expense": BrexGetExpenseInput,
+    "brex.list_card_expenses": BrexListCardExpensesInput,
+    "brex.get_card_expense": BrexGetCardExpenseInput,
+    "brex.list_budget_programs": BrexListBudgetProgramsInput,
+    "brex.get_budget_program": BrexGetBudgetProgramInput,
+    "brex.list_budgets": BrexListBudgetsInput,
+    "brex.get_budget": BrexGetBudgetInput,
+    "brex.list_spend_limits": BrexListSpendLimitsInput,
+    "brex.get_spend_limit": BrexGetSpendLimitInput,
     "buffer.create_post": BufferCreatePostInput,
     "buffer.list_profiles": BufferListProfilesInput,
     "buffer.get_post": BufferGetPostInput,
