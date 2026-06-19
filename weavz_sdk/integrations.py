@@ -13953,6 +13953,7 @@ class GoogleBigqueryRunQueryInput(BaseModel):
     maximumBytesBilled: Optional[str] = Field(None, description="Optional cost guard, expressed as an integer string.")
     useLegacySql: Optional[bool] = Field(None, description="Use Legacy SQL")
     dryRun: Optional[bool] = Field(None, description="Validate and estimate bytes without running the query.")
+    confirmMutationOrDdl: Optional[bool] = Field(None, description="Required when the SQL appears to insert, update, delete, create, drop, alter, call, load, export, or otherwise mutate BigQuery state.")
     parameterMode: Optional[str] = Field(None, description="Parameter Mode")
     queryParameters: Optional[Any] = Field(None, description="Optional BigQuery queryParameters JSON array.")
 
@@ -14028,6 +14029,7 @@ class GoogleBigqueryCustomApiCallInput(BaseModel):
     queryParams: Optional[Any] = Field(None, description="Query Parameters")
     headers: Optional[dict[str, Any]] = Field(None, description="Headers")
     body: Optional[Any] = Field(None, description="Body")
+    confirmWrite: Optional[bool] = Field(None, description="Required for POST, PUT, PATCH, and DELETE custom API calls because BigQuery REST v2 includes destructive endpoints.")
 
     model_config = {"populate_by_name": True}
 
@@ -22010,44 +22012,115 @@ class Microsoft365PlannerCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class MicrosoftDynamicsCrmDynamicsCrmCreateRecordInput(BaseModel):
-    """Microsoft Dynamics CRM — Create Record"""
-    entityType: str = Field(..., description="Select or map the entity for which you want to create the record.")
-    fields: dict[str, Any] = Field(..., description="Entity Fields")
+class MicrosoftDynamicsCrmWhoAmIInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Who Am I"""
+    pass
+
+
+class MicrosoftDynamicsCrmListTablesInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — List Tables"""
+    includeCustom: Optional[bool] = Field(None, description="Include Custom Tables")
+    includeSystem: Optional[bool] = Field(None, description="Include System Tables")
+    search: Optional[str] = Field(None, description="Search")
 
     model_config = {"populate_by_name": True}
 
 
-class MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput(BaseModel):
-    """Microsoft Dynamics CRM — Delete Record"""
-    entityType: str = Field(..., description="Select or map the entity name whose records you want to delete.")
-    recordId: str = Field(..., description="Record ID")
+class MicrosoftDynamicsCrmGetTableMetadataInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Get Table Metadata"""
+    logicalName: str = Field(..., description="Dataverse logical table name, for example account. Use list_tables if the dropdown cannot load metadata.")
+    includeAttributes: Optional[bool] = Field(None, description="Include Attributes")
 
     model_config = {"populate_by_name": True}
 
 
-class MicrosoftDynamicsCrmDynamicsCrmGetRecordInput(BaseModel):
-    """Microsoft Dynamics CRM — Get Record"""
-    entityType: str = Field(..., description="Select or map the entity name whose records you want to retrieve.")
-    recordId: str = Field(..., description="Record ID")
+class MicrosoftDynamicsCrmListRecordsInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — List Records"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    select: Optional[str] = Field(None, description="Comma-separated column names.")
+    filter: Optional[str] = Field(None, description="$filter")
+    orderby: Optional[str] = Field(None, description="$orderby")
+    top: Optional[float] = Field(None, description="Maximum 1000.")
+    includeFormattedValues: Optional[bool] = Field(None, description="Include Formatted Values")
+    maxPageSize: Optional[float] = Field(None, description="Prefer: odata.maxpagesize, maximum 1000.")
 
     model_config = {"populate_by_name": True}
 
 
-class MicrosoftDynamicsCrmDynamicsCrmUpdateRecordInput(BaseModel):
-    """Microsoft Dynamics CRM — Update Record"""
-    entityType: str = Field(..., description="Select or map the entity for which you want to update the record.")
-    recordId: str = Field(..., description="Record ID")
-    fields: dict[str, Any] = Field(..., description="Entity Fields")
+class MicrosoftDynamicsCrmGetRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Get Record"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    recordId: str = Field(..., description="Dataverse row GUID.")
+    select: Optional[str] = Field(None, description="Comma-separated column names.")
+    expand: Optional[str] = Field(None, description="$expand")
+    includeFormattedValues: Optional[bool] = Field(None, description="Include Formatted Values")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmCreateRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Create Record"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    fields: Any = Field(..., description="JSON object of Dataverse column values and @odata.bind lookup values.")
+    returnRepresentation: Optional[bool] = Field(None, description="Return Representation")
+    select: Optional[str] = Field(None, description="Columns to return when Return Representation is enabled.")
+    suppressDuplicateDetection: Optional[bool] = Field(None, description="Suppress Duplicate Detection")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmUpdateRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Update Record"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    recordId: str = Field(..., description="Dataverse row GUID.")
+    fields: Any = Field(..., description="JSON object containing only fields to update.")
+    ifMatch: Optional[str] = Field(None, description="Defaults to * to prevent accidental upsert.")
+    returnRepresentation: Optional[bool] = Field(None, description="Return Representation")
+    select: Optional[str] = Field(None, description="Columns to return when Return Representation is enabled.")
+    suppressDuplicateDetection: Optional[bool] = Field(None, description="Suppress Duplicate Detection")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmUpsertRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Upsert Record"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    keyPredicate: str = Field(..., description="For example accountnumber='ABC-123' or accountid=00000000-0000-0000-0000-000000000000.")
+    fields: Any = Field(..., description="JSON object of Dataverse column values. Do not include alternate key values.")
+    mode: str = Field(..., description="Mode")
+    returnRepresentation: Optional[bool] = Field(None, description="Return Representation")
+    select: Optional[str] = Field(None, description="Columns to return when Return Representation is enabled.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDeleteRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Delete Record"""
+    entitySetName: str = Field(..., description="Dataverse EntitySetName. Use the metadata action if the dropdown cannot load tables.")
+    recordId: str = Field(..., description="Dataverse row GUID.")
+    ifMatch: Optional[str] = Field(None, description="Optional ETag or *.")
+    confirmDelete: bool = Field(..., description="Required to delete the record.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDataverseApiCallInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Dataverse API Call"""
+    path: str = Field(..., description="Relative Dataverse path starting with /, for example /WhoAmI.")
+    method: str = Field(..., description="Method")
+    queryParams: Optional[Any] = Field(None, description="Query Parameters")
+    headers: Optional[Any] = Field(None, description="Custom headers. Authorization, host, content type, and OData version headers are not allowed.")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmMutation: Optional[bool] = Field(None, description="Required for POST, PATCH, PUT, and DELETE custom calls.")
 
     model_config = {"populate_by_name": True}
 
 
 class MicrosoftDynamicsCrmCustomApiCallInput(BaseModel):
-    """Microsoft Dynamics CRM — Custom API Call"""
+    """Microsoft Dataverse / Dynamics 365 CRM — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
+    headers: dict[str, Any] = Field(..., description="Authorization and Dataverse protocol headers are injected automatically.")
     queryParams: dict[str, Any] = Field(..., description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
     body: Optional[dict[str, Any]] = Field(None, description="Body")
@@ -22055,6 +22128,39 @@ class MicrosoftDynamicsCrmCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDynamicsCrmCreateRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Create Record"""
+    entityType: str = Field(..., description="Dataverse EntitySetName, for example accounts.")
+    fields: Any = Field(..., description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDynamicsCrmGetRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Get Record"""
+    entityType: str = Field(..., description="Dataverse EntitySetName, for example accounts.")
+    recordId: str = Field(..., description="Record ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDynamicsCrmUpdateRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Update Record"""
+    entityType: str = Field(..., description="Dataverse EntitySetName, for example accounts.")
+    recordId: str = Field(..., description="Record ID")
+    fields: Any = Field(..., description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput(BaseModel):
+    """Microsoft Dataverse / Dynamics 365 CRM — Delete Record"""
+    entityType: str = Field(..., description="Dataverse EntitySetName, for example accounts.")
+    recordId: str = Field(..., description="Record ID")
 
     model_config = {"populate_by_name": True}
 
@@ -42142,11 +42248,21 @@ IntegrationActionKey = Literal[
     "microsoft-365-planner.getABucket",
     "microsoft-365-planner.findTask",
     "microsoft-365-planner.custom_api_call",
+    "microsoft-dynamics-crm.who_am_i",
+    "microsoft-dynamics-crm.list_tables",
+    "microsoft-dynamics-crm.get_table_metadata",
+    "microsoft-dynamics-crm.list_records",
+    "microsoft-dynamics-crm.get_record",
+    "microsoft-dynamics-crm.create_record",
+    "microsoft-dynamics-crm.update_record",
+    "microsoft-dynamics-crm.upsert_record",
+    "microsoft-dynamics-crm.delete_record",
+    "microsoft-dynamics-crm.dataverse_api_call",
+    "microsoft-dynamics-crm.custom_api_call",
     "microsoft-dynamics-crm.dynamics_crm_create_record",
-    "microsoft-dynamics-crm.dynamics_crm_delete_record",
     "microsoft-dynamics-crm.dynamics_crm_get_record",
     "microsoft-dynamics-crm.dynamics_crm_update_record",
-    "microsoft-dynamics-crm.custom_api_call",
+    "microsoft-dynamics-crm.dynamics_crm_delete_record",
     "microsoft-excel-365.list_worksheets",
     "microsoft-excel-365.read_range",
     "microsoft-excel-365.write_range",
@@ -46855,11 +46971,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "microsoft-dynamics-crm": (
+        "who_am_i",
+        "list_tables",
+        "get_table_metadata",
+        "list_records",
+        "get_record",
+        "create_record",
+        "update_record",
+        "upsert_record",
+        "delete_record",
+        "dataverse_api_call",
+        "custom_api_call",
         "dynamics_crm_create_record",
-        "dynamics_crm_delete_record",
         "dynamics_crm_get_record",
         "dynamics_crm_update_record",
-        "custom_api_call",
+        "dynamics_crm_delete_record",
     ),
     "microsoft-excel-365": (
         "list_worksheets",
@@ -51462,11 +51588,21 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "microsoft-365-planner.getABucket": Microsoft365PlannerGetABucketInput,
     "microsoft-365-planner.findTask": Microsoft365PlannerFindTaskInput,
     "microsoft-365-planner.custom_api_call": Microsoft365PlannerCustomApiCallInput,
+    "microsoft-dynamics-crm.who_am_i": MicrosoftDynamicsCrmWhoAmIInput,
+    "microsoft-dynamics-crm.list_tables": MicrosoftDynamicsCrmListTablesInput,
+    "microsoft-dynamics-crm.get_table_metadata": MicrosoftDynamicsCrmGetTableMetadataInput,
+    "microsoft-dynamics-crm.list_records": MicrosoftDynamicsCrmListRecordsInput,
+    "microsoft-dynamics-crm.get_record": MicrosoftDynamicsCrmGetRecordInput,
+    "microsoft-dynamics-crm.create_record": MicrosoftDynamicsCrmCreateRecordInput,
+    "microsoft-dynamics-crm.update_record": MicrosoftDynamicsCrmUpdateRecordInput,
+    "microsoft-dynamics-crm.upsert_record": MicrosoftDynamicsCrmUpsertRecordInput,
+    "microsoft-dynamics-crm.delete_record": MicrosoftDynamicsCrmDeleteRecordInput,
+    "microsoft-dynamics-crm.dataverse_api_call": MicrosoftDynamicsCrmDataverseApiCallInput,
+    "microsoft-dynamics-crm.custom_api_call": MicrosoftDynamicsCrmCustomApiCallInput,
     "microsoft-dynamics-crm.dynamics_crm_create_record": MicrosoftDynamicsCrmDynamicsCrmCreateRecordInput,
-    "microsoft-dynamics-crm.dynamics_crm_delete_record": MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput,
     "microsoft-dynamics-crm.dynamics_crm_get_record": MicrosoftDynamicsCrmDynamicsCrmGetRecordInput,
     "microsoft-dynamics-crm.dynamics_crm_update_record": MicrosoftDynamicsCrmDynamicsCrmUpdateRecordInput,
-    "microsoft-dynamics-crm.custom_api_call": MicrosoftDynamicsCrmCustomApiCallInput,
+    "microsoft-dynamics-crm.dynamics_crm_delete_record": MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput,
     "microsoft-excel-365.list_worksheets": MicrosoftExcel365ListWorksheetsInput,
     "microsoft-excel-365.read_range": MicrosoftExcel365ReadRangeInput,
     "microsoft-excel-365.write_range": MicrosoftExcel365WriteRangeInput,
