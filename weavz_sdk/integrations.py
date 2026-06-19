@@ -8663,6 +8663,229 @@ class DataTransformerBatchArrayInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class DatabricksValidateConnectionInput(BaseModel):
+    """Databricks — Validate Connection"""
+    pass
+
+
+class DatabricksExecuteSqlStatementInput(BaseModel):
+    """Databricks — Execute SQL Statement"""
+    warehouseId: str = Field(..., description="SQL Warehouse ID")
+    statement: str = Field(..., description="Read-only SQL such as SELECT, WITH, SHOW, DESCRIBE, EXPLAIN, LIST, or VALUES is allowed by default.")
+    catalog: Optional[str] = Field(None, description="Catalog")
+    schema_: Optional[str] = Field(None, alias="schema", description="Schema")
+    parameters: Optional[Any] = Field(None, description="Optional Databricks statement parameters JSON array.")
+    rowLimit: Optional[float] = Field(None, description="Maximum inline rows to return.")
+    byteLimit: Optional[float] = Field(None, description="Optional result byte limit for inline results, clamped to Databricks 25 MiB maximum.")
+    waitTimeout: Optional[str] = Field(None, description="How long Databricks should wait before returning a pending statement response.")
+    onWaitTimeout: Optional[str] = Field(None, description="On Wait Timeout")
+    disposition: Optional[str] = Field(None, description="Result Disposition")
+    format: Optional[str] = Field(None, description="Result Format")
+    allowNonReadOnlySql: Optional[bool] = Field(None, description="Required for DDL, DML, admin, multi-statement, or procedural SQL. Leave off for normal agent read queries.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetSqlStatementInput(BaseModel):
+    """Databricks — Get SQL Statement"""
+    statementId: str = Field(..., description="Statement ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetSqlResultChunkInput(BaseModel):
+    """Databricks — Get SQL Result Chunk"""
+    statementId: str = Field(..., description="Statement ID")
+    chunkIndex: float = Field(..., description="Chunk Index")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksCancelSqlStatementInput(BaseModel):
+    """Databricks — Cancel SQL Statement"""
+    statementId: str = Field(..., description="Statement ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListJobsInput(BaseModel):
+    """Databricks — List Jobs"""
+    name: Optional[str] = Field(None, description="Optional job name filter.")
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 100.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    expandTasks: Optional[bool] = Field(None, description="Include task arrays when Databricks returns them.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetJobInput(BaseModel):
+    """Databricks — Get Job"""
+    jobId: str = Field(..., description="Job ID")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksRunJobNowInput(BaseModel):
+    """Databricks — Run Job Now"""
+    jobId: str = Field(..., description="Job ID")
+    confirmRun: bool = Field(..., description="Required to intentionally start a Databricks job run.")
+    idempotencyToken: Optional[str] = Field(None, description="Optional token to prevent duplicate runs across retries.")
+    jobParameters: Optional[dict[str, Any]] = Field(None, description="Key/value parameters for jobs using task parameter pushdown.")
+    onlyTaskKeys: Optional[Any] = Field(None, description="Optional JSON array of task keys to run. Leave blank to run all tasks in the job.")
+    performanceTarget: Optional[str] = Field(None, description="Optional serverless performance mode for this run.")
+    pipelineParams: Optional[dict[str, Any]] = Field(None, description="Pipeline Parameters")
+    queueEnabled: Optional[bool] = Field(None, description="Optional run queue setting. Leave blank to use the job default.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksCancelJobRunInput(BaseModel):
+    """Databricks — Cancel Job Run"""
+    runId: str = Field(..., description="Run ID")
+    confirmCancel: bool = Field(..., description="Required to intentionally cancel a Databricks run.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListJobRunsInput(BaseModel):
+    """Databricks — List Job Runs"""
+    jobId: Optional[str] = Field(None, description="Job ID")
+    activeOnly: Optional[bool] = Field(None, description="Active Only")
+    completedOnly: Optional[bool] = Field(None, description="Completed Only")
+    runType: Optional[str] = Field(None, description="Run Type")
+    startTimeFromMs: Optional[str] = Field(None, description="Unix epoch milliseconds.")
+    startTimeToMs: Optional[str] = Field(None, description="Unix epoch milliseconds.")
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 100.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    expandTasks: Optional[bool] = Field(None, description="Expand Tasks")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetJobRunInput(BaseModel):
+    """Databricks — Get Job Run"""
+    runId: str = Field(..., description="Run ID")
+    includeHistory: Optional[bool] = Field(None, description="Include History")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetJobRunOutputInput(BaseModel):
+    """Databricks — Get Job Run Output"""
+    runId: str = Field(..., description="Run ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListCatalogsInput(BaseModel):
+    """Databricks — List Catalogs"""
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 1000.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    includeBrowse: Optional[bool] = Field(None, description="Ask Databricks to include objects visible through browse permissions when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetCatalogInput(BaseModel):
+    """Databricks — Get Catalog"""
+    name: str = Field(..., description="Catalog Name")
+    includeBrowse: Optional[bool] = Field(None, description="Include objects visible through browse permissions when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListSchemasInput(BaseModel):
+    """Databricks — List Schemas"""
+    catalogName: str = Field(..., description="Catalog Name")
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 1000.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    includeBrowse: Optional[bool] = Field(None, description="Include Browse")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetSchemaInput(BaseModel):
+    """Databricks — Get Schema"""
+    fullName: str = Field(..., description="catalog.schema")
+    includeBrowse: Optional[bool] = Field(None, description="Include objects visible through browse permissions when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListTablesInput(BaseModel):
+    """Databricks — List Tables"""
+    catalogName: str = Field(..., description="Catalog Name")
+    schemaName: str = Field(..., description="Schema Name")
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 1000.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    includeManifestCapabilities: Optional[bool] = Field(None, description="Include Manifest Capabilities")
+    includeBrowse: Optional[bool] = Field(None, description="Include Browse")
+    omitColumns: Optional[bool] = Field(None, description="Return lighter table metadata without column arrays when supported.")
+    omitProperties: Optional[bool] = Field(None, description="Return lighter table metadata without properties when supported.")
+    omitUsername: Optional[bool] = Field(None, description="Return lighter table metadata without username fields when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetTableInput(BaseModel):
+    """Databricks — Get Table"""
+    fullName: str = Field(..., description="catalog.schema.table")
+    includeDeltaMetadata: Optional[bool] = Field(None, description="Include Delta Metadata")
+    includeManifestCapabilities: Optional[bool] = Field(None, description="Include Manifest Capabilities")
+    includeBrowse: Optional[bool] = Field(None, description="Include objects visible through browse permissions when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListTableSummariesInput(BaseModel):
+    """Databricks — List Table Summaries"""
+    catalogName: str = Field(..., description="Catalog Name")
+    schemaNamePattern: Optional[str] = Field(None, description="Schema Name Pattern")
+    tableNamePattern: Optional[str] = Field(None, description="Table Name Pattern")
+    pageSize: Optional[float] = Field(None, description="Maximum number of records to request, clamped to 1000.")
+    pageToken: Optional[str] = Field(None, description="Pagination token returned by a previous Databricks response.")
+    includeManifestCapabilities: Optional[bool] = Field(None, description="Include Manifest Capabilities")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksListWorkspaceObjectsInput(BaseModel):
+    """Databricks — List Workspace Objects"""
+    path: str = Field(..., description="Workspace path such as /Users or /Shared.")
+    notebooksModifiedAfterMs: Optional[str] = Field(None, description="Optional Unix epoch milliseconds filter for notebooks.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksGetWorkspaceObjectStatusInput(BaseModel):
+    """Databricks — Get Workspace Object Status"""
+    path: str = Field(..., description="Workspace Path")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksExportWorkspaceObjectInput(BaseModel):
+    """Databricks — Export Workspace Object"""
+    path: str = Field(..., description="Workspace Path")
+    format: Optional[str] = Field(None, description="Export Format")
+    directDownload: Optional[bool] = Field(None, description="When enabled, returns base64 file content instead of the normal JSON content response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DatabricksCustomApiCallInput(BaseModel):
+    """Databricks — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative Databricks path starting with /api/, for example /api/2.0/clusters/list. Do not include query strings.")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="JSON body for POST, PUT, PATCH, or DELETE requests.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+
+    model_config = {"populate_by_name": True}
+
+
 class DatadogSendMultipleLogsInput(BaseModel):
     """Datadog — Send Multiple logs"""
     body: Any = Field(..., description="Logs to send to Datadog, must contain a `logs` key with an array of objects. Documentation: https://docs.datadoghq.com/api/latest/logs/#send-logs")
@@ -39543,6 +39766,7 @@ IntegrationName = Literal[
     "customer-io",
     "cvent",
     "data-transformer",
+    "databricks",
     "datadog",
     "datetime",
     "datocms",
@@ -40870,6 +41094,29 @@ IntegrationActionKey = Literal[
     "data-transformer.merge_objects",
     "data-transformer.filter_array",
     "data-transformer.batch_array",
+    "databricks.validate_connection",
+    "databricks.execute_sql_statement",
+    "databricks.get_sql_statement",
+    "databricks.get_sql_result_chunk",
+    "databricks.cancel_sql_statement",
+    "databricks.list_jobs",
+    "databricks.get_job",
+    "databricks.run_job_now",
+    "databricks.cancel_job_run",
+    "databricks.list_job_runs",
+    "databricks.get_job_run",
+    "databricks.get_job_run_output",
+    "databricks.list_catalogs",
+    "databricks.get_catalog",
+    "databricks.list_schemas",
+    "databricks.get_schema",
+    "databricks.list_tables",
+    "databricks.get_table",
+    "databricks.list_table_summaries",
+    "databricks.list_workspace_objects",
+    "databricks.get_workspace_object_status",
+    "databricks.export_workspace_object",
+    "databricks.custom_api_call",
     "datadog.sendMultipleLogs",
     "datadog.sendOneLog",
     "datadog.custom_api_call",
@@ -45231,6 +45478,31 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "merge_objects",
         "filter_array",
         "batch_array",
+    ),
+    "databricks": (
+        "validate_connection",
+        "execute_sql_statement",
+        "get_sql_statement",
+        "get_sql_result_chunk",
+        "cancel_sql_statement",
+        "list_jobs",
+        "get_job",
+        "run_job_now",
+        "cancel_job_run",
+        "list_job_runs",
+        "get_job_run",
+        "get_job_run_output",
+        "list_catalogs",
+        "get_catalog",
+        "list_schemas",
+        "get_schema",
+        "list_tables",
+        "get_table",
+        "list_table_summaries",
+        "list_workspace_objects",
+        "get_workspace_object_status",
+        "export_workspace_object",
+        "custom_api_call",
     ),
     "datadog": (
         "sendMultipleLogs",
@@ -50210,6 +50482,29 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "data-transformer.merge_objects": DataTransformerMergeObjectsInput,
     "data-transformer.filter_array": DataTransformerFilterArrayInput,
     "data-transformer.batch_array": DataTransformerBatchArrayInput,
+    "databricks.validate_connection": DatabricksValidateConnectionInput,
+    "databricks.execute_sql_statement": DatabricksExecuteSqlStatementInput,
+    "databricks.get_sql_statement": DatabricksGetSqlStatementInput,
+    "databricks.get_sql_result_chunk": DatabricksGetSqlResultChunkInput,
+    "databricks.cancel_sql_statement": DatabricksCancelSqlStatementInput,
+    "databricks.list_jobs": DatabricksListJobsInput,
+    "databricks.get_job": DatabricksGetJobInput,
+    "databricks.run_job_now": DatabricksRunJobNowInput,
+    "databricks.cancel_job_run": DatabricksCancelJobRunInput,
+    "databricks.list_job_runs": DatabricksListJobRunsInput,
+    "databricks.get_job_run": DatabricksGetJobRunInput,
+    "databricks.get_job_run_output": DatabricksGetJobRunOutputInput,
+    "databricks.list_catalogs": DatabricksListCatalogsInput,
+    "databricks.get_catalog": DatabricksGetCatalogInput,
+    "databricks.list_schemas": DatabricksListSchemasInput,
+    "databricks.get_schema": DatabricksGetSchemaInput,
+    "databricks.list_tables": DatabricksListTablesInput,
+    "databricks.get_table": DatabricksGetTableInput,
+    "databricks.list_table_summaries": DatabricksListTableSummariesInput,
+    "databricks.list_workspace_objects": DatabricksListWorkspaceObjectsInput,
+    "databricks.get_workspace_object_status": DatabricksGetWorkspaceObjectStatusInput,
+    "databricks.export_workspace_object": DatabricksExportWorkspaceObjectInput,
+    "databricks.custom_api_call": DatabricksCustomApiCallInput,
     "datadog.sendMultipleLogs": DatadogSendMultipleLogsInput,
     "datadog.sendOneLog": DatadogSendOneLogInput,
     "datadog.custom_api_call": DatadogCustomApiCallInput,
