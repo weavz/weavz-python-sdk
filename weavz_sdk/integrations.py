@@ -862,6 +862,233 @@ class AgentBrowserEndSessionInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserStealthSnapshotInput(BaseModel):
+    """Agent Browser (Stealth) — Snapshot Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthReadTextInput(BaseModel):
+    """Agent Browser (Stealth) — Read Text"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthReadHtmlInput(BaseModel):
+    """Agent Browser (Stealth) — Read HTML"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthScreenshotInput(BaseModel):
+    """Agent Browser (Stealth) — Screenshot"""
+    fullPage: Optional[bool] = Field(None, description="Full page")
+    fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    mode: Optional[str] = Field(None, description="Fast viewport uses the browser frame capture path for the common current-view screenshot.")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL. Leave off for faster agent/MCP use.")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthRunStepsInput(BaseModel):
+    """Agent Browser (Stealth) — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"navigate\", \"params\": { \"url\": \"https://example.com\" } }, { \"op\": \"snapshot\" }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Adds a final inline MCP image. Screenshot steps inside the batch are summarized to avoid large JSON blobs.")
+    finalScreenshotQuality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    finalScreenshotFullPage: Optional[bool] = Field(None, description="Final screenshot full page")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthCurrentPageInput(BaseModel):
+    """Agent Browser (Stealth) — Current Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthNavigateInput(BaseModel):
+    """Agent Browser (Stealth) — Navigate"""
+    url: str = Field(..., description="URL")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthNavigateBackInput(BaseModel):
+    """Agent Browser (Stealth) — Navigate Back"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthClickInput(BaseModel):
+    """Agent Browser (Stealth) — Click"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthTypeInput(BaseModel):
+    """Agent Browser (Stealth) — Type"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    text: str = Field(..., description="Text")
+    submit: Optional[bool] = Field(None, description="Submit")
+    slowly: Optional[bool] = Field(None, description="Type slowly")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthFillFormInput(BaseModel):
+    """Agent Browser (Stealth) — Fill Form"""
+    fields: Any = Field(..., description="[{ \"target\": \"e5\", \"type\": \"textbox\", \"value\": \"...\" }]")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthSelectOptionInput(BaseModel):
+    """Agent Browser (Stealth) — Select Option"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    values: list[Any] = Field(..., description="Values")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthHoverInput(BaseModel):
+    """Agent Browser (Stealth) — Hover"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthDragInput(BaseModel):
+    """Agent Browser (Stealth) — Drag and Drop"""
+    startTarget: str = Field(..., description="Element ref or selector.")
+    endTarget: str = Field(..., description="Element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthPressKeyInput(BaseModel):
+    """Agent Browser (Stealth) — Press Key"""
+    key: str = Field(..., description="Key")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthFileUploadInput(BaseModel):
+    """Agent Browser (Stealth) — Upload File"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    fileName: Optional[str] = Field(None, description="Optional filename override.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthEvaluateInput(BaseModel):
+    """Agent Browser (Stealth) — Evaluate JavaScript"""
+    function: str = Field(..., description="For example: () => document.title")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthWaitForInput(BaseModel):
+    """Agent Browser (Stealth) — Wait For"""
+    text: Optional[str] = Field(None, description="Text appears")
+    textGone: Optional[str] = Field(None, description="Text disappears")
+    time: Optional[float] = Field(None, description="Seconds")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthHandleDialogInput(BaseModel):
+    """Agent Browser (Stealth) — Handle Dialog"""
+    accept: bool = Field(..., description="Accept")
+    promptText: Optional[str] = Field(None, description="Prompt text")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthTabsInput(BaseModel):
+    """Agent Browser (Stealth) — Tabs"""
+    action: str = Field(..., description="Action")
+    index: Optional[float] = Field(None, description="Tab index")
+    url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthRequestHumanInput(BaseModel):
+    """Agent Browser (Stealth) — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthResumeInput(BaseModel):
+    """Agent Browser (Stealth) — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthEnsureConnectedInput(BaseModel):
+    """Agent Browser (Stealth) — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthSessionStatusInput(BaseModel):
+    """Agent Browser (Stealth) — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthStartSessionInput(BaseModel):
+    """Agent Browser (Stealth) — Start Session"""
+    allowedHosts: Optional[list[Any]] = Field(None, description="Restrict browsing to these hosts. Empty means unrestricted.")
+    headless: Optional[bool] = Field(None, description="Headless")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthEndSessionInput(BaseModel):
+    """Agent Browser (Stealth) — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentBrowserAiSnapshotInput(BaseModel):
     """Agent Browser AI — Snapshot Page"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
@@ -1338,6 +1565,299 @@ class AgentLocalBrowserControlStartSessionInput(BaseModel):
 class AgentLocalBrowserControlEndSessionInput(BaseModel):
     """Agent Local Browser Control — End Session"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiStartSessionInput(BaseModel):
+    """Agent Local Computer AI — Start Session"""
+    pass
+
+
+class AgentLocalComputerAiEnsureConnectedInput(BaseModel):
+    """Agent Local Computer AI — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiSessionStatusInput(BaseModel):
+    """Agent Local Computer AI — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiSnapshotInput(BaseModel):
+    """Agent Local Computer AI — Snapshot"""
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiObserveInput(BaseModel):
+    """Agent Local Computer AI — Observe"""
+    includeScreenshot: Optional[bool] = Field(None, description="Include screenshot")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiScreenshotInput(BaseModel):
+    """Agent Local Computer AI — Screenshot"""
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    fullResolution: Optional[bool] = Field(None, description="Full resolution")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiListTargetsInput(BaseModel):
+    """Agent Local Computer AI — List Targets"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiActivateTargetInput(BaseModel):
+    """Agent Local Computer AI — Activate Target"""
+    targetRef: str = Field(..., description="targetRef returned by list_targets.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiFocusRefInput(BaseModel):
+    """Agent Local Computer AI — Focus Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiPressRefInput(BaseModel):
+    """Agent Local Computer AI — Press Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiSetTextRefInput(BaseModel):
+    """Agent Local Computer AI — Set Text Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    text: str = Field(..., description="Text")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiSelectRefInput(BaseModel):
+    """Agent Local Computer AI — Select Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    selection: Optional[str] = Field(None, description="Selection")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiScrollRefInput(BaseModel):
+    """Agent Local Computer AI — Scroll Element"""
+    observationId: str = Field(..., description="observationId returned by observe or snapshot. Re-observe after navigation, focus changes, or stale-ref errors.")
+    ref: str = Field(..., description="Element ref returned by observe or snapshot.")
+    deltaX: Optional[float] = Field(None, description="Delta X")
+    deltaY: Optional[float] = Field(None, description="Delta Y")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiMoveMouseInput(BaseModel):
+    """Agent Local Computer AI — Move Mouse"""
+    x: float = Field(..., description="X coordinate in screenshot/display space.")
+    y: float = Field(..., description="Y coordinate in screenshot/display space.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiClickInput(BaseModel):
+    """Agent Local Computer AI — Click"""
+    x: float = Field(..., description="X coordinate in screenshot/display space.")
+    y: float = Field(..., description="Y coordinate in screenshot/display space.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiDragInput(BaseModel):
+    """Agent Local Computer AI — Drag"""
+    path: list[Union[dict[str, float], tuple[float, float]]] = Field(..., description="Array of coordinate pairs or objects, for example [{ \"x\": 120, \"y\": 180 }, { \"x\": 360, \"y\": 180 }].")
+    durationMs: Optional[float] = Field(None, description="Optional total drag duration. Defaults to 400 ms.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiTypeInput(BaseModel):
+    """Agent Local Computer AI — Type"""
+    text: str = Field(..., description="Text")
+    submit: Optional[bool] = Field(None, description="Submit with Enter")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiPressKeyInput(BaseModel):
+    """Agent Local Computer AI — Press Key"""
+    key: str = Field(..., description="Examples: Enter, Escape, Tab, ArrowDown, a.")
+    modifiers: Optional[list[str]] = Field(None, description="Optional modifiers such as cmd, shift, option, control.")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiScrollInput(BaseModel):
+    """Agent Local Computer AI — Scroll"""
+    deltaX: Optional[float] = Field(None, description="Delta X")
+    deltaY: Optional[float] = Field(None, description="Delta Y")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiWaitInput(BaseModel):
+    """Agent Local Computer AI — Wait"""
+    seconds: Optional[float] = Field(None, description="Seconds")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiWaitForInput(BaseModel):
+    """Agent Local Computer AI — Wait For"""
+    condition: str = Field(..., description="Condition")
+    observationId: Optional[str] = Field(None, description="Observation ID")
+    ref: Optional[str] = Field(None, description="Element ref")
+    text: Optional[str] = Field(None, description="Text")
+    bundleIdentifier: Optional[str] = Field(None, description="Bundle identifier")
+    applicationName: Optional[str] = Field(None, description="Application name")
+    timeoutSeconds: Optional[float] = Field(None, description="Timeout seconds")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiRunStepsInput(BaseModel):
+    """Agent Local Computer AI — Run Steps"""
+    steps: list[dict[str, Any]] = Field(..., description="[{ \"op\": \"observe\" }, { \"op\": \"press_ref\", \"params\": { \"observationId\": \"...\", \"ref\": \"...\" }, \"delayMs\": 150 }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Include final screenshot")
+    intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiRequestHumanInput(BaseModel):
+    """Agent Local Computer AI — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiResumeInput(BaseModel):
+    """Agent Local Computer AI — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiEndSessionInput(BaseModel):
+    """Agent Local Computer AI — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiActInput(BaseModel):
+    """Agent Local Computer AI — Act"""
+    instruction: str = Field(..., description="Describe the local computer task. Do not include passwords, tokens, or other secrets.")
+    maxSteps: Optional[float] = Field(None, description="Max steps")
+    allowedCapabilities: Optional[list[str]] = Field(None, description="Optional task-scoped capability names such as gui, browser_dom, shell, files, clipboard, app_management, full_display, or full_computer. The local companion must also grant them.")
+    requireConfirmationForExternalEffects: Optional[bool] = Field(None, description="When true, the driver stops before sending messages, posting, payments, deletes, or other external effects.")
+    evidenceMode: Optional[str] = Field(None, description="Evidence mode")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiPlanInput(BaseModel):
+    """Agent Local Computer AI — Plan"""
+    instruction: str = Field(..., description="Instruction")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiObserveGoalInput(BaseModel):
+    """Agent Local Computer AI — Observe Goal"""
+    instruction: str = Field(..., description="Instruction")
+    includeScreenshot: Optional[bool] = Field(None, description="Include screenshot metadata/image in observation")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiExtractFromScreenInput(BaseModel):
+    """Agent Local Computer AI — Extract From Screen"""
+    instruction: str = Field(..., description="What to extract")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiRunRecipeInput(BaseModel):
+    """Agent Local Computer AI — Run Recipe"""
+    recipe: dict[str, Any] = Field(..., description="JSON object with optional allowedCapabilities and steps: [{ op, params, intent?, waitUntil?, delayMs? }]. Shell/file/clipboard recipe steps require matching allowedCapabilities and local Mac approval.")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentLocalComputerAiStopTaskInput(BaseModel):
+    """Agent Local Computer AI — Stop Task"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Session ID")
 
     model_config = {"populate_by_name": True}
 
@@ -11797,6 +12317,85 @@ class FacebookPagesCreateVideoPostInput(BaseModel):
     video: str = Field(..., description="A URL we can access for the video (Limit: 1GB or 20 minutes)")
     title: Optional[str] = Field(None, description="Title")
     description: Optional[str] = Field(None, description="Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomValidateConnectionInput(BaseModel):
+    """Fathom — Validate Connection"""
+    pass
+
+
+class FathomListMeetingsInput(BaseModel):
+    """Fathom — List Meetings"""
+    calendarInviteeDomains: Optional[list[Any]] = Field(None, description="Exact company domains to match, for example acme.com.")
+    calendarInviteeDomainsType: Optional[str] = Field(None, description="Invitee Domain Type")
+    createdAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    createdBefore: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    cursor: Optional[str] = Field(None, description="Pagination cursor from next_cursor.")
+    meetingType: Optional[str] = Field(None, description="Use List Meeting Types to discover valid names.")
+    recordedBy: Optional[list[Any]] = Field(None, description="Emails of users who recorded meetings.")
+    teams: Optional[list[Any]] = Field(None, description="Team names to filter by.")
+    includeSummary: Optional[bool] = Field(None, description="Include Summary")
+    includeTranscript: Optional[bool] = Field(None, description="Include Transcript")
+    includeActionItems: Optional[bool] = Field(None, description="Include Action Items")
+    includeCrmMatches: Optional[bool] = Field(None, description="Include CRM Matches")
+    includeHighlights: Optional[bool] = Field(None, description="Include Highlights")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomFindMeetingsInput(BaseModel):
+    """Fathom — Find Meetings"""
+    calendarInviteeDomains: Optional[list[Any]] = Field(None, description="Exact company domains to match, for example acme.com.")
+    calendarInviteeDomainsType: Optional[str] = Field(None, description="Invitee Domain Type")
+    createdAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    createdBefore: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    cursor: Optional[str] = Field(None, description="Pagination cursor from next_cursor.")
+    meetingType: Optional[str] = Field(None, description="Use List Meeting Types to discover valid names.")
+    recordedBy: Optional[list[Any]] = Field(None, description="Emails of users who recorded meetings.")
+    teams: Optional[list[Any]] = Field(None, description="Team names to filter by.")
+    includeSummary: Optional[bool] = Field(None, description="Include Summary")
+    includeTranscript: Optional[bool] = Field(None, description="Include Transcript")
+    includeActionItems: Optional[bool] = Field(None, description="Include Action Items")
+    includeCrmMatches: Optional[bool] = Field(None, description="Include CRM Matches")
+    includeHighlights: Optional[bool] = Field(None, description="Include Highlights")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomGetRecordingSummaryInput(BaseModel):
+    """Fathom — Get Recording Summary"""
+    recordingId: float = Field(..., description="Recording ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomGetRecordingTranscriptInput(BaseModel):
+    """Fathom — Get Recording Transcript"""
+    recordingId: float = Field(..., description="Recording ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomListMeetingTypesInput(BaseModel):
+    """Fathom — List Meeting Types"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomListTeamsInput(BaseModel):
+    """Fathom — List Teams"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FathomListTeamMembersInput(BaseModel):
+    """Fathom — List Team Members"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    team: Optional[str] = Field(None, description="Team")
 
     model_config = {"populate_by_name": True}
 
@@ -40170,8 +40769,10 @@ IntegrationName = Literal[
     "aftership",
     "agencyzoom",
     "agent-browser",
+    "agent-browser-stealth",
     "agent-browser-ai",
     "agent-local-browser-control",
+    "agent-local-computer-ai",
     "agent-local-computer-control",
     "agent-memory",
     "agent-scratchpad",
@@ -40311,6 +40912,7 @@ IntegrationName = Literal[
     "facebook-ads",
     "facebook-leads",
     "facebook-pages",
+    "fathom",
     "fellow",
     "fieldwire",
     "figma",
@@ -40789,6 +41391,32 @@ IntegrationActionKey = Literal[
     "agent-browser.session_status",
     "agent-browser.start_session",
     "agent-browser.end_session",
+    "agent-browser-stealth.snapshot",
+    "agent-browser-stealth.read_text",
+    "agent-browser-stealth.read_html",
+    "agent-browser-stealth.screenshot",
+    "agent-browser-stealth.run_steps",
+    "agent-browser-stealth.current_page",
+    "agent-browser-stealth.navigate",
+    "agent-browser-stealth.navigate_back",
+    "agent-browser-stealth.click",
+    "agent-browser-stealth.type",
+    "agent-browser-stealth.fill_form",
+    "agent-browser-stealth.select_option",
+    "agent-browser-stealth.hover",
+    "agent-browser-stealth.drag",
+    "agent-browser-stealth.press_key",
+    "agent-browser-stealth.file_upload",
+    "agent-browser-stealth.evaluate",
+    "agent-browser-stealth.wait_for",
+    "agent-browser-stealth.handle_dialog",
+    "agent-browser-stealth.tabs",
+    "agent-browser-stealth.request_human",
+    "agent-browser-stealth.resume",
+    "agent-browser-stealth.ensure_connected",
+    "agent-browser-stealth.session_status",
+    "agent-browser-stealth.start_session",
+    "agent-browser-stealth.end_session",
     "agent-browser-ai.snapshot",
     "agent-browser-ai.read_text",
     "agent-browser-ai.read_html",
@@ -40844,6 +41472,37 @@ IntegrationActionKey = Literal[
     "agent-local-browser-control.session_status",
     "agent-local-browser-control.start_session",
     "agent-local-browser-control.end_session",
+    "agent-local-computer-ai.start_session",
+    "agent-local-computer-ai.ensure_connected",
+    "agent-local-computer-ai.session_status",
+    "agent-local-computer-ai.snapshot",
+    "agent-local-computer-ai.observe",
+    "agent-local-computer-ai.screenshot",
+    "agent-local-computer-ai.list_targets",
+    "agent-local-computer-ai.activate_target",
+    "agent-local-computer-ai.focus_ref",
+    "agent-local-computer-ai.press_ref",
+    "agent-local-computer-ai.set_text_ref",
+    "agent-local-computer-ai.select_ref",
+    "agent-local-computer-ai.scroll_ref",
+    "agent-local-computer-ai.move_mouse",
+    "agent-local-computer-ai.click",
+    "agent-local-computer-ai.drag",
+    "agent-local-computer-ai.type",
+    "agent-local-computer-ai.press_key",
+    "agent-local-computer-ai.scroll",
+    "agent-local-computer-ai.wait",
+    "agent-local-computer-ai.wait_for",
+    "agent-local-computer-ai.run_steps",
+    "agent-local-computer-ai.request_human",
+    "agent-local-computer-ai.resume",
+    "agent-local-computer-ai.end_session",
+    "agent-local-computer-ai.act",
+    "agent-local-computer-ai.plan",
+    "agent-local-computer-ai.observe_goal",
+    "agent-local-computer-ai.extract_from_screen",
+    "agent-local-computer-ai.run_recipe",
+    "agent-local-computer-ai.stop_task",
     "agent-local-computer-control.start_session",
     "agent-local-computer-control.ensure_connected",
     "agent-local-computer-control.session_status",
@@ -41924,6 +42583,14 @@ IntegrationActionKey = Literal[
     "facebook-pages.create_post",
     "facebook-pages.create_photo_post",
     "facebook-pages.create_video_post",
+    "fathom.validate_connection",
+    "fathom.list_meetings",
+    "fathom.find_meetings",
+    "fathom.get_recording_summary",
+    "fathom.get_recording_transcript",
+    "fathom.list_meeting_types",
+    "fathom.list_teams",
+    "fathom.list_team_members",
     "fellow.get-note",
     "fellow.custom_api_call",
     "fieldwire.get_task",
@@ -45029,6 +45696,34 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "start_session",
         "end_session",
     ),
+    "agent-browser-stealth": (
+        "snapshot",
+        "read_text",
+        "read_html",
+        "screenshot",
+        "run_steps",
+        "current_page",
+        "navigate",
+        "navigate_back",
+        "click",
+        "type",
+        "fill_form",
+        "select_option",
+        "hover",
+        "drag",
+        "press_key",
+        "file_upload",
+        "evaluate",
+        "wait_for",
+        "handle_dialog",
+        "tabs",
+        "request_human",
+        "resume",
+        "ensure_connected",
+        "session_status",
+        "start_session",
+        "end_session",
+    ),
     "agent-browser-ai": (
         "snapshot",
         "read_text",
@@ -45087,6 +45782,39 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "session_status",
         "start_session",
         "end_session",
+    ),
+    "agent-local-computer-ai": (
+        "start_session",
+        "ensure_connected",
+        "session_status",
+        "snapshot",
+        "observe",
+        "screenshot",
+        "list_targets",
+        "activate_target",
+        "focus_ref",
+        "press_ref",
+        "set_text_ref",
+        "select_ref",
+        "scroll_ref",
+        "move_mouse",
+        "click",
+        "drag",
+        "type",
+        "press_key",
+        "scroll",
+        "wait",
+        "wait_for",
+        "run_steps",
+        "request_human",
+        "resume",
+        "end_session",
+        "act",
+        "plan",
+        "observe_goal",
+        "extract_from_screen",
+        "run_recipe",
+        "stop_task",
     ),
     "agent-local-computer-control": (
         "start_session",
@@ -46445,6 +47173,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_post",
         "create_photo_post",
         "create_video_post",
+    ),
+    "fathom": (
+        "validate_connection",
+        "list_meetings",
+        "find_meetings",
+        "get_recording_summary",
+        "get_recording_transcript",
+        "list_meeting_types",
+        "list_teams",
+        "list_team_members",
     ),
     "fellow": (
         "get-note",
@@ -50289,6 +51027,32 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser.session_status": AgentBrowserSessionStatusInput,
     "agent-browser.start_session": AgentBrowserStartSessionInput,
     "agent-browser.end_session": AgentBrowserEndSessionInput,
+    "agent-browser-stealth.snapshot": AgentBrowserStealthSnapshotInput,
+    "agent-browser-stealth.read_text": AgentBrowserStealthReadTextInput,
+    "agent-browser-stealth.read_html": AgentBrowserStealthReadHtmlInput,
+    "agent-browser-stealth.screenshot": AgentBrowserStealthScreenshotInput,
+    "agent-browser-stealth.run_steps": AgentBrowserStealthRunStepsInput,
+    "agent-browser-stealth.current_page": AgentBrowserStealthCurrentPageInput,
+    "agent-browser-stealth.navigate": AgentBrowserStealthNavigateInput,
+    "agent-browser-stealth.navigate_back": AgentBrowserStealthNavigateBackInput,
+    "agent-browser-stealth.click": AgentBrowserStealthClickInput,
+    "agent-browser-stealth.type": AgentBrowserStealthTypeInput,
+    "agent-browser-stealth.fill_form": AgentBrowserStealthFillFormInput,
+    "agent-browser-stealth.select_option": AgentBrowserStealthSelectOptionInput,
+    "agent-browser-stealth.hover": AgentBrowserStealthHoverInput,
+    "agent-browser-stealth.drag": AgentBrowserStealthDragInput,
+    "agent-browser-stealth.press_key": AgentBrowserStealthPressKeyInput,
+    "agent-browser-stealth.file_upload": AgentBrowserStealthFileUploadInput,
+    "agent-browser-stealth.evaluate": AgentBrowserStealthEvaluateInput,
+    "agent-browser-stealth.wait_for": AgentBrowserStealthWaitForInput,
+    "agent-browser-stealth.handle_dialog": AgentBrowserStealthHandleDialogInput,
+    "agent-browser-stealth.tabs": AgentBrowserStealthTabsInput,
+    "agent-browser-stealth.request_human": AgentBrowserStealthRequestHumanInput,
+    "agent-browser-stealth.resume": AgentBrowserStealthResumeInput,
+    "agent-browser-stealth.ensure_connected": AgentBrowserStealthEnsureConnectedInput,
+    "agent-browser-stealth.session_status": AgentBrowserStealthSessionStatusInput,
+    "agent-browser-stealth.start_session": AgentBrowserStealthStartSessionInput,
+    "agent-browser-stealth.end_session": AgentBrowserStealthEndSessionInput,
     "agent-browser-ai.snapshot": AgentBrowserAiSnapshotInput,
     "agent-browser-ai.read_text": AgentBrowserAiReadTextInput,
     "agent-browser-ai.read_html": AgentBrowserAiReadHtmlInput,
@@ -50344,6 +51108,37 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-local-browser-control.session_status": AgentLocalBrowserControlSessionStatusInput,
     "agent-local-browser-control.start_session": AgentLocalBrowserControlStartSessionInput,
     "agent-local-browser-control.end_session": AgentLocalBrowserControlEndSessionInput,
+    "agent-local-computer-ai.start_session": AgentLocalComputerAiStartSessionInput,
+    "agent-local-computer-ai.ensure_connected": AgentLocalComputerAiEnsureConnectedInput,
+    "agent-local-computer-ai.session_status": AgentLocalComputerAiSessionStatusInput,
+    "agent-local-computer-ai.snapshot": AgentLocalComputerAiSnapshotInput,
+    "agent-local-computer-ai.observe": AgentLocalComputerAiObserveInput,
+    "agent-local-computer-ai.screenshot": AgentLocalComputerAiScreenshotInput,
+    "agent-local-computer-ai.list_targets": AgentLocalComputerAiListTargetsInput,
+    "agent-local-computer-ai.activate_target": AgentLocalComputerAiActivateTargetInput,
+    "agent-local-computer-ai.focus_ref": AgentLocalComputerAiFocusRefInput,
+    "agent-local-computer-ai.press_ref": AgentLocalComputerAiPressRefInput,
+    "agent-local-computer-ai.set_text_ref": AgentLocalComputerAiSetTextRefInput,
+    "agent-local-computer-ai.select_ref": AgentLocalComputerAiSelectRefInput,
+    "agent-local-computer-ai.scroll_ref": AgentLocalComputerAiScrollRefInput,
+    "agent-local-computer-ai.move_mouse": AgentLocalComputerAiMoveMouseInput,
+    "agent-local-computer-ai.click": AgentLocalComputerAiClickInput,
+    "agent-local-computer-ai.drag": AgentLocalComputerAiDragInput,
+    "agent-local-computer-ai.type": AgentLocalComputerAiTypeInput,
+    "agent-local-computer-ai.press_key": AgentLocalComputerAiPressKeyInput,
+    "agent-local-computer-ai.scroll": AgentLocalComputerAiScrollInput,
+    "agent-local-computer-ai.wait": AgentLocalComputerAiWaitInput,
+    "agent-local-computer-ai.wait_for": AgentLocalComputerAiWaitForInput,
+    "agent-local-computer-ai.run_steps": AgentLocalComputerAiRunStepsInput,
+    "agent-local-computer-ai.request_human": AgentLocalComputerAiRequestHumanInput,
+    "agent-local-computer-ai.resume": AgentLocalComputerAiResumeInput,
+    "agent-local-computer-ai.end_session": AgentLocalComputerAiEndSessionInput,
+    "agent-local-computer-ai.act": AgentLocalComputerAiActInput,
+    "agent-local-computer-ai.plan": AgentLocalComputerAiPlanInput,
+    "agent-local-computer-ai.observe_goal": AgentLocalComputerAiObserveGoalInput,
+    "agent-local-computer-ai.extract_from_screen": AgentLocalComputerAiExtractFromScreenInput,
+    "agent-local-computer-ai.run_recipe": AgentLocalComputerAiRunRecipeInput,
+    "agent-local-computer-ai.stop_task": AgentLocalComputerAiStopTaskInput,
     "agent-local-computer-control.start_session": AgentLocalComputerControlStartSessionInput,
     "agent-local-computer-control.ensure_connected": AgentLocalComputerControlEnsureConnectedInput,
     "agent-local-computer-control.session_status": AgentLocalComputerControlSessionStatusInput,
@@ -51424,6 +52219,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "facebook-pages.create_post": FacebookPagesCreatePostInput,
     "facebook-pages.create_photo_post": FacebookPagesCreatePhotoPostInput,
     "facebook-pages.create_video_post": FacebookPagesCreateVideoPostInput,
+    "fathom.validate_connection": FathomValidateConnectionInput,
+    "fathom.list_meetings": FathomListMeetingsInput,
+    "fathom.find_meetings": FathomFindMeetingsInput,
+    "fathom.get_recording_summary": FathomGetRecordingSummaryInput,
+    "fathom.get_recording_transcript": FathomGetRecordingTranscriptInput,
+    "fathom.list_meeting_types": FathomListMeetingTypesInput,
+    "fathom.list_teams": FathomListTeamsInput,
+    "fathom.list_team_members": FathomListTeamMembersInput,
     "fellow.get-note": FellowGetNoteInput,
     "fellow.custom_api_call": FellowCustomApiCallInput,
     "fieldwire.get_task": FieldwireGetTaskInput,
