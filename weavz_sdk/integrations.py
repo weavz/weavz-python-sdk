@@ -1956,6 +1956,562 @@ class AirtableCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AirwallexGetAccountInput(BaseModel):
+    """Airwallex — Get Account"""
+    pass
+
+
+class AirwallexListConnectedAccountsInput(BaseModel):
+    """Airwallex — List Connected Accounts"""
+    page_num: Optional[float] = Field(None, description="Page number starting from 0")
+    page_size: Optional[float] = Field(None, description="Number of results per page")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListGlobalAccountsInput(BaseModel):
+    """Airwallex — List Global Accounts"""
+    country_code: Optional[str] = Field(None, description="Country Code")
+    currency: Optional[str] = Field(None, description="Currency")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    nick_name: Optional[str] = Field(None, description="Nickname")
+    status: Optional[str] = Field(None, description="Status")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetGlobalAccountInput(BaseModel):
+    """Airwallex — Get Global Account"""
+    global_account_id: str = Field(..., description="Global Account ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListDepositsInput(BaseModel):
+    """Airwallex — List Deposits"""
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetCurrentBalancesInput(BaseModel):
+    """Airwallex — Get Current Balances"""
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetBalanceHistoryInput(BaseModel):
+    """Airwallex — Get Balance History"""
+    currency: Optional[str] = Field(None, description="ISO 4217 currency code")
+    account_type: Optional[str] = Field(None, description="Optional account type filter, for example cash")
+    from_post_at: Optional[str] = Field(None, description="Start posted_at timestamp, inclusive")
+    to_post_at: Optional[str] = Field(None, description="End posted_at timestamp, exclusive")
+    request_id: Optional[str] = Field(None, description="Client request_id for the transaction")
+    page_num: Optional[float] = Field(None, description="Page number starting from 0")
+    page_size: Optional[float] = Field(None, description="Number of results per page, max 2000")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListFinancialTransactionsInput(BaseModel):
+    """Airwallex — List Financial Transactions"""
+    batch_id: Optional[str] = Field(None, description="Batch ID")
+    source_id: Optional[str] = Field(None, description="Source ID")
+    status: Optional[str] = Field(None, description="Status")
+    from_created_at: Optional[str] = Field(None, description="Start created_at timestamp, inclusive")
+    to_created_at: Optional[str] = Field(None, description="End created_at timestamp, inclusive")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Number of results per page, max 1000")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetFinancialTransactionInput(BaseModel):
+    """Airwallex — Get Financial Transaction"""
+    financial_transaction_id: str = Field(..., description="Financial Transaction ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListBeneficiariesInput(BaseModel):
+    """Airwallex — List Beneficiaries"""
+    name: Optional[str] = Field(None, description="Personal beneficiary name filter")
+    company_name: Optional[str] = Field(None, description="Company beneficiary name filter")
+    nick_name: Optional[str] = Field(None, description="Nickname")
+    bank_account_number: Optional[str] = Field(None, description="Bank Account Number")
+    entity_type: Optional[str] = Field(None, description="Entity Type")
+    from_date: Optional[str] = Field(None, description="From Date")
+    to_date: Optional[str] = Field(None, description="To Date")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetBeneficiaryInput(BaseModel):
+    """Airwallex — Get Beneficiary"""
+    beneficiary_id: str = Field(..., description="Beneficiary ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexCreateBeneficiaryInput(BaseModel):
+    """Airwallex — Create Beneficiary"""
+    body: Any = Field(..., description="Request body for POST /api/v1/beneficiaries/create")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexValidateBeneficiaryInput(BaseModel):
+    """Airwallex — Validate Beneficiary"""
+    body: Any = Field(..., description="Request body for POST /api/v1/beneficiaries/validate")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexVerifyBeneficiaryAccountInput(BaseModel):
+    """Airwallex — Verify Beneficiary Account"""
+    body: Any = Field(..., description="Request body for POST /api/v1/beneficiaries/verify_account")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListTransfersInput(BaseModel):
+    """Airwallex — List Transfers"""
+    currency: Optional[str] = Field(None, description="ISO 4217 currency code")
+    destination: Optional[str] = Field(None, description="Airwallex account ID or destination filter")
+    request_id: Optional[str] = Field(None, description="Request ID")
+    status: Optional[str] = Field(None, description="Optional Airwallex transfer status filter, for example PROCESSING, SENT, PAID, FAILED, or CANCELLED")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Number of results per page, max 2000")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetTransferInput(BaseModel):
+    """Airwallex — Get Transfer"""
+    transfer_id: str = Field(..., description="Transfer ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexCreateTransferInput(BaseModel):
+    """Airwallex — Create Transfer"""
+    body: Any = Field(..., description="Request body for POST /api/v1/transfers/create")
+    confirmFundsMovement: bool = Field(..., description="Required for transfers, conversions, and mutating custom Airwallex API requests.")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexValidateTransferInput(BaseModel):
+    """Airwallex — Validate Transfer"""
+    body: Any = Field(..., description="Request body for POST /api/v1/transfers/validate")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetIndicativeFxQuoteInput(BaseModel):
+    """Airwallex — Get Indicative FX Quote"""
+    buy_currency: str = Field(..., description="ISO 4217 currency code to buy")
+    sell_currency: str = Field(..., description="ISO 4217 currency code to sell")
+    buy_amount: Optional[float] = Field(None, description="Amount to buy. Provide either buy amount or sell amount.")
+    sell_amount: Optional[float] = Field(None, description="Amount to sell. Provide either buy amount or sell amount.")
+    settlement_date: Optional[str] = Field(None, description="Optional settlement date in YYYY-MM-DD format")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListConversionsInput(BaseModel):
+    """Airwallex — List Conversions"""
+    buy_currency: Optional[str] = Field(None, description="Buy Currency")
+    sell_currency: Optional[str] = Field(None, description="Sell Currency")
+    request_id: Optional[str] = Field(None, description="Request ID")
+    status: Optional[str] = Field(None, description="Status")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetConversionInput(BaseModel):
+    """Airwallex — Get Conversion"""
+    conversion_id: str = Field(..., description="Conversion ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexCreateConversionInput(BaseModel):
+    """Airwallex — Create Conversion"""
+    body: Any = Field(..., description="Request body for POST /api/v1/conversions/create")
+    confirmFundsMovement: bool = Field(..., description="Required for transfers, conversions, and mutating custom Airwallex API requests.")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListPaymentIntentsInput(BaseModel):
+    """Airwallex — List Payment Intents"""
+    connected_account_id: Optional[str] = Field(None, description="Connected Account ID")
+    currency: Optional[str] = Field(None, description="Currency")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    merchant_order_id: Optional[str] = Field(None, description="Merchant Order ID")
+    payment_consent_id: Optional[str] = Field(None, description="Payment Consent ID")
+    status: Optional[str] = Field(None, description="Status")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetPaymentIntentInput(BaseModel):
+    """Airwallex — Get Payment Intent"""
+    payment_intent_id: str = Field(..., description="Payment Intent ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListPaymentLinksInput(BaseModel):
+    """Airwallex — List Payment Links"""
+    active: Optional[str] = Field(None, description="Active")
+    reusable: Optional[str] = Field(None, description="Reusable")
+    status: Optional[str] = Field(None, description="Status")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetPaymentLinkInput(BaseModel):
+    """Airwallex — Get Payment Link"""
+    payment_link_id: str = Field(..., description="Payment Link ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListChargesInput(BaseModel):
+    """Airwallex — List Charges"""
+    currency: Optional[str] = Field(None, description="Currency")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    request_id: Optional[str] = Field(None, description="Request ID")
+    source: Optional[str] = Field(None, description="Source")
+    status: Optional[str] = Field(None, description="Status")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetChargeInput(BaseModel):
+    """Airwallex — Get Charge"""
+    charge_id: str = Field(..., description="Charge ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListInvoicesInput(BaseModel):
+    """Airwallex — List Invoices"""
+    customer_id: Optional[str] = Field(None, description="Customer ID")
+    subscription_id: Optional[str] = Field(None, description="Subscription ID")
+    status: Optional[str] = Field(None, description="Status")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetInvoiceInput(BaseModel):
+    """Airwallex — Get Invoice"""
+    invoice_id: str = Field(..., description="Invoice ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListInvoiceItemsInput(BaseModel):
+    """Airwallex — List Invoice Items"""
+    invoice_id: str = Field(..., description="Invoice ID")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListBillsInput(BaseModel):
+    """Airwallex — List Bills"""
+    page: Optional[str] = Field(None, description="Page Cursor")
+    status: Optional[str] = Field(None, description="Bill status, for example AWAITING_PAYMENT, SCHEDULED, or PAID")
+    sync_status: Optional[str] = Field(None, description="Sync Status")
+    legal_entity_id: Optional[str] = Field(None, description="Legal Entity ID")
+    purchase_order_id: Optional[str] = Field(None, description="Purchase Order ID")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    from_updated_at: Optional[str] = Field(None, description="From Updated At")
+    to_updated_at: Optional[str] = Field(None, description="To Updated At")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetBillInput(BaseModel):
+    """Airwallex — Get Bill"""
+    bill_id: str = Field(..., description="Bill ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListExpensesInput(BaseModel):
+    """Airwallex — List Expenses"""
+    page: Optional[str] = Field(None, description="Page Cursor")
+    status: Optional[Any] = Field(None, description="Optional array of expense statuses")
+    sync_status: Optional[Any] = Field(None, description="Optional array of sync statuses")
+    legal_entity_id: Optional[str] = Field(None, description="Legal Entity ID")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetExpenseInput(BaseModel):
+    """Airwallex — Get Expense"""
+    expense_id: str = Field(..., description="Expense ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListReimbursementReportsInput(BaseModel):
+    """Airwallex — List Reimbursement Reports"""
+    page: Optional[str] = Field(None, description="Page Cursor")
+    status: Optional[Any] = Field(None, description="Optional array of reimbursement report statuses")
+    sync_status: Optional[Any] = Field(None, description="Optional array of sync statuses")
+    legal_entity_id: Optional[str] = Field(None, description="Legal Entity ID")
+    approver: Optional[str] = Field(None, description="Approver")
+    from_updated_at: Optional[str] = Field(None, description="From Updated At")
+    to_updated_at: Optional[str] = Field(None, description="To Updated At")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetReimbursementReportInput(BaseModel):
+    """Airwallex — Get Reimbursement Report"""
+    reimbursement_report_id: str = Field(..., description="Reimbursement Report ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListCardholdersInput(BaseModel):
+    """Airwallex — List Cardholders"""
+    cardholder_status: Optional[str] = Field(None, description="For example PENDING, READY, DISABLED, or INCOMPLETE")
+    email: Optional[str] = Field(None, description="Email")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetCardholderInput(BaseModel):
+    """Airwallex — Get Cardholder"""
+    cardholder_id: str = Field(..., description="Cardholder ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListCardsInput(BaseModel):
+    """Airwallex — List Cards"""
+    card_status: Optional[str] = Field(None, description="For example ACTIVE, INACTIVE, LOST, STOLEN, CLOSED, or BLOCKED")
+    cardholder_id: Optional[str] = Field(None, description="Cardholder ID")
+    nick_name: Optional[str] = Field(None, description="Nickname")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    from_updated_at: Optional[str] = Field(None, description="From Updated At")
+    to_updated_at: Optional[str] = Field(None, description="To Updated At")
+    page_num: Optional[float] = Field(None, description="Page Number")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetCardInput(BaseModel):
+    """Airwallex — Get Card"""
+    card_id: str = Field(..., description="Card ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexListCardTransactionsInput(BaseModel):
+    """Airwallex — List Card Transactions"""
+    billing_currency: Optional[str] = Field(None, description="Billing Currency")
+    card_id: Optional[str] = Field(None, description="Card ID")
+    lifecycle_id: Optional[str] = Field(None, description="Lifecycle ID")
+    status: Optional[str] = Field(None, description="For example AUTHORIZED, CLEARED, DECLINED, EXPIRED, or REVERSED")
+    from_created_at: Optional[str] = Field(None, description="From Created At")
+    to_created_at: Optional[str] = Field(None, description="To Created At")
+    page: Optional[str] = Field(None, description="Page Cursor")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexGetCardTransactionInput(BaseModel):
+    """Airwallex — Get Card Transaction"""
+    card_transaction_id: str = Field(..., description="Card Transaction ID")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexCustomApiCallInput(BaseModel):
+    """Airwallex — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path starting with /api/v1/")
+    query_params: Optional[Any] = Field(None, description="JSON object of query parameters")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AirwallexCustomWriteApiCallInput(BaseModel):
+    """Airwallex — Custom Write API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path starting with /api/v1/")
+    query_params: Optional[Any] = Field(None, description="JSON object of query parameters")
+    body: Optional[Any] = Field(None, description="JSON request body")
+    confirmFundsMovement: bool = Field(..., description="Required for transfers, conversions, and mutating custom Airwallex API requests.")
+    on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
+    auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
+    sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
 class AlmaGetMcpSetupInfoInput(BaseModel):
     """Alma — Get MCP Setup Info"""
     pass
@@ -38646,6 +39202,7 @@ IntegrationName = Literal[
     "ai-toolkit",
     "aircall",
     "airtable",
+    "airwallex",
     "alma",
     "amazon-s3",
     "amazon-seller",
@@ -39376,6 +39933,51 @@ IntegrationActionKey = Literal[
     "airtable.add_comment",
     "airtable.upload_attachment",
     "airtable.custom_api_call",
+    "airwallex.get_account",
+    "airwallex.list_connected_accounts",
+    "airwallex.list_global_accounts",
+    "airwallex.get_global_account",
+    "airwallex.list_deposits",
+    "airwallex.get_current_balances",
+    "airwallex.get_balance_history",
+    "airwallex.list_financial_transactions",
+    "airwallex.get_financial_transaction",
+    "airwallex.list_beneficiaries",
+    "airwallex.get_beneficiary",
+    "airwallex.create_beneficiary",
+    "airwallex.validate_beneficiary",
+    "airwallex.verify_beneficiary_account",
+    "airwallex.list_transfers",
+    "airwallex.get_transfer",
+    "airwallex.create_transfer",
+    "airwallex.validate_transfer",
+    "airwallex.get_indicative_fx_quote",
+    "airwallex.list_conversions",
+    "airwallex.get_conversion",
+    "airwallex.create_conversion",
+    "airwallex.list_payment_intents",
+    "airwallex.get_payment_intent",
+    "airwallex.list_payment_links",
+    "airwallex.get_payment_link",
+    "airwallex.list_charges",
+    "airwallex.get_charge",
+    "airwallex.list_invoices",
+    "airwallex.get_invoice",
+    "airwallex.list_invoice_items",
+    "airwallex.list_bills",
+    "airwallex.get_bill",
+    "airwallex.list_expenses",
+    "airwallex.get_expense",
+    "airwallex.list_reimbursement_reports",
+    "airwallex.get_reimbursement_report",
+    "airwallex.list_cardholders",
+    "airwallex.get_cardholder",
+    "airwallex.list_cards",
+    "airwallex.get_card",
+    "airwallex.list_card_transactions",
+    "airwallex.get_card_transaction",
+    "airwallex.custom_api_call",
+    "airwallex.custom_write_api_call",
     "alma.get_mcp_setup_info",
     "alma.get_oauth_metadata",
     "alma.initialize_mcp_session",
@@ -43489,6 +44091,53 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "add_comment",
         "upload_attachment",
         "custom_api_call",
+    ),
+    "airwallex": (
+        "get_account",
+        "list_connected_accounts",
+        "list_global_accounts",
+        "get_global_account",
+        "list_deposits",
+        "get_current_balances",
+        "get_balance_history",
+        "list_financial_transactions",
+        "get_financial_transaction",
+        "list_beneficiaries",
+        "get_beneficiary",
+        "create_beneficiary",
+        "validate_beneficiary",
+        "verify_beneficiary_account",
+        "list_transfers",
+        "get_transfer",
+        "create_transfer",
+        "validate_transfer",
+        "get_indicative_fx_quote",
+        "list_conversions",
+        "get_conversion",
+        "create_conversion",
+        "list_payment_intents",
+        "get_payment_intent",
+        "list_payment_links",
+        "get_payment_link",
+        "list_charges",
+        "get_charge",
+        "list_invoices",
+        "get_invoice",
+        "list_invoice_items",
+        "list_bills",
+        "get_bill",
+        "list_expenses",
+        "get_expense",
+        "list_reimbursement_reports",
+        "get_reimbursement_report",
+        "list_cardholders",
+        "get_cardholder",
+        "list_cards",
+        "get_card",
+        "list_card_transactions",
+        "get_card_transaction",
+        "custom_api_call",
+        "custom_write_api_call",
     ),
     "alma": (
         "get_mcp_setup_info",
@@ -48576,6 +49225,51 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "airtable.add_comment": AirtableAddCommentInput,
     "airtable.upload_attachment": AirtableUploadAttachmentInput,
     "airtable.custom_api_call": AirtableCustomApiCallInput,
+    "airwallex.get_account": AirwallexGetAccountInput,
+    "airwallex.list_connected_accounts": AirwallexListConnectedAccountsInput,
+    "airwallex.list_global_accounts": AirwallexListGlobalAccountsInput,
+    "airwallex.get_global_account": AirwallexGetGlobalAccountInput,
+    "airwallex.list_deposits": AirwallexListDepositsInput,
+    "airwallex.get_current_balances": AirwallexGetCurrentBalancesInput,
+    "airwallex.get_balance_history": AirwallexGetBalanceHistoryInput,
+    "airwallex.list_financial_transactions": AirwallexListFinancialTransactionsInput,
+    "airwallex.get_financial_transaction": AirwallexGetFinancialTransactionInput,
+    "airwallex.list_beneficiaries": AirwallexListBeneficiariesInput,
+    "airwallex.get_beneficiary": AirwallexGetBeneficiaryInput,
+    "airwallex.create_beneficiary": AirwallexCreateBeneficiaryInput,
+    "airwallex.validate_beneficiary": AirwallexValidateBeneficiaryInput,
+    "airwallex.verify_beneficiary_account": AirwallexVerifyBeneficiaryAccountInput,
+    "airwallex.list_transfers": AirwallexListTransfersInput,
+    "airwallex.get_transfer": AirwallexGetTransferInput,
+    "airwallex.create_transfer": AirwallexCreateTransferInput,
+    "airwallex.validate_transfer": AirwallexValidateTransferInput,
+    "airwallex.get_indicative_fx_quote": AirwallexGetIndicativeFxQuoteInput,
+    "airwallex.list_conversions": AirwallexListConversionsInput,
+    "airwallex.get_conversion": AirwallexGetConversionInput,
+    "airwallex.create_conversion": AirwallexCreateConversionInput,
+    "airwallex.list_payment_intents": AirwallexListPaymentIntentsInput,
+    "airwallex.get_payment_intent": AirwallexGetPaymentIntentInput,
+    "airwallex.list_payment_links": AirwallexListPaymentLinksInput,
+    "airwallex.get_payment_link": AirwallexGetPaymentLinkInput,
+    "airwallex.list_charges": AirwallexListChargesInput,
+    "airwallex.get_charge": AirwallexGetChargeInput,
+    "airwallex.list_invoices": AirwallexListInvoicesInput,
+    "airwallex.get_invoice": AirwallexGetInvoiceInput,
+    "airwallex.list_invoice_items": AirwallexListInvoiceItemsInput,
+    "airwallex.list_bills": AirwallexListBillsInput,
+    "airwallex.get_bill": AirwallexGetBillInput,
+    "airwallex.list_expenses": AirwallexListExpensesInput,
+    "airwallex.get_expense": AirwallexGetExpenseInput,
+    "airwallex.list_reimbursement_reports": AirwallexListReimbursementReportsInput,
+    "airwallex.get_reimbursement_report": AirwallexGetReimbursementReportInput,
+    "airwallex.list_cardholders": AirwallexListCardholdersInput,
+    "airwallex.get_cardholder": AirwallexGetCardholderInput,
+    "airwallex.list_cards": AirwallexListCardsInput,
+    "airwallex.get_card": AirwallexGetCardInput,
+    "airwallex.list_card_transactions": AirwallexListCardTransactionsInput,
+    "airwallex.get_card_transaction": AirwallexGetCardTransactionInput,
+    "airwallex.custom_api_call": AirwallexCustomApiCallInput,
+    "airwallex.custom_write_api_call": AirwallexCustomWriteApiCallInput,
     "alma.get_mcp_setup_info": AlmaGetMcpSetupInfoInput,
     "alma.get_oauth_metadata": AlmaGetOauthMetadataInput,
     "alma.initialize_mcp_session": AlmaInitializeMcpSessionInput,
