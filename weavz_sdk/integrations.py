@@ -18402,6 +18402,168 @@ class ImapDeleteEmailInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class IncidentIoValidateConnectionInput(BaseModel):
+    """incident.io — Validate Connection"""
+    pass
+
+
+class IncidentIoListIncidentsInput(BaseModel):
+    """incident.io — List Incidents"""
+    pageSize: Optional[float] = Field(None, description="Maximum 250.")
+    after: Optional[str] = Field(None, description="Incident ID from the previous page metadata.")
+    sortBy: Optional[str] = Field(None, description="Sort By")
+    filterMode: Optional[str] = Field(None, description="Use all for AND logic, any for OR logic.")
+    statusId: Optional[str] = Field(None, description="Status ID")
+    statusOperator: Optional[str] = Field(None, description="Status Operator")
+    statusCategory: Optional[str] = Field(None, description="Status Category")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    severityOperator: Optional[str] = Field(None, description="Severity Operator")
+    incidentTypeId: Optional[str] = Field(None, description="Incident Type ID")
+    incidentTypeOperator: Optional[str] = Field(None, description="Incident Type Operator")
+    mode: Optional[str] = Field(None, description="Incident Mode")
+    createdAtGte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    createdAtLte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    createdAtDateRange: Optional[str] = Field(None, description="Tilde-separated range, for example 2026-06-01~2026-06-07.")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    updatedAtLte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    updatedAtDateRange: Optional[str] = Field(None, description="Tilde-separated range, for example 2026-06-01~2026-06-07.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoSearchIncidentsInput(BaseModel):
+    """incident.io — Search Incidents"""
+    pageSize: Optional[float] = Field(None, description="Maximum 250.")
+    after: Optional[str] = Field(None, description="Incident ID from the previous page metadata.")
+    sortBy: Optional[str] = Field(None, description="Sort By")
+    filterMode: Optional[str] = Field(None, description="Use all for AND logic, any for OR logic.")
+    statusId: Optional[str] = Field(None, description="Status ID")
+    statusOperator: Optional[str] = Field(None, description="Status Operator")
+    statusCategory: Optional[str] = Field(None, description="Status Category")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    severityOperator: Optional[str] = Field(None, description="Severity Operator")
+    incidentTypeId: Optional[str] = Field(None, description="Incident Type ID")
+    incidentTypeOperator: Optional[str] = Field(None, description="Incident Type Operator")
+    mode: Optional[str] = Field(None, description="Incident Mode")
+    createdAtGte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    createdAtLte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    createdAtDateRange: Optional[str] = Field(None, description="Tilde-separated range, for example 2026-06-01~2026-06-07.")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    updatedAtLte: Optional[str] = Field(None, description="ISO 8601 date or date-time.")
+    updatedAtDateRange: Optional[str] = Field(None, description="Tilde-separated range, for example 2026-06-01~2026-06-07.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoGetIncidentInput(BaseModel):
+    """incident.io — Get Incident"""
+    incidentId: str = Field(..., description="Incident ID Or Reference Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoListSeveritiesInput(BaseModel):
+    """incident.io — List Severities"""
+    pass
+
+
+class IncidentIoListIncidentStatusesInput(BaseModel):
+    """incident.io — List Incident Statuses"""
+    pass
+
+
+class IncidentIoListIncidentTypesInput(BaseModel):
+    """incident.io — List Incident Types"""
+    pass
+
+
+class IncidentIoListUsersInput(BaseModel):
+    """incident.io — List Users"""
+    email: Optional[str] = Field(None, description="Email")
+    slackUserId: Optional[str] = Field(None, description="Slack User ID")
+    pageSize: Optional[float] = Field(None, description="Maximum 1000 in this integration.")
+    after: Optional[str] = Field(None, description="After Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoCreateIncidentInput(BaseModel):
+    """incident.io — Create Incident"""
+    idempotencyKey: str = Field(..., description="Unique string used by incident.io to de-duplicate create requests.")
+    visibility: str = Field(..., description="Visibility")
+    name: Optional[str] = Field(None, description="Short explanation of the incident.")
+    summary: Optional[str] = Field(None, description="Detailed description of the incident.")
+    mode: Optional[str] = Field(None, description="Mode")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    incidentTypeId: Optional[str] = Field(None, description="Incident Type ID")
+    incidentStatusId: Optional[str] = Field(None, description="Incident Status ID")
+    slackTeamId: Optional[str] = Field(None, description="Slack Team ID")
+    slackChannelNameOverride: Optional[str] = Field(None, description="Slack Channel Name Override")
+    customFieldEntries: Optional[Any] = Field(None, description="Array matching incident.io custom_field_entries.")
+    incidentRoleAssignments: Optional[Any] = Field(None, description="Array matching incident.io incident_role_assignments.")
+    incidentTimestampValues: Optional[Any] = Field(None, description="Array matching incident.io incident_timestamp_values.")
+    retrospectiveIncidentOptions: Optional[Any] = Field(None, description="Retrospective Incident Options")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoEditIncidentInput(BaseModel):
+    """incident.io — Edit Incident"""
+    incidentId: str = Field(..., description="Incident ID Or Reference Number")
+    name: Optional[str] = Field(None, description="Name")
+    summary: Optional[str] = Field(None, description="Summary")
+    callUrl: Optional[str] = Field(None, description="Call URL")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    incidentTypeId: Optional[str] = Field(None, description="Incident Type ID")
+    incidentStatusId: Optional[str] = Field(None, description="Incident Status ID")
+    customFieldEntries: Optional[Any] = Field(None, description="Array matching incident.io custom_field_entries.")
+    incidentRoleAssignments: Optional[Any] = Field(None, description="Array matching incident.io incident_role_assignments.")
+    incidentTimestampValues: Optional[Any] = Field(None, description="Array matching incident.io incident_timestamp_values.")
+    notifyIncidentChannel: bool = Field(..., description="Request a notification in the incident channel.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoListIncidentUpdatesInput(BaseModel):
+    """incident.io — List Incident Updates"""
+    incidentId: Optional[str] = Field(None, description="Incident ID")
+    pageSize: Optional[float] = Field(None, description="Maximum 250.")
+    after: Optional[str] = Field(None, description="After Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoListActionsInput(BaseModel):
+    """incident.io — List Actions"""
+    incidentId: Optional[str] = Field(None, description="Incident ID")
+    incidentMode: Optional[str] = Field(None, description="Incident Mode")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoGetActionInput(BaseModel):
+    """incident.io — Get Action"""
+    actionId: str = Field(..., description="Action ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoListFollowUpsInput(BaseModel):
+    """incident.io — List Follow-ups"""
+    incidentId: Optional[str] = Field(None, description="Incident ID")
+    incidentMode: Optional[str] = Field(None, description="Incident Mode")
+    assigneeTeamId: Optional[str] = Field(None, description="Assignee Team ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class IncidentIoGetFollowUpInput(BaseModel):
+    """incident.io — Get Follow-up"""
+    followUpId: str = Field(..., description="Follow-up ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class InfobipSendSmsInput(BaseModel):
     """Infobip — Send SMS"""
     from_: str = Field(..., alias="from", description="Sender ID or phone number")
@@ -40234,6 +40396,7 @@ IntegrationName = Literal[
     "ideogram",
     "imanage",
     "imap",
+    "incident-io",
     "infobip",
     "insightly",
     "instagram-business",
@@ -42426,6 +42589,21 @@ IntegrationActionKey = Literal[
     "imap.copy_email",
     "imap.move_email",
     "imap.delete_email",
+    "incident-io.validate_connection",
+    "incident-io.list_incidents",
+    "incident-io.search_incidents",
+    "incident-io.get_incident",
+    "incident-io.list_severities",
+    "incident-io.list_incident_statuses",
+    "incident-io.list_incident_types",
+    "incident-io.list_users",
+    "incident-io.create_incident",
+    "incident-io.edit_incident",
+    "incident-io.list_incident_updates",
+    "incident-io.list_actions",
+    "incident-io.get_action",
+    "incident-io.list_follow_ups",
+    "incident-io.get_follow_up",
     "infobip.send_sms",
     "infobip.send_email",
     "infobip.get_delivery_report",
@@ -47102,6 +47280,23 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "copy_email",
         "move_email",
         "delete_email",
+    ),
+    "incident-io": (
+        "validate_connection",
+        "list_incidents",
+        "search_incidents",
+        "get_incident",
+        "list_severities",
+        "list_incident_statuses",
+        "list_incident_types",
+        "list_users",
+        "create_incident",
+        "edit_incident",
+        "list_incident_updates",
+        "list_actions",
+        "get_action",
+        "list_follow_ups",
+        "get_follow_up",
     ),
     "infobip": (
         "send_sms",
@@ -51894,6 +52089,21 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "imap.copy_email": ImapCopyEmailInput,
     "imap.move_email": ImapMoveEmailInput,
     "imap.delete_email": ImapDeleteEmailInput,
+    "incident-io.validate_connection": IncidentIoValidateConnectionInput,
+    "incident-io.list_incidents": IncidentIoListIncidentsInput,
+    "incident-io.search_incidents": IncidentIoSearchIncidentsInput,
+    "incident-io.get_incident": IncidentIoGetIncidentInput,
+    "incident-io.list_severities": IncidentIoListSeveritiesInput,
+    "incident-io.list_incident_statuses": IncidentIoListIncidentStatusesInput,
+    "incident-io.list_incident_types": IncidentIoListIncidentTypesInput,
+    "incident-io.list_users": IncidentIoListUsersInput,
+    "incident-io.create_incident": IncidentIoCreateIncidentInput,
+    "incident-io.edit_incident": IncidentIoEditIncidentInput,
+    "incident-io.list_incident_updates": IncidentIoListIncidentUpdatesInput,
+    "incident-io.list_actions": IncidentIoListActionsInput,
+    "incident-io.get_action": IncidentIoGetActionInput,
+    "incident-io.list_follow_ups": IncidentIoListFollowUpsInput,
+    "incident-io.get_follow_up": IncidentIoGetFollowUpInput,
     "infobip.send_sms": InfobipSendSmsInput,
     "infobip.send_email": InfobipSendEmailInput,
     "infobip.get_delivery_report": InfobipGetDeliveryReportInput,
