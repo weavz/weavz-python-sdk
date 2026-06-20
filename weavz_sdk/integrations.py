@@ -1889,6 +1889,7 @@ class AgentLocalComputerAiObserveInput(BaseModel):
     """Agent Local Computer AI — Observe"""
     includeScreenshot: Optional[bool] = Field(None, description="Include screenshot")
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    targetRef: Optional[str] = Field(None, description="Optional targetRef returned by list_targets. Use it to observe a locally approved app/window without bringing it frontmost.")
     intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
@@ -2182,6 +2183,7 @@ class AgentLocalComputerControlObserveInput(BaseModel):
     """Agent Local Computer Control — Observe"""
     includeScreenshot: Optional[bool] = Field(None, description="Include screenshot")
     quality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    targetRef: Optional[str] = Field(None, description="Optional targetRef returned by list_targets. Use it to observe a locally approved app/window without bringing it frontmost.")
     intent: Optional[str] = Field(None, description="Optional short caption shown to the local user while the operation runs, for example \"Opening LinkedIn\". Do not include secrets, credentials, personal data, raw URLs, or tokens.")
     sessionId: Optional[str] = Field(None, description="Target a specific local computer session. Omit to use the auto-managed session for this end user.")
 
