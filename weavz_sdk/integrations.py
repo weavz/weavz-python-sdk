@@ -869,6 +869,266 @@ class AgentBrowserEndSessionInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AgentBrowserStealthAiSnapshotInput(BaseModel):
+    """Agent Browser (Stealth AI) — Snapshot Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiReadTextInput(BaseModel):
+    """Agent Browser (Stealth AI) — Read Text"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiReadHtmlInput(BaseModel):
+    """Agent Browser (Stealth AI) — Read HTML"""
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiScreenshotInput(BaseModel):
+    """Agent Browser (Stealth AI) — Screenshot"""
+    fullPage: Optional[bool] = Field(None, description="Full page")
+    fullResolution: Optional[bool] = Field(None, description="Use original device scale. Leave off for an agent-optimized image.")
+    quality: Optional[float] = Field(None, description="1-100. Defaults to 60 for agent-friendly output size.")
+    mode: Optional[str] = Field(None, description="Fast viewport uses the browser frame capture path for the common current-view screenshot.")
+    saveToFilesystem: Optional[bool] = Field(None, description="Also write the screenshot to Filesystem and return a URL. Leave off for faster agent/MCP use.")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiRunStepsInput(BaseModel):
+    """Agent Browser (Stealth AI) — Run Steps"""
+    steps: Any = Field(..., description="[{ \"op\": \"navigate\", \"params\": { \"url\": \"https://example.com\" } }, { \"op\": \"snapshot\" }]")
+    stopOnError: Optional[bool] = Field(None, description="Stop on error")
+    includeFinalSnapshot: Optional[bool] = Field(None, description="Include final snapshot")
+    includeFinalScreenshot: Optional[bool] = Field(None, description="Adds a final inline MCP image. Screenshot steps inside the batch are summarized to avoid large JSON blobs.")
+    finalScreenshotQuality: Optional[float] = Field(None, description="1-100. Defaults to 60.")
+    finalScreenshotFullPage: Optional[bool] = Field(None, description="Final screenshot full page")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiCurrentPageInput(BaseModel):
+    """Agent Browser (Stealth AI) — Current Page"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiNavigateInput(BaseModel):
+    """Agent Browser (Stealth AI) — Navigate"""
+    url: str = Field(..., description="URL")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiNavigateBackInput(BaseModel):
+    """Agent Browser (Stealth AI) — Navigate Back"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiClickInput(BaseModel):
+    """Agent Browser (Stealth AI) — Click"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    button: Optional[str] = Field(None, description="Button")
+    doubleClick: Optional[bool] = Field(None, description="Double click")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiTypeInput(BaseModel):
+    """Agent Browser (Stealth AI) — Type"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    text: str = Field(..., description="Text")
+    submit: Optional[bool] = Field(None, description="Submit")
+    slowly: Optional[bool] = Field(None, description="Type slowly")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiFillFormInput(BaseModel):
+    """Agent Browser (Stealth AI) — Fill Form"""
+    fields: Any = Field(..., description="[{ \"target\": \"e5\", \"type\": \"textbox\", \"value\": \"...\" }]")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiSelectOptionInput(BaseModel):
+    """Agent Browser (Stealth AI) — Select Option"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    values: list[Any] = Field(..., description="Values")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiHoverInput(BaseModel):
+    """Agent Browser (Stealth AI) — Hover"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiDragInput(BaseModel):
+    """Agent Browser (Stealth AI) — Drag and Drop"""
+    startTarget: str = Field(..., description="Element ref or selector.")
+    endTarget: str = Field(..., description="Element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiPressKeyInput(BaseModel):
+    """Agent Browser (Stealth AI) — Press Key"""
+    key: str = Field(..., description="Key")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiFileUploadInput(BaseModel):
+    """Agent Browser (Stealth AI) — Upload File"""
+    target: str = Field(..., description="An element ref from snapshot, such as \"e5\", or a CSS selector.")
+    file: Union[str, dict[str, Any]] = Field(..., description="File URL, base64 payload, data URL, Blob, or inline file object.")
+    fileName: Optional[str] = Field(None, description="Optional filename override.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiEvaluateInput(BaseModel):
+    """Agent Browser (Stealth AI) — Evaluate JavaScript"""
+    function: str = Field(..., description="For example: () => document.title")
+    target: Optional[str] = Field(None, description="Optional element ref or selector.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiWaitForInput(BaseModel):
+    """Agent Browser (Stealth AI) — Wait For"""
+    text: Optional[str] = Field(None, description="Text appears")
+    textGone: Optional[str] = Field(None, description="Text disappears")
+    time: Optional[float] = Field(None, description="Seconds")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiHandleDialogInput(BaseModel):
+    """Agent Browser (Stealth AI) — Handle Dialog"""
+    accept: bool = Field(..., description="Accept")
+    promptText: Optional[str] = Field(None, description="Prompt text")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiTabsInput(BaseModel):
+    """Agent Browser (Stealth AI) — Tabs"""
+    action: str = Field(..., description="Action")
+    index: Optional[float] = Field(None, description="Tab index")
+    url: Optional[str] = Field(None, description="URL for a new tab.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiShowLiveViewInput(BaseModel):
+    """Agent Browser (Stealth AI) — Show Live View"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiRequestHumanInput(BaseModel):
+    """Agent Browser (Stealth AI) — Request Human Takeover"""
+    reason: Optional[str] = Field(None, description="Reason")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiResumeInput(BaseModel):
+    """Agent Browser (Stealth AI) — Resume Agent Control"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiEnsureConnectedInput(BaseModel):
+    """Agent Browser (Stealth AI) — Ensure Connected"""
+    timeoutSeconds: Optional[float] = Field(None, description="How long to wait for the local companion before returning recovery instructions. Defaults to 8 seconds.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiSessionStatusInput(BaseModel):
+    """Agent Browser (Stealth AI) — Session Status"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiStartSessionInput(BaseModel):
+    """Agent Browser (Stealth AI) — Start Session"""
+    allowedHosts: Optional[list[Any]] = Field(None, description="Restrict browsing to these hosts. Empty means unrestricted.")
+    headless: Optional[bool] = Field(None, description="Headless")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiEndSessionInput(BaseModel):
+    """Agent Browser (Stealth AI) — End Session"""
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiActInput(BaseModel):
+    """Agent Browser (Stealth AI) — Act"""
+    instruction: str = Field(..., description="Instruction")
+    maxSteps: Optional[float] = Field(None, description="Max steps")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiExtractInput(BaseModel):
+    """Agent Browser (Stealth AI) — Extract"""
+    instruction: str = Field(..., description="What to extract")
+    schema_: Optional[Any] = Field(None, alias="schema", description="Optional JSON Schema for the result shape.")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AgentBrowserStealthAiObserveInput(BaseModel):
+    """Agent Browser (Stealth AI) — Observe"""
+    instruction: str = Field(..., description="Instruction")
+    sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AgentBrowserStealthSnapshotInput(BaseModel):
     """Agent Browser (Stealth) — Snapshot Page"""
     sessionId: Optional[str] = Field(None, description="Target a specific browser session. Omit to use the auto-managed session for this end user.")
@@ -40797,6 +41057,7 @@ IntegrationName = Literal[
     "aftership",
     "agencyzoom",
     "agent-browser",
+    "agent-browser-stealth-ai",
     "agent-browser-stealth",
     "agent-browser-ai",
     "agent-local-browser-control",
@@ -41420,6 +41681,36 @@ IntegrationActionKey = Literal[
     "agent-browser.session_status",
     "agent-browser.start_session",
     "agent-browser.end_session",
+    "agent-browser-stealth-ai.snapshot",
+    "agent-browser-stealth-ai.read_text",
+    "agent-browser-stealth-ai.read_html",
+    "agent-browser-stealth-ai.screenshot",
+    "agent-browser-stealth-ai.run_steps",
+    "agent-browser-stealth-ai.current_page",
+    "agent-browser-stealth-ai.navigate",
+    "agent-browser-stealth-ai.navigate_back",
+    "agent-browser-stealth-ai.click",
+    "agent-browser-stealth-ai.type",
+    "agent-browser-stealth-ai.fill_form",
+    "agent-browser-stealth-ai.select_option",
+    "agent-browser-stealth-ai.hover",
+    "agent-browser-stealth-ai.drag",
+    "agent-browser-stealth-ai.press_key",
+    "agent-browser-stealth-ai.file_upload",
+    "agent-browser-stealth-ai.evaluate",
+    "agent-browser-stealth-ai.wait_for",
+    "agent-browser-stealth-ai.handle_dialog",
+    "agent-browser-stealth-ai.tabs",
+    "agent-browser-stealth-ai.show_live_view",
+    "agent-browser-stealth-ai.request_human",
+    "agent-browser-stealth-ai.resume",
+    "agent-browser-stealth-ai.ensure_connected",
+    "agent-browser-stealth-ai.session_status",
+    "agent-browser-stealth-ai.start_session",
+    "agent-browser-stealth-ai.end_session",
+    "agent-browser-stealth-ai.act",
+    "agent-browser-stealth-ai.extract",
+    "agent-browser-stealth-ai.observe",
     "agent-browser-stealth.snapshot",
     "agent-browser-stealth.read_text",
     "agent-browser-stealth.read_html",
@@ -45728,6 +46019,38 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "session_status",
         "start_session",
         "end_session",
+    ),
+    "agent-browser-stealth-ai": (
+        "snapshot",
+        "read_text",
+        "read_html",
+        "screenshot",
+        "run_steps",
+        "current_page",
+        "navigate",
+        "navigate_back",
+        "click",
+        "type",
+        "fill_form",
+        "select_option",
+        "hover",
+        "drag",
+        "press_key",
+        "file_upload",
+        "evaluate",
+        "wait_for",
+        "handle_dialog",
+        "tabs",
+        "show_live_view",
+        "request_human",
+        "resume",
+        "ensure_connected",
+        "session_status",
+        "start_session",
+        "end_session",
+        "act",
+        "extract",
+        "observe",
     ),
     "agent-browser-stealth": (
         "snapshot",
@@ -51064,6 +51387,36 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-browser.session_status": AgentBrowserSessionStatusInput,
     "agent-browser.start_session": AgentBrowserStartSessionInput,
     "agent-browser.end_session": AgentBrowserEndSessionInput,
+    "agent-browser-stealth-ai.snapshot": AgentBrowserStealthAiSnapshotInput,
+    "agent-browser-stealth-ai.read_text": AgentBrowserStealthAiReadTextInput,
+    "agent-browser-stealth-ai.read_html": AgentBrowserStealthAiReadHtmlInput,
+    "agent-browser-stealth-ai.screenshot": AgentBrowserStealthAiScreenshotInput,
+    "agent-browser-stealth-ai.run_steps": AgentBrowserStealthAiRunStepsInput,
+    "agent-browser-stealth-ai.current_page": AgentBrowserStealthAiCurrentPageInput,
+    "agent-browser-stealth-ai.navigate": AgentBrowserStealthAiNavigateInput,
+    "agent-browser-stealth-ai.navigate_back": AgentBrowserStealthAiNavigateBackInput,
+    "agent-browser-stealth-ai.click": AgentBrowserStealthAiClickInput,
+    "agent-browser-stealth-ai.type": AgentBrowserStealthAiTypeInput,
+    "agent-browser-stealth-ai.fill_form": AgentBrowserStealthAiFillFormInput,
+    "agent-browser-stealth-ai.select_option": AgentBrowserStealthAiSelectOptionInput,
+    "agent-browser-stealth-ai.hover": AgentBrowserStealthAiHoverInput,
+    "agent-browser-stealth-ai.drag": AgentBrowserStealthAiDragInput,
+    "agent-browser-stealth-ai.press_key": AgentBrowserStealthAiPressKeyInput,
+    "agent-browser-stealth-ai.file_upload": AgentBrowserStealthAiFileUploadInput,
+    "agent-browser-stealth-ai.evaluate": AgentBrowserStealthAiEvaluateInput,
+    "agent-browser-stealth-ai.wait_for": AgentBrowserStealthAiWaitForInput,
+    "agent-browser-stealth-ai.handle_dialog": AgentBrowserStealthAiHandleDialogInput,
+    "agent-browser-stealth-ai.tabs": AgentBrowserStealthAiTabsInput,
+    "agent-browser-stealth-ai.show_live_view": AgentBrowserStealthAiShowLiveViewInput,
+    "agent-browser-stealth-ai.request_human": AgentBrowserStealthAiRequestHumanInput,
+    "agent-browser-stealth-ai.resume": AgentBrowserStealthAiResumeInput,
+    "agent-browser-stealth-ai.ensure_connected": AgentBrowserStealthAiEnsureConnectedInput,
+    "agent-browser-stealth-ai.session_status": AgentBrowserStealthAiSessionStatusInput,
+    "agent-browser-stealth-ai.start_session": AgentBrowserStealthAiStartSessionInput,
+    "agent-browser-stealth-ai.end_session": AgentBrowserStealthAiEndSessionInput,
+    "agent-browser-stealth-ai.act": AgentBrowserStealthAiActInput,
+    "agent-browser-stealth-ai.extract": AgentBrowserStealthAiExtractInput,
+    "agent-browser-stealth-ai.observe": AgentBrowserStealthAiObserveInput,
     "agent-browser-stealth.snapshot": AgentBrowserStealthSnapshotInput,
     "agent-browser-stealth.read_text": AgentBrowserStealthReadTextInput,
     "agent-browser-stealth.read_html": AgentBrowserStealthReadHtmlInput,
