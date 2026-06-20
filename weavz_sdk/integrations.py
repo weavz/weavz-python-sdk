@@ -6573,6 +6573,78 @@ class BuildkiteCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class BuzzsproutListPodcastsInput(BaseModel):
+    """Buzzsprout — List Podcasts"""
+    pass
+
+
+class BuzzsproutGetPodcastInput(BaseModel):
+    """Buzzsprout — Get Podcast"""
+    podcastId: str = Field(..., description="Podcast ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BuzzsproutListEpisodesInput(BaseModel):
+    """Buzzsprout — List Episodes"""
+    podcastId: str = Field(..., description="Podcast ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BuzzsproutGetEpisodeInput(BaseModel):
+    """Buzzsprout — Get Episode"""
+    podcastId: str = Field(..., description="Podcast ID")
+    episodeId: str = Field(..., description="Episode ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BuzzsproutCreateEpisodeDraftInput(BaseModel):
+    """Buzzsprout — Create Episode Draft"""
+    podcastId: str = Field(..., description="Podcast ID")
+    title: str = Field(..., description="Title")
+    description: Optional[str] = Field(None, description="Description")
+    summary: Optional[str] = Field(None, description="Summary")
+    artist: Optional[str] = Field(None, description="Artist")
+    tags: Optional[str] = Field(None, description="Comma-separated tags.")
+    publishedAt: Optional[str] = Field(None, description="ISO 8601 timestamp accepted by Buzzsprout.")
+    duration: Optional[float] = Field(None, description="Duration in seconds.")
+    guid: Optional[str] = Field(None, description="GUID")
+    episodeNumber: Optional[float] = Field(None, description="Episode Number")
+    seasonNumber: Optional[float] = Field(None, description="Season Number")
+    explicit: Optional[bool] = Field(None, description="Explicit")
+    private: Optional[bool] = Field(None, description="Keep enabled to create the episode as a draft/private episode.")
+    emailUserAfterAudioProcessed: Optional[bool] = Field(None, description="Email After Audio Processed")
+    audioUrl: Optional[str] = Field(None, description="Publicly reachable audio URL. File upload is intentionally not included.")
+    artworkUrl: Optional[str] = Field(None, description="Publicly reachable artwork image URL.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BuzzsproutUpdateEpisodeMetadataInput(BaseModel):
+    """Buzzsprout — Update Episode Metadata"""
+    podcastId: str = Field(..., description="Podcast ID")
+    episodeId: str = Field(..., description="Episode ID")
+    title: Optional[str] = Field(None, description="Title")
+    description: Optional[str] = Field(None, description="Description")
+    summary: Optional[str] = Field(None, description="Summary")
+    artist: Optional[str] = Field(None, description="Artist")
+    tags: Optional[str] = Field(None, description="Comma-separated tags.")
+    publishedAt: Optional[str] = Field(None, description="ISO 8601 timestamp accepted by Buzzsprout.")
+    duration: Optional[float] = Field(None, description="Duration in seconds.")
+    guid: Optional[str] = Field(None, description="GUID")
+    episodeNumber: Optional[float] = Field(None, description="Episode Number")
+    seasonNumber: Optional[float] = Field(None, description="Season Number")
+    explicit: Optional[str] = Field(None, description="Explicit")
+    private: Optional[str] = Field(None, description="Private")
+    emailUserAfterAudioProcessed: Optional[str] = Field(None, description="Email After Audio Processed")
+    audioUrl: Optional[str] = Field(None, description="Publicly reachable audio URL. File upload is intentionally not included.")
+    artworkUrl: Optional[str] = Field(None, description="Publicly reachable artwork image URL.")
+
+    model_config = {"populate_by_name": True}
+
+
 class BynderSearchAssetsInput(BaseModel):
     """Bynder — Search Assets"""
     keyword: Optional[str] = Field(None, description="Keyword")
@@ -21013,6 +21085,139 @@ class LangsmithListProjectsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class LastfmSearchArtistInput(BaseModel):
+    """Last.fm — Search Artist"""
+    artist: str = Field(..., description="Artist name to search for.")
+    limit: Optional[float] = Field(None, description="Number of results to fetch per page.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmSearchTrackInput(BaseModel):
+    """Last.fm — Search Track"""
+    track: str = Field(..., description="Track title to search for.")
+    artist: Optional[str] = Field(None, description="Optional artist name to narrow the search.")
+    limit: Optional[float] = Field(None, description="Number of results to fetch per page.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetArtistInfoInput(BaseModel):
+    """Last.fm — Get Artist Info"""
+    artist: Optional[str] = Field(None, description="Artist name. Required unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz artist ID. Required unless Artist is provided.")
+    lang: Optional[str] = Field(None, description="Optional ISO 639 alpha-2 biography language code.")
+    username: Optional[str] = Field(None, description="Optional Last.fm username for user-specific playcount context.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetSimilarArtistsInput(BaseModel):
+    """Last.fm — Get Similar Artists"""
+    artist: Optional[str] = Field(None, description="Artist name. Required unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz artist ID. Required unless Artist is provided.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+    limit: Optional[float] = Field(None, description="Number of similar artists to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetArtistTopTracksInput(BaseModel):
+    """Last.fm — Get Artist Top Tracks"""
+    artist: Optional[str] = Field(None, description="Artist name. Required unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz artist ID. Required unless Artist is provided.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+    limit: Optional[float] = Field(None, description="Number of results to fetch per page.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetArtistTopAlbumsInput(BaseModel):
+    """Last.fm — Get Artist Top Albums"""
+    artist: Optional[str] = Field(None, description="Artist name. Required unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz artist ID. Required unless Artist is provided.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+    limit: Optional[float] = Field(None, description="Number of results to fetch per page.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetTrackInfoInput(BaseModel):
+    """Last.fm — Get Track Info"""
+    track: Optional[str] = Field(None, description="Track title. Required with Artist unless MBID is provided.")
+    artist: Optional[str] = Field(None, description="Artist name. Required with Track unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz track ID. Required unless Track and Artist are provided.")
+    username: Optional[str] = Field(None, description="Optional Last.fm username for user-specific playcount context.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetAlbumInfoInput(BaseModel):
+    """Last.fm — Get Album Info"""
+    album: Optional[str] = Field(None, description="Album name. Required with Artist unless MBID is provided.")
+    artist: Optional[str] = Field(None, description="Artist name. Required with Album unless MBID is provided.")
+    mbid: Optional[str] = Field(None, description="MusicBrainz album ID. Required unless Album and Artist are provided.")
+    lang: Optional[str] = Field(None, description="Optional ISO 639 alpha-2 wiki language code.")
+    username: Optional[str] = Field(None, description="Optional Last.fm username for user-specific playcount context.")
+    autocorrect: Optional[bool] = Field(None, description="Ask Last.fm to correct misspelled artist, album, or track names.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetUserRecentTracksInput(BaseModel):
+    """Last.fm — Get User Recent Tracks"""
+    user: str = Field(..., description="Last.fm username.")
+    from_: Optional[float] = Field(None, alias="from", description="Optional Unix timestamp lower bound.")
+    to: Optional[float] = Field(None, description="Optional Unix timestamp upper bound.")
+    extended: Optional[bool] = Field(None, description="Include extended artist data when available.")
+    limit: Optional[float] = Field(None, description="Number of recent tracks to fetch per page. Defaults to 50.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetUserTopArtistsInput(BaseModel):
+    """Last.fm — Get User Top Artists"""
+    user: str = Field(..., description="Last.fm username.")
+    period: Optional[str] = Field(None, description="Time period for a user top chart.")
+    limit: Optional[float] = Field(None, description="Number of artists to fetch per page. Defaults to 50.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetUserTopTracksInput(BaseModel):
+    """Last.fm — Get User Top Tracks"""
+    user: str = Field(..., description="Last.fm username.")
+    period: Optional[str] = Field(None, description="Time period for a user top chart.")
+    limit: Optional[float] = Field(None, description="Number of tracks to fetch per page. Defaults to 50.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetChartTopArtistsInput(BaseModel):
+    """Last.fm — Get Chart Top Artists"""
+    limit: Optional[float] = Field(None, description="Number of artists to fetch per page. Defaults to 50.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LastfmGetChartTopTracksInput(BaseModel):
+    """Last.fm — Get Chart Top Tracks"""
+    limit: Optional[float] = Field(None, description="Number of tracks to fetch per page. Defaults to 50.")
+    page: Optional[float] = Field(None, description="Page number to fetch.")
+
+    model_config = {"populate_by_name": True}
+
+
 class LaterCreatePostInput(BaseModel):
     """Later — Create Post"""
     profileId: str = Field(..., description="The social profile ID to post to")
@@ -22630,6 +22835,64 @@ class ManychatSetCustomFieldInput(BaseModel):
     subscriber_id: float = Field(..., description="Please refer [Manychat Guide](https://help.manychat.com/hc/en-us/articles/14959510331420-How-to-generate-a-token-for-the-Manychat-API-and-where-to-get-parameters#h_01JCR55RJ0B0PQW6HDW6RW0A42) to obtain user/contact ID.")
     field_id: str = Field(..., description="Custom Field")
     field_value: dict[str, Any] = Field(..., description="Field Value")
+
+    model_config = {"populate_by_name": True}
+
+
+class MapboxForwardGeocodeInput(BaseModel):
+    """Mapbox — Forward Geocode"""
+    query: str = Field(..., description="Address, place, street, postal code, or locality to geocode.")
+    limit: Optional[float] = Field(None, description="Maximum number of results to return (1-10).")
+    country: Optional[str] = Field(None, description="ISO 3166-1 country code or country name to filter results.")
+    types: Optional[str] = Field(None, description="Comma-separated feature types such as address, street, place, region, postcode, locality, neighborhood, or country.")
+    language: Optional[str] = Field(None, description="IETF language tag or comma-separated list, for example en or en,es.")
+    proximity: Optional[str] = Field(None, description="Bias results toward longitude,latitude, or use ip.")
+    bbox: Optional[str] = Field(None, description="Limit results to minLon,minLat,maxLon,maxLat.")
+    autocomplete: Optional[bool] = Field(None, description="Return autocomplete matches. Disabled by default to avoid one request per keystroke.")
+    worldview: Optional[str] = Field(None, description="Boundary worldview code such as us, cn, in, jp, or ar.")
+    permanent: Optional[bool] = Field(None, description="Set only when your Mapbox plan and use case allow storing results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MapboxReverseGeocodeInput(BaseModel):
+    """Mapbox — Reverse Geocode"""
+    longitude: float = Field(..., description="Longitude between -180 and 180.")
+    latitude: float = Field(..., description="Latitude between -90 and 90.")
+    limit: Optional[float] = Field(None, description="Maximum number of results (1-5). Values above 1 require a single Feature Type. Omit for Mapbox default of 1.")
+    types: Optional[str] = Field(None, description="A single feature type when Limit is above 1, or comma-separated types when Limit is omitted.")
+    language: Optional[str] = Field(None, description="IETF language tag or comma-separated list, for example en or en,es.")
+    worldview: Optional[str] = Field(None, description="Boundary worldview code such as us, cn, in, jp, or ar.")
+    permanent: Optional[bool] = Field(None, description="Set only when your Mapbox plan and use case allow storing results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MapboxGetDirectionsInput(BaseModel):
+    """Mapbox — Get Directions"""
+    coordinates: str = Field(..., description="Semicolon-separated longitude,latitude pairs, for example -122.42,37.78;-77.03,38.91.")
+    profile: str = Field(..., description="Routing Profile")
+    geometries: Optional[str] = Field(None, description="Geometry Format")
+    overview: Optional[str] = Field(None, description="Overview")
+    steps: Optional[bool] = Field(None, description="Return route steps and maneuvers.")
+    alternatives: Optional[bool] = Field(None, description="Return alternative routes when available.")
+    annotations: Optional[str] = Field(None, description="Comma-separated annotations such as distance,duration,speed. Forces Overview to Full.")
+    language: Optional[str] = Field(None, description="Language for turn-by-turn instructions, for example en, es, or de.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MapboxCreateIsochroneInput(BaseModel):
+    """Mapbox — Create Isochrone"""
+    longitude: float = Field(..., description="Longitude between -180 and 180.")
+    latitude: float = Field(..., description="Latitude between -90 and 90.")
+    profile: str = Field(..., description="Routing Profile")
+    contoursMinutes: Optional[str] = Field(None, description="Comma-separated increasing minute contours, each 1-60. Use this or Contours Meters, not both.")
+    contoursMeters: Optional[str] = Field(None, description="Comma-separated increasing meter contours, each 1-100000. Use this or Contours Minutes, not both.")
+    polygons: Optional[bool] = Field(None, description="Return polygon contours instead of lines.")
+    denoise: Optional[float] = Field(None, description="Remove smaller contours using a value from 0 to 1.")
+    generalize: Optional[float] = Field(None, description="Simplify the returned geometry in meters.")
+    contoursColors: Optional[str] = Field(None, description="Comma-separated hex colors without #, one per contour.")
 
     model_config = {"populate_by_name": True}
 
@@ -26743,6 +27006,33 @@ class OpenaiCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g., /chat/completions)")
     body: Optional[Any] = Field(None, description="Request body (JSON)")
+
+    model_config = {"populate_by_name": True}
+
+
+class OpencageForwardGeocodeInput(BaseModel):
+    """OpenCage Geocoding — Forward Geocode"""
+    query: str = Field(..., description="Address, place, postal code, or location text to geocode.")
+    limit: Optional[float] = Field(None, description="Maximum number of results to return (1-100).")
+    bounds: Optional[str] = Field(None, description="Optional bounding box as minLon,minLat,maxLon,maxLat.")
+    proximity: Optional[str] = Field(None, description="Bias results toward latitude,longitude.")
+    noDedupe: Optional[bool] = Field(None, description="Return duplicate results when OpenCage has them.")
+    countrycode: Optional[str] = Field(None, description="Optional ISO 3166-1 alpha-2 country code filter, for example us,gb.")
+    language: Optional[str] = Field(None, description="IETF language code such as en, es, de, pt-BR, or native.")
+    noAnnotations: Optional[bool] = Field(None, description="Remove timezone, currency, what3words, and other annotation details from results.")
+    noRecord: Optional[bool] = Field(None, description="Ask OpenCage not to log the query contents.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OpencageReverseGeocodeInput(BaseModel):
+    """OpenCage Geocoding — Reverse Geocode"""
+    latitude: float = Field(..., description="Latitude between -90 and 90.")
+    longitude: float = Field(..., description="Longitude between -180 and 180.")
+    roadinfo: Optional[bool] = Field(None, description="Attempt to match the nearest road and include roadinfo annotations.")
+    language: Optional[str] = Field(None, description="IETF language code such as en, es, de, pt-BR, or native.")
+    noAnnotations: Optional[bool] = Field(None, description="Remove timezone, currency, what3words, and other annotation details from results.")
+    noRecord: Optional[bool] = Field(None, description="Ask OpenCage not to log the query contents.")
 
     model_config = {"populate_by_name": True}
 
@@ -36868,6 +37158,113 @@ class TogetherAiListModelsInput(BaseModel):
     pass
 
 
+class TomtomGeocodeAddressInput(BaseModel):
+    """TomTom — Geocode Address"""
+    query: str = Field(..., description="Address, intersection, street, postal code, city, or geography to geocode.")
+    limit: Optional[float] = Field(None, description="Maximum results to return. TomTom supports up to 100.")
+    countrySet: Optional[str] = Field(None, description="Optional comma-separated ISO 3166-1 alpha-2 or alpha-3 country codes, such as US,CA or USA,CAN.")
+    lat: Optional[float] = Field(None, description="Optional latitude used with Bias Longitude to rank nearby results.")
+    lon: Optional[float] = Field(None, description="Optional longitude used with Bias Latitude to rank nearby results.")
+    radius: Optional[float] = Field(None, description="Optional radius around the bias coordinates.")
+    language: Optional[str] = Field(None, description="Optional TomTom-supported IETF language tag, such as en-US or fr-FR.")
+    typeahead: Optional[bool] = Field(None, description="Interpret the query as partial predictive input.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomReverseGeocodeInput(BaseModel):
+    """TomTom — Reverse Geocode"""
+    lat: float = Field(..., description="Latitude of the position to reverse geocode.")
+    lon: float = Field(..., description="Longitude of the position to reverse geocode.")
+    radius: Optional[float] = Field(None, description="Optional search radius around the position.")
+    language: Optional[str] = Field(None, description="Optional TomTom-supported IETF language tag, such as en-US or fr-FR.")
+    returnSpeedLimit: Optional[bool] = Field(None, description="Include speed limit information when available.")
+    returnRoadClass: Optional[bool] = Field(None, description="Include road class information when available.")
+    returnMatchType: Optional[bool] = Field(None, description="Include the match type in the response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomSearchPlacesInput(BaseModel):
+    """TomTom — Search Places"""
+    query: str = Field(..., description="Free-form search text, such as a business name, address, or landmark.")
+    limit: Optional[float] = Field(None, description="Maximum results to return. TomTom supports up to 100.")
+    countrySet: Optional[str] = Field(None, description="Optional comma-separated ISO 3166-1 alpha-2 or alpha-3 country codes.")
+    lat: Optional[float] = Field(None, description="Optional latitude used with Bias Longitude to rank nearby results.")
+    lon: Optional[float] = Field(None, description="Optional longitude used with Bias Latitude to rank nearby results.")
+    radius: Optional[float] = Field(None, description="Optional radius around the bias coordinates.")
+    categorySet: Optional[str] = Field(None, description="Optional comma-separated TomTom POI category IDs to restrict results.")
+    language: Optional[str] = Field(None, description="Optional TomTom-supported IETF language tag.")
+    typeahead: Optional[bool] = Field(None, description="Interpret the query as partial predictive input.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomSearchPoisInput(BaseModel):
+    """TomTom — Search POIs"""
+    query: str = Field(..., description="Point-of-interest search text, such as coffee, airport, or Eiffel.")
+    limit: Optional[float] = Field(None, description="Maximum results to return. TomTom supports up to 100.")
+    countrySet: Optional[str] = Field(None, description="Optional comma-separated ISO 3166-1 alpha-2 or alpha-3 country codes.")
+    lat: Optional[float] = Field(None, description="Optional latitude used with Longitude to search nearby.")
+    lon: Optional[float] = Field(None, description="Optional longitude used with Latitude to search nearby.")
+    radius: Optional[float] = Field(None, description="Optional radius around the latitude and longitude.")
+    categorySet: Optional[str] = Field(None, description="Optional comma-separated TomTom POI category IDs.")
+    brandSet: Optional[str] = Field(None, description="Optional comma-separated brand names to restrict POIs.")
+    connectorSet: Optional[str] = Field(None, description="Optional comma-separated EV connector types for EV station searches.")
+    fuelSet: Optional[str] = Field(None, description="Optional comma-separated fuel types for fuel station searches.")
+    language: Optional[str] = Field(None, description="Optional TomTom-supported IETF language tag.")
+    openingHours: Optional[str] = Field(None, description="Include opening hours when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomCalculateRouteInput(BaseModel):
+    """TomTom — Calculate Route"""
+    originLat: float = Field(..., description="Origin Latitude")
+    originLon: float = Field(..., description="Origin Longitude")
+    destinationLat: float = Field(..., description="Destination Latitude")
+    destinationLon: float = Field(..., description="Destination Longitude")
+    waypoints: Optional[str] = Field(None, description="Optional semicolon-separated coordinates between origin and destination, formatted as \"lat,lon;lat,lon\".")
+    travelMode: Optional[str] = Field(None, description="Travel Mode")
+    routeType: Optional[str] = Field(None, description="Route Type")
+    routeRepresentation: Optional[str] = Field(None, description="Use Summary Only for compact agent responses, or Polyline when geometry is needed.")
+    traffic: Optional[bool] = Field(None, description="Include current traffic when calculating the route.")
+    departAt: Optional[str] = Field(None, description="Optional departure time, such as now or an ISO 8601 timestamp. Do not combine with Arrive At.")
+    arriveAt: Optional[str] = Field(None, description="Optional arrival time as an ISO 8601 timestamp. Do not combine with Depart At.")
+    avoid: Optional[str] = Field(None, description="Optional comma-separated avoid values, such as tollRoads, motorways, ferries, or unpavedRoads.")
+    instructionsType: Optional[str] = Field(None, description="Optionally include route guidance instructions.")
+    language: Optional[str] = Field(None, description="Optional language for route instructions.")
+    maxAlternatives: Optional[float] = Field(None, description="Optional number of alternative routes to request.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomGetTrafficFlowInput(BaseModel):
+    """TomTom — Get Traffic Flow"""
+    lat: float = Field(..., description="Latitude")
+    lon: float = Field(..., description="Longitude")
+    style: Optional[str] = Field(None, description="Style")
+    zoom: Optional[float] = Field(None, description="Traffic zoom level from 0 to 22.")
+    unit: Optional[str] = Field(None, description="Speed Unit")
+    openLr: Optional[bool] = Field(None, description="Include OpenLR code in the response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TomtomGetTrafficIncidentsInput(BaseModel):
+    """TomTom — Get Traffic Incidents"""
+    minLon: float = Field(..., description="Minimum Longitude")
+    minLat: float = Field(..., description="Minimum Latitude")
+    maxLon: float = Field(..., description="Maximum Longitude")
+    maxLat: float = Field(..., description="Maximum Latitude")
+    includeDetails: Optional[bool] = Field(None, description="Return incident IDs, delay, road names, timing, and event descriptions when available.")
+    language: Optional[str] = Field(None, description="Optional language code for incident descriptions. Defaults to en-GB in TomTom.")
+    timeValidityFilter: Optional[str] = Field(None, description="Time Validity Filter")
+    categoryFilter: Optional[str] = Field(None, description="Optional comma-separated incident category filter values.")
+
+    model_config = {"populate_by_name": True}
+
+
 class TotangoSearchAccountsInput(BaseModel):
     """Totango — Search Accounts"""
     query: Any = Field(..., description="Search query object")
@@ -36903,6 +37300,107 @@ class TotangoCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g. /accounts)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorListShowsInput(BaseModel):
+    """Transistor.fm — List Shows"""
+    query: Optional[str] = Field(None, description="Search Query")
+    private: Optional[str] = Field(None, description="Private")
+    page: Optional[float] = Field(None, description="Transistor pagination page. Defaults to 0.")
+    perPage: Optional[float] = Field(None, description="Resources per page. Defaults to 10.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorGetShowInput(BaseModel):
+    """Transistor.fm — Get Show"""
+    showId: str = Field(..., description="Show ID or Slug")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorListEpisodesInput(BaseModel):
+    """Transistor.fm — List Episodes"""
+    showId: Optional[str] = Field(None, description="Show ID or Slug")
+    query: Optional[str] = Field(None, description="Search Query")
+    status: Optional[str] = Field(None, description="Status")
+    order: Optional[str] = Field(None, description="Order")
+    page: Optional[float] = Field(None, description="Transistor pagination page. Defaults to 0.")
+    perPage: Optional[float] = Field(None, description="Resources per page. Defaults to 10.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorGetEpisodeInput(BaseModel):
+    """Transistor.fm — Get Episode"""
+    episodeId: str = Field(..., description="Episode ID")
+    includeShow: Optional[bool] = Field(None, description="Include Show")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorCreateEpisodeDraftInput(BaseModel):
+    """Transistor.fm — Create Episode Draft"""
+    showId: str = Field(..., description="Show ID or Slug")
+    title: str = Field(..., description="Title")
+    summary: Optional[str] = Field(None, description="Summary")
+    description: Optional[str] = Field(None, description="Longer episode description. HTML is accepted by Transistor.")
+    audioUrl: Optional[str] = Field(None, description="Public audio URL. The local upload authorization workflow is intentionally not included.")
+    author: Optional[str] = Field(None, description="Author")
+    imageUrl: Optional[str] = Field(None, description="Image URL")
+    keywords: Optional[str] = Field(None, description="Comma-separated keywords.")
+    number: Optional[float] = Field(None, description="Episode Number")
+    season: Optional[float] = Field(None, description="Season Number")
+    type_: Optional[str] = Field(None, alias="type", description="Episode Type")
+    explicit: Optional[bool] = Field(None, description="Explicit")
+    incrementNumber: Optional[bool] = Field(None, description="Automatically set the number to the next episode number of the current season.")
+    alternateUrl: Optional[str] = Field(None, description="Alternate URL")
+    videoUrl: Optional[str] = Field(None, description="YouTube video URL for episode pages.")
+    emailNotifications: Optional[str] = Field(None, description="Email Notifications")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorUpdateEpisodeMetadataInput(BaseModel):
+    """Transistor.fm — Update Episode Metadata"""
+    episodeId: str = Field(..., description="Episode ID")
+    title: Optional[str] = Field(None, description="Title")
+    summary: Optional[str] = Field(None, description="Summary")
+    description: Optional[str] = Field(None, description="Longer episode description. HTML is accepted by Transistor.")
+    audioUrl: Optional[str] = Field(None, description="Public audio URL. The local upload authorization workflow is intentionally not included.")
+    author: Optional[str] = Field(None, description="Author")
+    imageUrl: Optional[str] = Field(None, description="Image URL")
+    keywords: Optional[str] = Field(None, description="Comma-separated keywords.")
+    number: Optional[float] = Field(None, description="Episode Number")
+    season: Optional[float] = Field(None, description="Season Number")
+    type_: Optional[str] = Field(None, alias="type", description="Episode Type")
+    explicit: Optional[str] = Field(None, description="Explicit")
+    alternateUrl: Optional[str] = Field(None, description="Alternate URL")
+    videoUrl: Optional[str] = Field(None, description="YouTube video URL for episode pages.")
+    emailNotifications: Optional[str] = Field(None, description="Email Notifications")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorListSubscribersInput(BaseModel):
+    """Transistor.fm — List Subscribers"""
+    showId: str = Field(..., description="Show ID or Slug")
+    query: Optional[str] = Field(None, description="Search Query")
+    activated: Optional[str] = Field(None, description="Activated")
+    page: Optional[float] = Field(None, description="Transistor pagination page. Defaults to 0.")
+    perPage: Optional[float] = Field(None, description="Resources per page. Defaults to 10.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TransistorGetShowAnalyticsInput(BaseModel):
+    """Transistor.fm — Get Show Analytics"""
+    showId: str = Field(..., description="Show ID or Slug")
+    startDate: Optional[str] = Field(None, description="Date in dd-mm-yyyy format. Required by Transistor when an end date is provided.")
+    endDate: Optional[str] = Field(None, description="Date in dd-mm-yyyy format. Required by Transistor when a start date is provided.")
+    includeShow: Optional[bool] = Field(None, description="Include Show")
 
     model_config = {"populate_by_name": True}
 
@@ -37853,6 +38351,67 @@ class VimeoCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class VisualCrossingGetCurrentConditionsInput(BaseModel):
+    """Visual Crossing Weather — Get Current Conditions"""
+    location: str = Field(..., description="Address, city, ZIP/postal code, location ID, or latitude,longitude.")
+    unitGroup: Optional[str] = Field(None, description="Measurement units to return. Defaults to metric.")
+    elements: Optional[str] = Field(None, description="Optional comma-separated weather elements to include, such as tempmax,tempmin,temp,humidity,precip.")
+    lang: Optional[str] = Field(None, description="Optional language code such as en, es, fr, de, ja, or zh.")
+    options: Optional[str] = Field(None, description="Optional comma-separated options such as nonulls.")
+    timezone: Optional[str] = Field(None, description="Optional timezone for input and result dates. Use Z for UTC or an IANA timezone.")
+
+    model_config = {"populate_by_name": True}
+
+
+class VisualCrossingGetForecastInput(BaseModel):
+    """Visual Crossing Weather — Get Forecast"""
+    location: str = Field(..., description="Address, city, ZIP/postal code, location ID, or latitude,longitude.")
+    startDate: Optional[str] = Field(None, description="Optional forecast start date in yyyy-MM-dd format. Leave empty for the provider default.")
+    endDate: Optional[str] = Field(None, description="Optional forecast end date in yyyy-MM-dd format.")
+    includeHourly: Optional[bool] = Field(None, description="Include Hourly Data")
+    includeCurrent: Optional[bool] = Field(None, description="Include Current Conditions")
+    includeAlerts: Optional[bool] = Field(None, description="Include Alerts")
+    unitGroup: Optional[str] = Field(None, description="Measurement units to return. Defaults to metric.")
+    elements: Optional[str] = Field(None, description="Optional comma-separated weather elements to include, such as tempmax,tempmin,temp,humidity,precip.")
+    lang: Optional[str] = Field(None, description="Optional language code such as en, es, fr, de, ja, or zh.")
+    options: Optional[str] = Field(None, description="Optional comma-separated options such as nonulls.")
+    timezone: Optional[str] = Field(None, description="Optional timezone for input and result dates. Use Z for UTC or an IANA timezone.")
+
+    model_config = {"populate_by_name": True}
+
+
+class VisualCrossingGetHistoricalWeatherInput(BaseModel):
+    """Visual Crossing Weather — Get Historical Weather"""
+    location: str = Field(..., description="Address, city, ZIP/postal code, location ID, or latitude,longitude.")
+    startDate: str = Field(..., description="Historical start date in yyyy-MM-dd format.")
+    endDate: Optional[str] = Field(None, description="Optional historical end date in yyyy-MM-dd format. Leave empty for a single day.")
+    includeHourly: Optional[bool] = Field(None, description="Include Hourly Data")
+    includeAlerts: Optional[bool] = Field(None, description="Include Alerts")
+    unitGroup: Optional[str] = Field(None, description="Measurement units to return. Defaults to metric.")
+    elements: Optional[str] = Field(None, description="Optional comma-separated weather elements to include, such as tempmax,tempmin,temp,humidity,precip.")
+    lang: Optional[str] = Field(None, description="Optional language code such as en, es, fr, de, ja, or zh.")
+    options: Optional[str] = Field(None, description="Optional comma-separated options such as nonulls.")
+    timezone: Optional[str] = Field(None, description="Optional timezone for input and result dates. Use Z for UTC or an IANA timezone.")
+
+    model_config = {"populate_by_name": True}
+
+
+class VisualCrossingGetWeatherTimelineInput(BaseModel):
+    """Visual Crossing Weather — Get Weather Timeline"""
+    location: str = Field(..., description="Address, city, ZIP/postal code, location ID, or latitude,longitude.")
+    startDate: Optional[str] = Field(None, description="Optional yyyy-MM-dd date or supported dynamic period such as today, yesterday, or last30days.")
+    endDate: Optional[str] = Field(None, description="Optional yyyy-MM-dd end date for a date range.")
+    unitGroup: Optional[str] = Field(None, description="Measurement units to return. Defaults to metric.")
+    include: Optional[str] = Field(None, description="Comma-separated sections such as days,current,alerts. Defaults to days,current to avoid hourly data.")
+    elements: Optional[str] = Field(None, description="Optional comma-separated weather elements to include, such as tempmax,tempmin,temp,humidity,precip.")
+    lang: Optional[str] = Field(None, description="Optional language code such as en, es, fr, de, ja, or zh.")
+    options: Optional[str] = Field(None, description="Optional comma-separated options such as nonulls.")
+    timezone: Optional[str] = Field(None, description="Optional timezone for input and result dates. Use Z for UTC or an IANA timezone.")
+    contentType: Optional[str] = Field(None, description="Response format. JSON is recommended for agents.")
+
+    model_config = {"populate_by_name": True}
+
+
 class VitallyCreateAccountInput(BaseModel):
     """Vitally — Create Account"""
     name: str = Field(..., description="Account Name")
@@ -38123,6 +38682,64 @@ class VtexCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiSearchLocationsInput(BaseModel):
+    """WeatherAPI.com — Search Locations"""
+    query: str = Field(..., description="Location search text such as Lond, Paris, 10001, iata:DXB, or 48.8567,2.3508.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiGetCurrentWeatherInput(BaseModel):
+    """WeatherAPI.com — Get Current Weather"""
+    q: str = Field(..., description="City, postcode, IP address, airport code, latitude/longitude pair, auto:ip, or id:<location id>.")
+    includeAirQuality: Optional[bool] = Field(None, description="Request air quality data when available on your WeatherAPI.com plan.")
+    includePollen: Optional[bool] = Field(None, description="Request pollen data when available on your WeatherAPI.com plan.")
+    lang: Optional[str] = Field(None, description="Optional WeatherAPI language code such as en, es, fr, de, ja, or zh.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiGetForecastInput(BaseModel):
+    """WeatherAPI.com — Get Forecast"""
+    q: str = Field(..., description="City, postcode, IP address, airport code, latitude/longitude pair, auto:ip, or id:<location id>.")
+    days: Optional[float] = Field(None, description="Number of forecast days to return, from 1 to 14. Defaults to 3.")
+    hour: Optional[float] = Field(None, description="Optional local hour to return, from 0 to 23.")
+    includeAlerts: Optional[bool] = Field(None, description="Request weather alerts when available.")
+    includeAirQuality: Optional[bool] = Field(None, description="Request air quality data when available on your WeatherAPI.com plan.")
+    includePollen: Optional[bool] = Field(None, description="Request pollen data when available on your WeatherAPI.com plan.")
+    lang: Optional[str] = Field(None, description="Optional WeatherAPI language code such as en, es, fr, de, ja, or zh.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiGetHistoryInput(BaseModel):
+    """WeatherAPI.com — Get Historical Weather"""
+    q: str = Field(..., description="City, postcode, IP address, airport code, latitude/longitude pair, auto:ip, or id:<location id>.")
+    date: str = Field(..., description="Historical date in yyyy-MM-dd format. WeatherAPI.com supports history from 2010-01-01.")
+    endDate: Optional[str] = Field(None, description="Optional end date in yyyy-MM-dd format. Ranges are plan-gated and limited by WeatherAPI.com.")
+    hour: Optional[float] = Field(None, description="Optional local hour to return, from 0 to 23.")
+    includeAirQuality: Optional[bool] = Field(None, description="Request air quality data when available on your WeatherAPI.com plan.")
+    includePollen: Optional[bool] = Field(None, description="Request pollen data when available on your WeatherAPI.com plan.")
+    lang: Optional[str] = Field(None, description="Optional WeatherAPI language code such as en, es, fr, de, ja, or zh.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiGetTimezoneInput(BaseModel):
+    """WeatherAPI.com — Get Timezone"""
+    q: str = Field(..., description="City, postcode, IP address, airport code, latitude/longitude pair, auto:ip, or id:<location id>.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WeatherapiGetAstronomyInput(BaseModel):
+    """WeatherAPI.com — Get Astronomy"""
+    q: str = Field(..., description="City, postcode, IP address, airport code, latitude/longitude pair, auto:ip, or id:<location id>.")
+    date: Optional[str] = Field(None, description="Optional date in yyyy-MM-dd format. Leave empty for the provider default.")
 
     model_config = {"populate_by_name": True}
 
@@ -38484,6 +39101,57 @@ class WellnesslivingCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="Path")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class What3wordsConvertToCoordinatesInput(BaseModel):
+    """what3words — Convert To Coordinates"""
+    words: str = Field(..., description="A 3 word address such as filled.count.soap, with or without the leading ///.")
+    format: Optional[str] = Field(None, description="Format")
+
+    model_config = {"populate_by_name": True}
+
+
+class What3wordsConvertTo3waInput(BaseModel):
+    """what3words — Convert To 3 Word Address"""
+    lat: float = Field(..., description="Latitude to convert.")
+    lng: float = Field(..., description="Longitude to convert.")
+    language: Optional[str] = Field(None, description="Optional supported 2-letter language code. Defaults to en.")
+    locale: Optional[str] = Field(None, description="Optional locale variant, such as mn_la, zh_tr, or oo_cy.")
+    format: Optional[str] = Field(None, description="Format")
+
+    model_config = {"populate_by_name": True}
+
+
+class What3wordsAutosuggestInput(BaseModel):
+    """what3words — AutoSuggest"""
+    input: str = Field(..., description="Full or partial 3 word address. Partial input must include the first two words and at least one character of the third.")
+    focusLat: Optional[float] = Field(None, description="Optional latitude used with Focus Longitude to rank suggestions near a user or place.")
+    focusLng: Optional[float] = Field(None, description="Optional longitude used with Focus Latitude to rank suggestions near a user or place.")
+    clipToCountry: Optional[str] = Field(None, description="Optional comma-separated ISO 3166-1 alpha-2 country codes, such as GB,BE.")
+    clipToBoundingBox: Optional[str] = Field(None, description="Optional south_lat,west_lng,north_lat,east_lng bounding box.")
+    clipToCircle: Optional[str] = Field(None, description="Optional lat,lng,kilometres circle used to restrict results.")
+    language: Optional[str] = Field(None, description="Optional fallback 2-letter language code. Required for voice input modes.")
+    locale: Optional[str] = Field(None, description="Optional locale variant, such as mn_la, zh_tr, or oo_cy.")
+    inputType: Optional[str] = Field(None, description="Input Type")
+    preferLand: Optional[bool] = Field(None, description="Prefer land-based suggestions. Enabled by default in what3words.")
+
+    model_config = {"populate_by_name": True}
+
+
+class What3wordsGetAvailableLanguagesInput(BaseModel):
+    """what3words — Get Available Languages"""
+    pass
+
+
+class What3wordsGetGridSectionInput(BaseModel):
+    """what3words — Get Grid Section"""
+    southLat: float = Field(..., description="South Latitude")
+    westLng: float = Field(..., description="West Longitude")
+    northLat: float = Field(..., description="North Latitude")
+    eastLng: float = Field(..., description="East Longitude")
+    format: Optional[str] = Field(None, description="Format")
 
     model_config = {"populate_by_name": True}
 
@@ -41117,6 +41785,7 @@ IntegrationName = Literal[
     "bugsnag",
     "buildium",
     "buildkite",
+    "buzzsprout",
     "bynder",
     "cal-com",
     "calendly",
@@ -41317,6 +41986,7 @@ IntegrationName = Literal[
     "langchain",
     "langfuse",
     "langsmith",
+    "lastfm",
     "later",
     "lawmatics",
     "lead-connector",
@@ -41339,6 +42009,7 @@ IntegrationName = Literal[
     "mailer-lite",
     "mailjet",
     "manychat",
+    "mapbox",
     "mastodon",
     "mattermost",
     "medium",
@@ -41389,6 +42060,7 @@ IntegrationName = Literal[
     "onesignal",
     "onfleet",
     "openai",
+    "opencage",
     "open-router",
     "opentable",
     "openweather",
@@ -41532,7 +42204,9 @@ IntegrationName = Literal[
     "toast-pos",
     "todoist",
     "together-ai",
+    "tomtom",
     "totango",
+    "transistor",
     "trello",
     "trustpilot",
     "turso",
@@ -41549,9 +42223,11 @@ IntegrationName = Literal[
     "vercel",
     "vidyard",
     "vimeo",
+    "visual-crossing",
     "vitally",
     "vonage",
     "vtex",
+    "weatherapi",
     "weaviate",
     "weaviate-custom",
     "weavz-dynamic-dashboard",
@@ -41559,6 +42235,7 @@ IntegrationName = Literal[
     "webex",
     "webflow",
     "wellnessliving",
+    "what3words",
     "whatsapp",
     "whimsical",
     "wise",
@@ -42288,6 +42965,12 @@ IntegrationActionKey = Literal[
     "buildkite.create_build",
     "buildkite.list_pipelines",
     "buildkite.custom_api_call",
+    "buzzsprout.list_podcasts",
+    "buzzsprout.get_podcast",
+    "buzzsprout.list_episodes",
+    "buzzsprout.get_episode",
+    "buzzsprout.create_episode_draft",
+    "buzzsprout.update_episode_metadata",
     "bynder.search_assets",
     "bynder.upload_asset",
     "bynder.get_collection",
@@ -43759,6 +44442,19 @@ IntegrationActionKey = Literal[
     "langsmith.get_run",
     "langsmith.list_datasets",
     "langsmith.list_projects",
+    "lastfm.search_artist",
+    "lastfm.search_track",
+    "lastfm.get_artist_info",
+    "lastfm.get_similar_artists",
+    "lastfm.get_artist_top_tracks",
+    "lastfm.get_artist_top_albums",
+    "lastfm.get_track_info",
+    "lastfm.get_album_info",
+    "lastfm.get_user_recent_tracks",
+    "lastfm.get_user_top_artists",
+    "lastfm.get_user_top_tracks",
+    "lastfm.get_chart_top_artists",
+    "lastfm.get_chart_top_tracks",
     "later.create_post",
     "later.list_posts",
     "later.list_profiles",
@@ -43922,6 +44618,10 @@ IntegrationActionKey = Literal[
     "manychat.removeTagFromUser",
     "manychat.sendContentToUser",
     "manychat.setCustomField",
+    "mapbox.forward_geocode",
+    "mapbox.reverse_geocode",
+    "mapbox.get_directions",
+    "mapbox.create_isochrone",
     "mastodon.post_status",
     "mastodon.custom_api_call",
     "mattermost.send_message",
@@ -44373,6 +45073,8 @@ IntegrationActionKey = Literal[
     "openai.text_to_speech",
     "openai.list_models",
     "openai.custom_api_call",
+    "opencage.forward_geocode",
+    "opencage.reverse_geocode",
     "open-router.ask-lmm",
     "open-router.custom_api_call",
     "opentable.list_reservations",
@@ -45483,11 +46185,26 @@ IntegrationActionKey = Literal[
     "together-ai.chat",
     "together-ai.embed",
     "together-ai.list_models",
+    "tomtom.geocode_address",
+    "tomtom.reverse_geocode",
+    "tomtom.search_places",
+    "tomtom.search_pois",
+    "tomtom.calculate_route",
+    "tomtom.get_traffic_flow",
+    "tomtom.get_traffic_incidents",
     "totango.search_accounts",
     "totango.create_touchpoint",
     "totango.list_segments",
     "totango.get_health",
     "totango.custom_api_call",
+    "transistor.list_shows",
+    "transistor.get_show",
+    "transistor.list_episodes",
+    "transistor.get_episode",
+    "transistor.create_episode_draft",
+    "transistor.update_episode_metadata",
+    "transistor.list_subscribers",
+    "transistor.get_show_analytics",
     "trello.create_card",
     "trello.get_card",
     "trello.update_card",
@@ -45592,6 +46309,10 @@ IntegrationActionKey = Literal[
     "vimeo.add_video_to_showcase",
     "vimeo.add_video_to_folder",
     "vimeo.custom_api_call",
+    "visual-crossing.get_current_conditions",
+    "visual-crossing.get_forecast",
+    "visual-crossing.get_historical_weather",
+    "visual-crossing.get_weather_timeline",
     "vitally.create_account",
     "vitally.list_accounts",
     "vitally.get_account",
@@ -45619,6 +46340,12 @@ IntegrationActionKey = Literal[
     "vtex.get-order-by-id",
     "vtex.get-order-list",
     "vtex.custom_api_call",
+    "weatherapi.search_locations",
+    "weatherapi.get_current_weather",
+    "weatherapi.get_forecast",
+    "weatherapi.get_history",
+    "weatherapi.get_timezone",
+    "weatherapi.get_astronomy",
     "weaviate.list_collections",
     "weaviate.create_object",
     "weaviate.get_object",
@@ -45657,6 +46384,11 @@ IntegrationActionKey = Literal[
     "wellnessliving.list_clients",
     "wellnessliving.book_appointment",
     "wellnessliving.custom_api_call",
+    "what3words.convert_to_coordinates",
+    "what3words.convert_to_3wa",
+    "what3words.autosuggest",
+    "what3words.get_available_languages",
+    "what3words.get_grid_section",
     "whatsapp.sendMessage",
     "whatsapp.sendMedia",
     "whatsapp.send-template-message",
@@ -46742,6 +47474,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_build",
         "list_pipelines",
         "custom_api_call",
+    ),
+    "buzzsprout": (
+        "list_podcasts",
+        "get_podcast",
+        "list_episodes",
+        "get_episode",
+        "create_episode_draft",
+        "update_episode_metadata",
     ),
     "bynder": (
         "search_assets",
@@ -48614,6 +49354,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_datasets",
         "list_projects",
     ),
+    "lastfm": (
+        "search_artist",
+        "search_track",
+        "get_artist_info",
+        "get_similar_artists",
+        "get_artist_top_tracks",
+        "get_artist_top_albums",
+        "get_track_info",
+        "get_album_info",
+        "get_user_recent_tracks",
+        "get_user_top_artists",
+        "get_user_top_tracks",
+        "get_chart_top_artists",
+        "get_chart_top_tracks",
+    ),
     "later": (
         "create_post",
         "list_posts",
@@ -48820,6 +49575,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "removeTagFromUser",
         "sendContentToUser",
         "setCustomField",
+    ),
+    "mapbox": (
+        "forward_geocode",
+        "reverse_geocode",
+        "get_directions",
+        "create_isochrone",
     ),
     "mastodon": (
         "post_status",
@@ -49371,6 +50132,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "text_to_speech",
         "list_models",
         "custom_api_call",
+    ),
+    "opencage": (
+        "forward_geocode",
+        "reverse_geocode",
     ),
     "open-router": (
         "ask-lmm",
@@ -50768,12 +51533,31 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "embed",
         "list_models",
     ),
+    "tomtom": (
+        "geocode_address",
+        "reverse_geocode",
+        "search_places",
+        "search_pois",
+        "calculate_route",
+        "get_traffic_flow",
+        "get_traffic_incidents",
+    ),
     "totango": (
         "search_accounts",
         "create_touchpoint",
         "list_segments",
         "get_health",
         "custom_api_call",
+    ),
+    "transistor": (
+        "list_shows",
+        "get_show",
+        "list_episodes",
+        "get_episode",
+        "create_episode_draft",
+        "update_episode_metadata",
+        "list_subscribers",
+        "get_show_analytics",
     ),
     "trello": (
         "create_card",
@@ -50911,6 +51695,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "add_video_to_folder",
         "custom_api_call",
     ),
+    "visual-crossing": (
+        "get_current_conditions",
+        "get_forecast",
+        "get_historical_weather",
+        "get_weather_timeline",
+    ),
     "vitally": (
         "create_account",
         "list_accounts",
@@ -50943,6 +51733,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get-order-by-id",
         "get-order-list",
         "custom_api_call",
+    ),
+    "weatherapi": (
+        "search_locations",
+        "get_current_weather",
+        "get_forecast",
+        "get_history",
+        "get_timezone",
+        "get_astronomy",
     ),
     "weaviate": (
         "list_collections",
@@ -50995,6 +51793,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_clients",
         "book_appointment",
         "custom_api_call",
+    ),
+    "what3words": (
+        "convert_to_coordinates",
+        "convert_to_3wa",
+        "autosuggest",
+        "get_available_languages",
+        "get_grid_section",
     ),
     "whatsapp": (
         "sendMessage",
@@ -51994,6 +52799,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "buildkite.create_build": BuildkiteCreateBuildInput,
     "buildkite.list_pipelines": BuildkiteListPipelinesInput,
     "buildkite.custom_api_call": BuildkiteCustomApiCallInput,
+    "buzzsprout.list_podcasts": BuzzsproutListPodcastsInput,
+    "buzzsprout.get_podcast": BuzzsproutGetPodcastInput,
+    "buzzsprout.list_episodes": BuzzsproutListEpisodesInput,
+    "buzzsprout.get_episode": BuzzsproutGetEpisodeInput,
+    "buzzsprout.create_episode_draft": BuzzsproutCreateEpisodeDraftInput,
+    "buzzsprout.update_episode_metadata": BuzzsproutUpdateEpisodeMetadataInput,
     "bynder.search_assets": BynderSearchAssetsInput,
     "bynder.upload_asset": BynderUploadAssetInput,
     "bynder.get_collection": BynderGetCollectionInput,
@@ -53465,6 +54276,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "langsmith.get_run": LangsmithGetRunInput,
     "langsmith.list_datasets": LangsmithListDatasetsInput,
     "langsmith.list_projects": LangsmithListProjectsInput,
+    "lastfm.search_artist": LastfmSearchArtistInput,
+    "lastfm.search_track": LastfmSearchTrackInput,
+    "lastfm.get_artist_info": LastfmGetArtistInfoInput,
+    "lastfm.get_similar_artists": LastfmGetSimilarArtistsInput,
+    "lastfm.get_artist_top_tracks": LastfmGetArtistTopTracksInput,
+    "lastfm.get_artist_top_albums": LastfmGetArtistTopAlbumsInput,
+    "lastfm.get_track_info": LastfmGetTrackInfoInput,
+    "lastfm.get_album_info": LastfmGetAlbumInfoInput,
+    "lastfm.get_user_recent_tracks": LastfmGetUserRecentTracksInput,
+    "lastfm.get_user_top_artists": LastfmGetUserTopArtistsInput,
+    "lastfm.get_user_top_tracks": LastfmGetUserTopTracksInput,
+    "lastfm.get_chart_top_artists": LastfmGetChartTopArtistsInput,
+    "lastfm.get_chart_top_tracks": LastfmGetChartTopTracksInput,
     "later.create_post": LaterCreatePostInput,
     "later.list_posts": LaterListPostsInput,
     "later.list_profiles": LaterListProfilesInput,
@@ -53628,6 +54452,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "manychat.removeTagFromUser": ManychatRemoveTagFromUserInput,
     "manychat.sendContentToUser": ManychatSendContentToUserInput,
     "manychat.setCustomField": ManychatSetCustomFieldInput,
+    "mapbox.forward_geocode": MapboxForwardGeocodeInput,
+    "mapbox.reverse_geocode": MapboxReverseGeocodeInput,
+    "mapbox.get_directions": MapboxGetDirectionsInput,
+    "mapbox.create_isochrone": MapboxCreateIsochroneInput,
     "mastodon.post_status": MastodonPostStatusInput,
     "mastodon.custom_api_call": MastodonCustomApiCallInput,
     "mattermost.send_message": MattermostSendMessageInput,
@@ -54079,6 +54907,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "openai.text_to_speech": OpenaiTextToSpeechInput,
     "openai.list_models": OpenaiListModelsInput,
     "openai.custom_api_call": OpenaiCustomApiCallInput,
+    "opencage.forward_geocode": OpencageForwardGeocodeInput,
+    "opencage.reverse_geocode": OpencageReverseGeocodeInput,
     "open-router.ask-lmm": OpenRouterAskLmmInput,
     "open-router.custom_api_call": OpenRouterCustomApiCallInput,
     "opentable.list_reservations": OpentableListReservationsInput,
@@ -55189,11 +56019,26 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "together-ai.chat": TogetherAiChatInput,
     "together-ai.embed": TogetherAiEmbedInput,
     "together-ai.list_models": TogetherAiListModelsInput,
+    "tomtom.geocode_address": TomtomGeocodeAddressInput,
+    "tomtom.reverse_geocode": TomtomReverseGeocodeInput,
+    "tomtom.search_places": TomtomSearchPlacesInput,
+    "tomtom.search_pois": TomtomSearchPoisInput,
+    "tomtom.calculate_route": TomtomCalculateRouteInput,
+    "tomtom.get_traffic_flow": TomtomGetTrafficFlowInput,
+    "tomtom.get_traffic_incidents": TomtomGetTrafficIncidentsInput,
     "totango.search_accounts": TotangoSearchAccountsInput,
     "totango.create_touchpoint": TotangoCreateTouchpointInput,
     "totango.list_segments": TotangoListSegmentsInput,
     "totango.get_health": TotangoGetHealthInput,
     "totango.custom_api_call": TotangoCustomApiCallInput,
+    "transistor.list_shows": TransistorListShowsInput,
+    "transistor.get_show": TransistorGetShowInput,
+    "transistor.list_episodes": TransistorListEpisodesInput,
+    "transistor.get_episode": TransistorGetEpisodeInput,
+    "transistor.create_episode_draft": TransistorCreateEpisodeDraftInput,
+    "transistor.update_episode_metadata": TransistorUpdateEpisodeMetadataInput,
+    "transistor.list_subscribers": TransistorListSubscribersInput,
+    "transistor.get_show_analytics": TransistorGetShowAnalyticsInput,
     "trello.create_card": TrelloCreateCardInput,
     "trello.get_card": TrelloGetCardInput,
     "trello.update_card": TrelloUpdateCardInput,
@@ -55298,6 +56143,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "vimeo.add_video_to_showcase": VimeoAddVideoToShowcaseInput,
     "vimeo.add_video_to_folder": VimeoAddVideoToFolderInput,
     "vimeo.custom_api_call": VimeoCustomApiCallInput,
+    "visual-crossing.get_current_conditions": VisualCrossingGetCurrentConditionsInput,
+    "visual-crossing.get_forecast": VisualCrossingGetForecastInput,
+    "visual-crossing.get_historical_weather": VisualCrossingGetHistoricalWeatherInput,
+    "visual-crossing.get_weather_timeline": VisualCrossingGetWeatherTimelineInput,
     "vitally.create_account": VitallyCreateAccountInput,
     "vitally.list_accounts": VitallyListAccountsInput,
     "vitally.get_account": VitallyGetAccountInput,
@@ -55325,6 +56174,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "vtex.get-order-by-id": VtexGetOrderByIdInput,
     "vtex.get-order-list": VtexGetOrderListInput,
     "vtex.custom_api_call": VtexCustomApiCallInput,
+    "weatherapi.search_locations": WeatherapiSearchLocationsInput,
+    "weatherapi.get_current_weather": WeatherapiGetCurrentWeatherInput,
+    "weatherapi.get_forecast": WeatherapiGetForecastInput,
+    "weatherapi.get_history": WeatherapiGetHistoryInput,
+    "weatherapi.get_timezone": WeatherapiGetTimezoneInput,
+    "weatherapi.get_astronomy": WeatherapiGetAstronomyInput,
     "weaviate.list_collections": WeaviateListCollectionsInput,
     "weaviate.create_object": WeaviateCreateObjectInput,
     "weaviate.get_object": WeaviateGetObjectInput,
@@ -55363,6 +56218,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "wellnessliving.list_clients": WellnesslivingListClientsInput,
     "wellnessliving.book_appointment": WellnesslivingBookAppointmentInput,
     "wellnessliving.custom_api_call": WellnesslivingCustomApiCallInput,
+    "what3words.convert_to_coordinates": What3wordsConvertToCoordinatesInput,
+    "what3words.convert_to_3wa": What3wordsConvertTo3waInput,
+    "what3words.autosuggest": What3wordsAutosuggestInput,
+    "what3words.get_available_languages": What3wordsGetAvailableLanguagesInput,
+    "what3words.get_grid_section": What3wordsGetGridSectionInput,
     "whatsapp.sendMessage": WhatsappSendMessageInput,
     "whatsapp.sendMedia": WhatsappSendMediaInput,
     "whatsapp.send-template-message": WhatsappSendTemplateMessageInput,
