@@ -181,8 +181,8 @@ class TestConnectionEdgeCases:
             type="SECRET_TEXT",
             external_id="py-edge-secret-1",
             display_name="Same ExtID Diff Integration",
-            integration_name="slack",
-            secret_text="sk-slack-py-edge",
+            integration_name="discord",
+            secret_text="discord-token-py-edge",
             workspace_id=self._workspace_id,
         )
         assert "connection" in result
@@ -195,7 +195,7 @@ class TestConnectionEdgeCases:
             type="BASIC_AUTH",
             external_id="py-edge-basic-1",
             display_name="Py Edge Basic Auth",
-            integration_name="http",
+            integration_name="clicksend",
             username="testuser",
             password="testpass123",
             workspace_id=self._workspace_id,
@@ -210,8 +210,8 @@ class TestConnectionEdgeCases:
             type="CUSTOM_AUTH",
             external_id="py-edge-custom-1",
             display_name="Py Edge Custom Auth",
-            integration_name="http",
-            props={"headerName": "X-Custom-Token", "headerValue": "test-token-value"},
+            integration_name="amazon-s3",
+            props={"accessKeyId": "test-key", "secretAccessKey": "test-secret", "region": "us-east-1", "bucket": "test-bucket"},
             workspace_id=self._workspace_id,
         )
         assert "connection" in result
@@ -420,8 +420,8 @@ class TestWorkspaceIntegrationEdgeCases:
                 type="SECRET_TEXT",
                 external_id="py-intg-edge-conn",
                 display_name="Py Intg Edge Conn",
-                integration_name="github",
-                secret_text="ghp_testtoken123",
+                integration_name="openai",
+                secret_text="sk-testtoken123",
                 workspace_id=cls._workspace_id,
             )
             cls._conn_id = conn["connection"]["id"]
@@ -432,7 +432,7 @@ class TestWorkspaceIntegrationEdgeCases:
         with pytest.raises(WeavzError) as exc_info:
             _client.workspaces.add_integration(
                 self._workspace_id,
-                integration_name="github",
+                integration_name="openai",
                 connection_strategy="fixed",
             )
         assert exc_info.value.status == 400
@@ -441,7 +441,7 @@ class TestWorkspaceIntegrationEdgeCases:
         self._ensure_resources()
         result = _client.workspaces.add_integration(
             self._workspace_id,
-            integration_name="github",
+            integration_name="openai",
             connection_strategy="fixed",
             connection_id=self._conn_id,
         )
@@ -456,7 +456,8 @@ class TestWorkspaceIntegrationEdgeCases:
         self._ensure_resources()
         result = _client.workspaces.add_integration(
             self._workspace_id,
-            integration_name="notion",
+            integration_name="discord",
+            integration_alias="discord_py_user",
             connection_strategy="per_user",
         )
         assert "integration" in result
@@ -470,7 +471,8 @@ class TestWorkspaceIntegrationEdgeCases:
         self._ensure_resources()
         result = _client.workspaces.add_integration(
             self._workspace_id,
-            integration_name="slack",
+            integration_name="discord",
+            integration_alias="discord_py_fallback",
             connection_strategy="per_user_with_fallback",
         )
         assert "integration" in result
@@ -503,6 +505,7 @@ class TestWorkspaceIntegrationEdgeCases:
         result = _client.workspaces.add_integration(
             self._workspace_id,
             integration_name="discord",
+            integration_alias="discord_py_update",
             connection_strategy="per_user",
         )
         inst_id = result["integration"]["id"]

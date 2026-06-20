@@ -145,6 +145,9 @@ class WorkspacesResource(_BaseResource):
         integration_name: str,
         integration_alias: str | None = None,
         connection_strategy: str | None = None,
+        auth_method_key: str | None = None,
+        oauth_app_mode: str | None = None,
+        oauth_app_id: str | None = None,
         connection_id: str | None = None,
         display_name: str | None = None,
         enabled_actions: list[str] | None = None,
@@ -156,6 +159,12 @@ class WorkspacesResource(_BaseResource):
             body["alias"] = integration_alias
         if connection_strategy is not None:
             body["connectionStrategy"] = connection_strategy
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
+        if oauth_app_mode is not None:
+            body["oauthAppMode"] = oauth_app_mode
+        if oauth_app_id is not None:
+            body["oauthAppId"] = oauth_app_id
         if connection_id is not None:
             body["connectionId"] = connection_id
         if display_name is not None:
@@ -177,6 +186,9 @@ class WorkspacesResource(_BaseResource):
         *,
         integration_alias: str | None = None,
         connection_strategy: str | None = None,
+        auth_method_key: str | None = None,
+        oauth_app_mode: str | None = None,
+        oauth_app_id: str | None = None,
         connection_id: str | None = None,
         display_name: str | None = None,
         enabled_actions: list[str] | None = None,
@@ -188,6 +200,12 @@ class WorkspacesResource(_BaseResource):
             body["alias"] = integration_alias
         if connection_strategy is not None:
             body["connectionStrategy"] = connection_strategy
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
+        if oauth_app_mode is not None:
+            body["oauthAppMode"] = oauth_app_mode
+        if oauth_app_id is not None:
+            body["oauthAppId"] = oauth_app_id
         if connection_id is not None:
             body["connectionId"] = connection_id
         if display_name is not None:
@@ -241,6 +259,7 @@ class ConnectionsResource(_BaseResource):
         external_id: str,
         display_name: str,
         integration_name: str,
+        auth_method_key: str | None = None,
         workspace_id: str | None = None,
         end_user_id: str | None = None,
         scope: str | None = None,
@@ -264,6 +283,8 @@ class ConnectionsResource(_BaseResource):
         }
         if workspace_id is not None:
             body["workspaceId"] = workspace_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         if scope is not None:
@@ -300,6 +321,7 @@ class ConnectionsResource(_BaseResource):
         *,
         integration_name: str,
         workspace_id: str,
+        auth_method_key: str | None = None,
         external_id: str | None = None,
         end_user_id: str | None = None,
     ) -> dict[str, Any]:
@@ -309,6 +331,8 @@ class ConnectionsResource(_BaseResource):
         }
         if external_id is not None:
             body["externalId"] = external_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if end_user_id is not None:
             body["endUserId"] = end_user_id
         return self._post("/api/v1/connections/resolve", json=body)
@@ -324,8 +348,11 @@ class ConnectResource(_BaseResource):
         connection_name: str,
         external_id: str,
         workspace_id: str,
+        workspace_integration_id: str | None = None,
+        auth_method_key: str | None = None,
         end_user_id: str | None = None,
         scope: str | None = None,
+        oauth_app_mode: str | None = None,
         oauth_app_id: str | None = None,
         success_redirect_uri: str | None = None,
         error_redirect_uri: str | None = None,
@@ -338,8 +365,14 @@ class ConnectResource(_BaseResource):
         }
         if end_user_id is not None:
             body["endUserId"] = end_user_id
+        if workspace_integration_id is not None:
+            body["workspaceIntegrationId"] = workspace_integration_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if scope is not None:
             body["scope"] = scope
+        if oauth_app_mode is not None:
+            body["oauthAppMode"] = oauth_app_mode
         if oauth_app_id is not None:
             body["oauthAppId"] = oauth_app_id
         if success_redirect_uri is not None:
@@ -404,6 +437,7 @@ class ActionsResource(_BaseResource):
         workspace_id: str,
         input: dict[str, Any] | BaseModel | None = None,
         connection_external_id: str | None = None,
+        auth_method_key: str | None = None,
         workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         integration_alias: str | None = None,
@@ -418,6 +452,8 @@ class ActionsResource(_BaseResource):
         }
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if workspace_integration_id is not None:
             body["workspaceIntegrationId"] = workspace_integration_id
         if end_user_id is not None:
@@ -442,6 +478,7 @@ class ActionsResource(_BaseResource):
         workspace_id: str,
         input: dict[str, Any] | BaseModel | None = None,
         connection_external_id: str | None = None,
+        auth_method_key: str | None = None,
         workspace_integration_id: str | None = None,
         end_user_id: str | None = None,
         integration_alias: str | None = None,
@@ -456,6 +493,7 @@ class ActionsResource(_BaseResource):
             workspace_id=workspace_id,
             input=validated_input,
             connection_external_id=connection_external_id,
+            auth_method_key=auth_method_key,
             workspace_integration_id=workspace_integration_id,
             end_user_id=end_user_id,
             integration_alias=integration_alias,
@@ -602,6 +640,7 @@ class TriggersResource(_BaseResource):
         callback_headers: dict[str, str] | None = None,
         callback_metadata: dict[str, Any] | None = None,
         connection_external_id: str | None = None,
+        auth_method_key: str | None = None,
         workspace_integration_id: str | None = None,
         integration_alias: str | None = None,
         end_user_id: str | None = None,
@@ -622,6 +661,8 @@ class TriggersResource(_BaseResource):
             body["callbackMetadata"] = callback_metadata
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if workspace_integration_id is not None:
             body["workspaceIntegrationId"] = workspace_integration_id
         if integration_alias is not None:
@@ -944,6 +985,7 @@ class IntegrationsResource(_BaseResource):
         action_name: str | None = None,
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
+        auth_method_key: str | None = None,
         workspace_id: str | None = None,
         workspace_integration_id: str | None = None,
         integration_alias: str | None = None,
@@ -959,6 +1001,8 @@ class IntegrationsResource(_BaseResource):
             body["triggerName"] = trigger_name
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if workspace_id is not None:
             body["workspaceId"] = workspace_id
         if workspace_integration_id is not None:
@@ -985,6 +1029,7 @@ class IntegrationsResource(_BaseResource):
         action_name: str | None = None,
         trigger_name: str | None = None,
         connection_external_id: str | None = None,
+        auth_method_key: str | None = None,
         workspace_id: str | None = None,
         workspace_integration_id: str | None = None,
         integration_alias: str | None = None,
@@ -999,6 +1044,8 @@ class IntegrationsResource(_BaseResource):
             body["triggerName"] = trigger_name
         if connection_external_id is not None:
             body["connectionExternalId"] = connection_external_id
+        if auth_method_key is not None:
+            body["authMethodKey"] = auth_method_key
         if workspace_id is not None:
             body["workspaceId"] = workspace_id
         if workspace_integration_id is not None:
