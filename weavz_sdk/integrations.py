@@ -4693,6 +4693,126 @@ class AtlassianCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class StatuspageValidateConnectionInput(BaseModel):
+    """Atlassian Statuspage — Validate Connection"""
+    pass
+
+
+class StatuspageListPagesInput(BaseModel):
+    """Atlassian Statuspage — List Pages"""
+    pass
+
+
+class StatuspageGetPageInput(BaseModel):
+    """Atlassian Statuspage — Get Page"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageListComponentsInput(BaseModel):
+    """Atlassian Statuspage — List Components"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageGetComponentInput(BaseModel):
+    """Atlassian Statuspage — Get Component"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    componentId: str = Field(..., description="Component ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageCreateComponentInput(BaseModel):
+    """Atlassian Statuspage — Create Component"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    status: Optional[str] = Field(None, description="Status")
+    groupId: Optional[str] = Field(None, description="Group ID")
+    onlyShowIfDegraded: Optional[bool] = Field(None, description="Only Show If Degraded")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageUpdateComponentInput(BaseModel):
+    """Atlassian Statuspage — Update Component"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    componentId: str = Field(..., description="Component ID")
+    name: Optional[str] = Field(None, description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    status: Optional[str] = Field(None, description="Status")
+    groupId: Optional[str] = Field(None, description="Group ID")
+    onlyShowIfDegraded: Optional[bool] = Field(None, description="Only Show If Degraded")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageListIncidentsInput(BaseModel):
+    """Atlassian Statuspage — List Incidents"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    query: Optional[str] = Field(None, description="Query")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageGetIncidentInput(BaseModel):
+    """Atlassian Statuspage — Get Incident"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    incidentId: str = Field(..., description="Incident ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageCreateIncidentInput(BaseModel):
+    """Atlassian Statuspage — Create Incident"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    name: str = Field(..., description="Name")
+    status: str = Field(..., description="Status")
+    impactOverride: Optional[str] = Field(None, description="Impact Override")
+    body: Optional[str] = Field(None, description="Initial Update Body")
+    componentIds: Optional[Any] = Field(None, description="JSON array of affected component IDs.")
+    components: Optional[Any] = Field(None, description="JSON object mapping component ID to component status.")
+    deliverNotifications: Optional[bool] = Field(None, description="Send subscriber notifications for the new incident.")
+    scheduledFor: Optional[str] = Field(None, description="ISO 8601 start time for scheduled maintenance.")
+    scheduledUntil: Optional[str] = Field(None, description="ISO 8601 end time for scheduled maintenance.")
+    scheduledRemindPrior: Optional[bool] = Field(None, description="Scheduled Remind Prior")
+    scheduledAutoInProgress: Optional[bool] = Field(None, description="Scheduled Auto In Progress")
+    scheduledAutoCompleted: Optional[bool] = Field(None, description="Scheduled Auto Completed")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+    confirmCreate: bool = Field(..., description="Confirm Create Incident")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageUpdateIncidentInput(BaseModel):
+    """Atlassian Statuspage — Update Incident"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    incidentId: str = Field(..., description="Incident ID")
+    name: Optional[str] = Field(None, description="Name")
+    status: Optional[str] = Field(None, description="Status")
+    impactOverride: Optional[str] = Field(None, description="Impact Override")
+    body: Optional[str] = Field(None, description="Update Body")
+    componentIds: Optional[Any] = Field(None, description="JSON array of affected component IDs.")
+    components: Optional[Any] = Field(None, description="JSON object mapping component ID to component status.")
+    deliverNotifications: Optional[bool] = Field(None, description="Deliver Notifications")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatuspageListIncidentUpdatesInput(BaseModel):
+    """Atlassian Statuspage — List Incident Updates"""
+    pageId: str = Field(..., description="Statuspage page identifier from the Manage API page.")
+    incidentId: str = Field(..., description="Incident ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class AttentionValidateConnectionInput(BaseModel):
     """Attention — Validate Connection"""
     pass
@@ -5061,6 +5181,121 @@ class AvalaraResolveAddressInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AwsAppconfigListApplicationsInput(BaseModel):
+    """AWS AppConfig — List Applications"""
+    maxResults: Optional[float] = Field(None, description="1 to 50.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigGetApplicationInput(BaseModel):
+    """AWS AppConfig — Get Application"""
+    applicationId: str = Field(..., description="Application ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigListEnvironmentsInput(BaseModel):
+    """AWS AppConfig — List Environments"""
+    applicationId: str = Field(..., description="Application ID")
+    maxResults: Optional[float] = Field(None, description="1 to 50.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigListConfigurationProfilesInput(BaseModel):
+    """AWS AppConfig — List Configuration Profiles"""
+    applicationId: str = Field(..., description="Application ID")
+    maxResults: Optional[float] = Field(None, description="1 to 50.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigListHostedConfigurationVersionsInput(BaseModel):
+    """AWS AppConfig — List Hosted Configuration Versions"""
+    applicationId: str = Field(..., description="Application ID")
+    configurationProfileId: str = Field(..., description="Configuration Profile ID")
+    maxResults: Optional[float] = Field(None, description="1 to 50.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigGetHostedConfigurationVersionInput(BaseModel):
+    """AWS AppConfig — Get Hosted Configuration Version"""
+    applicationId: str = Field(..., description="Application ID")
+    configurationProfileId: str = Field(..., description="Configuration Profile ID")
+    versionNumber: float = Field(..., description="Version Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigListDeploymentsInput(BaseModel):
+    """AWS AppConfig — List Deployments"""
+    applicationId: str = Field(..., description="Application ID")
+    environmentId: str = Field(..., description="Environment ID")
+    maxResults: Optional[float] = Field(None, description="1 to 50.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigGetDeploymentInput(BaseModel):
+    """AWS AppConfig — Get Deployment"""
+    applicationId: str = Field(..., description="Application ID")
+    environmentId: str = Field(..., description="Environment ID")
+    deploymentNumber: float = Field(..., description="Deployment Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigStartDeploymentInput(BaseModel):
+    """AWS AppConfig — Start Deployment"""
+    applicationId: str = Field(..., description="Application ID")
+    environmentId: str = Field(..., description="Environment ID")
+    configurationProfileId: str = Field(..., description="Configuration Profile ID")
+    configurationVersion: str = Field(..., description="Configuration Version")
+    deploymentStrategyId: str = Field(..., description="Deployment Strategy ID")
+    description: Optional[str] = Field(None, description="Description")
+    kmsKeyIdentifier: Optional[str] = Field(None, description="KMS Key Identifier")
+    dynamicExtensionParameters: Optional[Any] = Field(None, description="Dynamic Extension Parameters JSON")
+    tags: Optional[Any] = Field(None, description="Tags JSON")
+    confirmation: str = Field(..., description="Type START_DEPLOYMENT to start the deployment.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigStopDeploymentInput(BaseModel):
+    """AWS AppConfig — Stop Deployment"""
+    applicationId: str = Field(..., description="Application ID")
+    environmentId: str = Field(..., description="Environment ID")
+    deploymentNumber: float = Field(..., description="Deployment Number")
+    allowRevert: Optional[bool] = Field(None, description="Allow Revert")
+    confirmation: str = Field(..., description="Type STOP_DEPLOYMENT to stop the deployment.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigStartConfigurationSessionInput(BaseModel):
+    """AWS AppConfig — Start Configuration Session"""
+    applicationIdentifier: str = Field(..., description="Application Identifier")
+    environmentIdentifier: str = Field(..., description="Environment Identifier")
+    configurationProfileIdentifier: str = Field(..., description="Configuration Profile Identifier")
+    requiredMinimumPollIntervalInSeconds: Optional[float] = Field(None, description="Minimum Poll Interval Seconds")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsAppconfigGetLatestConfigurationInput(BaseModel):
+    """AWS AppConfig — Get Latest Configuration"""
+    configurationToken: str = Field(..., description="Configuration Token")
+
+    model_config = {"populate_by_name": True}
+
+
 class AwsAthenaStartQueryExecutionInput(BaseModel):
     """AWS Athena — Start Query Execution"""
     queryString: str = Field(..., description="Query String")
@@ -5300,6 +5535,78 @@ class AwsCloudwatchFilterLogEventsInput(BaseModel):
     endTime: Optional[str] = Field(None, description="ISO timestamp or epoch milliseconds.")
     limit: Optional[float] = Field(None, description="1 to 100 events per call.")
     nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineListPipelinesInput(BaseModel):
+    """AWS CodePipeline — List Pipelines"""
+    maxResults: Optional[float] = Field(None, description="1 to 100.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineGetPipelineInput(BaseModel):
+    """AWS CodePipeline — Get Pipeline"""
+    name: str = Field(..., description="Pipeline Name")
+    version: Optional[float] = Field(None, description="Version")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineGetPipelineStateInput(BaseModel):
+    """AWS CodePipeline — Get Pipeline State"""
+    name: str = Field(..., description="Pipeline Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineListPipelineExecutionsInput(BaseModel):
+    """AWS CodePipeline — List Pipeline Executions"""
+    pipelineName: str = Field(..., description="Pipeline Name")
+    maxResults: Optional[float] = Field(None, description="1 to 100.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineGetPipelineExecutionInput(BaseModel):
+    """AWS CodePipeline — Get Pipeline Execution"""
+    pipelineName: str = Field(..., description="Pipeline Name")
+    pipelineExecutionId: str = Field(..., description="Pipeline Execution ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineListActionExecutionsInput(BaseModel):
+    """AWS CodePipeline — List Action Executions"""
+    pipelineName: str = Field(..., description="Pipeline Name")
+    pipelineExecutionId: Optional[str] = Field(None, description="Pipeline Execution ID")
+    maxResults: Optional[float] = Field(None, description="1 to 100.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineStartPipelineExecutionInput(BaseModel):
+    """AWS CodePipeline — Start Pipeline Execution"""
+    name: str = Field(..., description="Pipeline Name")
+    clientRequestToken: Optional[str] = Field(None, description="Client Request Token")
+    variables: Optional[Any] = Field(None, description="Optional array of pipeline variable objects.")
+    sourceRevisions: Optional[Any] = Field(None, description="Optional array of source revision override objects.")
+    confirmation: str = Field(..., description="Type START_PIPELINE_EXECUTION to start the pipeline.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCodepipelineStopPipelineExecutionInput(BaseModel):
+    """AWS CodePipeline — Stop Pipeline Execution"""
+    pipelineName: str = Field(..., description="Pipeline Name")
+    pipelineExecutionId: str = Field(..., description="Pipeline Execution ID")
+    abandon: Optional[bool] = Field(None, description="Abandon instead of stopping and waiting where supported.")
+    reason: Optional[str] = Field(None, description="Reason")
+    confirmation: str = Field(..., description="Type STOP_PIPELINE_EXECUTION to stop the execution.")
 
     model_config = {"populate_by_name": True}
 
@@ -6963,6 +7270,56 @@ class BigdataComCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class BiorxivMedrxivListPreprintsInput(BaseModel):
+    """bioRxiv/medRxiv — List Preprints"""
+    server: Optional[str] = Field(None, description="Server")
+    interval: str = Field(..., description="YYYY-MM-DD/YYYY-MM-DD, a recent article count such as 100, or a recent day count such as 7d.")
+    cursor: Optional[float] = Field(None, description="Numeric pagination cursor. The API returns up to 100 records per call.")
+    category: Optional[str] = Field(None, description="Optional subject category, using spaces or underscores.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BiorxivMedrxivGetPreprintByDoiInput(BaseModel):
+    """bioRxiv/medRxiv — Get Preprint by DOI"""
+    server: Optional[str] = Field(None, description="Server")
+    doi: str = Field(..., description="Example: 10.1101/2021.04.29.21256344.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BiorxivMedrxivListPublicationLinksInput(BaseModel):
+    """bioRxiv/medRxiv — List Publication Links"""
+    server: Optional[str] = Field(None, description="Server")
+    interval: str = Field(..., description="YYYY-MM-DD/YYYY-MM-DD, a recent article count such as 100, or a recent day count such as 7d.")
+    cursor: Optional[float] = Field(None, description="Numeric pagination cursor. The API returns up to 100 records per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BiorxivMedrxivGetPublicationByDoiInput(BaseModel):
+    """bioRxiv/medRxiv — Get Publication by DOI"""
+    server: Optional[str] = Field(None, description="Server")
+    doi: str = Field(..., description="DOI")
+
+    model_config = {"populate_by_name": True}
+
+
+class BiorxivMedrxivSummaryStatisticsInput(BaseModel):
+    """bioRxiv/medRxiv — Summary Statistics"""
+    interval: Optional[str] = Field(None, description="Interval")
+
+    model_config = {"populate_by_name": True}
+
+
+class BiorxivMedrxivUsageStatisticsInput(BaseModel):
+    """bioRxiv/medRxiv — Usage Statistics"""
+    server: Optional[str] = Field(None, description="Server")
+    interval: Optional[str] = Field(None, description="Interval")
+
+    model_config = {"populate_by_name": True}
+
+
 class MessagebirdSendSmsInput(BaseModel):
     """Bird — Send SMS"""
     recipient: str = Field(..., description="The phone number to send the message to (with country code)")
@@ -8173,6 +8530,31 @@ class BrexListSpendLimitsInput(BaseModel):
 class BrexGetSpendLimitInput(BaseModel):
     """Brex — Get Spend Limit"""
     id: str = Field(..., description="Spend Limit ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrightDataUnlockUrlInput(BaseModel):
+    """Bright Data — Unlock URL"""
+    zone: str = Field(..., description="Bright Data Web Unlocker API zone name.")
+    url: str = Field(..., description="Absolute http or https URL to fetch.")
+    responseFormat: Optional[str] = Field(None, description="Response Format")
+    dataFormat: Optional[str] = Field(None, description="Optional Bright Data transformation. Leave unset unless markdown or screenshot output is needed.")
+    country: Optional[str] = Field(None, description="Optional two-letter country code such as us, gb, or de.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrightDataGoogleSearchInput(BaseModel):
+    """Bright Data — Google SERP Search"""
+    zone: str = Field(..., description="Bright Data SERP API zone name.")
+    query: str = Field(..., description="Query")
+    country: Optional[str] = Field(None, description="Two-letter country code for Google localization and proxy location.")
+    language: Optional[str] = Field(None, description="Two-letter Google language code.")
+    resultLimit: Optional[float] = Field(None, description="Google num parameter, capped at 100.")
+    start: Optional[float] = Field(None, description="Zero-based result offset.")
+    searchType: Optional[str] = Field(None, description="Search Type")
+    responseFormat: Optional[str] = Field(None, description="Response Format")
 
     model_config = {"populate_by_name": True}
 
@@ -11682,31 +12064,85 @@ class ConnectwiseCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class ConstantContactCreateOrUpdateContactInput(BaseModel):
-    """Constant Contact — Create or Update Contact"""
-    list_: list[str] = Field(..., alias="list", description="The list of the contact")
-    email_address: str = Field(..., description="The email of the contact")
-    first_name: Optional[str] = Field(None, description="The first name of the contact")
-    last_name: Optional[str] = Field(None, description="The last name of the contact")
-    job_title: Optional[str] = Field(None, description="The job title of the contact")
-    company_name: Optional[str] = Field(None, description="The company name of the contact")
-    phoner_number: Optional[str] = Field(None, description="The phone number of the contact")
+class ConstantContactListContactsInput(BaseModel):
+    """Constant Contact — List Contacts"""
+    email: Optional[str] = Field(None, description="Email")
+    status: Optional[str] = Field(None, description="For example active, deleted, not_set, pending_confirmation, temp_hold, or unsubscribed.")
+    listId: Optional[str] = Field(None, description="List ID")
+    updatedAfter: Optional[str] = Field(None, description="ISO-8601 timestamp.")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
 
     model_config = {"populate_by_name": True}
 
 
-class ConstantContactCustomApiCallInput(BaseModel):
-    """Constant Contact — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class ConstantContactCreateContactInput(BaseModel):
+    """Constant Contact — Create Contact"""
+    email: str = Field(..., description="Email")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    listIds: Optional[str] = Field(None, description="Comma-separated list IDs.")
+    customFields: Optional[Any] = Field(None, description="Optional array of { custom_field_id, value } objects.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactUpdateContactInput(BaseModel):
+    """Constant Contact — Update Contact"""
+    contactId: str = Field(..., description="Contact ID")
+    email: Optional[str] = Field(None, description="Email")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    listIds: Optional[str] = Field(None, description="Comma-separated replacement list memberships.")
+    customFields: Optional[Any] = Field(None, description="Optional array of { custom_field_id, value } objects.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactDeleteContactInput(BaseModel):
+    """Constant Contact — Delete Contact"""
+    contactId: str = Field(..., description="Contact ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactListContactListsInput(BaseModel):
+    """Constant Contact — List Contact Lists"""
+    limit: Optional[float] = Field(None, description="Limit")
+    includeMembershipCount: Optional[bool] = Field(None, description="Include Membership Count")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactListEmailCampaignsInput(BaseModel):
+    """Constant Contact — List Email Campaigns"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    updatedAfter: Optional[str] = Field(None, description="ISO-8601 timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactGetEmailCampaignInput(BaseModel):
+    """Constant Contact — Get Email Campaign"""
+    campaignId: str = Field(..., description="Campaign ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactTestSendCampaignActivityInput(BaseModel):
+    """Constant Contact — Test Send Campaign Activity"""
+    campaignActivityId: str = Field(..., description="Campaign Activity ID")
+    emailAddresses: str = Field(..., description="Comma-separated recipient emails, maximum five.")
+    personalMessage: Optional[str] = Field(None, description="Personal Message")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConstantContactGetEmailCampaignStatsInput(BaseModel):
+    """Constant Contact — Get Email Campaign Stats"""
+    campaignIds: str = Field(..., description="Comma-separated campaign IDs.")
 
     model_config = {"populate_by_name": True}
 
@@ -11812,318 +12248,6 @@ class ContextDevScreenshotInput(BaseModel):
     maxAgeMs: Optional[float] = Field(None, description="Max Cache Age Ms")
     waitForMs: Optional[float] = Field(None, description="Wait For Ms")
     timeoutMs: Optional[float] = Field(None, description="Timeout Ms")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersGetSubscriberByIdInput(BaseModel):
-    """ConvertKit — Get Subscriber By Id"""
-    subscriberId: str = Field(..., description="The subscriber ID")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersGetSubscriberByEmailInput(BaseModel):
-    """ConvertKit — Get Subscriber By Email"""
-    email_address: str = Field(..., description="The email of the subscriber")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersListSubscribersInput(BaseModel):
-    """ConvertKit — List Subscribers"""
-    page: Optional[float] = Field(None, description="Page number. Each page of results will contain up to 50 subscribers.")
-    sortOrder: str = Field(..., description="Sort order")
-    sortField: Optional[str] = Field(None, description="Sort field")
-    from_: Optional[str] = Field(None, alias="from", description="Return subscribers created after this date")
-    to: Optional[str] = Field(None, description="Return subscribers created before this date")
-    updatedFrom: Optional[str] = Field(None, description="Return subscribers updated after this date")
-    updatedTo: Optional[str] = Field(None, description="Return subscribers updated before this date")
-    emailAddress: str = Field(..., description="The email of the subscriber")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersUpdateSubscriberInput(BaseModel):
-    """ConvertKit — Update Subscriber"""
-    subscriberId: str = Field(..., description="The subscriber ID")
-    emailAddress: Optional[str] = Field(None, description="The email of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    fields: Optional[dict[str, Any]] = Field(None, description="The custom fields")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersUnsubscribeSubscriberInput(BaseModel):
-    """ConvertKit — Unsubscribe Subscriber"""
-    email: str = Field(..., description="The email of the subscriber")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersListTagsByEmailInput(BaseModel):
-    """ConvertKit — List Tags By Email"""
-    email_address: str = Field(..., description="The email of the subscriber")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSubscribersListTagsBySubscriberIdInput(BaseModel):
-    """ConvertKit — List Tags By Subscriber Id"""
-    subscriberId: str = Field(..., description="The subscriber ID")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitCreateWebhookInput(BaseModel):
-    """ConvertKit — Add Webhook"""
-    targetUrl: str = Field(..., description="The URL that will be called when the webhook is triggered")
-    event: str = Field(..., description="The event that will trigger the webhook")
-    eventParameter: Optional[dict[str, Any]] = Field(None, description="The required parameter for the event")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitDestroyWebhookInput(BaseModel):
-    """ConvertKit — Delete Webhook"""
-    webhookId: float = Field(..., description="The webhook rule id")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitCustomFieldsListFieldsInput(BaseModel):
-    """ConvertKit — List Custom Fields"""
-    pass
-
-
-class ConvertkitCustomFieldsCreateFieldInput(BaseModel):
-    """ConvertKit — Create Custom Field"""
-    fields: list[Any] = Field(..., description="The custom fields")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitCustomFieldsUpdateFieldInput(BaseModel):
-    """ConvertKit — Custom Fields: Update Field"""
-    label: str = Field(..., description="Custom Label")
-    new_label: str = Field(..., description="The new label for the custom field")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitCustomFieldsDeleteFieldInput(BaseModel):
-    """ConvertKit — Custom Fields: Delete Field"""
-    label: str = Field(..., description="Custom Label")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsListBroadcastsInput(BaseModel):
-    """ConvertKit — List Broadcasts"""
-    page: Optional[float] = Field(None, description="Page number. Each page of results will contain up to 50 broadcasts.")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsCreateBroadcastInput(BaseModel):
-    """ConvertKit — Create Broadcast"""
-    content: Optional[str] = Field(None, description="The broadcast's email content - this can contain text and simple HTML markdown (such as h1, img or p tags)")
-    description: Optional[str] = Field(None, description="An internal description of this broadcast")
-    emailAddress: Optional[str] = Field(None, description="Sending email address; leave blank to use your account's default sending email address")
-    emailLayoutTemplate: Optional[str] = Field(None, description="Name of the email template to use; leave blank to use your account's default email template")
-    isPublic: Optional[bool] = Field(None, description="Specifies whether or not this is a public post")
-    publishedAt: Optional[str] = Field(None, description="Specifies the time that this post was published (applicable only to public posts)")
-    sendAt: Optional[str] = Field(None, description="Time that this broadcast should be sent; leave blank to create a draft broadcast. If set to a future time, this is the time that the broadcast will be scheduled to send.")
-    subject: Optional[str] = Field(None, description="The broadcast email's subject")
-    thumbnailAlt: Optional[str] = Field(None, description="Specify the ALT attribute of the public thumbnail image (applicable only to public posts)")
-    thumbnailUrl: Optional[str] = Field(None, description="Specify the URL of the thumbnail image to accompany the broadcast post (applicable only to public posts)")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsGetBroadcastInput(BaseModel):
-    """ConvertKit — Get Broadcast"""
-    broadcastId: str = Field(..., description="The broadcast id")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsUpdateBroadcastInput(BaseModel):
-    """ConvertKit — Update Broadcast"""
-    broadcastId: str = Field(..., description="The broadcast id")
-    content: Optional[str] = Field(None, description="The broadcast's email content - this can contain text and simple HTML markdown (such as h1, img or p tags)")
-    description: Optional[str] = Field(None, description="An internal description of this broadcast")
-    emailAddress: Optional[str] = Field(None, description="Sending email address; leave blank to use your account's default sending email address")
-    emailLayoutTemplate: Optional[str] = Field(None, description="Name of the email template to use; leave blank to use your account's default email template")
-    isPublic: Optional[bool] = Field(None, description="Specifies whether or not this is a public post")
-    publishedAt: Optional[str] = Field(None, description="Specifies the time that this post was published (applicable only to public posts)")
-    sendAt: Optional[str] = Field(None, description="Time that this broadcast should be sent; leave blank to create a draft broadcast. If set to a future time, this is the time that the broadcast will be scheduled to send.")
-    subject: Optional[str] = Field(None, description="The broadcast email's subject")
-    thumbnailAlt: Optional[str] = Field(None, description="Specify the ALT attribute of the public thumbnail image (applicable only to public posts)")
-    thumbnailUrl: Optional[str] = Field(None, description="Specify the URL of the thumbnail image to accompany the broadcast post (applicable only to public posts)")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsDeleteBroadcastInput(BaseModel):
-    """ConvertKit — Delete Broadcast"""
-    broadcastId: str = Field(..., description="The broadcast id")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitBroadcastsBroadcastStatsInput(BaseModel):
-    """ConvertKit — Broadcast Stats"""
-    broadcastId: str = Field(..., description="The broadcast id")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitFormsListFormsInput(BaseModel):
-    """ConvertKit — List Forms"""
-    pass
-
-
-class ConvertkitFormsAddSubscriberToFormInput(BaseModel):
-    """ConvertKit — Add Subscriber To Form"""
-    formId: str = Field(..., description="Form")
-    email: str = Field(..., description="The email of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    tags: Optional[list[str]] = Field(None, description="Choose the Tags")
-    fields: Optional[dict[str, Any]] = Field(None, description="The custom fields")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitFormsListFormSubscriptionsInput(BaseModel):
-    """ConvertKit — List Form Subscriptions"""
-    formId: str = Field(..., description="Form")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSequencesListSequencesInput(BaseModel):
-    """ConvertKit — List Sequences"""
-    pass
-
-
-class ConvertkitSequencesAddSubscriberToSequenceInput(BaseModel):
-    """ConvertKit — Add Subscriber To Sequence"""
-    sequenceId: str = Field(..., description="Sequence")
-    email: str = Field(..., description="The email of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    tags: Optional[list[str]] = Field(None, description="Choose the Tags")
-    fields: Optional[dict[str, Any]] = Field(None, description="The custom fields")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitSequencesListSubscriptionsToSequenceInput(BaseModel):
-    """ConvertKit — List Subscriptions To Sequence"""
-    sequenceId: str = Field(..., description="Sequence")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitTagsListTagsInput(BaseModel):
-    """ConvertKit — List Tags"""
-    pass
-
-
-class ConvertkitTagsCreateTagInput(BaseModel):
-    """ConvertKit — Create Tag"""
-    name: str = Field(..., description="The name of the tag")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitTagsTagSubscriberInput(BaseModel):
-    """ConvertKit — Tag Subscriber"""
-    email: str = Field(..., description="The email of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    tags: list[str] = Field(..., description="Choose the Tags")
-    fields: Optional[dict[str, Any]] = Field(None, description="The custom fields")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitTagsRemoveTagFromSubscriberByEmailInput(BaseModel):
-    """ConvertKit — Remove Tag From Subscriber By Email"""
-    email: str = Field(..., description="The email of the subscriber")
-    tagId: str = Field(..., description="The tag to remove")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitTagsRemoveTagFromSubscriberByIdInput(BaseModel):
-    """ConvertKit — Remove Tag From Subscriber By Id"""
-    subscriberId: str = Field(..., description="The subscriber ID")
-    tagId: str = Field(..., description="The tag to remove")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitTagsListSubscriptionsToTagInput(BaseModel):
-    """ConvertKit — List Subscriptions To Tag"""
-    tagId: str = Field(..., description="Choose a Tag")
-    page: Optional[float] = Field(None, description="Each page of results will contain up to 50 tags.")
-    sortOrder: Optional[str] = Field(None, description="Sort order")
-    subscriberState: Optional[str] = Field(None, description="Subscriber state")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitPurchasesListPurchasesInput(BaseModel):
-    """ConvertKit — List Purchases"""
-    page: float = Field(..., description="Page number. Each page of results will contain up to 50 purchases.")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitPurchasesGetPurchaseByIdInput(BaseModel):
-    """ConvertKit — Get Purchase By Id"""
-    purchaseId: str = Field(..., description="The purchase ID")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitPurchasesCreatePurchaseInput(BaseModel):
-    """ConvertKit — Create Purchase"""
-    transactionId: float = Field(..., description="The transaction ID")
-    transactionTime: Optional[str] = Field(None, description="The transaction time")
-    emailAddress: str = Field(..., description="The email address of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    status: Optional[str] = Field(None, description="The status of the purchase")
-    currency: str = Field(..., description="The currency of the purchase")
-    subtotal: Optional[float] = Field(None, description="The subtotal")
-    shipping: Optional[float] = Field(None, description="The shipping")
-    discount: Optional[float] = Field(None, description="The discount")
-    tax: Optional[float] = Field(None, description="The tax")
-    total: Optional[float] = Field(None, description="The total")
-    pid: float = Field(..., description="The product ID")
-    lid: float = Field(..., description="The line item ID")
-    name: str = Field(..., description="The name of the product")
-    sku: Optional[str] = Field(None, description="The SKU of the product")
-    unit_price: float = Field(..., description="The unit price of the product")
-    quantity: float = Field(..., description="The quantity of the product")
-
-    model_config = {"populate_by_name": True}
-
-
-class ConvertkitPurchasesCreateMultiplePurchasesInput(BaseModel):
-    """ConvertKit — Create Multiple Purchases"""
-    transactionId: float = Field(..., description="The transaction ID")
-    transactionTime: Optional[str] = Field(None, description="The transaction time")
-    emailAddress: str = Field(..., description="The email address of the subscriber")
-    firstName: Optional[str] = Field(None, description="The first name of the subscriber")
-    status: Optional[str] = Field(None, description="The status of the purchase")
-    currency: str = Field(..., description="The currency of the purchase")
-    subtotal: Optional[float] = Field(None, description="The subtotal")
-    shipping: Optional[float] = Field(None, description="The shipping")
-    discount: Optional[float] = Field(None, description="The discount")
-    tax: Optional[float] = Field(None, description="The tax")
-    total: Optional[float] = Field(None, description="The total")
-    multipleProducts: Any = Field(..., description="The products")
 
     model_config = {"populate_by_name": True}
 
@@ -12899,6 +13023,30 @@ class CustomerIoTrackEventInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CustomerIoListPeopleInput(BaseModel):
+    """Customer.io — List People"""
+    email: Optional[str] = Field(None, description="Email")
+    limit: Optional[float] = Field(None, description="Limit")
+    start: Optional[str] = Field(None, description="Start Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CustomerIoGetPersonInput(BaseModel):
+    """Customer.io — Get Person"""
+    identifier: str = Field(..., description="Customer ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CustomerIoDeletePersonInput(BaseModel):
+    """Customer.io — Delete Person"""
+    identifier: str = Field(..., description="Customer ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
 class CustomerIoListSegmentsInput(BaseModel):
     """Customer.io — List Segments"""
     pass
@@ -12907,6 +13055,19 @@ class CustomerIoListSegmentsInput(BaseModel):
 class CustomerIoListCampaignsInput(BaseModel):
     """Customer.io — List Campaigns"""
     limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class CustomerIoSendTransactionalEmailInput(BaseModel):
+    """Customer.io — Send Transactional Email"""
+    transactionalMessageId: str = Field(..., description="Transactional Message ID")
+    to: str = Field(..., description="To Email")
+    identifiers: Optional[Any] = Field(None, description="Optional identifiers object such as { \"id\": \"customer_123\" }.")
+    messageData: Optional[Any] = Field(None, description="Template variables for this message.")
+    subject: Optional[str] = Field(None, description="Subject Override")
+    from_: Optional[str] = Field(None, alias="from", description="From Override")
+    replyTo: Optional[str] = Field(None, description="Reply-To Override")
 
     model_config = {"populate_by_name": True}
 
@@ -13322,6 +13483,38 @@ class DataforseoGoogleMapsLiveAdvancedInput(BaseModel):
     device: Optional[str] = Field(None, description="Device")
     os: Optional[str] = Field(None, description="Operating System")
     depth: Optional[float] = Field(None, description="Number of SERP results to return, capped at 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoGoogleSearchVolumeLiveInput(BaseModel):
+    """DataForSEO — Google Ads Search Volume Live"""
+    keywords: str = Field(..., description="Comma- or newline-separated keywords. This action sends at most 50 keywords.")
+    locationCode: Optional[float] = Field(None, description="Optional Google location code. Use this or Location Name.")
+    locationName: Optional[str] = Field(None, description="Optional full location name if no location code is provided.")
+    languageCode: Optional[str] = Field(None, description="Language Code")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoGoogleKeywordIdeasLiveInput(BaseModel):
+    """DataForSEO — Google Keyword Ideas Live"""
+    keywords: str = Field(..., description="Comma- or newline-separated seed keywords. DataForSEO accepts up to 20.")
+    locationCode: Optional[float] = Field(None, description="Optional Google location code. Use this or Location Name.")
+    locationName: Optional[str] = Field(None, description="Optional full location name if no location code is provided.")
+    languageCode: Optional[str] = Field(None, description="Language Code")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoBacklinksSummaryLiveInput(BaseModel):
+    """DataForSEO — Backlinks Summary Live"""
+    target: str = Field(..., description="Domain/subdomain without protocol, or an absolute page URL.")
+    includeSubdomains: Optional[bool] = Field(None, description="Include Subdomains")
+    includeIndirectLinks: Optional[bool] = Field(None, description="Include Indirect Links")
+    excludeInternalBacklinks: Optional[bool] = Field(None, description="Exclude Internal Backlinks")
+    backlinksStatusType: Optional[str] = Field(None, description="Backlinks Status Type")
+    internalListLimit: Optional[float] = Field(None, description="Maximum elements inside summary breakdown arrays, capped at 100.")
 
     model_config = {"populate_by_name": True}
 
@@ -14053,15 +14246,25 @@ class DevrevCreateWorkInput(BaseModel):
 
 class DialpadListCallsInput(BaseModel):
     """Dialpad — List Calls"""
-    date_range_start: Optional[str] = Field(None, description="ISO 8601 start date")
-    date_range_end: Optional[str] = Field(None, description="ISO 8601 end date")
-    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Pagination cursor.")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+    dateStartedAfter: Optional[str] = Field(None, description="Optional ISO date-time lower bound.")
+    dateStartedBefore: Optional[str] = Field(None, description="Optional ISO date-time upper bound.")
+    includeSensitiveCallFields: Optional[bool] = Field(None, description="Return recording URLs and transcript text if Dialpad includes them.")
 
     model_config = {"populate_by_name": True}
 
 
 class DialpadGetCallInput(BaseModel):
     """Dialpad — Get Call"""
+    callId: str = Field(..., description="Call ID")
+    includeSensitiveCallFields: Optional[bool] = Field(None, description="Return recording URLs and transcript text if present.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DialpadGetCallTranscriptInput(BaseModel):
+    """Dialpad — Get Call Transcript"""
     callId: str = Field(..., description="Call ID")
 
     model_config = {"populate_by_name": True}
@@ -14070,16 +14273,29 @@ class DialpadGetCallInput(BaseModel):
 class DialpadListContactsInput(BaseModel):
     """Dialpad — List Contacts"""
     limit: Optional[float] = Field(None, description="Limit")
-    cursor: Optional[str] = Field(None, description="Pagination cursor")
+    cursor: Optional[str] = Field(None, description="Pagination cursor.")
+    ownerId: Optional[str] = Field(None, description="Optional owner/user ID for local contacts.")
 
     model_config = {"populate_by_name": True}
 
 
 class DialpadSendSmsInput(BaseModel):
     """Dialpad — Send SMS"""
-    to_number: str = Field(..., description="Recipient phone number")
-    text: str = Field(..., description="SMS message text")
-    from_number: Optional[str] = Field(None, description="Sender phone number (optional)")
+    to_number: str = Field(..., description="Recipient phone number.")
+    text: str = Field(..., description="SMS message text.")
+    from_number: Optional[str] = Field(None, description="Sender phone number.")
+    user_id: Optional[str] = Field(None, description="Optional Dialpad user ID to send as.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DialpadListUsersInput(BaseModel):
+    """Dialpad — List Users"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+    email: Optional[str] = Field(None, description="Filter by email.")
+    number: Optional[str] = Field(None, description="Filter by phone number.")
+    state: Optional[str] = Field(None, description="State")
 
     model_config = {"populate_by_name": True}
 
@@ -14091,12 +14307,9 @@ class DialpadGetUserInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class DialpadCustomApiCallInput(BaseModel):
-    """Dialpad — Custom API Call"""
-    method: str = Field(..., description="Method")
-    path: str = Field(..., description="Path")
-    body: Optional[Any] = Field(None, description="Body")
-    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
+class DialpadListWebhooksInput(BaseModel):
+    """Dialpad — List Webhooks"""
+    cursor: Optional[str] = Field(None, description="Cursor")
 
     model_config = {"populate_by_name": True}
 
@@ -15374,7 +15587,7 @@ class DropboxSignListSignatureRequestsInput(BaseModel):
     """Dropbox Sign — List Signature Requests"""
     page: Optional[float] = Field(None, description="Page")
     pageSize: Optional[float] = Field(None, description="Page Size")
-    query: Optional[str] = Field(None, description="Search by title or signer email")
+    query: Optional[str] = Field(None, description="Search by title or signer email.")
 
     model_config = {"populate_by_name": True}
 
@@ -15389,12 +15602,35 @@ class DropboxSignGetSignatureRequestInput(BaseModel):
 class DropboxSignSendSignatureRequestInput(BaseModel):
     """Dropbox Sign — Send Signature Request"""
     title: str = Field(..., description="Title")
-    subject: Optional[str] = Field(None, description="Email subject line")
-    message: Optional[str] = Field(None, description="Message for signers")
+    subject: Optional[str] = Field(None, description="Email subject line.")
+    message: Optional[str] = Field(None, description="Message for signers.")
     signerEmail: str = Field(..., description="Signer Email")
     signerName: str = Field(..., description="Signer Name")
-    fileUrl: str = Field(..., description="URL of the document to sign")
-    testMode: Optional[bool] = Field(None, description="Send in test mode (no charges)")
+    fileUrl: str = Field(..., description="Public URL of the document to sign.")
+    testMode: Optional[bool] = Field(None, description="Send in test mode.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignSendWithTemplateInput(BaseModel):
+    """Dropbox Sign — Send With Template"""
+    templateIds: Any = Field(..., description="Array of template IDs.")
+    signers: Any = Field(..., description="Array of signer objects accepted by Dropbox Sign.")
+    title: Optional[str] = Field(None, description="Title")
+    subject: Optional[str] = Field(None, description="Subject")
+    message: Optional[str] = Field(None, description="Message")
+    ccs: Optional[Any] = Field(None, description="CCs")
+    customFields: Optional[Any] = Field(None, description="Custom Fields")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+    testMode: Optional[bool] = Field(None, description="Test Mode")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignUpdateSignatureRequestInput(BaseModel):
+    """Dropbox Sign — Update Signature Request"""
+    signatureRequestId: str = Field(..., description="Signature Request ID")
+    signers: Any = Field(..., description="Array of signer update objects accepted by Dropbox Sign.")
 
     model_config = {"populate_by_name": True}
 
@@ -15402,6 +15638,56 @@ class DropboxSignSendSignatureRequestInput(BaseModel):
 class DropboxSignCancelSignatureRequestInput(BaseModel):
     """Dropbox Sign — Cancel Signature Request"""
     signatureRequestId: str = Field(..., description="Signature Request ID")
+    confirmCancel: bool = Field(..., description="Confirm Cancel")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignDownloadFilesInput(BaseModel):
+    """Dropbox Sign — Download Files"""
+    signatureRequestId: str = Field(..., description="Signature Request ID")
+    fileType: Optional[str] = Field(None, description="File Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignListTemplatesInput(BaseModel):
+    """Dropbox Sign — List Templates"""
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    accountId: Optional[str] = Field(None, description="Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignGetTemplateInput(BaseModel):
+    """Dropbox Sign — Get Template"""
+    templateId: str = Field(..., description="Template ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignSetAccountCallbackInput(BaseModel):
+    """Dropbox Sign — Set Account Callback"""
+    callbackUrl: str = Field(..., description="Callback URL")
+    confirmUpdate: bool = Field(..., description="Confirm Update")
+
+    model_config = {"populate_by_name": True}
+
+
+class DropboxSignCustomApiCallInput(BaseModel):
+    """Dropbox Sign — Custom API Call"""
+    url: str = Field(..., description="Relative path such as /signature_request/list, /v3/signature_request/list, or a https://api.hellosign.com/v3/... URL.")
+    method: str = Field(..., description="Method")
+    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
+    body_type: Optional[str] = Field(None, description="Body Type")
+    body: Optional[Any] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for PDF or ZIP responses.")
+    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
+    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
+    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    confirmDelete: Optional[bool] = Field(None, description="Required when the custom request method is DELETE.")
 
     model_config = {"populate_by_name": True}
 
@@ -17420,6 +17706,146 @@ class FirefliesGetActiveMeetingsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class FirehydrantValidateConnectionInput(BaseModel):
+    """FireHydrant — Validate Connection"""
+    pass
+
+
+class FirehydrantListIncidentsInput(BaseModel):
+    """FireHydrant — List Incidents"""
+    query: Optional[str] = Field(None, description="Query")
+    statuses: Optional[str] = Field(None, description="Comma-separated status or milestone filter accepted by FireHydrant.")
+    milestones: Optional[str] = Field(None, description="Comma-separated milestone slugs.")
+    severity: Optional[str] = Field(None, description="Severity")
+    priority: Optional[str] = Field(None, description="Priority")
+    tag: Optional[str] = Field(None, description="Tag")
+    createdAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    updatedAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantGetIncidentInput(BaseModel):
+    """FireHydrant — Get Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantCreateIncidentInput(BaseModel):
+    """FireHydrant — Create Incident"""
+    name: str = Field(..., description="Name")
+    summary: Optional[str] = Field(None, description="Summary")
+    description: Optional[str] = Field(None, description="Description")
+    customerImpactSummary: Optional[str] = Field(None, description="Customer Impact Summary")
+    priority: Optional[str] = Field(None, description="Priority")
+    severity: Optional[str] = Field(None, description="Severity")
+    severityConditionId: Optional[str] = Field(None, description="Severity Condition ID")
+    severityImpactId: Optional[str] = Field(None, description="Severity Impact ID")
+    restricted: Optional[bool] = Field(None, description="Create a restricted incident if supported by the account.")
+    tagList: Optional[Any] = Field(None, description="JSON array of incident tags.")
+    teamIds: Optional[Any] = Field(None, description="JSON array of team IDs to assign.")
+    runbookIds: Optional[Any] = Field(None, description="JSON array of runbook IDs to attach.")
+    alertIds: Optional[Any] = Field(None, description="JSON array of alert IDs to associate.")
+    labels: Optional[Any] = Field(None, description="JSON object of key/value labels.")
+    impacts: Optional[Any] = Field(None, description="JSON array of impacted infrastructure objects.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantUpdateIncidentInput(BaseModel):
+    """FireHydrant — Update Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    name: Optional[str] = Field(None, description="Name")
+    summary: Optional[str] = Field(None, description="Summary")
+    description: Optional[str] = Field(None, description="Description")
+    customerImpactSummary: Optional[str] = Field(None, description="Customer Impact Summary")
+    priority: Optional[str] = Field(None, description="Priority")
+    severity: Optional[str] = Field(None, description="Severity")
+    tagList: Optional[Any] = Field(None, description="JSON array replacing incident tags when supplied.")
+    labels: Optional[Any] = Field(None, description="JSON object replacing labels when supplied.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantResolveIncidentInput(BaseModel):
+    """FireHydrant — Resolve Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    confirmIncidentId: str = Field(..., description="Must exactly match Incident ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantCloseIncidentInput(BaseModel):
+    """FireHydrant — Close Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    confirmIncidentId: str = Field(..., description="Must exactly match Incident ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantAddIncidentNoteInput(BaseModel):
+    """FireHydrant — Add Incident Note"""
+    incidentId: str = Field(..., description="Incident ID")
+    body: str = Field(..., description="Note Body")
+    visibility: Optional[str] = Field(None, description="Visibility")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListIncidentEventsInput(BaseModel):
+    """FireHydrant — List Incident Events"""
+    incidentId: str = Field(..., description="Incident ID")
+    type_: Optional[str] = Field(None, alias="type", description="Event Type")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListServicesInput(BaseModel):
+    """FireHydrant — Services"""
+    query: Optional[str] = Field(None, description="Query")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListIncidentTypesInput(BaseModel):
+    """FireHydrant — Incident Types"""
+    query: Optional[str] = Field(None, description="Query")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListIncidentRolesInput(BaseModel):
+    """FireHydrant — Incident Roles"""
+    query: Optional[str] = Field(None, description="Query")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListTeamsInput(BaseModel):
+    """FireHydrant — Teams"""
+    query: Optional[str] = Field(None, description="Query")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FirehydrantListSeverityMatrixInput(BaseModel):
+    """FireHydrant — List Severity Matrix"""
+    pass
+
+
 class FireworksAiChatCompletionInput(BaseModel):
     """Fireworks AI — Chat Completion"""
     model: str = Field(..., description="Fireworks model name, for example accounts/fireworks/models/llama-v3p1-70b-instruct.")
@@ -17808,7 +18234,15 @@ class FleetioCustomApiCallInput(BaseModel):
 
 class FlyIoListAppsInput(BaseModel):
     """Fly.io — List Apps"""
-    orgSlug: str = Field(..., description="The organization slug to filter apps")
+    orgSlug: str = Field(..., description="Organization Slug")
+    appRole: Optional[str] = Field(None, description="App Role")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoGetAppInput(BaseModel):
+    """Fly.io — Get App"""
+    appName: str = Field(..., description="App Name")
 
     model_config = {"populate_by_name": True}
 
@@ -17816,6 +18250,10 @@ class FlyIoListAppsInput(BaseModel):
 class FlyIoListMachinesInput(BaseModel):
     """Fly.io — List Machines"""
     appName: str = Field(..., description="App Name")
+    includeDeleted: Optional[bool] = Field(None, description="Include Deleted")
+    region: Optional[str] = Field(None, description="Region")
+    state: Optional[str] = Field(None, description="State")
+    summary: Optional[bool] = Field(None, description="Summary")
 
     model_config = {"populate_by_name": True}
 
@@ -17831,12 +18269,103 @@ class FlyIoGetMachineInput(BaseModel):
 class FlyIoCreateMachineInput(BaseModel):
     """Fly.io — Create Machine"""
     appName: str = Field(..., description="App Name")
-    name: Optional[str] = Field(None, description="Optional name for the machine")
-    region: Optional[str] = Field(None, description="Region to deploy in (e.g., iad, sjc, lhr)")
-    image: str = Field(..., description="Container image URI to deploy")
-    cpus: Optional[float] = Field(None, description="Number of CPUs")
-    memoryMb: Optional[float] = Field(None, description="Memory in megabytes")
-    skipLaunch: Optional[bool] = Field(None, description="Create the machine without starting it")
+    name: Optional[str] = Field(None, description="Machine Name")
+    region: Optional[str] = Field(None, description="Fly region such as iad, sjc, or lhr.")
+    image: Optional[str] = Field(None, description="Container image URI. Used when Config JSON is omitted.")
+    configJson: Optional[Any] = Field(None, description="Optional official Fly Machine config object.")
+    cpus: Optional[float] = Field(None, description="CPUs")
+    memoryMb: Optional[float] = Field(None, description="Memory MB")
+    env: Optional[Any] = Field(None, description="Optional environment map merged into config.env.")
+    skipLaunch: Optional[bool] = Field(None, description="Skip Launch")
+    confirmation: str = Field(..., description="Type CREATE_MACHINE to create the machine.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoStartMachineInput(BaseModel):
+    """Fly.io — Start Machine"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    confirmation: str = Field(..., description="Type START_MACHINE to start the machine.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoStopMachineInput(BaseModel):
+    """Fly.io — Stop Machine"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    signal: Optional[str] = Field(None, description="Signal")
+    timeout: Optional[str] = Field(None, description="Examples: 1s, 30s.")
+    confirmation: str = Field(..., description="Type STOP_MACHINE to stop the machine.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoRestartMachineInput(BaseModel):
+    """Fly.io — Restart Machine"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    signal: Optional[str] = Field(None, description="Signal")
+    timeout: Optional[str] = Field(None, description="Timeout Seconds")
+    confirmation: str = Field(..., description="Type RESTART_MACHINE to restart the machine.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoDeleteMachineInput(BaseModel):
+    """Fly.io — Delete Machine"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    force: Optional[bool] = Field(None, description="Force")
+    confirmation: str = Field(..., description="Type DELETE_MACHINE to delete the machine.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoListMachineEventsInput(BaseModel):
+    """Fly.io — List Machine Events"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoWaitForMachineInput(BaseModel):
+    """Fly.io — Wait For Machine"""
+    appName: str = Field(..., description="App Name")
+    machineId: str = Field(..., description="Machine ID")
+    state: str = Field(..., description="Example: started, stopped, destroyed.")
+    timeout: Optional[float] = Field(None, description="Timeout Seconds")
+    fromEventId: Optional[str] = Field(None, description="From Event ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoListSecretsInput(BaseModel):
+    """Fly.io — List Secrets"""
+    appName: str = Field(..., description="App Name")
+    minVersion: Optional[float] = Field(None, description="Minimum Version")
+    showSecrets: Optional[bool] = Field(None, description="Only use when the token and API permission allow value access.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoSetSecretInput(BaseModel):
+    """Fly.io — Set Secret"""
+    appName: str = Field(..., description="App Name")
+    secretName: str = Field(..., description="Secret Name")
+    value: str = Field(..., description="Secret value to set. Use enforced input partials or approvals for shared workspace tools.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FlyIoDeleteSecretInput(BaseModel):
+    """Fly.io — Delete Secret"""
+    appName: str = Field(..., description="App Name")
+    secretName: str = Field(..., description="Secret Name")
+    confirmation: str = Field(..., description="Type DELETE_SECRET to delete the secret.")
 
     model_config = {"populate_by_name": True}
 
@@ -18130,18 +18659,53 @@ class FramerCustomApiCallInput(BaseModel):
 
 class FreshbooksListClientsInput(BaseModel):
     """FreshBooks — List Clients"""
-    accountId: str = Field(..., description="Your FreshBooks account ID")
+    accountId: str = Field(..., description="FreshBooks accounting account ID.")
     page: Optional[float] = Field(None, description="Page")
-    perPage: Optional[float] = Field(None, description="Per Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+    email: Optional[str] = Field(None, description="Email")
+    updatedMin: Optional[str] = Field(None, description="YYYY-MM-DD or ISO timestamp filter when supported by FreshBooks.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksGetClientInput(BaseModel):
+    """FreshBooks — Get Client"""
+    accountId: str = Field(..., description="Account ID")
+    clientId: str = Field(..., description="Client ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksCreateClientInput(BaseModel):
+    """FreshBooks — Create Client"""
+    accountId: str = Field(..., description="Account ID")
+    organization: Optional[str] = Field(None, description="Organization")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    email: str = Field(..., description="Email")
+    phone: Optional[str] = Field(None, description="Phone")
+    additionalClientFields: Optional[Any] = Field(None, description="Additional Client Fields")
+    confirmCreate: bool = Field(..., description="Confirm Create Client")
 
     model_config = {"populate_by_name": True}
 
 
 class FreshbooksListInvoicesInput(BaseModel):
     """FreshBooks — List Invoices"""
-    accountId: str = Field(..., description="Account ID")
+    accountId: str = Field(..., description="FreshBooks accounting account ID.")
     page: Optional[float] = Field(None, description="Page")
-    perPage: Optional[float] = Field(None, description="Per Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+    clientId: Optional[str] = Field(None, description="Client ID")
+    updatedMin: Optional[str] = Field(None, description="Updated Min")
+    status: Optional[str] = Field(None, description="Status")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksGetInvoiceInput(BaseModel):
+    """FreshBooks — Get Invoice"""
+    accountId: str = Field(..., description="Account ID")
+    invoiceId: str = Field(..., description="Invoice ID")
 
     model_config = {"populate_by_name": True}
 
@@ -18150,15 +18714,83 @@ class FreshbooksCreateInvoiceInput(BaseModel):
     """FreshBooks — Create Invoice"""
     accountId: str = Field(..., description="Account ID")
     customerId: str = Field(..., description="Customer ID")
-    lines: Any = Field(..., description="Invoice line items as JSON array: [{\"name\": \"Service\", \"amount\": {\"amount\": \"100.00\", \"code\": \"USD\"}, \"quantity\": 1}]")
+    lines: Any = Field(..., description="Invoice line items as a JSON array, for example [{\"name\":\"Service\",\"amount\":{\"amount\":\"100.00\",\"code\":\"USD\"},\"quantity\":1}].")
+    createDate: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    dueOffsetDays: Optional[float] = Field(None, description="Due Offset Days")
+    notes: Optional[str] = Field(None, description="Notes")
+    confirmCreate: bool = Field(..., description="Confirm Create Invoice")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksUpdateInvoiceInput(BaseModel):
+    """FreshBooks — Update Invoice"""
+    accountId: str = Field(..., description="Account ID")
+    invoiceId: str = Field(..., description="Invoice ID")
+    invoiceFields: Any = Field(..., description="JSON object placed under FreshBooks invoice.")
+    confirmUpdate: bool = Field(..., description="Confirm Update Invoice")
 
     model_config = {"populate_by_name": True}
 
 
 class FreshbooksListExpensesInput(BaseModel):
     """FreshBooks — List Expenses"""
-    accountId: str = Field(..., description="Account ID")
+    accountId: str = Field(..., description="FreshBooks accounting account ID.")
     page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+    updatedMin: Optional[str] = Field(None, description="Updated Min")
+    vendor: Optional[str] = Field(None, description="Vendor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksCreateExpenseInput(BaseModel):
+    """FreshBooks — Create Expense"""
+    accountId: str = Field(..., description="Account ID")
+    expenseFields: Any = Field(..., description="JSON object placed under FreshBooks expense.")
+    confirmCreate: bool = Field(..., description="Confirm Create Expense")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksListPaymentsInput(BaseModel):
+    """FreshBooks — List Payments"""
+    accountId: str = Field(..., description="FreshBooks accounting account ID.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+    invoiceId: Optional[str] = Field(None, description="Invoice ID")
+    updatedMin: Optional[str] = Field(None, description="Updated Min")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksCreatePaymentInput(BaseModel):
+    """FreshBooks — Create Payment"""
+    accountId: str = Field(..., description="Account ID")
+    invoiceId: str = Field(..., description="Invoice ID")
+    amount: str = Field(..., description="Payment amount, for example 100.00.")
+    currencyCode: str = Field(..., description="Currency Code")
+    paymentDate: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    note: Optional[str] = Field(None, description="Note")
+    confirmCreate: bool = Field(..., description="Confirm Create Payment")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksListItemsInput(BaseModel):
+    """FreshBooks — List Items"""
+    accountId: str = Field(..., description="FreshBooks accounting account ID.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FreshbooksCreateItemInput(BaseModel):
+    """FreshBooks — Create Item"""
+    accountId: str = Field(..., description="Account ID")
+    itemFields: Any = Field(..., description="JSON object placed under FreshBooks item.")
+    confirmCreate: bool = Field(..., description="Confirm Create Item")
 
     model_config = {"populate_by_name": True}
 
@@ -19730,8 +20362,31 @@ class GocardlessCreateRefundInput(BaseModel):
 
 class GongListCallsInput(BaseModel):
     """Gong — List Calls"""
-    fromDateTime: Optional[str] = Field(None, description="ISO 8601 date (e.g., 2024-01-01T00:00:00Z)")
-    toDateTime: Optional[str] = Field(None, description="ISO 8601 date")
+    fromDateTime: str = Field(..., description="ISO 8601 timestamp. Use a narrow date range to stay within Gong rate limits.")
+    toDateTime: str = Field(..., description="ISO 8601 timestamp.")
+    cursor: Optional[str] = Field(None, description="Optional cursor from the previous response. Gong cursors are short-lived.")
+    workspaceId: Optional[str] = Field(None, description="Workspace ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GongGetCallInput(BaseModel):
+    """Gong — Get Call"""
+    callId: str = Field(..., description="Call ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GongListCallDetailsInput(BaseModel):
+    """Gong — List Call Details"""
+    fromDateTime: str = Field(..., description="ISO 8601 timestamp. Use a narrow date range to stay within Gong rate limits.")
+    toDateTime: str = Field(..., description="ISO 8601 timestamp.")
+    cursor: Optional[str] = Field(None, description="Optional cursor from the previous response. Gong cursors are short-lived.")
+    workspaceId: Optional[str] = Field(None, description="Workspace ID")
+    includeParties: Optional[bool] = Field(None, description="Include Parties")
+    includeInteraction: Optional[bool] = Field(None, description="Include Interaction Stats")
+    includeCollaboration: Optional[bool] = Field(None, description="Include Collaboration")
+    includeMediaUrls: Optional[bool] = Field(None, description="Explicitly request media URL fields when enabled for your Gong plan.")
 
     model_config = {"populate_by_name": True}
 
@@ -19739,18 +20394,41 @@ class GongListCallsInput(BaseModel):
 class GongGetCallTranscriptInput(BaseModel):
     """Gong — Get Call Transcript"""
     callId: str = Field(..., description="Call ID")
+    fromDateTime: Optional[str] = Field(None, description="ISO 8601 timestamp for the call date range.")
+    toDateTime: Optional[str] = Field(None, description="ISO 8601 timestamp for the call date range.")
+    confirmIncludeTranscript: bool = Field(..., description="Confirm Include Transcript Body")
 
     model_config = {"populate_by_name": True}
 
 
 class GongListUsersInput(BaseModel):
     """Gong — List Users"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class GongListWorkspacesInput(BaseModel):
+    """Gong — List Workspaces"""
+    pass
+
+
+class GongListScorecardsInput(BaseModel):
+    """Gong — List Scorecards"""
+    pass
+
+
+class GoogleAdsListAccessibleCustomersInput(BaseModel):
+    """Google Ads — List Accessible Customers"""
     pass
 
 
 class GoogleAdsListCampaignsInput(BaseModel):
     """Google Ads — List Campaigns"""
-    customerId: str = Field(..., description="Google Ads customer ID (without dashes)")
+    customerId: str = Field(..., description="Google Ads customer ID without dashes.")
+    includeRemoved: Optional[bool] = Field(None, description="Include Removed")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
 
     model_config = {"populate_by_name": True}
 
@@ -19763,21 +20441,83 @@ class GoogleAdsGetCampaignInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class GoogleAdsSearchInput(BaseModel):
-    """Google Ads — Search (GAQL)"""
+class GoogleAdsListAdGroupsInput(BaseModel):
+    """Google Ads — List Ad Groups"""
     customerId: str = Field(..., description="Customer ID")
-    query: str = Field(..., description="Google Ads Query Language query")
+    campaignId: Optional[str] = Field(None, description="Campaign ID")
+    includeRemoved: Optional[bool] = Field(None, description="Include Removed")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsListAdsInput(BaseModel):
+    """Google Ads — List Ads"""
+    customerId: str = Field(..., description="Customer ID")
+    campaignId: Optional[str] = Field(None, description="Campaign ID")
+    adGroupId: Optional[str] = Field(None, description="Ad Group ID")
+    includeRemoved: Optional[bool] = Field(None, description="Include Removed")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsRunCampaignReportInput(BaseModel):
+    """Google Ads — Run Campaign Report"""
+    customerId: str = Field(..., description="Customer ID")
+    startDate: str = Field(..., description="YYYY-MM-DD.")
+    endDate: str = Field(..., description="YYYY-MM-DD.")
+    campaignId: Optional[str] = Field(None, description="Campaign ID")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsUpdateCampaignStatusInput(BaseModel):
+    """Google Ads — Update Campaign Status"""
+    customerId: str = Field(..., description="Customer ID")
+    campaignId: str = Field(..., description="Campaign ID")
+    status: str = Field(..., description="Status")
+    confirmCampaignId: str = Field(..., description="Must exactly match Campaign ID.")
+    confirmUpdate: bool = Field(..., description="Required because this changes campaign serving state.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAdsSearchInput(BaseModel):
+    """Google Ads — Search GAQL"""
+    customerId: str = Field(..., description="Customer ID")
+    query: str = Field(..., description="SELECT queries only. Mutating statements are rejected.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
 
     model_config = {"populate_by_name": True}
 
 
 class GoogleAnalyticsRunReportInput(BaseModel):
     """Google Analytics — Run Report"""
-    propertyId: str = Field(..., description="GA4 property ID (e.g., 123456789)")
-    startDate: str = Field(..., description="Start date (YYYY-MM-DD or relative: today, yesterday, 7daysAgo, 30daysAgo)")
-    endDate: str = Field(..., description="End date (YYYY-MM-DD or relative: today, yesterday)")
-    dimensions: Optional[list[Any]] = Field(None, description="Dimension names (e.g., city, country, date, pagePath)")
-    metrics: list[Any] = Field(..., description="Metric names (e.g., activeUsers, sessions, screenPageViews)")
+    propertyId: str = Field(..., description="GA4 property ID, for example 123456789.")
+    startDate: str = Field(..., description="YYYY-MM-DD or a supported relative value such as 30daysAgo.")
+    endDate: str = Field(..., description="YYYY-MM-DD or a supported relative value such as today.")
+    dimensions: Optional[list[Any]] = Field(None, description="Dimension names such as date, country, eventName, pagePath.")
+    metrics: list[Any] = Field(..., description="Metric names such as activeUsers, sessions, eventCount, conversions.")
+    dimensionFilter: Optional[Any] = Field(None, description="Optional Data API FilterExpression JSON.")
+    metricFilter: Optional[Any] = Field(None, description="Optional Data API FilterExpression JSON.")
+    orderBys: Optional[Any] = Field(None, description="Optional Data API orderBys JSON array.")
+    offset: Optional[float] = Field(None, description="Offset")
+    limit: Optional[float] = Field(None, description="Row Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsRunRealtimeReportInput(BaseModel):
+    """Google Analytics — Run Realtime Report"""
+    propertyId: str = Field(..., description="Property ID")
+    dimensions: Optional[list[Any]] = Field(None, description="Realtime-compatible dimensions such as city, country, eventName.")
+    metrics: list[Any] = Field(..., description="Realtime-compatible metrics such as activeUsers, eventCount.")
     limit: Optional[float] = Field(None, description="Row Limit")
 
     model_config = {"populate_by_name": True}
@@ -19785,7 +20525,33 @@ class GoogleAnalyticsRunReportInput(BaseModel):
 
 class GoogleAnalyticsGetMetadataInput(BaseModel):
     """Google Analytics — Get Metadata"""
-    propertyId: str = Field(..., description="GA4 property ID")
+    propertyId: str = Field(..., description="GA4 property ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsCheckCompatibilityInput(BaseModel):
+    """Google Analytics — Check Compatibility"""
+    propertyId: str = Field(..., description="Property ID")
+    dimensions: Optional[list[Any]] = Field(None, description="Dimensions")
+    metrics: Optional[list[Any]] = Field(None, description="Metrics")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsListAccountSummariesInput(BaseModel):
+    """Google Analytics — List Account Summaries"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class GoogleAnalyticsListPropertiesInput(BaseModel):
+    """Google Analytics — List Properties"""
+    accountId: str = Field(..., description="Numeric Analytics account ID.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
 
     model_config = {"populate_by_name": True}
 
@@ -22042,31 +22808,55 @@ class GuruCustomApiCallInput(BaseModel):
 
 class GustoListEmployeesInput(BaseModel):
     """Gusto — List Employees"""
-    companyId: str = Field(..., description="Company ID")
+    company_id: str = Field(..., description="Company UUID")
     page: Optional[float] = Field(None, description="Page")
-    perPage: Optional[float] = Field(None, description="Per Page")
+    per: Optional[float] = Field(None, description="Page size, capped at 100.")
 
     model_config = {"populate_by_name": True}
 
 
 class GustoGetEmployeeInput(BaseModel):
     """Gusto — Get Employee"""
-    employeeId: str = Field(..., description="Employee ID")
+    employee_id: str = Field(..., description="Employee UUID")
 
     model_config = {"populate_by_name": True}
 
 
 class GustoListPayrollsInput(BaseModel):
     """Gusto — List Payrolls"""
-    companyId: str = Field(..., description="Company ID")
+    company_id: str = Field(..., description="Company UUID")
+    start_date: Optional[str] = Field(None, description="Payroll period start date, YYYY-MM-DD.")
+    end_date: Optional[str] = Field(None, description="Payroll period end date, YYYY-MM-DD.")
     processed: Optional[str] = Field(None, description="Processed")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoGetPayrollInput(BaseModel):
+    """Gusto — Get Payroll"""
+    company_id: str = Field(..., description="Company UUID")
+    payroll_id: str = Field(..., description="Payroll UUID")
 
     model_config = {"populate_by_name": True}
 
 
 class GustoGetCompanyInput(BaseModel):
     """Gusto — Get Company"""
-    companyId: str = Field(..., description="Company ID")
+    company_id: str = Field(..., description="Company UUID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoListDepartmentsInput(BaseModel):
+    """Gusto — List Departments"""
+    company_id: str = Field(..., description="Company UUID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GustoListTimeOffPoliciesInput(BaseModel):
+    """Gusto — List Time Off Policies"""
+    company_id: str = Field(..., description="Company UUID")
 
     model_config = {"populate_by_name": True}
 
@@ -22326,27 +23116,38 @@ class HawksoftCustomApiCallInput(BaseModel):
 
 class HeapTrackEventInput(BaseModel):
     """Heap — Track Event"""
-    identity: str = Field(..., description="The user identifier (email or user ID)")
+    identity: Optional[str] = Field(None, description="Known user identity such as email or CRM ID. Use either Identity or User ID.")
+    userId: Optional[str] = Field(None, description="Anonymous Heap SDK user_id. Use either User ID or Identity.")
     event: str = Field(..., description="Event Name")
-    properties: Optional[Any] = Field(None, description="Additional event properties")
-    timestamp: Optional[str] = Field(None, description="ISO 8601 timestamp (defaults to now)")
+    properties: Optional[Any] = Field(None, description="Event properties. Keys and string values should stay under Heap field limits.")
+    sessionId: Optional[str] = Field(None, description="Session ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO 8601 timestamp.")
+    idempotencyKey: Optional[str] = Field(None, description="Optional key to deduplicate repeated event sends.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HeapIdentifyUserInput(BaseModel):
+    """Heap — Identify User"""
+    userId: str = Field(..., description="Anonymous Heap SDK user_id.")
+    identity: str = Field(..., description="Known user identity such as email or CRM ID.")
+    timestamp: Optional[str] = Field(None, description="Optional ISO 8601 timestamp.")
 
     model_config = {"populate_by_name": True}
 
 
 class HeapAddUserPropertiesInput(BaseModel):
     """Heap — Add User Properties"""
-    identity: str = Field(..., description="The user identifier (email or user ID)")
-    properties: Any = Field(..., description="User properties to set as JSON")
+    identity: str = Field(..., description="Known user identity.")
+    properties: Any = Field(..., description="User properties to set.")
 
     model_config = {"populate_by_name": True}
 
 
-class HeapCustomApiCallInput(BaseModel):
-    """Heap — Custom API Call"""
-    method: str = Field(..., description="Method")
-    path: str = Field(..., description="Path")
-    body: Optional[Any] = Field(None, description="Body")
+class HeapAddAccountPropertiesInput(BaseModel):
+    """Heap — Add Account Properties"""
+    accountId: str = Field(..., description="Configured Heap account ID value.")
+    properties: Any = Field(..., description="Account properties to set.")
 
     model_config = {"populate_by_name": True}
 
@@ -22689,26 +23490,48 @@ class HeygenCustomApiCallInput(BaseModel):
 
 class HibobListEmployeesInput(BaseModel):
     """HiBob — List Employees"""
-    pass
+    fields: Optional[str] = Field(None, description="Comma-separated HiBob field IDs to include.")
+    filters: Optional[Any] = Field(None, description="Optional HiBob /people/search filters object. Use to bound employee reads.")
+    show_inactive: Optional[bool] = Field(None, description="Show Inactive")
+
+    model_config = {"populate_by_name": True}
 
 
 class HibobGetEmployeeInput(BaseModel):
     """HiBob — Get Employee"""
-    employeeId: str = Field(..., description="Employee ID")
+    employee_id: str = Field(..., description="Employee ID or Email")
+    fields: Optional[str] = Field(None, description="Comma-separated HiBob field IDs to include.")
 
     model_config = {"populate_by_name": True}
 
 
 class HibobListTimeOffInput(BaseModel):
     """HiBob — List Who's Out"""
-    from_: str = Field(..., alias="from", description="Start date (YYYY-MM-DD)")
-    to: str = Field(..., description="End date (YYYY-MM-DD)")
+    from_: str = Field(..., alias="from", description="Start date, YYYY-MM-DD.")
+    to: str = Field(..., description="End date, YYYY-MM-DD.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HibobListAttendanceEntriesInput(BaseModel):
+    """HiBob — List Attendance Entries"""
+    employee_id: str = Field(..., description="Employee ID")
+    from_: str = Field(..., alias="from", description="Clock-in start date, YYYY-MM-DD.")
+    to: str = Field(..., description="Clock-in end date, YYYY-MM-DD. HiBob caps this endpoint at 33 days.")
+    fields: Optional[str] = Field(None, description="Comma-separated attendance field IDs.")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
 
     model_config = {"populate_by_name": True}
 
 
 class HibobListCompanyListsInput(BaseModel):
     """HiBob — List Company Lists"""
+    pass
+
+
+class HibobListPeopleFieldsInput(BaseModel):
+    """HiBob — List People Fields"""
     pass
 
 
@@ -22839,6 +23662,133 @@ class HiveCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g. /actions)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseListLocationsInput(BaseModel):
+    """Homebase — List Locations"""
+    pass
+
+
+class HomebaseGetLocationInput(BaseModel):
+    """Homebase — Get Location"""
+    location_uuid: str = Field(..., description="Location UUID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetCompanyInput(BaseModel):
+    """Homebase — Get Company"""
+    pass
+
+
+class HomebaseListEmployeesInput(BaseModel):
+    """Homebase — List Employees"""
+    location_uuid: str = Field(..., description="Location UUID")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Page size. Homebase commonly returns pagination metadata in response headers.")
+    with_archived: Optional[bool] = Field(None, description="Include archived employee records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetEmployeeInput(BaseModel):
+    """Homebase — Get Employee"""
+    location_uuid: str = Field(..., description="Location UUID")
+    employee_id: str = Field(..., description="Employee ID")
+    with_archived: Optional[bool] = Field(None, description="Include Archived")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseListShiftsInput(BaseModel):
+    """Homebase — List Shifts"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Page size. Homebase commonly returns pagination metadata in response headers.")
+    open: Optional[bool] = Field(None, description="Open Shifts Only")
+    with_note: Optional[bool] = Field(None, description="Include Notes")
+    date_filter: Optional[str] = Field(None, description="Date Filter")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetShiftInput(BaseModel):
+    """Homebase — Get Shift"""
+    location_uuid: str = Field(..., description="Location UUID")
+    shift_id: str = Field(..., description="Shift ID")
+    with_note: Optional[bool] = Field(None, description="Include Notes")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseListTimecardsInput(BaseModel):
+    """Homebase — List Timecards"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Page size. Homebase commonly returns pagination metadata in response headers.")
+    date_filter: Optional[str] = Field(None, description="Date Filter")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetTimecardInput(BaseModel):
+    """Homebase — Get Timecard"""
+    location_uuid: str = Field(..., description="Location UUID")
+    timecard_id: str = Field(..., description="Timecard ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseListDeletedShiftIdsInput(BaseModel):
+    """Homebase — List Deleted Shift IDs"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Page size. Homebase commonly returns pagination metadata in response headers.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseListDeletedTimecardIdsInput(BaseModel):
+    """Homebase — List Deleted Timecard IDs"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Page size. Homebase commonly returns pagination metadata in response headers.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetLaborInput(BaseModel):
+    """Homebase — Get Labor Summary"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+    group_by: Optional[str] = Field(None, description="Group By")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetLaborByEmployeeInput(BaseModel):
+    """Homebase — Get Labor By Employee"""
+    location_uuid: str = Field(..., description="Location UUID")
+    start_date: str = Field(..., description="ISO 8601 start date/time. Required by Homebase for schedule and timecard reads.")
+    end_date: str = Field(..., description="ISO 8601 end date/time. Keep ranges narrow for workforce data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HomebaseGetTimeclockStatusInput(BaseModel):
+    """Homebase — Get Timeclock Status"""
+    job_id: str = Field(..., description="Job ID")
 
     model_config = {"populate_by_name": True}
 
@@ -25363,6 +26313,137 @@ class JiraCloudCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class JiraServiceManagementValidateConnectionInput(BaseModel):
+    """Jira Service Management — Validate Connection"""
+    pass
+
+
+class JiraServiceManagementListServiceDesksInput(BaseModel):
+    """Jira Service Management — List Service Desks"""
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementGetServiceDeskInput(BaseModel):
+    """Jira Service Management — Get Service Desk"""
+    serviceDeskId: str = Field(..., description="Service Desk ID Or Project Identifier")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementListRequestTypesInput(BaseModel):
+    """Jira Service Management — List Request Types"""
+    serviceDeskId: Optional[str] = Field(None, description="Service Desk ID")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+    expand: Optional[str] = Field(None, description="Comma-separated expansions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementGetRequestTypeFieldsInput(BaseModel):
+    """Jira Service Management — Get Request Type Fields"""
+    serviceDeskId: str = Field(..., description="Service Desk ID")
+    requestTypeId: str = Field(..., description="Request Type ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementListCustomerRequestsInput(BaseModel):
+    """Jira Service Management — List Customer Requests"""
+    searchTerm: Optional[str] = Field(None, description="Search Term")
+    requestOwnership: Optional[str] = Field(None, description="Request Ownership")
+    requestStatus: Optional[str] = Field(None, description="Request Status")
+    serviceDeskId: Optional[str] = Field(None, description="Service Desk ID")
+    requestTypeId: Optional[str] = Field(None, description="Request Type ID")
+    expand: Optional[str] = Field(None, description="Comma-separated expansions such as serviceDesk,requestType,status,sla.")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementCreateCustomerRequestInput(BaseModel):
+    """Jira Service Management — Create Customer Request"""
+    serviceDeskId: str = Field(..., description="Service Desk ID")
+    requestTypeId: str = Field(..., description="Request Type ID")
+    requestFieldValues: Any = Field(..., description="JSON object keyed by Jira field IDs, for example summary and description.")
+    raiseOnBehalfOf: Optional[str] = Field(None, description="Raise On Behalf Of Account ID")
+    requestParticipants: Optional[Any] = Field(None, description="JSON array of account IDs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementGetCustomerRequestInput(BaseModel):
+    """Jira Service Management — Get Customer Request"""
+    issueIdOrKey: str = Field(..., description="Issue ID Or Key")
+    expand: Optional[str] = Field(None, description="Expand")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementListRequestCommentsInput(BaseModel):
+    """Jira Service Management — List Request Comments"""
+    issueIdOrKey: str = Field(..., description="Issue ID Or Key")
+    publicOnly: Optional[bool] = Field(None, description="Public Only")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementAddRequestCommentInput(BaseModel):
+    """Jira Service Management — Add Request Comment"""
+    issueIdOrKey: str = Field(..., description="Issue ID Or Key")
+    body: str = Field(..., description="Comment Body")
+    publicComment: bool = Field(..., description="When false, creates an internal/private comment if the authenticated user has permission.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementListCustomerTransitionsInput(BaseModel):
+    """Jira Service Management — List Customer Transitions"""
+    issueIdOrKey: str = Field(..., description="Issue ID Or Key")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementPerformCustomerTransitionInput(BaseModel):
+    """Jira Service Management — Perform Customer Transition"""
+    issueIdOrKey: str = Field(..., description="Issue ID Or Key")
+    transitionId: str = Field(..., description="Transition ID")
+    comment: Optional[str] = Field(None, description="Transition Comment")
+    confirmTransitionId: str = Field(..., description="Must exactly match Transition ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementListOrganizationsInput(BaseModel):
+    """Jira Service Management — List Organizations"""
+    accountId: Optional[str] = Field(None, description="Optional customer account ID filter.")
+    start: Optional[float] = Field(None, description="Start")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementCreateOrganizationInput(BaseModel):
+    """Jira Service Management — Create Organization"""
+    name: str = Field(..., description="Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class JiraServiceManagementCreateCustomerInput(BaseModel):
+    """Jira Service Management — Create Customer"""
+    email: str = Field(..., description="Email")
+    displayName: str = Field(..., description="Display Name")
+
+    model_config = {"populate_by_name": True}
+
+
 class JobberGetClientInput(BaseModel):
     """Jobber — Get Client"""
     clientId: str = Field(..., description="Client ID")
@@ -25458,8 +26539,8 @@ class JotformCreateSubmissionInput(BaseModel):
 class JumpcloudListSystemUsersInput(BaseModel):
     """JumpCloud — List System Users"""
     limit: Optional[float] = Field(None, description="Limit")
-    skip: Optional[float] = Field(None, description="Number of records to skip for pagination")
-    search: Optional[str] = Field(None, description="Search by username, email, or name")
+    skip: Optional[float] = Field(None, description="Number of records to skip for pagination.")
+    search: Optional[str] = Field(None, description="Search by username, email, or name.")
 
     model_config = {"populate_by_name": True}
 
@@ -25474,7 +26555,14 @@ class JumpcloudGetSystemUserInput(BaseModel):
 class JumpcloudListSystemsInput(BaseModel):
     """JumpCloud — List Systems"""
     limit: Optional[float] = Field(None, description="Limit")
-    skip: Optional[float] = Field(None, description="Skip")
+    skip: Optional[float] = Field(None, description="Number of records to skip for pagination.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JumpcloudGetSystemInput(BaseModel):
+    """JumpCloud — Get System"""
+    systemId: str = Field(..., description="System ID")
 
     model_config = {"populate_by_name": True}
 
@@ -25482,7 +26570,40 @@ class JumpcloudListSystemsInput(BaseModel):
 class JumpcloudListUserGroupsInput(BaseModel):
     """JumpCloud — List User Groups"""
     limit: Optional[float] = Field(None, description="Limit")
-    skip: Optional[float] = Field(None, description="Skip")
+    skip: Optional[float] = Field(None, description="Number of records to skip for pagination.")
+    nameEquals: Optional[str] = Field(None, description="Optional exact name filter.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JumpcloudGetUserGroupInput(BaseModel):
+    """JumpCloud — Get User Group"""
+    groupId: str = Field(..., description="Group ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class JumpcloudListSystemGroupsInput(BaseModel):
+    """JumpCloud — List System Groups"""
+    limit: Optional[float] = Field(None, description="Limit")
+    skip: Optional[float] = Field(None, description="Number of records to skip for pagination.")
+    nameEquals: Optional[str] = Field(None, description="Optional exact name filter.")
+
+    model_config = {"populate_by_name": True}
+
+
+class JumpcloudGetSystemGroupInput(BaseModel):
+    """JumpCloud — Get System Group"""
+    groupId: str = Field(..., description="Group ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class JumpcloudListApplicationsInput(BaseModel):
+    """JumpCloud — List Applications"""
+    limit: Optional[float] = Field(None, description="Limit")
+    skip: Optional[float] = Field(None, description="Number of records to skip for pagination.")
+    nameEquals: Optional[str] = Field(None, description="Optional exact application name filter.")
 
     model_config = {"populate_by_name": True}
 
@@ -25710,6 +26831,103 @@ class KissflowCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitListSubscribersInput(BaseModel):
+    """Kit — List Subscribers"""
+    emailAddress: Optional[str] = Field(None, description="Email Address")
+    after: Optional[str] = Field(None, description="After Cursor")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitCreateSubscriberInput(BaseModel):
+    """Kit — Create Subscriber"""
+    emailAddress: str = Field(..., description="Email Address")
+    firstName: Optional[str] = Field(None, description="First Name")
+    fields: Optional[Any] = Field(None, description="Optional custom field key/value object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitUpdateSubscriberInput(BaseModel):
+    """Kit — Update Subscriber"""
+    subscriberId: str = Field(..., description="Subscriber ID")
+    emailAddress: Optional[str] = Field(None, description="Email Address")
+    firstName: Optional[str] = Field(None, description="First Name")
+    fields: Optional[Any] = Field(None, description="Custom Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitUnsubscribeSubscriberInput(BaseModel):
+    """Kit — Unsubscribe Subscriber"""
+    subscriberId: str = Field(..., description="Subscriber ID")
+    confirmUnsubscribe: bool = Field(..., description="Confirm Unsubscribe")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitListTagsInput(BaseModel):
+    """Kit — List Tags"""
+    after: Optional[str] = Field(None, description="After Cursor")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitTagSubscriberInput(BaseModel):
+    """Kit — Tag Subscriber"""
+    tagId: str = Field(..., description="Tag ID")
+    subscriberId: str = Field(..., description="Subscriber ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitListBroadcastsInput(BaseModel):
+    """Kit — List Broadcasts"""
+    after: Optional[str] = Field(None, description="After Cursor")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitCreateBroadcastInput(BaseModel):
+    """Kit — Create Broadcast Draft"""
+    subject: str = Field(..., description="Subject")
+    content: str = Field(..., description="HTML Content")
+    description: Optional[str] = Field(None, description="Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitUpdateBroadcastInput(BaseModel):
+    """Kit — Update Broadcast"""
+    broadcastId: str = Field(..., description="Broadcast ID")
+    subject: Optional[str] = Field(None, description="Subject")
+    content: Optional[str] = Field(None, description="HTML Content")
+    public: Optional[bool] = Field(None, description="Public / Schedule")
+    sendAt: Optional[str] = Field(None, description="ISO-8601 timestamp required by Kit when scheduling.")
+    tagId: Optional[str] = Field(None, description="Target Tag ID")
+    segmentId: Optional[str] = Field(None, description="Target Segment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitGetBroadcastStatsInput(BaseModel):
+    """Kit — Get Broadcast Stats"""
+    broadcastId: str = Field(..., description="Broadcast ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConvertkitDeleteBroadcastInput(BaseModel):
+    """Kit — Delete Broadcast"""
+    broadcastId: str = Field(..., description="Broadcast ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
 
     model_config = {"populate_by_name": True}
 
@@ -27500,42 +28718,66 @@ class LinkedinCustomApiCallInput(BaseModel):
 class LinkedinAdsListAdAccountsInput(BaseModel):
     """LinkedIn Ads — List Ad Accounts"""
     count: Optional[float] = Field(None, description="Count")
-    start: Optional[float] = Field(None, description="Pagination start index")
+    start: Optional[float] = Field(None, description="Pagination start index.")
 
     model_config = {"populate_by_name": True}
 
 
 class LinkedinAdsListCampaignsInput(BaseModel):
     """LinkedIn Ads — List Campaigns"""
-    adAccountId: str = Field(..., description="The numeric ad account ID")
+    adAccountId: str = Field(..., description="Numeric ad account ID or sponsoredAccount URN.")
     count: Optional[float] = Field(None, description="Count")
-    start: Optional[float] = Field(None, description="Pagination start index")
+    start: Optional[float] = Field(None, description="Pagination start index.")
 
     model_config = {"populate_by_name": True}
 
 
 class LinkedinAdsGetCampaignInput(BaseModel):
     """LinkedIn Ads — Get Campaign"""
-    campaignId: str = Field(..., description="Campaign ID")
+    campaignId: str = Field(..., description="Numeric campaign ID or sponsoredCampaign URN.")
 
     model_config = {"populate_by_name": True}
 
 
 class LinkedinAdsGetAdAnalyticsInput(BaseModel):
     """LinkedIn Ads — Get Ad Analytics"""
-    accounts: str = Field(..., description="Ad account URN (e.g., urn:li:sponsoredAccount:123456)")
-    dateRangeStart: str = Field(..., description="Start date in YYYY-MM-DD format")
-    dateRangeEnd: str = Field(..., description="End date in YYYY-MM-DD format")
+    facet: Optional[str] = Field(None, description="Facet")
+    urns: Optional[list[Any]] = Field(None, description="URNs matching the selected facet.")
+    accounts: Optional[str] = Field(None, description="Legacy single account URN. Used when Facet URNs is empty.")
+    dateRangeStart: str = Field(..., description="YYYY-MM-DD.")
+    dateRangeEnd: Optional[str] = Field(None, description="YYYY-MM-DD.")
     timeGranularity: Optional[str] = Field(None, description="Time Granularity")
     pivot: Optional[str] = Field(None, description="Pivot")
+    fields: Optional[str] = Field(None, description="Comma-separated metrics. Up to 20 fields.")
 
     model_config = {"populate_by_name": True}
 
 
 class LinkedinAdsListCampaignGroupsInput(BaseModel):
     """LinkedIn Ads — List Campaign Groups"""
-    adAccountId: str = Field(..., description="The numeric ad account ID")
+    adAccountId: str = Field(..., description="Numeric ad account ID or sponsoredAccount URN.")
     count: Optional[float] = Field(None, description="Count")
+    start: Optional[float] = Field(None, description="Start")
+
+    model_config = {"populate_by_name": True}
+
+
+class LinkedinAdsListCreativesInput(BaseModel):
+    """LinkedIn Ads — List Creatives"""
+    adAccountId: str = Field(..., description="Numeric ad account ID or sponsoredAccount URN.")
+    campaignUrns: Optional[list[Any]] = Field(None, description="Campaign URNs")
+    creativeUrns: Optional[list[Any]] = Field(None, description="Creative URNs")
+    intendedStatuses: Optional[list[Any]] = Field(None, description="Values such as ACTIVE, PAUSED, DRAFT, ARCHIVED.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class LinkedinAdsGetCreativeInput(BaseModel):
+    """LinkedIn Ads — Get Creative"""
+    adAccountId: str = Field(..., description="Ad Account ID")
+    creativeUrn: str = Field(..., description="Creative URN")
 
     model_config = {"populate_by_name": True}
 
@@ -28622,6 +29864,69 @@ class MailchimpFindSubscriberInput(BaseModel):
     exclude_fields: Optional[list[Any]] = Field(None, description="Fields to exclude from the response. Use dot notation for nested fields")
 
     model_config = {"populate_by_name": True}
+
+
+class MandrillSendEmailInput(BaseModel):
+    """Mailchimp Transactional — Send Email"""
+    fromEmail: str = Field(..., description="From Email")
+    fromName: Optional[str] = Field(None, description="From Name")
+    toEmail: str = Field(..., description="Comma-separated recipient email addresses.")
+    subject: str = Field(..., description="Subject")
+    text: Optional[str] = Field(None, description="Text Body")
+    html: Optional[str] = Field(None, description="HTML Body")
+    replyTo: Optional[str] = Field(None, description="Reply-To")
+    tags: Optional[Any] = Field(None, description="Optional array of tag strings.")
+    metadata: Optional[Any] = Field(None, description="Optional metadata object.")
+    important: Optional[bool] = Field(None, description="Important")
+    sendAsync: Optional[bool] = Field(None, description="Queue the message asynchronously.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MandrillSendTemplateEmailInput(BaseModel):
+    """Mailchimp Transactional — Send Template Email"""
+    templateName: str = Field(..., description="Template Name")
+    fromEmail: str = Field(..., description="From Email")
+    fromName: Optional[str] = Field(None, description="From Name")
+    toEmail: str = Field(..., description="Comma-separated recipient email addresses.")
+    subject: Optional[str] = Field(None, description="Subject")
+    templateContent: Optional[Any] = Field(None, description="Optional array of { name, content } merge blocks.")
+    mergeVars: Optional[Any] = Field(None, description="Optional array of { name, content } merge vars.")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+    sendAsync: Optional[bool] = Field(None, description="Send Async")
+
+    model_config = {"populate_by_name": True}
+
+
+class MandrillSearchMessagesInput(BaseModel):
+    """Mailchimp Transactional — Search Messages"""
+    query: Optional[str] = Field(None, description="Query")
+    dateFrom: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    dateTo: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    tags: Optional[Any] = Field(None, description="Optional array of tags.")
+    senders: Optional[Any] = Field(None, description="Optional array of sender emails.")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class MandrillGetMessageInfoInput(BaseModel):
+    """Mailchimp Transactional — Get Message Info"""
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MandrillListTemplatesInput(BaseModel):
+    """Mailchimp Transactional — List Templates"""
+    label: Optional[str] = Field(None, description="Label")
+
+    model_config = {"populate_by_name": True}
+
+
+class MandrillListSendersInput(BaseModel):
+    """Mailchimp Transactional — List Senders"""
+    pass
 
 
 class MailerLiteListSubscribersInput(BaseModel):
@@ -32720,33 +34025,132 @@ class NeoncrmCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class NetlifyStartDeployInput(BaseModel):
-    """Netlify — Start Deploy"""
-    siteId: str = Field(..., description="Select the site to deploy")
-    clearCache: Optional[bool] = Field(None, description="Whether to clear the build cache before building")
+class NetlifyListSitesInput(BaseModel):
+    """Netlify — List Sites"""
+    name: Optional[str] = Field(None, description="Name")
+    filter: Optional[str] = Field(None, description="Optional Netlify API filter.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
 
     model_config = {"populate_by_name": True}
 
 
 class NetlifyGetSiteInput(BaseModel):
     """Netlify — Get Site"""
-    siteId: str = Field(..., description="Select the site to retrieve information for")
+    siteId: str = Field(..., description="Site ID")
 
     model_config = {"populate_by_name": True}
 
 
 class NetlifyListSiteDeploysInput(BaseModel):
     """Netlify — List Site Deploys"""
-    siteId: str = Field(..., description="Select the site to list deploys for")
-    page: Optional[float] = Field(None, description="Page number for pagination (starts from 1)")
-    perPage: Optional[float] = Field(None, description="Number of items per page (max 100)")
+    siteId: str = Field(..., description="Site ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
 
     model_config = {"populate_by_name": True}
 
 
-class NetlifyListFilesInput(BaseModel):
-    """Netlify — List Files"""
-    siteId: str = Field(..., description="Select the site to list files for")
+class NetlifyGetDeployInput(BaseModel):
+    """Netlify — Get Deploy"""
+    deployId: str = Field(..., description="Deploy ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyCreateDeployInput(BaseModel):
+    """Netlify — Create Deploy"""
+    siteId: str = Field(..., description="Site ID")
+    title: Optional[str] = Field(None, description="Title")
+    branch: Optional[str] = Field(None, description="Branch")
+    draft: Optional[bool] = Field(None, description="Draft")
+    asyncDeploy: Optional[bool] = Field(None, description="Async")
+    files: Optional[Any] = Field(None, description="Optional map of deploy file paths to SHA1 digests.")
+    environment: Optional[Any] = Field(None, description="Optional deploy-specific environment array.")
+    confirmation: str = Field(..., description="Type CREATE_DEPLOY to create the deploy.")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyCancelDeployInput(BaseModel):
+    """Netlify — Cancel Deploy"""
+    deployId: str = Field(..., description="Deploy ID")
+    confirmation: str = Field(..., description="Type CANCEL_DEPLOY to cancel the deploy.")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyListEnvironmentVariablesInput(BaseModel):
+    """Netlify — List Environment Variables"""
+    accountId: str = Field(..., description="Account ID")
+    siteId: Optional[str] = Field(None, description="Site ID")
+    contextName: Optional[str] = Field(None, description="Context Name")
+    scope: Optional[str] = Field(None, description="Optional scope such as builds, functions, runtime, or post-processing.")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifySetEnvironmentVariableInput(BaseModel):
+    """Netlify — Set Environment Variable"""
+    accountId: str = Field(..., description="Account ID")
+    siteId: Optional[str] = Field(None, description="Site ID")
+    key: str = Field(..., description="Key")
+    value: str = Field(..., description="Environment value to set. Use enforced input partials or approvals for shared workspace tools.")
+    context: Optional[str] = Field(None, description="Context")
+    contextParameter: Optional[str] = Field(None, description="Branch name when Context is branch.")
+    scopes: Optional[str] = Field(None, description="Comma- or newline-separated scopes such as builds,functions,runtime.")
+    isSecret: Optional[bool] = Field(None, description="Secret")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyListBuildHooksInput(BaseModel):
+    """Netlify — List Build Hooks"""
+    siteId: str = Field(..., description="Site ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyCreateBuildHookInput(BaseModel):
+    """Netlify — Create Build Hook"""
+    siteId: str = Field(..., description="Site ID")
+    title: str = Field(..., description="Title")
+    branch: str = Field(..., description="Branch")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyListDnsZonesInput(BaseModel):
+    """Netlify — List DNS Zones"""
+    accountSlug: Optional[str] = Field(None, description="Account Slug")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyListDnsRecordsInput(BaseModel):
+    """Netlify — List DNS Records"""
+    zoneId: str = Field(..., description="Zone ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyCreateDnsRecordInput(BaseModel):
+    """Netlify — Create DNS Record"""
+    zoneId: str = Field(..., description="Zone ID")
+    type_: str = Field(..., alias="type", description="Type")
+    hostname: str = Field(..., description="Hostname")
+    value: str = Field(..., description="Value")
+    ttl: Optional[float] = Field(None, description="TTL")
+    priority: Optional[float] = Field(None, description="Priority")
+
+    model_config = {"populate_by_name": True}
+
+
+class NetlifyDeleteDnsRecordInput(BaseModel):
+    """Netlify — Delete DNS Record"""
+    zoneId: str = Field(..., description="Zone ID")
+    dnsRecordId: str = Field(..., description="DNS Record ID")
+    confirmation: str = Field(..., description="Type DELETE_DNS_RECORD to delete the DNS record.")
 
     model_config = {"populate_by_name": True}
 
@@ -34162,7 +35566,12 @@ class OutlineCustomApiCallInput(BaseModel):
 
 class OutreachListProspectsInput(BaseModel):
     """Outreach — List Prospects"""
-    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+    email: Optional[str] = Field(None, description="Email")
+    accountId: Optional[str] = Field(None, description="Account ID")
+    updatedAfter: Optional[str] = Field(None, description="ISO 8601 timestamp mapped to filter[updatedAt][gt].")
 
     model_config = {"populate_by_name": True}
 
@@ -34181,13 +35590,89 @@ class OutreachCreateProspectInput(BaseModel):
     email: str = Field(..., description="Email")
     company: Optional[str] = Field(None, description="Company")
     title: Optional[str] = Field(None, description="Title")
+    accountId: Optional[str] = Field(None, description="Account ID")
+    additionalAttributes: Optional[Any] = Field(None, description="Optional JSON object merged into prospect attributes.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachUpdateProspectInput(BaseModel):
+    """Outreach — Update Prospect"""
+    prospectId: str = Field(..., description="Prospect ID")
+    attributes: Any = Field(..., description="JSON object of Outreach prospect attributes to patch.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachListAccountsInput(BaseModel):
+    """Outreach — List Accounts"""
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+    name: Optional[str] = Field(None, description="Name Contains")
+    updatedAfter: Optional[str] = Field(None, description="ISO 8601 timestamp mapped to filter[updatedAt][gt].")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachGetAccountInput(BaseModel):
+    """Outreach — Get Account"""
+    accountId: str = Field(..., description="Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachCreateAccountInput(BaseModel):
+    """Outreach — Create Account"""
+    name: str = Field(..., description="Name")
+    domain: Optional[str] = Field(None, description="Domain")
+    additionalAttributes: Optional[Any] = Field(None, description="Additional Attributes")
 
     model_config = {"populate_by_name": True}
 
 
 class OutreachListSequencesInput(BaseModel):
     """Outreach — List Sequences"""
-    pass
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachListSequenceStatesInput(BaseModel):
+    """Outreach — List Sequence States"""
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+    prospectId: Optional[str] = Field(None, description="Prospect ID")
+    sequenceId: Optional[str] = Field(None, description="Sequence ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachListTasksInput(BaseModel):
+    """Outreach — List Tasks"""
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+    dueAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    dueBefore: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    prospectId: Optional[str] = Field(None, description="Prospect ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class OutreachListCallsInput(BaseModel):
+    """Outreach — List Calls"""
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    sort: Optional[str] = Field(None, description="Optional Outreach JSON:API sort, for example -updatedAt.")
+    createdAfter: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    createdBefore: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    prospectId: Optional[str] = Field(None, description="Prospect ID")
+
+    model_config = {"populate_by_name": True}
 
 
 class PaddleListProductsInput(BaseModel):
@@ -34404,121 +35889,216 @@ class PagerdutyListEscalationPoliciesInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PagerdutyGetEscalationPolicyInput(BaseModel):
+    """PagerDuty — Get Escalation Policy"""
+    escalationPolicyId: str = Field(..., description="Escalation Policy ID")
+    include: Optional[list[Any]] = Field(None, description="Include")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyListSchedulesInput(BaseModel):
+    """PagerDuty — List Schedules"""
+    query: Optional[str] = Field(None, description="Query")
+    teamIds: Optional[list[Any]] = Field(None, description="Team IDs")
+    userIds: Optional[list[Any]] = Field(None, description="User IDs")
+    include: Optional[list[Any]] = Field(None, description="Optional related resources such as schedule_layers.")
+    limit: Optional[float] = Field(None, description="Maximum 100.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PagerdutyGetScheduleInput(BaseModel):
+    """PagerDuty — Get Schedule"""
+    scheduleId: str = Field(..., description="Schedule ID")
+    since: Optional[str] = Field(None, description="ISO-8601 start time.")
+    until: Optional[str] = Field(None, description="ISO-8601 end time.")
+    include: Optional[list[Any]] = Field(None, description="Optional related resources such as schedule_layers.")
+
+    model_config = {"populate_by_name": True}
+
+
 class PandadocCreateDocumentFromTemplateInput(BaseModel):
-    """PandaDoc — Create Document from Template"""
-    template_uuid: str = Field(..., description="Select a template from your PandaDoc workspace")
-    name: str = Field(..., description="Name the document you are creating")
-    recipients: list[Any] = Field(..., description="List of recipients to whom the document will be sent")
-    fields: Optional[dict[str, Any]] = Field(None, description="Template Fields")
-    tokens: Optional[list[Any]] = Field(None, description="Pass values for the variables in the template")
-    folder_uuid: Optional[str] = Field(None, description="Select a folder from your PandaDoc workspace")
-    tags: Optional[list[Any]] = Field(None, description="Tag the document for filtering and organization")
-    metadata: Optional[dict[str, Any]] = Field(None, description="Additional data in key-value format to associate with document")
+    """PandaDoc — Create Document From Template"""
+    template_uuid: str = Field(..., description="Template ID")
+    name: str = Field(..., description="Document Name")
+    recipients: Any = Field(..., description="Recipient array accepted by PandaDoc.")
+    fields: Optional[Any] = Field(None, description="Fields")
+    tokens: Optional[Any] = Field(None, description="Tokens")
+    folder_uuid: Optional[str] = Field(None, description="Folder ID")
+    tags: Optional[Any] = Field(None, description="Tags")
+    metadata: Optional[Any] = Field(None, description="Metadata")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocCreateAttachmentInput(BaseModel):
     """PandaDoc — Create Attachment"""
-    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
-    source: str = Field(..., description="URL link to the file to be attached to the document")
-    name: Optional[str] = Field(None, description="Optional name to set for the uploaded file.")
+    document_id: str = Field(..., description="Document ID")
+    source: str = Field(..., description="Public URL of the attachment file.")
+    name: Optional[str] = Field(None, description="Attachment Name")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocCreateOrUpdateContactInput(BaseModel):
-    """PandaDoc — Create or Update Contact"""
-    contact_id: Optional[str] = Field(None, description="Select a contact to update. Leave empty to create a new contact.")
-    email: Optional[str] = Field(None, description="An email address of the contact")
-    first_name: Optional[str] = Field(None, description="Contact's first name")
-    last_name: Optional[str] = Field(None, description="Contact's last name")
-    company: Optional[str] = Field(None, description="Contact's company name")
-    job_title: Optional[str] = Field(None, description="Select a common job title or choose \"Other\" to enter a custom title")
-    custom_job_title: Optional[str] = Field(None, description="Enter a custom job title (only used if \"Other\" is selected above)")
-    industry: Optional[str] = Field(None, description="Select an industry or choose \"Other\" to enter a custom industry")
-    custom_industry: Optional[str] = Field(None, description="Enter a custom industry (only used if \"Other\" is selected above)")
-    phone: Optional[str] = Field(None, description="A phone number")
-    country: Optional[str] = Field(None, description="Select a country or choose \"Other\" to enter a custom country")
-    custom_country: Optional[str] = Field(None, description="Enter your country name (only used if \"Other\" is selected above)")
-    state: Optional[str] = Field(None, description="Select a state/province or choose \"Other\" to enter a custom value")
-    custom_state: Optional[str] = Field(None, description="Enter your state/province name (only used if \"Other\" is selected above)")
-    street_address: Optional[str] = Field(None, description="A street address")
-    city: Optional[str] = Field(None, description="A city name")
-    postal_code: Optional[str] = Field(None, description="A postal code")
+    """PandaDoc — Create Or Update Contact"""
+    contact_id: Optional[str] = Field(None, description="Contact ID")
+    email: str = Field(..., description="Email")
+    first_name: Optional[str] = Field(None, description="First Name")
+    last_name: Optional[str] = Field(None, description="Last Name")
+    company: Optional[str] = Field(None, description="Company")
+    job_title: Optional[str] = Field(None, description="Job Title")
+    custom_job_title: Optional[str] = Field(None, description="Custom Job Title")
+    industry: Optional[str] = Field(None, description="Industry")
+    custom_industry: Optional[str] = Field(None, description="Custom Industry")
+    phone: Optional[str] = Field(None, description="Phone")
+    country: Optional[str] = Field(None, description="Country")
+    custom_country: Optional[str] = Field(None, description="Custom Country")
+    state: Optional[str] = Field(None, description="State")
+    custom_state: Optional[str] = Field(None, description="Custom State")
+    street_address: Optional[str] = Field(None, description="Street Address")
+    city: Optional[str] = Field(None, description="City")
+    postal_code: Optional[str] = Field(None, description="Postal Code")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocFindDocumentInput(BaseModel):
-    """PandaDoc — Find Document(s)"""
-    q: Optional[str] = Field(None, description="Search documents by name or reference number")
-    id: Optional[str] = Field(None, description="Search for document by its specific ID")
-    status: Optional[str] = Field(None, description="Filter documents by status")
-    status__ne: Optional[str] = Field(None, description="Exclude documents with this status")
-    template_id: Optional[str] = Field(None, description="Filter by parent template (cannot be used with Form)")
-    form_id: Optional[str] = Field(None, description="Select a form from your PandaDoc workspace")
-    folder_uuid: Optional[str] = Field(None, description="Select a folder from your PandaDoc workspace")
-    contact_id: Optional[str] = Field(None, description="Select a contact from your PandaDoc workspace")
-    membership_id: Optional[str] = Field(None, description="Select a workspace member")
-    tag: Optional[str] = Field(None, description="Select a common tag or choose \"Custom\" to enter your own")
-    custom_tag: Optional[str] = Field(None, description="Enter a custom tag (only used if \"Custom\" is selected above)")
-    created_from: Optional[str] = Field(None, description="Include only documents created on or after this date")
-    created_to: Optional[str] = Field(None, description="Include only documents created before this date")
-    completed_from: Optional[str] = Field(None, description="Include only documents completed on or after this date")
-    completed_to: Optional[str] = Field(None, description="Include only documents completed before this date")
-    modified_from: Optional[str] = Field(None, description="Include only documents modified on or after this date")
-    modified_to: Optional[str] = Field(None, description="Include only documents modified before this date")
-    deleted: Optional[bool] = Field(None, description="Return only deleted documents")
-    count: Optional[float] = Field(None, description="Number of documents to return (default: 50, max: 100)")
-    page: Optional[float] = Field(None, description="Page number for pagination (starts with 1)")
-    order_by: Optional[str] = Field(None, description="Sort results by field")
-    metadata: Optional[dict[str, Any]] = Field(None, description="Filter by metadata key-value pairs. Use format: {\"key\": \"value\"}")
+    """PandaDoc — Find Document"""
+    q: Optional[str] = Field(None, description="Search Query")
+    id: Optional[str] = Field(None, description="Document ID")
+    status: Optional[str] = Field(None, description="Status")
+    status__ne: Optional[str] = Field(None, description="Status Not Equal")
+    template_id: Optional[str] = Field(None, description="Template ID")
+    form_id: Optional[str] = Field(None, description="Form ID")
+    folder_uuid: Optional[str] = Field(None, description="Folder ID")
+    contact_id: Optional[str] = Field(None, description="Contact ID")
+    membership_id: Optional[str] = Field(None, description="Membership ID")
+    tag: Optional[str] = Field(None, description="Tag")
+    custom_tag: Optional[str] = Field(None, description="Custom Tag")
+    created_from: Optional[str] = Field(None, description="ISO timestamp.")
+    created_to: Optional[str] = Field(None, description="ISO timestamp.")
+    completed_from: Optional[str] = Field(None, description="ISO timestamp.")
+    completed_to: Optional[str] = Field(None, description="ISO timestamp.")
+    modified_from: Optional[str] = Field(None, description="ISO timestamp.")
+    modified_to: Optional[str] = Field(None, description="ISO timestamp.")
+    deleted: Optional[bool] = Field(None, description="Include Deleted")
+    count: Optional[float] = Field(None, description="Count")
+    page: Optional[float] = Field(None, description="Page")
+    order_by: Optional[str] = Field(None, description="Order By")
+    metadata: Optional[Any] = Field(None, description="Metadata Filter")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocGetDocumentAttachmentsInput(BaseModel):
     """PandaDoc — Get Document Attachment"""
-    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
-    attachment_id: str = Field(..., description="Select an attachment from the document")
+    document_id: str = Field(..., description="Document ID")
+    attachment_id: str = Field(..., description="Attachment ID")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocGetDocumentDetailsInput(BaseModel):
-    """PandaDoc — Get Document"""
-    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
+    """PandaDoc — Get Document Details"""
+    document_id: str = Field(..., description="Document ID")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocDownloadDocumentInput(BaseModel):
     """PandaDoc — Download Document"""
-    document_id: str = Field(..., description="Select a document from your PandaDoc workspace")
-    separate_files: Optional[bool] = Field(None, description="Download document bundle as a zip archive of separate PDFs (1 file per section)")
-    watermark_text: Optional[str] = Field(None, description="Select common watermark text or choose \"Custom\" to enter your own")
-    custom_watermark_text: Optional[str] = Field(None, description="Enter custom watermark text (only used if \"Custom\" is selected above)")
-    watermark_color: Optional[str] = Field(None, description="Select a watermark color or use custom HEX code")
-    custom_watermark_color: Optional[str] = Field(None, description="Enter a custom HEX color code (e.g., #FF5733). Only used if \"Custom HEX Code\" is selected above.")
-    watermark_font_size: Optional[float] = Field(None, description="Font size of the watermark text")
-    watermark_opacity: Optional[float] = Field(None, description="Opacity of the watermark (0.0 to 1.0)")
+    document_id: str = Field(..., description="Document ID")
+    separate_files: Optional[bool] = Field(None, description="Separate Files")
+    watermark_text: Optional[str] = Field(None, description="Watermark Text")
+    custom_watermark_text: Optional[str] = Field(None, description="Custom Watermark Text")
+    watermark_color: Optional[str] = Field(None, description="Watermark Color")
+    custom_watermark_color: Optional[str] = Field(None, description="Custom Watermark Color")
+    watermark_font_size: Optional[float] = Field(None, description="Watermark Font Size")
+    watermark_opacity: Optional[float] = Field(None, description="Watermark Opacity")
+    completed_document: Optional[bool] = Field(None, description="Use the protected completed-document endpoint. The document must already be completed.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocSendDocumentInput(BaseModel):
+    """PandaDoc — Send Document"""
+    document_id: str = Field(..., description="Document ID")
+    subject: Optional[str] = Field(None, description="Email Subject")
+    message: Optional[str] = Field(None, description="Email Message")
+    silent: Optional[bool] = Field(None, description="Silent")
+    sender: Optional[Any] = Field(None, description="Sender")
+    forwarding_settings: Optional[Any] = Field(None, description="Forwarding Settings")
+    reply_to: Optional[str] = Field(None, description="Reply To")
+    selected_approvers: Optional[Any] = Field(None, description="Selected Approvers")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocCreateDocumentSessionInput(BaseModel):
+    """PandaDoc — Create Document Session"""
+    document_id: str = Field(..., description="Document ID")
+    recipient: Optional[str] = Field(None, description="Recipient Email")
+    lifetime: Optional[float] = Field(None, description="Lifetime Seconds")
+    metadata: Optional[Any] = Field(None, description="Additional Session Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocListTemplatesInput(BaseModel):
+    """PandaDoc — List Templates"""
+    q: Optional[str] = Field(None, description="Search Query")
+    tag: Optional[str] = Field(None, description="Tag")
+    folder_uuid: Optional[str] = Field(None, description="Folder ID")
+    count: Optional[float] = Field(None, description="Count")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocGetTemplateDetailsInput(BaseModel):
+    """PandaDoc — Get Template Details"""
+    template_id: str = Field(..., description="Template ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocListWebhookEventsInput(BaseModel):
+    """PandaDoc — List Webhook Events"""
+    count: Optional[float] = Field(None, description="Count")
+    page: Optional[float] = Field(None, description="Page")
+    since: Optional[str] = Field(None, description="ISO timestamp.")
+    to: Optional[str] = Field(None, description="ISO timestamp.")
+    type_: Optional[list[Any]] = Field(None, alias="type", description="Event Types")
+    http_status_code: Optional[list[Any]] = Field(None, description="HTTP Status Codes")
+    error: Optional[list[Any]] = Field(None, description="Errors")
+
+    model_config = {"populate_by_name": True}
+
+
+class PandadocDeleteDocumentInput(BaseModel):
+    """PandaDoc — Delete Document"""
+    document_id: str = Field(..., description="Document ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
 
     model_config = {"populate_by_name": True}
 
 
 class PandadocCustomApiCallInput(BaseModel):
     """PandaDoc — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
+    url: str = Field(..., description="Relative path such as /documents, /public/v1/documents, or a https://api.pandadoc.com/public/... URL.")
     method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
+    headers: Optional[dict[str, Any]] = Field(None, description="Headers")
+    queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
     body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
+    body: Optional[Any] = Field(None, description="Body")
+    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs and ZIP archives.")
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+    confirmDelete: Optional[bool] = Field(None, description="Required when the custom request method is DELETE.")
 
     model_config = {"populate_by_name": True}
 
@@ -34853,6 +36433,13 @@ class PaylocityGetEmployeeInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PaylocityListChangedEmployeesInput(BaseModel):
+    """Paylocity — List Changed Employees"""
+    fromDate: str = Field(..., description="Start date, YYYY-MM-DD.")
+
+    model_config = {"populate_by_name": True}
+
+
 class PaylocityListEarningsInput(BaseModel):
     """Paylocity — List Earnings"""
     employeeId: str = Field(..., description="Employee ID")
@@ -34860,9 +36447,24 @@ class PaylocityListEarningsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PaylocityGetEarningByCodeInput(BaseModel):
+    """Paylocity — Get Earning By Code"""
+    employeeId: str = Field(..., description="Employee ID")
+    earningCode: str = Field(..., description="Earning Code")
+
+    model_config = {"populate_by_name": True}
+
+
 class PaylocityGetCompanyCodesInput(BaseModel):
     """Paylocity — Get Company Codes"""
-    codeResource: str = Field(..., description="The code resource to retrieve (e.g., costCenter1, costCenter2, costCenter3, department, employeeStatus, ethnicity, gender, jobTitle, maritalStatus, payGrade, state, workersCompCode)")
+    codeResource: str = Field(..., description="Code Resource")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaylocityGetEmployeeCustomFieldsInput(BaseModel):
+    """Paylocity — Get Employee Custom Fields"""
+    employeeId: str = Field(..., description="Employee ID")
 
     model_config = {"populate_by_name": True}
 
@@ -40065,7 +41667,13 @@ class RemoteCustomApiCallInput(BaseModel):
 
 class RenderListServicesInput(BaseModel):
     """Render — List Services"""
+    name: Optional[str] = Field(None, description="Name")
     type_: Optional[str] = Field(None, alias="type", description="Service Type")
+    environmentId: Optional[str] = Field(None, description="Environment ID")
+    region: Optional[str] = Field(None, description="Region")
+    ownerId: Optional[str] = Field(None, description="Owner ID")
+    includePreviews: Optional[bool] = Field(None, description="Include Previews")
+    cursor: Optional[str] = Field(None, description="Cursor")
     limit: Optional[float] = Field(None, description="Limit")
 
     model_config = {"populate_by_name": True}
@@ -40081,7 +41689,17 @@ class RenderGetServiceInput(BaseModel):
 class RenderListDeploysInput(BaseModel):
     """Render — List Deploys"""
     serviceId: str = Field(..., description="Service ID")
+    status: Optional[str] = Field(None, description="Optional comma-separated deploy statuses.")
+    cursor: Optional[str] = Field(None, description="Cursor")
     limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderGetDeployInput(BaseModel):
+    """Render — Get Deploy"""
+    serviceId: str = Field(..., description="Service ID")
+    deployId: str = Field(..., description="Deploy ID")
 
     model_config = {"populate_by_name": True}
 
@@ -40089,7 +41707,88 @@ class RenderListDeploysInput(BaseModel):
 class RenderCreateDeployInput(BaseModel):
     """Render — Create Deploy"""
     serviceId: str = Field(..., description="Service ID")
-    clearCache: Optional[str] = Field(None, description="Whether to clear the build cache for this deploy")
+    clearCache: Optional[str] = Field(None, description="Clear Cache")
+    commitId: Optional[str] = Field(None, description="Commit ID")
+    imageUrl: Optional[str] = Field(None, description="Image URL")
+    deployMode: Optional[str] = Field(None, description="Deploy Mode")
+    confirmation: str = Field(..., description="Type TRIGGER_DEPLOY to trigger a deploy.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderCancelDeployInput(BaseModel):
+    """Render — Cancel Deploy"""
+    serviceId: str = Field(..., description="Service ID")
+    deployId: str = Field(..., description="Deploy ID")
+    confirmation: str = Field(..., description="Type CANCEL_DEPLOY to cancel the deploy.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderListEnvironmentVariablesInput(BaseModel):
+    """Render — List Environment Variables"""
+    serviceId: str = Field(..., description="Service ID")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderSetEnvironmentVariableInput(BaseModel):
+    """Render — Set Environment Variable"""
+    serviceId: str = Field(..., description="Service ID")
+    key: str = Field(..., description="Key")
+    value: Optional[str] = Field(None, description="Environment value to set. Leave blank only when Generate Value is enabled.")
+    generateValue: Optional[bool] = Field(None, description="Ask Render to generate the value instead of sending one.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderListJobsInput(BaseModel):
+    """Render — List Jobs"""
+    serviceId: str = Field(..., description="Service ID")
+    status: Optional[str] = Field(None, description="Optional comma-separated statuses: pending,running,succeeded,failed,canceled.")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderCreateJobInput(BaseModel):
+    """Render — Create Job"""
+    serviceId: str = Field(..., description="Service ID")
+    startCommand: str = Field(..., description="Start Command")
+    planId: Optional[str] = Field(None, description="Plan ID")
+    confirmation: str = Field(..., description="Type CREATE_JOB to create the job.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderGetJobInput(BaseModel):
+    """Render — Get Job"""
+    serviceId: str = Field(..., description="Service ID")
+    jobId: str = Field(..., description="Job ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderCancelJobInput(BaseModel):
+    """Render — Cancel Job"""
+    serviceId: str = Field(..., description="Service ID")
+    jobId: str = Field(..., description="Job ID")
+    confirmation: str = Field(..., description="Type CANCEL_JOB to cancel the job.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RenderListEventsInput(BaseModel):
+    """Render — List Events"""
+    serviceId: str = Field(..., description="Service ID")
+    eventType: Optional[str] = Field(None, description="Event Type")
+    startTime: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    endTime: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
 
     model_config = {"populate_by_name": True}
 
@@ -40380,9 +42079,9 @@ class RevenuecatListOfferingsInput(BaseModel):
 
 class RingcentralSendSmsInput(BaseModel):
     """RingCentral — Send SMS"""
-    from_: str = Field(..., alias="from", description="Your RingCentral phone number")
-    to: str = Field(..., description="Recipient phone number")
-    text: str = Field(..., description="SMS message text")
+    from_: str = Field(..., alias="from", description="RingCentral sending phone number in E.164 format.")
+    to: str = Field(..., description="Recipient phone number in E.164 format.")
+    text: str = Field(..., description="SMS message text.")
 
     model_config = {"populate_by_name": True}
 
@@ -40391,39 +42090,83 @@ class RingcentralGetCallLogInput(BaseModel):
     """RingCentral — Get Call Log"""
     direction: Optional[str] = Field(None, description="Direction")
     type_: Optional[str] = Field(None, alias="type", description="Type")
+    dateFrom: Optional[str] = Field(None, description="ISO date-time lower bound, e.g. 2026-06-01T00:00:00Z.")
+    dateTo: Optional[str] = Field(None, description="ISO date-time upper bound.")
+    page: Optional[float] = Field(None, description="Page")
     perPage: Optional[float] = Field(None, description="Per Page")
+    includeRecordingDetails: Optional[bool] = Field(None, description="Return recording metadata/content links when RingCentral includes them in call log records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RingcentralGetCallRecordInput(BaseModel):
+    """RingCentral — Get Call Record"""
+    recordId: str = Field(..., description="Call log record ID.")
+    includeRecordingDetails: Optional[bool] = Field(None, description="Return recording metadata/content links if present on the call record.")
 
     model_config = {"populate_by_name": True}
 
 
 class RingcentralListExtensionsInput(BaseModel):
     """RingCentral — List Extensions"""
-    perPage: Optional[float] = Field(None, description="Per Page")
+    status: Optional[str] = Field(None, description="Status")
     page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class RingcentralListPhoneNumbersInput(BaseModel):
+    """RingCentral — List Phone Numbers"""
+    scope: Optional[str] = Field(None, description="Scope")
+    usageType: Optional[str] = Field(None, description="Optional RingCentral usage type filter.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class RingcentralListMessageStoreInput(BaseModel):
+    """RingCentral — List Message Store"""
+    messageType: Optional[str] = Field(None, description="Message Type")
+    direction: Optional[str] = Field(None, description="Direction")
+    dateFrom: Optional[str] = Field(None, description="ISO date-time lower bound.")
+    dateTo: Optional[str] = Field(None, description="ISO date-time upper bound.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
 
     model_config = {"populate_by_name": True}
 
 
 class RipplingListEmployeesInput(BaseModel):
     """Rippling — List Employees"""
-    pass
+    limit: Optional[float] = Field(None, description="Cursor page size. Rippling list APIs commonly default to 50 and cap at 100.")
+    cursor: Optional[str] = Field(None, description="Cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
 
 
 class RipplingGetEmployeeInput(BaseModel):
     """Rippling — Get Employee"""
-    employeeId: str = Field(..., description="Employee ID")
+    employee_id: str = Field(..., description="Employee/Worker ID")
 
     model_config = {"populate_by_name": True}
 
 
 class RipplingListDepartmentsInput(BaseModel):
     """Rippling — List Departments"""
-    pass
+    limit: Optional[float] = Field(None, description="Cursor page size. Rippling list APIs commonly default to 50 and cap at 100.")
+    cursor: Optional[str] = Field(None, description="Cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
 
 
 class RipplingListWorkLocationsInput(BaseModel):
     """Rippling — List Work Locations"""
-    pass
+    limit: Optional[float] = Field(None, description="Cursor page size. Rippling list APIs commonly default to 50 and cap at 100.")
+    cursor: Optional[str] = Field(None, description="Cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
 
 
 class RocketChatSendMessageInput(BaseModel):
@@ -40496,6 +42239,147 @@ class RollbarCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g., /items/?status=active)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyValidateConnectionInput(BaseModel):
+    """Rootly — Validate Connection"""
+    pass
+
+
+class RootlyListIncidentsInput(BaseModel):
+    """Rootly — List Incidents"""
+    search: Optional[str] = Field(None, description="Search")
+    kind: Optional[str] = Field(None, description="Kind")
+    status: Optional[str] = Field(None, description="Status")
+    privateIncident: Optional[bool] = Field(None, description="Private Incident")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    serviceIds: Optional[str] = Field(None, description="Comma-separated Rootly service IDs.")
+    environmentIds: Optional[str] = Field(None, description="Comma-separated Rootly environment IDs.")
+    teamIds: Optional[str] = Field(None, description="Comma-separated Rootly group/team IDs.")
+    createdAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    createdAtLte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    updatedAtLte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    afterCursor: Optional[str] = Field(None, description="Cursor from response meta.next_cursor.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyGetIncidentInput(BaseModel):
+    """Rootly — Get Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyCreateIncidentInput(BaseModel):
+    """Rootly — Create Incident"""
+    title: Optional[str] = Field(None, description="Title")
+    summary: Optional[str] = Field(None, description="Summary")
+    kind: Optional[str] = Field(None, description="Kind")
+    privateIncident: Optional[bool] = Field(None, description="Rootly private incidents cannot be made public later.")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    publicTitle: Optional[str] = Field(None, description="Public Title")
+    userId: Optional[str] = Field(None, description="Creator User ID")
+    serviceIds: Optional[Any] = Field(None, description="JSON array of Rootly service IDs.")
+    environmentIds: Optional[Any] = Field(None, description="JSON array of Rootly environment IDs.")
+    incidentTypeIds: Optional[Any] = Field(None, description="JSON array of Rootly incident type IDs.")
+    groupIds: Optional[Any] = Field(None, description="JSON array of Rootly group/team IDs.")
+    alertIds: Optional[Any] = Field(None, description="JSON array of Rootly alert IDs to attach.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyUpdateIncidentInput(BaseModel):
+    """Rootly — Update Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    title: Optional[str] = Field(None, description="Title")
+    summary: Optional[str] = Field(None, description="Summary")
+    severityId: Optional[str] = Field(None, description="Severity ID")
+    serviceIds: Optional[Any] = Field(None, description="JSON array replacing attached service IDs when supplied.")
+    environmentIds: Optional[Any] = Field(None, description="JSON array replacing attached environment IDs when supplied.")
+    groupIds: Optional[Any] = Field(None, description="JSON array replacing attached team IDs when supplied.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyMitigateIncidentInput(BaseModel):
+    """Rootly — Mitigate Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    confirmIncidentId: str = Field(..., description="Must exactly match Incident ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyResolveIncidentInput(BaseModel):
+    """Rootly — Resolve Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    confirmIncidentId: str = Field(..., description="Must exactly match Incident ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyCancelIncidentInput(BaseModel):
+    """Rootly — Cancel Incident"""
+    incidentId: str = Field(..., description="Incident ID")
+    confirmIncidentId: str = Field(..., description="Must exactly match Incident ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyListIncidentEventsInput(BaseModel):
+    """Rootly — List Incident Events"""
+    incidentId: str = Field(..., description="Incident ID")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyCreateIncidentEventInput(BaseModel):
+    """Rootly — Create Incident Event"""
+    incidentId: str = Field(..., description="Incident ID")
+    event: str = Field(..., description="Summary/body for the incident event.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyListServicesInput(BaseModel):
+    """Rootly — Services"""
+    search: Optional[str] = Field(None, description="Search")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyListSeveritiesInput(BaseModel):
+    """Rootly — Severities"""
+    search: Optional[str] = Field(None, description="Search")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyListUsersInput(BaseModel):
+    """Rootly — Users"""
+    search: Optional[str] = Field(None, description="Search")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class RootlyListTeamsInput(BaseModel):
+    """Rootly — Teams"""
+    search: Optional[str] = Field(None, description="Search")
+    pageSize: Optional[float] = Field(None, description="Maximum 100.")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
 
     model_config = {"populate_by_name": True}
 
@@ -40980,35 +42864,140 @@ class SalesforceCustomApiCallInput(BaseModel):
 
 
 class SalesloftListPeopleInput(BaseModel):
-    """SalesLoft — List People"""
-    perPage: Optional[float] = Field(None, description="Per Page")
+    """Salesloft — List People"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
     page: Optional[float] = Field(None, description="Page")
+    emailAddress: Optional[str] = Field(None, description="Email Address")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
 
     model_config = {"populate_by_name": True}
 
 
 class SalesloftGetPersonInput(BaseModel):
-    """SalesLoft — Get Person"""
+    """Salesloft — Get Person"""
     personId: str = Field(..., description="Person ID")
 
     model_config = {"populate_by_name": True}
 
 
 class SalesloftCreatePersonInput(BaseModel):
-    """SalesLoft — Create Person"""
+    """Salesloft — Create Person"""
     emailAddress: str = Field(..., description="Email Address")
     firstName: Optional[str] = Field(None, description="First Name")
     lastName: Optional[str] = Field(None, description="Last Name")
     phone: Optional[str] = Field(None, description="Phone")
     title: Optional[str] = Field(None, description="Title")
-    company: Optional[str] = Field(None, description="Company")
+    accountId: Optional[str] = Field(None, description="Account ID")
+    additionalFields: Optional[Any] = Field(None, description="Optional JSON object merged into the request body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftUpdatePersonInput(BaseModel):
+    """Salesloft — Update Person"""
+    personId: str = Field(..., description="Person ID")
+    fields: Any = Field(..., description="JSON object of Salesloft person fields to update.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftListAccountsInput(BaseModel):
+    """Salesloft — List Accounts"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+    domain: Optional[str] = Field(None, description="Domain")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftGetAccountInput(BaseModel):
+    """Salesloft — Get Account"""
+    accountId: str = Field(..., description="Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftCreateAccountInput(BaseModel):
+    """Salesloft — Create Account"""
+    name: str = Field(..., description="Name")
+    domain: Optional[str] = Field(None, description="Domain")
+    phone: Optional[str] = Field(None, description="Phone")
+    city: Optional[str] = Field(None, description="City")
+    state: Optional[str] = Field(None, description="State")
+    country: Optional[str] = Field(None, description="Country")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
 
     model_config = {"populate_by_name": True}
 
 
 class SalesloftListCadencesInput(BaseModel):
-    """SalesLoft — List Cadences"""
-    pass
+    """Salesloft — List Cadences"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftGetCadenceInput(BaseModel):
+    """Salesloft — Get Cadence"""
+    cadenceId: str = Field(..., description="Cadence ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftListCadenceMembershipsInput(BaseModel):
+    """Salesloft — List Cadence Memberships"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+    personId: Optional[str] = Field(None, description="Person ID")
+    cadenceId: Optional[str] = Field(None, description="Cadence ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftListTasksInput(BaseModel):
+    """Salesloft — List Tasks"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+    personId: Optional[str] = Field(None, description="Person ID")
+    dueOn: Optional[str] = Field(None, description="YYYY-MM-DD.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftListCallsInput(BaseModel):
+    """Salesloft — List Calls"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+    personId: Optional[str] = Field(None, description="Person ID")
+    updatedAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftListWebhookSubscriptionsInput(BaseModel):
+    """Salesloft — List Webhook Subscriptions"""
+    perPage: Optional[float] = Field(None, description="Maximum 100. Avoid high page numbers because Salesloft applies extra cost after page 100.")
+    page: Optional[float] = Field(None, description="Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftCreateWebhookSubscriptionInput(BaseModel):
+    """Salesloft — Create Webhook Subscription"""
+    eventType: str = Field(..., description="Salesloft event_type, for example person_created or account_updated.")
+    callbackUrl: str = Field(..., description="Callback URL")
+
+    model_config = {"populate_by_name": True}
+
+
+class SalesloftDeleteWebhookSubscriptionInput(BaseModel):
+    """Salesloft — Delete Webhook Subscription"""
+    subscriptionId: str = Field(..., description="Subscription ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
 
 
 class AdvancedCodeRunCodeInput(BaseModel):
@@ -41433,6 +43422,48 @@ class SendgridListGlobalSuppressionsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SendgridAddOrUpdateContactInput(BaseModel):
+    """SendGrid — Add or Update Contact"""
+    email: str = Field(..., description="Email")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    listIds: Optional[Any] = Field(None, description="Optional array of SendGrid marketing list IDs.")
+    customFields: Optional[Any] = Field(None, description="Optional custom field ID/value object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SendgridSearchContactsByEmailInput(BaseModel):
+    """SendGrid — Search Contacts by Email"""
+    emails: str = Field(..., description="Comma-separated email addresses.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SendgridListMarketingListsInput(BaseModel):
+    """SendGrid — List Marketing Lists"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class SendgridDeleteContactInput(BaseModel):
+    """SendGrid — Delete Contact"""
+    contactId: str = Field(..., description="Contact ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class SendgridGetEmailActivityInput(BaseModel):
+    """SendGrid — Get Email Activity"""
+    query: str = Field(..., description="SendGrid Email Activity query, for example to_email=\"person@example.com\".")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
 class SendpulseAddSubscriberInput(BaseModel):
     """SendPulse — Add Subscriber"""
     mailingListId: str = Field(..., description="Select one of your SendPulse mailing lists")
@@ -41793,6 +43824,27 @@ class SerpapiGoogleSearchInput(BaseModel):
     start: Optional[float] = Field(None, description="Zero-based result offset.")
     safe: Optional[str] = Field(None, description="Safe Search")
     noCache: Optional[bool] = Field(None, description="Use only when fresh paid results are required.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SerpapiGoogleMapsSearchInput(BaseModel):
+    """SerpApi — Google Maps Search"""
+    query: str = Field(..., description="Business, place, or category to search for.")
+    location: Optional[str] = Field(None, description="Optional SerpApi location such as Austin, Texas, United States.")
+    latitude: Optional[float] = Field(None, description="Optional coordinate latitude. Use with Longitude for map-centered searches.")
+    longitude: Optional[float] = Field(None, description="Optional coordinate longitude. Use with Latitude for map-centered searches.")
+    zoom: Optional[float] = Field(None, description="Optional map zoom level, capped from 3 to 21.")
+    language: Optional[str] = Field(None, description="Optional Google language code, for example en.")
+    resultLimit: Optional[float] = Field(None, description="Number of local results requested, capped at 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SerpapiSearchLocationsInput(BaseModel):
+    """SerpApi — Search Locations"""
+    query: str = Field(..., description="Location search text such as Austin.")
+    limit: Optional[float] = Field(None, description="Maximum locations to return, capped at 10 by SerpApi.")
 
     model_config = {"populate_by_name": True}
 
@@ -46363,10 +48415,32 @@ class TelegramBotCustomApiCallInput(BaseModel):
 
 class TelnyxSendMessageInput(BaseModel):
     """Telnyx — Send Message"""
-    from_: str = Field(..., alias="from", description="Sending phone number (E.164 format) or messaging profile ID")
-    to: str = Field(..., description="Recipient phone number in E.164 format")
+    from_: str = Field(..., alias="from", description="Sending phone number or sender ID.")
+    to: str = Field(..., description="Recipient phone number in E.164 format.")
     text: str = Field(..., description="Message Text")
-    messagingProfileId: Optional[str] = Field(None, description="Optional messaging profile ID to use")
+    messagingProfileId: Optional[str] = Field(None, description="Optional messaging profile ID to use.")
+    subject: Optional[str] = Field(None, description="Optional MMS subject.")
+    mediaUrls: Optional[Any] = Field(None, description="Optional array of media URLs for MMS. Supplying media is an explicit opt-in.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TelnyxGetMessageInput(BaseModel):
+    """Telnyx — Get Message"""
+    messageId: str = Field(..., description="Message ID")
+    includeMediaUrls: Optional[bool] = Field(None, description="Return message media URLs if Telnyx includes them.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TelnyxSearchDetailRecordsInput(BaseModel):
+    """Telnyx — Search Detail Records"""
+    recordType: str = Field(..., description="Record Type")
+    status: Optional[str] = Field(None, description="Optional status filter, e.g. delivered.")
+    createdAtGte: Optional[str] = Field(None, description="Optional ISO date-time lower bound.")
+    createdAtLte: Optional[str] = Field(None, description="Optional ISO date-time upper bound.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
 
     model_config = {"populate_by_name": True}
 
@@ -46374,6 +48448,7 @@ class TelnyxSendMessageInput(BaseModel):
 class TelnyxListMessagingProfilesInput(BaseModel):
     """Telnyx — List Messaging Profiles"""
     pageSize: Optional[float] = Field(None, description="Page Size")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
 
     model_config = {"populate_by_name": True}
 
@@ -46381,16 +48456,93 @@ class TelnyxListMessagingProfilesInput(BaseModel):
 class TelnyxListPhoneNumbersInput(BaseModel):
     """Telnyx — List Phone Numbers"""
     pageSize: Optional[float] = Field(None, description="Page Size")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
     status: Optional[str] = Field(None, description="Status")
+
+    model_config = {"populate_by_name": True}
+
+
+class TelnyxListCallControlApplicationsInput(BaseModel):
+    """Telnyx — List Call Control Applications"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    active: Optional[bool] = Field(None, description="Active Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class TelnyxGetCallControlApplicationInput(BaseModel):
+    """Telnyx — Get Call Control Application"""
+    applicationId: str = Field(..., description="Application ID")
 
     model_config = {"populate_by_name": True}
 
 
 class TelnyxCreateCallInput(BaseModel):
     """Telnyx — Create Call"""
-    connectionId: str = Field(..., description="The connection ID to use for the call")
-    to: str = Field(..., description="Phone number or SIP URI to dial")
-    from_: str = Field(..., alias="from", description="Phone number to use as caller ID (E.164 format)")
+    connectionId: str = Field(..., description="The connection ID to use for the call.")
+    to: str = Field(..., description="Phone number or SIP URI to dial.")
+    from_: str = Field(..., alias="from", description="Caller ID phone number in E.164 format.")
+    webhookUrl: Optional[str] = Field(None, description="Optional command webhook URL override.")
+    clientState: Optional[str] = Field(None, description="Optional opaque state returned in webhooks.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TenableListAssetsInput(BaseModel):
+    """Tenable — List Assets"""
+    pass
+
+
+class TenableGetAssetInput(BaseModel):
+    """Tenable — Get Asset"""
+    assetUuid: str = Field(..., description="Asset UUID")
+
+    model_config = {"populate_by_name": True}
+
+
+class TenableListVulnerabilitiesInput(BaseModel):
+    """Tenable — List Vulnerabilities"""
+    dateRangeDays: Optional[float] = Field(None, description="Limit workbench results to this recent number of days.")
+    filterName: Optional[str] = Field(None, description="Filter Field")
+    filterQuality: Optional[str] = Field(None, description="Filter Match")
+    filterValue: Optional[str] = Field(None, description="Used with Filter Field. For severity, Tenable expects values such as critical, high, medium, low, or info.")
+    searchType: Optional[str] = Field(None, description="Search Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class TenableGetPluginDetailsInput(BaseModel):
+    """Tenable — Get Plugin Details"""
+    pluginId: str = Field(..., description="Plugin ID")
+    dateRangeDays: Optional[float] = Field(None, description="Limit workbench results to this recent number of days.")
+    filterName: Optional[str] = Field(None, description="Filter Field")
+    filterQuality: Optional[str] = Field(None, description="Filter Match")
+    filterValue: Optional[str] = Field(None, description="Used with Filter Field. For severity, Tenable expects values such as critical, high, medium, low, or info.")
+    searchType: Optional[str] = Field(None, description="Search Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class TenableListAssetsWithVulnerabilitiesInput(BaseModel):
+    """Tenable — List Assets With Vulnerabilities"""
+    dateRangeDays: Optional[float] = Field(None, description="Limit workbench results to this recent number of days.")
+    filterName: Optional[str] = Field(None, description="Filter Field")
+    filterQuality: Optional[str] = Field(None, description="Filter Match")
+    filterValue: Optional[str] = Field(None, description="Used with Filter Field. For severity, Tenable expects values such as critical, high, medium, low, or info.")
+    searchType: Optional[str] = Field(None, description="Search Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class TenableListAssetVulnerabilitiesInput(BaseModel):
+    """Tenable — List Asset Vulnerabilities"""
+    assetUuid: str = Field(..., description="Asset UUID")
+    dateRangeDays: Optional[float] = Field(None, description="Limit workbench results to this recent number of days.")
+    filterName: Optional[str] = Field(None, description="Filter Field")
+    filterQuality: Optional[str] = Field(None, description="Filter Match")
+    filterValue: Optional[str] = Field(None, description="Used with Filter Field. For severity, Tenable expects values such as critical, high, medium, low, or info.")
+    searchType: Optional[str] = Field(None, description="Search Type")
 
     model_config = {"populate_by_name": True}
 
@@ -46721,7 +48873,7 @@ class TiktokCustomApiCallInput(BaseModel):
 
 class TiktokAdsListCampaignsInput(BaseModel):
     """TikTok Ads — List Campaigns"""
-    advertiserId: str = Field(..., description="The ID of the advertiser account")
+    advertiserId: str = Field(..., description="TikTok advertiser account ID.")
     page: Optional[float] = Field(None, description="Page")
     pageSize: Optional[float] = Field(None, description="Page Size")
 
@@ -46731,7 +48883,7 @@ class TiktokAdsListCampaignsInput(BaseModel):
 class TiktokAdsGetCampaignInput(BaseModel):
     """TikTok Ads — Get Campaign"""
     advertiserId: str = Field(..., description="Advertiser ID")
-    campaignIds: list[Any] = Field(..., description="List of campaign IDs to retrieve")
+    campaignIds: list[Any] = Field(..., description="Campaign IDs to retrieve.")
 
     model_config = {"populate_by_name": True}
 
@@ -46739,7 +48891,26 @@ class TiktokAdsGetCampaignInput(BaseModel):
 class TiktokAdsListAdGroupsInput(BaseModel):
     """TikTok Ads — List Ad Groups"""
     advertiserId: str = Field(..., description="Advertiser ID")
-    campaignId: Optional[str] = Field(None, description="Filter by campaign ID")
+    campaignId: Optional[str] = Field(None, description="Filter by campaign ID.")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class TiktokAdsGetAdGroupInput(BaseModel):
+    """TikTok Ads — Get Ad Group"""
+    advertiserId: str = Field(..., description="Advertiser ID")
+    adGroupIds: list[Any] = Field(..., description="Ad Group IDs")
+
+    model_config = {"populate_by_name": True}
+
+
+class TiktokAdsListAdsInput(BaseModel):
+    """TikTok Ads — List Ads"""
+    advertiserId: str = Field(..., description="Advertiser ID")
+    campaignId: Optional[str] = Field(None, description="Campaign ID")
+    adGroupId: Optional[str] = Field(None, description="Ad Group ID")
     page: Optional[float] = Field(None, description="Page")
     pageSize: Optional[float] = Field(None, description="Page Size")
 
@@ -46749,11 +48920,12 @@ class TiktokAdsListAdGroupsInput(BaseModel):
 class TiktokAdsGetAdReportInput(BaseModel):
     """TikTok Ads — Get Ad Report"""
     advertiserId: str = Field(..., description="Advertiser ID")
-    dataLevel: str = Field(..., description="Granularity of the report data")
-    startDate: str = Field(..., description="Start date in YYYY-MM-DD format")
-    endDate: str = Field(..., description="End date in YYYY-MM-DD format")
-    metrics: list[Any] = Field(..., description="Metrics to include (e.g., \"spend\", \"impressions\", \"clicks\", \"ctr\", \"cpc\", \"conversions\")")
-    dimensions: Optional[list[Any]] = Field(None, description="Dimensions for grouping (e.g., \"campaign_id\", \"adgroup_id\", \"stat_time_day\")")
+    dataLevel: str = Field(..., description="Granularity of the report data.")
+    startDate: str = Field(..., description="YYYY-MM-DD.")
+    endDate: str = Field(..., description="YYYY-MM-DD.")
+    metrics: list[Any] = Field(..., description="Metrics such as spend, impressions, clicks, ctr, cpc, conversions.")
+    dimensions: Optional[list[Any]] = Field(None, description="Dimensions such as campaign_id, adgroup_id, ad_id, stat_time_day.")
+    page: Optional[float] = Field(None, description="Page")
     pageSize: Optional[float] = Field(None, description="Page Size")
 
     model_config = {"populate_by_name": True}
@@ -48528,33 +50700,52 @@ class VitallyCustomApiCallInput(BaseModel):
 
 class VonageSendSmsInput(BaseModel):
     """Vonage — Send SMS"""
-    from_: str = Field(..., alias="from", description="Sender name or number")
-    to: str = Field(..., description="Recipient phone number in E.164 format")
+    from_: str = Field(..., alias="from", description="Sender name or number.")
+    to: str = Field(..., description="Recipient phone number in E.164 format.")
     text: str = Field(..., description="Message Text")
+    clientRef: Optional[str] = Field(None, description="Optional client reference for reporting.")
+    callback: Optional[str] = Field(None, description="Optional delivery receipt webhook URL for this message.")
 
     model_config = {"populate_by_name": True}
 
 
 class VonageSendVerificationInput(BaseModel):
     """Vonage — Send Verification"""
-    number: str = Field(..., description="Phone number in E.164 format")
-    brand: str = Field(..., description="Brand name shown in the verification message")
-    codeLength: Optional[float] = Field(None, description="Length of the verification code (4 or 6)")
+    number: str = Field(..., description="Phone number in E.164 format.")
+    brand: str = Field(..., description="Brand name shown in the verification message.")
+    codeLength: Optional[float] = Field(None, description="Length of the verification code (4 or 6).")
+    workflowId: Optional[float] = Field(None, description="Optional Verify v1 workflow ID.")
 
     model_config = {"populate_by_name": True}
 
 
 class VonageCheckVerificationInput(BaseModel):
     """Vonage — Check Verification"""
-    requestId: str = Field(..., description="The request_id returned from the verification request")
-    code: str = Field(..., description="The verification code entered by the user")
+    requestId: str = Field(..., description="The request_id returned from the verification request.")
+    code: str = Field(..., description="The verification code entered by the user.")
 
     model_config = {"populate_by_name": True}
 
 
 class VonageCancelVerificationInput(BaseModel):
     """Vonage — Cancel Verification"""
-    requestId: str = Field(..., description="The request_id to cancel")
+    requestId: str = Field(..., description="The request_id to cancel.")
+    confirmCancel: bool = Field(..., description="Must be checked to cancel the verification.")
+
+    model_config = {"populate_by_name": True}
+
+
+class VonageGetAccountBalanceInput(BaseModel):
+    """Vonage — Get Account Balance"""
+    pass
+
+
+class VonageListOwnedNumbersInput(BaseModel):
+    """Vonage — List Owned Numbers"""
+    pattern: Optional[str] = Field(None, description="Optional number pattern filter.")
+    searchPattern: Optional[float] = Field(None, description="Optional Vonage search pattern value.")
+    index: Optional[float] = Field(None, description="Index")
+    size: Optional[float] = Field(None, description="Size")
 
     model_config = {"populate_by_name": True}
 
@@ -48990,23 +51181,60 @@ class WebexListRoomsInput(BaseModel):
     """Webex — List Rooms"""
     max: Optional[float] = Field(None, description="Max Results")
     type_: Optional[str] = Field(None, alias="type", description="Room Type")
+    sortBy: Optional[str] = Field(None, description="Sort By")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexCreateRoomInput(BaseModel):
+    """Webex — Create Room"""
+    title: str = Field(..., description="Title")
+    teamId: Optional[str] = Field(None, description="Optional team to create the room under.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexListMembershipsInput(BaseModel):
+    """Webex — List Room Memberships"""
+    roomId: Optional[str] = Field(None, description="Room ID")
+    personId: Optional[str] = Field(None, description="Person ID")
+    personEmail: Optional[str] = Field(None, description="Person Email")
+    max: Optional[float] = Field(None, description="Max Results")
 
     model_config = {"populate_by_name": True}
 
 
 class WebexCreateMessageInput(BaseModel):
     """Webex — Create Message"""
-    roomId: str = Field(..., description="Room ID")
-    text: Optional[str] = Field(None, description="Plain text message")
-    markdown: Optional[str] = Field(None, description="Markdown-formatted message")
+    roomId: Optional[str] = Field(None, description="Room ID")
+    toPersonId: Optional[str] = Field(None, description="To Person ID")
+    toPersonEmail: Optional[str] = Field(None, description="To Person Email")
+    text: Optional[str] = Field(None, description="Plain text message.")
+    markdown: Optional[str] = Field(None, description="Markdown-formatted message.")
+    fileUrl: Optional[str] = Field(None, description="Optional publicly reachable file URL to attach.")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexGetMessageInput(BaseModel):
+    """Webex — Get Message"""
+    messageId: str = Field(..., description="Message ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexDeleteMessageInput(BaseModel):
+    """Webex — Delete Message"""
+    messageId: str = Field(..., description="Message ID")
+    confirmDelete: bool = Field(..., description="Must be checked to delete the message.")
 
     model_config = {"populate_by_name": True}
 
 
 class WebexListPeopleInput(BaseModel):
     """Webex — List People"""
-    displayName: Optional[str] = Field(None, description="Filter by display name")
-    email: Optional[str] = Field(None, description="Filter by email address")
+    displayName: Optional[str] = Field(None, description="Filter by display name.")
+    email: Optional[str] = Field(None, description="Filter by email address.")
     max: Optional[float] = Field(None, description="Max Results")
 
     model_config = {"populate_by_name": True}
@@ -49014,7 +51242,7 @@ class WebexListPeopleInput(BaseModel):
 
 class WebexGetPersonInput(BaseModel):
     """Webex — Get Person"""
-    personId: str = Field(..., description="The unique ID of the person (use \"me\" for the authenticated user)")
+    personId: str = Field(..., description="Person ID")
 
     model_config = {"populate_by_name": True}
 
@@ -49022,7 +51250,30 @@ class WebexGetPersonInput(BaseModel):
 class WebexListMessagesInput(BaseModel):
     """Webex — List Messages"""
     roomId: str = Field(..., description="Room ID")
+    mentionedPeople: Optional[str] = Field(None, description="Optional person ID or \"me\".")
+    before: Optional[str] = Field(None, description="ISO date-time upper bound.")
+    beforeMessage: Optional[str] = Field(None, description="Before Message ID")
     max: Optional[float] = Field(None, description="Max Results")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexListMeetingsInput(BaseModel):
+    """Webex — List Meetings"""
+    from_: Optional[str] = Field(None, alias="from", description="ISO date-time lower bound.")
+    to: Optional[str] = Field(None, description="ISO date-time upper bound.")
+    max: Optional[float] = Field(None, description="Max Results")
+
+    model_config = {"populate_by_name": True}
+
+
+class WebexCreateMeetingInput(BaseModel):
+    """Webex — Create Meeting"""
+    title: str = Field(..., description="Title")
+    start: str = Field(..., description="ISO date-time such as 2026-06-21T15:00:00Z.")
+    end: str = Field(..., description="ISO date-time.")
+    invitees: Optional[Any] = Field(None, description="Optional array of Webex invitee objects.")
+    agenda: Optional[str] = Field(None, description="Agenda")
 
     model_config = {"populate_by_name": True}
 
@@ -50634,9 +52885,12 @@ class ZocdocCustomApiCallInput(BaseModel):
 
 class ZohoBooksListInvoicesInput(BaseModel):
     """Zoho Books — List Invoices"""
-    organizationId: str = Field(..., description="Your Zoho Books organization ID")
-    status: Optional[str] = Field(None, description="Status")
+    organizationId: str = Field(..., description="Zoho Books organization_id.")
     page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+    status: Optional[str] = Field(None, description="Status")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+    lastModifiedTime: Optional[str] = Field(None, description="Zoho timestamp filter when supported.")
 
     model_config = {"populate_by_name": True}
 
@@ -50653,19 +52907,41 @@ class ZohoBooksCreateInvoiceInput(BaseModel):
     """Zoho Books — Create Invoice"""
     organizationId: str = Field(..., description="Organization ID")
     customerId: str = Field(..., description="Customer ID")
-    invoiceDate: Optional[str] = Field(None, description="Invoice date in YYYY-MM-DD format")
-    dueDate: Optional[str] = Field(None, description="Payment due date in YYYY-MM-DD format")
-    lineItems: Any = Field(..., description="Array of line items: [{\"item_id\": \"...\", \"quantity\": 1, \"rate\": 100}]")
+    invoiceDate: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    dueDate: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    lineItems: Any = Field(..., description="Array of line items, for example [{\"item_id\":\"...\",\"quantity\":1,\"rate\":100}].")
     notes: Optional[str] = Field(None, description="Notes")
+    confirmCreate: bool = Field(..., description="Confirm Create Invoice")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksUpdateInvoiceInput(BaseModel):
+    """Zoho Books — Update Invoice"""
+    organizationId: str = Field(..., description="Organization ID")
+    invoiceId: str = Field(..., description="Invoice ID")
+    invoiceFields: Any = Field(..., description="Invoice Fields")
+    confirmUpdate: bool = Field(..., description="Confirm Update Invoice")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksDeleteInvoiceInput(BaseModel):
+    """Zoho Books — Delete Invoice"""
+    organizationId: str = Field(..., description="Organization ID")
+    invoiceId: str = Field(..., description="Invoice ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete Invoice")
 
     model_config = {"populate_by_name": True}
 
 
 class ZohoBooksListContactsInput(BaseModel):
     """Zoho Books — List Contacts"""
-    organizationId: str = Field(..., description="Organization ID")
-    contactType: Optional[str] = Field(None, description="Contact Type")
+    organizationId: str = Field(..., description="Zoho Books organization_id.")
     page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+    contactType: Optional[str] = Field(None, description="Contact Type")
+    searchText: Optional[str] = Field(None, description="Search Text")
 
     model_config = {"populate_by_name": True}
 
@@ -50686,17 +52962,66 @@ class ZohoBooksCreateContactInput(BaseModel):
     companyName: Optional[str] = Field(None, description="Company Name")
     email: Optional[str] = Field(None, description="Email")
     phone: Optional[str] = Field(None, description="Phone")
-    currencyCode: Optional[str] = Field(None, description="ISO currency code (e.g., USD, EUR)")
+    currencyCode: Optional[str] = Field(None, description="Currency Code")
+    confirmCreate: bool = Field(..., description="Confirm Create Contact")
 
     model_config = {"populate_by_name": True}
 
 
-class ZohoBooksCustomApiCallInput(BaseModel):
-    """Zoho Books — Custom API Call"""
+class ZohoBooksListExpensesInput(BaseModel):
+    """Zoho Books — List Expenses"""
+    organizationId: str = Field(..., description="Zoho Books organization_id.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+    accountId: Optional[str] = Field(None, description="Expense Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksCreateExpenseInput(BaseModel):
+    """Zoho Books — Create Expense"""
     organizationId: str = Field(..., description="Organization ID")
-    method: str = Field(..., description="Method")
-    path: str = Field(..., description="API path (e.g. /invoices)")
-    body: Optional[Any] = Field(None, description="Body")
+    expenseFields: Any = Field(..., description="Expense Fields")
+    confirmCreate: bool = Field(..., description="Confirm Create Expense")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksListCustomerPaymentsInput(BaseModel):
+    """Zoho Books — List Customer Payments"""
+    organizationId: str = Field(..., description="Zoho Books organization_id.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksCreateCustomerPaymentInput(BaseModel):
+    """Zoho Books — Create Customer Payment"""
+    organizationId: str = Field(..., description="Organization ID")
+    paymentFields: Any = Field(..., description="JSON body for the Zoho Books customer payment endpoint.")
+    confirmCreate: bool = Field(..., description="Confirm Create Payment")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksListItemsInput(BaseModel):
+    """Zoho Books — List Items"""
+    organizationId: str = Field(..., description="Zoho Books organization_id.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Maximum 200.")
+    searchText: Optional[str] = Field(None, description="Search Text")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZohoBooksCreateItemInput(BaseModel):
+    """Zoho Books — Create Item"""
+    organizationId: str = Field(..., description="Organization ID")
+    itemFields: Any = Field(..., description="Item Fields")
+    confirmCreate: bool = Field(..., description="Confirm Create Item")
 
     model_config = {"populate_by_name": True}
 
@@ -51678,15 +54003,18 @@ IntegrationName = Literal[
     "assemblyai",
     "athenahealth",
     "atlassian",
+    "statuspage",
     "attention",
     "attio",
     "auth0",
     "authorize-net",
     "autotask",
     "avalara",
+    "aws-appconfig",
     "aws-athena",
     "aws-cloudformation",
     "aws-cloudwatch",
+    "aws-codepipeline",
     "aws-dynamodb",
     "aws-eventbridge",
     "aws-iam",
@@ -51709,6 +54037,7 @@ IntegrationName = Literal[
     "better-stack",
     "bigcommerce",
     "bigdata-com",
+    "biorxiv-medrxiv",
     "messagebird",
     "bitbucket",
     "bitly",
@@ -51725,6 +54054,7 @@ IntegrationName = Literal[
     "breezy-hr",
     "brevo",
     "brex",
+    "bright-data",
     "buffer",
     "bugsnag",
     "buildium",
@@ -51780,7 +54110,6 @@ IntegrationName = Literal[
     "constant-contact",
     "contentful",
     "context-dev",
-    "convertkit",
     "convex",
     "copper",
     "courier",
@@ -51852,6 +54181,7 @@ IntegrationName = Literal[
     "firebase",
     "firecrawl",
     "fireflies",
+    "firehydrant",
     "fireworks-ai",
     "fishbowl",
     "fivetran",
@@ -51926,6 +54256,7 @@ IntegrationName = Literal[
     "hibob",
     "hightouch",
     "hive",
+    "homebase",
     "honeycomb",
     "hostaway",
     "hotjar",
@@ -51953,6 +54284,7 @@ IntegrationName = Literal[
     "jazzhr",
     "jina-ai",
     "jira-cloud",
+    "jira-service-management",
     "jobber",
     "jotform",
     "jumpcloud",
@@ -51961,6 +54293,7 @@ IntegrationName = Literal[
     "katana-mrp",
     "keap",
     "kissflow",
+    "convertkit",
     "klaviyo",
     "knock",
     "kommo",
@@ -51993,6 +54326,7 @@ IntegrationName = Literal[
     "lucid",
     "magento",
     "mailchimp",
+    "mandrill",
     "mailer-lite",
     "mailgun",
     "mailjet",
@@ -52138,6 +54472,7 @@ IntegrationName = Literal[
     "rippling",
     "rocket-chat",
     "rollbar",
+    "rootly",
     "route4me",
     "rss",
     "rudderstack",
@@ -52210,6 +54545,7 @@ IntegrationName = Literal[
     "teamwork",
     "telegram-bot",
     "telnyx",
+    "tenable",
     "terraform-cloud",
     "thinkific",
     "threads",
@@ -52792,6 +55128,18 @@ IntegrationActionKey = Literal[
     "atlassian.confluence_add_label",
     "atlassian.get_next_page",
     "atlassian.custom_api_call",
+    "statuspage.validate_connection",
+    "statuspage.list_pages",
+    "statuspage.get_page",
+    "statuspage.list_components",
+    "statuspage.get_component",
+    "statuspage.create_component",
+    "statuspage.update_component",
+    "statuspage.list_incidents",
+    "statuspage.get_incident",
+    "statuspage.create_incident",
+    "statuspage.update_incident",
+    "statuspage.list_incident_updates",
     "attention.validate_connection",
     "attention.list_conversations",
     "attention.get_conversation",
@@ -52832,6 +55180,18 @@ IntegrationActionKey = Literal[
     "avalara.get_transaction",
     "avalara.void_transaction",
     "avalara.resolve_address",
+    "aws-appconfig.list_applications",
+    "aws-appconfig.get_application",
+    "aws-appconfig.list_environments",
+    "aws-appconfig.list_configuration_profiles",
+    "aws-appconfig.list_hosted_configuration_versions",
+    "aws-appconfig.get_hosted_configuration_version",
+    "aws-appconfig.list_deployments",
+    "aws-appconfig.get_deployment",
+    "aws-appconfig.start_deployment",
+    "aws-appconfig.stop_deployment",
+    "aws-appconfig.start_configuration_session",
+    "aws-appconfig.get_latest_configuration",
     "aws-athena.start_query_execution",
     "aws-athena.get_query_execution",
     "aws-athena.get_query_results",
@@ -52856,6 +55216,14 @@ IntegrationActionKey = Literal[
     "aws-cloudwatch.put_metric_data",
     "aws-cloudwatch.describe_log_groups",
     "aws-cloudwatch.filter_log_events",
+    "aws-codepipeline.list_pipelines",
+    "aws-codepipeline.get_pipeline",
+    "aws-codepipeline.get_pipeline_state",
+    "aws-codepipeline.list_pipeline_executions",
+    "aws-codepipeline.get_pipeline_execution",
+    "aws-codepipeline.list_action_executions",
+    "aws-codepipeline.start_pipeline_execution",
+    "aws-codepipeline.stop_pipeline_execution",
     "aws-dynamodb.list_tables",
     "aws-dynamodb.describe_table",
     "aws-dynamodb.get_item",
@@ -53023,6 +55391,12 @@ IntegrationActionKey = Literal[
     "bigdata-com.get_quote",
     "bigdata-com.get_subscription_quotas",
     "bigdata-com.custom_api_call",
+    "biorxiv-medrxiv.list_preprints",
+    "biorxiv-medrxiv.get_preprint_by_doi",
+    "biorxiv-medrxiv.list_publication_links",
+    "biorxiv-medrxiv.get_publication_by_doi",
+    "biorxiv-medrxiv.summary_statistics",
+    "biorxiv-medrxiv.usage_statistics",
     "messagebird.send-sms",
     "messagebird.listMessages",
     "messagebird.custom_api_call",
@@ -53161,6 +55535,8 @@ IntegrationActionKey = Literal[
     "brex.get_budget",
     "brex.list_spend_limits",
     "brex.get_spend_limit",
+    "bright-data.unlock_url",
+    "bright-data.google_search",
     "buffer.create_post",
     "buffer.list_profiles",
     "buffer.get_post",
@@ -53540,8 +55916,15 @@ IntegrationActionKey = Literal[
     "connectwise.list_companies",
     "connectwise.list_contacts",
     "connectwise.custom_api_call",
-    "constant-contact.create_or_update_contact",
-    "constant-contact.custom_api_call",
+    "constant-contact.list_contacts",
+    "constant-contact.create_contact",
+    "constant-contact.update_contact",
+    "constant-contact.delete_contact",
+    "constant-contact.list_contact_lists",
+    "constant-contact.list_email_campaigns",
+    "constant-contact.get_email_campaign",
+    "constant-contact.test_send_campaign_activity",
+    "constant-contact.get_email_campaign_stats",
     "contentful.contentful_record_search",
     "contentful.contentful_record_get",
     "contentful.contentful_record_create",
@@ -53550,41 +55933,6 @@ IntegrationActionKey = Literal[
     "context-dev.extract_structured_data",
     "context-dev.retrieve_brand",
     "context-dev.screenshot",
-    "convertkit.subscribers_get_subscriber_by_id",
-    "convertkit.subscribers_get_subscriber_by_email",
-    "convertkit.subscribers_list_subscribers",
-    "convertkit.subscribers_update_subscriber",
-    "convertkit.subscribers_unsubscribe_subscriber",
-    "convertkit.subscribers_list_tags_by_email",
-    "convertkit.subscribers_list_tags_by_subscriber_id",
-    "convertkit.create_webhook",
-    "convertkit.destroy_webhook",
-    "convertkit.custom_fields_list_fields",
-    "convertkit.custom_fields_create_field",
-    "convertkit.custom_fields_update_field",
-    "convertkit.custom_fields_delete_field",
-    "convertkit.broadcasts_list_broadcasts",
-    "convertkit.broadcasts_create_broadcast",
-    "convertkit.broadcasts_get_broadcast",
-    "convertkit.broadcasts_update_broadcast",
-    "convertkit.broadcasts_delete_broadcast",
-    "convertkit.broadcasts_broadcast_stats",
-    "convertkit.forms_list_forms",
-    "convertkit.forms_add_subscriber_to_form",
-    "convertkit.forms_list_form_subscriptions",
-    "convertkit.sequences_list_sequences",
-    "convertkit.sequences_add_subscriber_to_sequence",
-    "convertkit.sequences_list_subscriptions_to_sequence",
-    "convertkit.tags_list_tags",
-    "convertkit.tags_create_tag",
-    "convertkit.tags_tag_subscriber",
-    "convertkit.tags_remove_tag_from_subscriber_by_email",
-    "convertkit.tags_remove_tag_from_subscriber_by_id",
-    "convertkit.tags_list_subscriptions_to_tag",
-    "convertkit.purchases_list_purchases",
-    "convertkit.purchases_get_purchase_by_id",
-    "convertkit.purchases_create_purchase",
-    "convertkit.purchases_create_multiple_purchases",
     "convex.run_query",
     "convex.run_mutation",
     "convex.run_action",
@@ -53656,8 +56004,12 @@ IntegrationActionKey = Literal[
     "culture-amp.custom_api_call",
     "customer-io.identify_person",
     "customer-io.track_event",
+    "customer-io.list_people",
+    "customer-io.get_person",
+    "customer-io.delete_person",
     "customer-io.list_segments",
     "customer-io.list_campaigns",
+    "customer-io.send_transactional_email",
     "cvent.list_events",
     "cvent.get_event",
     "cvent.list_registrants",
@@ -53701,6 +56053,9 @@ IntegrationActionKey = Literal[
     "datadog.send_log",
     "dataforseo.google_organic_live_advanced",
     "dataforseo.google_maps_live_advanced",
+    "dataforseo.google_search_volume_live",
+    "dataforseo.google_keyword_ideas_live",
+    "dataforseo.backlinks_summary_live",
     "dataforseo.list_google_locations",
     "datetime.parse_date",
     "datetime.format_date",
@@ -53779,10 +56134,12 @@ IntegrationActionKey = Literal[
     "devrev.create_work",
     "dialpad.list_calls",
     "dialpad.get_call",
+    "dialpad.get_call_transcript",
     "dialpad.list_contacts",
     "dialpad.send_sms",
+    "dialpad.list_users",
     "dialpad.get_user",
-    "dialpad.custom_api_call",
+    "dialpad.list_webhooks",
     "digital-ocean.list_domains",
     "digital-ocean.create_domain",
     "digital-ocean.get_domain",
@@ -53924,7 +56281,14 @@ IntegrationActionKey = Literal[
     "dropbox-sign.list_signature_requests",
     "dropbox-sign.get_signature_request",
     "dropbox-sign.send_signature_request",
+    "dropbox-sign.send_with_template",
+    "dropbox-sign.update_signature_request",
     "dropbox-sign.cancel_signature_request",
+    "dropbox-sign.download_files",
+    "dropbox-sign.list_templates",
+    "dropbox-sign.get_template",
+    "dropbox-sign.set_account_callback",
+    "dropbox-sign.custom_api_call",
     "dub.create_link",
     "dub.get_link",
     "dub.list_links",
@@ -54135,6 +56499,20 @@ IntegrationActionKey = Literal[
     "fireflies.search_transcripts",
     "fireflies.get_transcript",
     "fireflies.get_active_meetings",
+    "firehydrant.validate_connection",
+    "firehydrant.list_incidents",
+    "firehydrant.get_incident",
+    "firehydrant.create_incident",
+    "firehydrant.update_incident",
+    "firehydrant.resolve_incident",
+    "firehydrant.close_incident",
+    "firehydrant.add_incident_note",
+    "firehydrant.list_incident_events",
+    "firehydrant.list_services",
+    "firehydrant.list_incident_types",
+    "firehydrant.list_incident_roles",
+    "firehydrant.list_teams",
+    "firehydrant.list_severity_matrix",
     "fireworks-ai.chat_completion",
     "fireworks-ai.create_embedding",
     "fireworks-ai.rerank_documents",
@@ -54178,9 +56556,19 @@ IntegrationActionKey = Literal[
     "fleetio.create_service_entry",
     "fleetio.custom_api_call",
     "fly-io.list_apps",
+    "fly-io.get_app",
     "fly-io.list_machines",
     "fly-io.get_machine",
     "fly-io.create_machine",
+    "fly-io.start_machine",
+    "fly-io.stop_machine",
+    "fly-io.restart_machine",
+    "fly-io.delete_machine",
+    "fly-io.list_machine_events",
+    "fly-io.wait_for_machine",
+    "fly-io.list_secrets",
+    "fly-io.set_secret",
+    "fly-io.delete_secret",
     "folk-crm.create_person",
     "folk-crm.find_person",
     "folk-crm.get_person",
@@ -54208,9 +56596,18 @@ IntegrationActionKey = Literal[
     "framer.list_pages",
     "framer.custom_api_call",
     "freshbooks.list_clients",
+    "freshbooks.get_client",
+    "freshbooks.create_client",
     "freshbooks.list_invoices",
+    "freshbooks.get_invoice",
     "freshbooks.create_invoice",
+    "freshbooks.update_invoice",
     "freshbooks.list_expenses",
+    "freshbooks.create_expense",
+    "freshbooks.list_payments",
+    "freshbooks.create_payment",
+    "freshbooks.list_items",
+    "freshbooks.create_item",
     "freshdesk.list_tickets",
     "freshdesk.search_tickets",
     "freshdesk.get_ticket",
@@ -54375,13 +56772,26 @@ IntegrationActionKey = Literal[
     "gocardless.cancel_payment",
     "gocardless.create_refund",
     "gong.list_calls",
+    "gong.get_call",
+    "gong.list_call_details",
     "gong.get_call_transcript",
     "gong.list_users",
+    "gong.list_workspaces",
+    "gong.list_scorecards",
+    "google-ads.list_accessible_customers",
     "google-ads.list_campaigns",
     "google-ads.get_campaign",
+    "google-ads.list_ad_groups",
+    "google-ads.list_ads",
+    "google-ads.run_campaign_report",
+    "google-ads.update_campaign_status",
     "google-ads.search",
     "google-analytics.run_report",
+    "google-analytics.run_realtime_report",
     "google-analytics.get_metadata",
+    "google-analytics.check_compatibility",
+    "google-analytics.list_account_summaries",
+    "google-analytics.list_properties",
     "google-bigquery.list_projects",
     "google-bigquery.list_datasets",
     "google-bigquery.get_dataset",
@@ -54603,7 +57013,10 @@ IntegrationActionKey = Literal[
     "gusto.list_employees",
     "gusto.get_employee",
     "gusto.list_payrolls",
+    "gusto.get_payroll",
     "gusto.get_company",
+    "gusto.list_departments",
+    "gusto.list_time_off_policies",
     "harvest.get_clients",
     "harvest.get_estimates",
     "harvest.get_expenses",
@@ -54630,8 +57043,9 @@ IntegrationActionKey = Literal[
     "hawksoft.get_claims",
     "hawksoft.custom_api_call",
     "heap.track_event",
+    "heap.identify_user",
     "heap.add_user_properties",
-    "heap.custom_api_call",
+    "heap.add_account_properties",
     "height.create_task",
     "height.list_tasks",
     "height.get_task",
@@ -54671,7 +57085,9 @@ IntegrationActionKey = Literal[
     "hibob.list_employees",
     "hibob.get_employee",
     "hibob.list_time_off",
+    "hibob.list_attendance_entries",
     "hibob.list_company_lists",
+    "hibob.list_people_fields",
     "hightouch.list_sources",
     "hightouch.get_source",
     "hightouch.list_models",
@@ -54688,6 +57104,20 @@ IntegrationActionKey = Literal[
     "hive.get_action",
     "hive.list_projects",
     "hive.custom_api_call",
+    "homebase.list_locations",
+    "homebase.get_location",
+    "homebase.get_company",
+    "homebase.list_employees",
+    "homebase.get_employee",
+    "homebase.list_shifts",
+    "homebase.get_shift",
+    "homebase.list_timecards",
+    "homebase.get_timecard",
+    "homebase.list_deleted_shift_ids",
+    "homebase.list_deleted_timecard_ids",
+    "homebase.get_labor",
+    "homebase.get_labor_by_employee",
+    "homebase.get_timeclock_status",
     "honeycomb.list_datasets",
     "honeycomb.create_dataset",
     "honeycomb.create_query",
@@ -54939,6 +57369,21 @@ IntegrationActionKey = Literal[
     "jira-cloud.add_watcher",
     "jira-cloud.find_user",
     "jira-cloud.custom_api_call",
+    "jira-service-management.validate_connection",
+    "jira-service-management.list_service_desks",
+    "jira-service-management.get_service_desk",
+    "jira-service-management.list_request_types",
+    "jira-service-management.get_request_type_fields",
+    "jira-service-management.list_customer_requests",
+    "jira-service-management.create_customer_request",
+    "jira-service-management.get_customer_request",
+    "jira-service-management.list_request_comments",
+    "jira-service-management.add_request_comment",
+    "jira-service-management.list_customer_transitions",
+    "jira-service-management.perform_customer_transition",
+    "jira-service-management.list_organizations",
+    "jira-service-management.create_organization",
+    "jira-service-management.create_customer",
     "jobber.get_client",
     "jobber.create_client",
     "jobber.get_job",
@@ -54953,7 +57398,12 @@ IntegrationActionKey = Literal[
     "jumpcloud.list_system_users",
     "jumpcloud.get_system_user",
     "jumpcloud.list_systems",
+    "jumpcloud.get_system",
     "jumpcloud.list_user_groups",
+    "jumpcloud.get_user_group",
+    "jumpcloud.list_system_groups",
+    "jumpcloud.get_system_group",
+    "jumpcloud.list_applications",
     "kajabi.list_products",
     "kajabi.list_members",
     "kajabi.get_member",
@@ -54979,6 +57429,17 @@ IntegrationActionKey = Literal[
     "keap.custom_api_call",
     "kissflow.downloadAttachmentFromFormField",
     "kissflow.custom_api_call",
+    "convertkit.list_subscribers",
+    "convertkit.create_subscriber",
+    "convertkit.update_subscriber",
+    "convertkit.unsubscribe_subscriber",
+    "convertkit.list_tags",
+    "convertkit.tag_subscriber",
+    "convertkit.list_broadcasts",
+    "convertkit.create_broadcast",
+    "convertkit.update_broadcast",
+    "convertkit.get_broadcast_stats",
+    "convertkit.delete_broadcast",
     "klaviyo.list_profiles",
     "klaviyo.get_profile",
     "klaviyo.create_event",
@@ -55160,6 +57621,8 @@ IntegrationActionKey = Literal[
     "linkedin-ads.get_campaign",
     "linkedin-ads.get_ad_analytics",
     "linkedin-ads.list_campaign_groups",
+    "linkedin-ads.list_creatives",
+    "linkedin-ads.get_creative",
     "local-computer-control.start_session",
     "local-computer-control.ensure_connected",
     "local-computer-control.session_status",
@@ -55271,6 +57734,12 @@ IntegrationActionKey = Literal[
     "mailchimp.find_customer",
     "mailchimp.find_tag",
     "mailchimp.find_subscriber",
+    "mandrill.send_email",
+    "mandrill.send_template_email",
+    "mandrill.search_messages",
+    "mandrill.get_message_info",
+    "mandrill.list_templates",
+    "mandrill.list_senders",
     "mailer-lite.list_subscribers",
     "mailer-lite.upsert_subscriber",
     "mailer-lite.get_subscriber",
@@ -55712,10 +58181,20 @@ IntegrationActionKey = Literal[
     "neoncrm.create_donation",
     "neoncrm.get_events",
     "neoncrm.custom_api_call",
-    "netlify.start_deploy",
+    "netlify.list_sites",
     "netlify.get_site",
     "netlify.list_site_deploys",
-    "netlify.list_files",
+    "netlify.get_deploy",
+    "netlify.create_deploy",
+    "netlify.cancel_deploy",
+    "netlify.list_environment_variables",
+    "netlify.set_environment_variable",
+    "netlify.list_build_hooks",
+    "netlify.create_build_hook",
+    "netlify.list_dns_zones",
+    "netlify.list_dns_records",
+    "netlify.create_dns_record",
+    "netlify.delete_dns_record",
     "netsuite.test_connection",
     "netsuite.get_metadata_catalog",
     "netsuite.list_records",
@@ -55877,7 +58356,14 @@ IntegrationActionKey = Literal[
     "outreach.list_prospects",
     "outreach.get_prospect",
     "outreach.create_prospect",
+    "outreach.update_prospect",
+    "outreach.list_accounts",
+    "outreach.get_account",
+    "outreach.create_account",
     "outreach.list_sequences",
+    "outreach.list_sequence_states",
+    "outreach.list_tasks",
+    "outreach.list_calls",
     "paddle.list_products",
     "paddle.get_product",
     "paddle.list_prices",
@@ -55900,6 +58386,9 @@ IntegrationActionKey = Literal[
     "pagerduty.get_user",
     "pagerduty.list_on_calls",
     "pagerduty.list_escalation_policies",
+    "pagerduty.get_escalation_policy",
+    "pagerduty.list_schedules",
+    "pagerduty.get_schedule",
     "pandadoc.createDocumentFromTemplate",
     "pandadoc.createAttachment",
     "pandadoc.createOrUpdateContact",
@@ -55907,6 +58396,12 @@ IntegrationActionKey = Literal[
     "pandadoc.getDocumentAttachments",
     "pandadoc.getDocumentDetails",
     "pandadoc.downloadDocument",
+    "pandadoc.sendDocument",
+    "pandadoc.createDocumentSession",
+    "pandadoc.listTemplates",
+    "pandadoc.getTemplateDetails",
+    "pandadoc.listWebhookEvents",
+    "pandadoc.deleteDocument",
     "pandadoc.custom_api_call",
     "paperform.deleteFormSubmission",
     "paperform.deletePartialFormSubmission",
@@ -55942,8 +58437,11 @@ IntegrationActionKey = Literal[
     "payhawk.custom_api_call",
     "paylocity.list_employees",
     "paylocity.get_employee",
+    "paylocity.list_changed_employees",
     "paylocity.list_earnings",
+    "paylocity.get_earning_by_code",
     "paylocity.get_company_codes",
+    "paylocity.get_employee_custom_fields",
     "paylocity.get_employee_benefits",
     "paypal.create_order",
     "paypal.get_order",
@@ -56524,7 +59022,16 @@ IntegrationActionKey = Literal[
     "render.list_services",
     "render.get_service",
     "render.list_deploys",
+    "render.get_deploy",
     "render.create_deploy",
+    "render.cancel_deploy",
+    "render.list_environment_variables",
+    "render.set_environment_variable",
+    "render.list_jobs",
+    "render.create_job",
+    "render.get_job",
+    "render.cancel_job",
+    "render.list_events",
     "replicate.create_prediction",
     "replicate.get_prediction",
     "replicate.list_models",
@@ -56559,7 +59066,10 @@ IntegrationActionKey = Literal[
     "revenuecat.list_offerings",
     "ringcentral.send_sms",
     "ringcentral.get_call_log",
+    "ringcentral.get_call_record",
     "ringcentral.list_extensions",
+    "ringcentral.list_phone_numbers",
+    "ringcentral.list_message_store",
     "rippling.list_employees",
     "rippling.get_employee",
     "rippling.list_departments",
@@ -56573,6 +59083,20 @@ IntegrationActionKey = Literal[
     "rollbar.list_occurrences",
     "rollbar.list_projects",
     "rollbar.custom_api_call",
+    "rootly.validate_connection",
+    "rootly.list_incidents",
+    "rootly.get_incident",
+    "rootly.create_incident",
+    "rootly.update_incident",
+    "rootly.mitigate_incident",
+    "rootly.resolve_incident",
+    "rootly.cancel_incident",
+    "rootly.list_incident_events",
+    "rootly.create_incident_event",
+    "rootly.list_services",
+    "rootly.list_severities",
+    "rootly.list_users",
+    "rootly.list_teams",
     "route4me.optimize_route",
     "route4me.create_address",
     "route4me.get_orders",
@@ -56625,7 +59149,18 @@ IntegrationActionKey = Literal[
     "salesloft.list_people",
     "salesloft.get_person",
     "salesloft.create_person",
+    "salesloft.update_person",
+    "salesloft.list_accounts",
+    "salesloft.get_account",
+    "salesloft.create_account",
     "salesloft.list_cadences",
+    "salesloft.get_cadence",
+    "salesloft.list_cadence_memberships",
+    "salesloft.list_tasks",
+    "salesloft.list_calls",
+    "salesloft.list_webhook_subscriptions",
+    "salesloft.create_webhook_subscription",
+    "salesloft.delete_webhook_subscription",
     "advanced-code.run_code",
     "sanity.query",
     "sanity.get_document",
@@ -56667,6 +59202,11 @@ IntegrationActionKey = Literal[
     "sendgrid.list_templates",
     "sendgrid.list_verified_senders",
     "sendgrid.list_global_suppressions",
+    "sendgrid.add_or_update_contact",
+    "sendgrid.search_contacts_by_email",
+    "sendgrid.list_marketing_lists",
+    "sendgrid.delete_contact",
+    "sendgrid.get_email_activity",
     "sendpulse.add-subscriber",
     "sendpulse.change-variable-for-subscriber",
     "sendpulse.delete-contact",
@@ -56702,6 +59242,8 @@ IntegrationActionKey = Literal[
     "sequential-thinking.get_chain",
     "sequential-thinking.summarize_chain",
     "serpapi.google_search",
+    "serpapi.google_maps_search",
+    "serpapi.search_locations",
     "serpapi.account_status",
     "service-now.list_records",
     "service-now.get_record",
@@ -57185,9 +59727,19 @@ IntegrationActionKey = Literal[
     "telegram-bot.get_bot_info",
     "telegram-bot.custom_api_call",
     "telnyx.send_message",
+    "telnyx.get_message",
+    "telnyx.search_detail_records",
     "telnyx.list_messaging_profiles",
     "telnyx.list_phone_numbers",
+    "telnyx.list_call_control_applications",
+    "telnyx.get_call_control_application",
     "telnyx.create_call",
+    "tenable.list_assets",
+    "tenable.get_asset",
+    "tenable.list_vulnerabilities",
+    "tenable.get_plugin_details",
+    "tenable.list_assets_with_vulnerabilities",
+    "tenable.list_asset_vulnerabilities",
     "terraform-cloud.list_workspaces",
     "terraform-cloud.get_run",
     "terraform-cloud.create_run",
@@ -57229,6 +59781,8 @@ IntegrationActionKey = Literal[
     "tiktok-ads.list_campaigns",
     "tiktok-ads.get_campaign",
     "tiktok-ads.list_ad_groups",
+    "tiktok-ads.get_ad_group",
+    "tiktok-ads.list_ads",
     "tiktok-ads.get_ad_report",
     "timescale.get_auth_info",
     "timescale.list_services",
@@ -57419,6 +59973,8 @@ IntegrationActionKey = Literal[
     "vonage.send_verification",
     "vonage.check_verification",
     "vonage.cancel_verification",
+    "vonage.get_account_balance",
+    "vonage.list_owned_numbers",
     "vtex.get-product-by-id",
     "vtex.create-product",
     "vtex.Update-product",
@@ -57461,10 +60017,16 @@ IntegrationActionKey = Literal[
     "web-reader.extract_structured_data",
     "web-reader.fetch_multiple",
     "webex.list_rooms",
+    "webex.create_room",
+    "webex.list_memberships",
     "webex.create_message",
+    "webex.get_message",
+    "webex.delete_message",
     "webex.list_people",
     "webex.get_person",
     "webex.list_messages",
+    "webex.list_meetings",
+    "webex.create_meeting",
     "webflow.list_sites",
     "webflow.list_collections",
     "webflow.get_collection",
@@ -57625,10 +60187,17 @@ IntegrationActionKey = Literal[
     "zoho-books.list_invoices",
     "zoho-books.get_invoice",
     "zoho-books.create_invoice",
+    "zoho-books.update_invoice",
+    "zoho-books.delete_invoice",
     "zoho-books.list_contacts",
     "zoho-books.get_contact",
     "zoho-books.create_contact",
-    "zoho-books.custom_api_call",
+    "zoho-books.list_expenses",
+    "zoho-books.create_expense",
+    "zoho-books.list_customer_payments",
+    "zoho-books.create_customer_payment",
+    "zoho-books.list_items",
+    "zoho-books.create_item",
     "zoho-campaigns.createCampaign",
     "zoho-campaigns.cloneCampaign",
     "zoho-campaigns.sendCampaign",
@@ -58325,6 +60894,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_next_page",
         "custom_api_call",
     ),
+    "statuspage": (
+        "validate_connection",
+        "list_pages",
+        "get_page",
+        "list_components",
+        "get_component",
+        "create_component",
+        "update_component",
+        "list_incidents",
+        "get_incident",
+        "create_incident",
+        "update_incident",
+        "list_incident_updates",
+    ),
     "attention": (
         "validate_connection",
         "list_conversations",
@@ -58377,6 +60960,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "void_transaction",
         "resolve_address",
     ),
+    "aws-appconfig": (
+        "list_applications",
+        "get_application",
+        "list_environments",
+        "list_configuration_profiles",
+        "list_hosted_configuration_versions",
+        "get_hosted_configuration_version",
+        "list_deployments",
+        "get_deployment",
+        "start_deployment",
+        "stop_deployment",
+        "start_configuration_session",
+        "get_latest_configuration",
+    ),
     "aws-athena": (
         "start_query_execution",
         "get_query_execution",
@@ -58406,6 +61003,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "put_metric_data",
         "describe_log_groups",
         "filter_log_events",
+    ),
+    "aws-codepipeline": (
+        "list_pipelines",
+        "get_pipeline",
+        "get_pipeline_state",
+        "list_pipeline_executions",
+        "get_pipeline_execution",
+        "list_action_executions",
+        "start_pipeline_execution",
+        "stop_pipeline_execution",
     ),
     "aws-dynamodb": (
         "list_tables",
@@ -58618,6 +61225,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_subscription_quotas",
         "custom_api_call",
     ),
+    "biorxiv-medrxiv": (
+        "list_preprints",
+        "get_preprint_by_doi",
+        "list_publication_links",
+        "get_publication_by_doi",
+        "summary_statistics",
+        "usage_statistics",
+    ),
     "messagebird": (
         "send-sms",
         "listMessages",
@@ -58787,6 +61402,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_budget",
         "list_spend_limits",
         "get_spend_limit",
+    ),
+    "bright-data": (
+        "unlock_url",
+        "google_search",
     ),
     "buffer": (
         "create_post",
@@ -59272,8 +61891,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "constant-contact": (
-        "create_or_update_contact",
-        "custom_api_call",
+        "list_contacts",
+        "create_contact",
+        "update_contact",
+        "delete_contact",
+        "list_contact_lists",
+        "list_email_campaigns",
+        "get_email_campaign",
+        "test_send_campaign_activity",
+        "get_email_campaign_stats",
     ),
     "contentful": (
         "contentful_record_search",
@@ -59286,43 +61912,6 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "extract_structured_data",
         "retrieve_brand",
         "screenshot",
-    ),
-    "convertkit": (
-        "subscribers_get_subscriber_by_id",
-        "subscribers_get_subscriber_by_email",
-        "subscribers_list_subscribers",
-        "subscribers_update_subscriber",
-        "subscribers_unsubscribe_subscriber",
-        "subscribers_list_tags_by_email",
-        "subscribers_list_tags_by_subscriber_id",
-        "create_webhook",
-        "destroy_webhook",
-        "custom_fields_list_fields",
-        "custom_fields_create_field",
-        "custom_fields_update_field",
-        "custom_fields_delete_field",
-        "broadcasts_list_broadcasts",
-        "broadcasts_create_broadcast",
-        "broadcasts_get_broadcast",
-        "broadcasts_update_broadcast",
-        "broadcasts_delete_broadcast",
-        "broadcasts_broadcast_stats",
-        "forms_list_forms",
-        "forms_add_subscriber_to_form",
-        "forms_list_form_subscriptions",
-        "sequences_list_sequences",
-        "sequences_add_subscriber_to_sequence",
-        "sequences_list_subscriptions_to_sequence",
-        "tags_list_tags",
-        "tags_create_tag",
-        "tags_tag_subscriber",
-        "tags_remove_tag_from_subscriber_by_email",
-        "tags_remove_tag_from_subscriber_by_id",
-        "tags_list_subscriptions_to_tag",
-        "purchases_list_purchases",
-        "purchases_get_purchase_by_id",
-        "purchases_create_purchase",
-        "purchases_create_multiple_purchases",
     ),
     "convex": (
         "run_query",
@@ -59412,8 +62001,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "customer-io": (
         "identify_person",
         "track_event",
+        "list_people",
+        "get_person",
+        "delete_person",
         "list_segments",
         "list_campaigns",
+        "send_transactional_email",
     ),
     "cvent": (
         "list_events",
@@ -59467,6 +62060,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "dataforseo": (
         "google_organic_live_advanced",
         "google_maps_live_advanced",
+        "google_search_volume_live",
+        "google_keyword_ideas_live",
+        "backlinks_summary_live",
         "list_google_locations",
     ),
     "datetime": (
@@ -59569,10 +62165,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "dialpad": (
         "list_calls",
         "get_call",
+        "get_call_transcript",
         "list_contacts",
         "send_sms",
+        "list_users",
         "get_user",
-        "custom_api_call",
+        "list_webhooks",
     ),
     "digital-ocean": (
         "list_domains",
@@ -59750,7 +62348,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_signature_requests",
         "get_signature_request",
         "send_signature_request",
+        "send_with_template",
+        "update_signature_request",
         "cancel_signature_request",
+        "download_files",
+        "list_templates",
+        "get_template",
+        "set_account_callback",
+        "custom_api_call",
     ),
     "dub": (
         "create_link",
@@ -60016,6 +62621,22 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_transcript",
         "get_active_meetings",
     ),
+    "firehydrant": (
+        "validate_connection",
+        "list_incidents",
+        "get_incident",
+        "create_incident",
+        "update_incident",
+        "resolve_incident",
+        "close_incident",
+        "add_incident_note",
+        "list_incident_events",
+        "list_services",
+        "list_incident_types",
+        "list_incident_roles",
+        "list_teams",
+        "list_severity_matrix",
+    ),
     "fireworks-ai": (
         "chat_completion",
         "create_embedding",
@@ -60070,9 +62691,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "fly-io": (
         "list_apps",
+        "get_app",
         "list_machines",
         "get_machine",
         "create_machine",
+        "start_machine",
+        "stop_machine",
+        "restart_machine",
+        "delete_machine",
+        "list_machine_events",
+        "wait_for_machine",
+        "list_secrets",
+        "set_secret",
+        "delete_secret",
     ),
     "folk-crm": (
         "create_person",
@@ -60112,9 +62743,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "freshbooks": (
         "list_clients",
+        "get_client",
+        "create_client",
         "list_invoices",
+        "get_invoice",
         "create_invoice",
+        "update_invoice",
         "list_expenses",
+        "create_expense",
+        "list_payments",
+        "create_payment",
+        "list_items",
+        "create_item",
     ),
     "freshdesk": (
         "list_tickets",
@@ -60311,17 +62951,30 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "gong": (
         "list_calls",
+        "get_call",
+        "list_call_details",
         "get_call_transcript",
         "list_users",
+        "list_workspaces",
+        "list_scorecards",
     ),
     "google-ads": (
+        "list_accessible_customers",
         "list_campaigns",
         "get_campaign",
+        "list_ad_groups",
+        "list_ads",
+        "run_campaign_report",
+        "update_campaign_status",
         "search",
     ),
     "google-analytics": (
         "run_report",
+        "run_realtime_report",
         "get_metadata",
+        "check_compatibility",
+        "list_account_summaries",
+        "list_properties",
     ),
     "google-bigquery": (
         "list_projects",
@@ -60605,7 +63258,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_employees",
         "get_employee",
         "list_payrolls",
+        "get_payroll",
         "get_company",
+        "list_departments",
+        "list_time_off_policies",
     ),
     "harvest": (
         "get_clients",
@@ -60642,8 +63298,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "heap": (
         "track_event",
+        "identify_user",
         "add_user_properties",
-        "custom_api_call",
+        "add_account_properties",
     ),
     "height": (
         "create_task",
@@ -60695,7 +63352,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_employees",
         "get_employee",
         "list_time_off",
+        "list_attendance_entries",
         "list_company_lists",
+        "list_people_fields",
     ),
     "hightouch": (
         "list_sources",
@@ -60716,6 +63375,22 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_action",
         "list_projects",
         "custom_api_call",
+    ),
+    "homebase": (
+        "list_locations",
+        "get_location",
+        "get_company",
+        "list_employees",
+        "get_employee",
+        "list_shifts",
+        "get_shift",
+        "list_timecards",
+        "get_timecard",
+        "list_deleted_shift_ids",
+        "list_deleted_timecard_ids",
+        "get_labor",
+        "get_labor_by_employee",
+        "get_timeclock_status",
     ),
     "honeycomb": (
         "list_datasets",
@@ -61022,6 +63697,23 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_user",
         "custom_api_call",
     ),
+    "jira-service-management": (
+        "validate_connection",
+        "list_service_desks",
+        "get_service_desk",
+        "list_request_types",
+        "get_request_type_fields",
+        "list_customer_requests",
+        "create_customer_request",
+        "get_customer_request",
+        "list_request_comments",
+        "add_request_comment",
+        "list_customer_transitions",
+        "perform_customer_transition",
+        "list_organizations",
+        "create_organization",
+        "create_customer",
+    ),
     "jobber": (
         "get_client",
         "create_client",
@@ -61041,7 +63733,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_system_users",
         "get_system_user",
         "list_systems",
+        "get_system",
         "list_user_groups",
+        "get_user_group",
+        "list_system_groups",
+        "get_system_group",
+        "list_applications",
     ),
     "kajabi": (
         "list_products",
@@ -61077,6 +63774,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "kissflow": (
         "downloadAttachmentFromFormField",
         "custom_api_call",
+    ),
+    "convertkit": (
+        "list_subscribers",
+        "create_subscriber",
+        "update_subscriber",
+        "unsubscribe_subscriber",
+        "list_tags",
+        "tag_subscriber",
+        "list_broadcasts",
+        "create_broadcast",
+        "update_broadcast",
+        "get_broadcast_stats",
+        "delete_broadcast",
     ),
     "klaviyo": (
         "list_profiles",
@@ -61306,6 +64016,8 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_campaign",
         "get_ad_analytics",
         "list_campaign_groups",
+        "list_creatives",
+        "get_creative",
     ),
     "local-computer-control": (
         "start_session",
@@ -61433,6 +64145,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_customer",
         "find_tag",
         "find_subscriber",
+    ),
+    "mandrill": (
+        "send_email",
+        "send_template_email",
+        "search_messages",
+        "get_message_info",
+        "list_templates",
+        "list_senders",
     ),
     "mailer-lite": (
         "list_subscribers",
@@ -61966,10 +64686,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "netlify": (
-        "start_deploy",
+        "list_sites",
         "get_site",
         "list_site_deploys",
-        "list_files",
+        "get_deploy",
+        "create_deploy",
+        "cancel_deploy",
+        "list_environment_variables",
+        "set_environment_variable",
+        "list_build_hooks",
+        "create_build_hook",
+        "list_dns_zones",
+        "list_dns_records",
+        "create_dns_record",
+        "delete_dns_record",
     ),
     "netsuite": (
         "test_connection",
@@ -62177,7 +64907,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_prospects",
         "get_prospect",
         "create_prospect",
+        "update_prospect",
+        "list_accounts",
+        "get_account",
+        "create_account",
         "list_sequences",
+        "list_sequence_states",
+        "list_tasks",
+        "list_calls",
     ),
     "paddle": (
         "list_products",
@@ -62204,6 +64941,9 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_user",
         "list_on_calls",
         "list_escalation_policies",
+        "get_escalation_policy",
+        "list_schedules",
+        "get_schedule",
     ),
     "pandadoc": (
         "createDocumentFromTemplate",
@@ -62213,6 +64953,12 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "getDocumentAttachments",
         "getDocumentDetails",
         "downloadDocument",
+        "sendDocument",
+        "createDocumentSession",
+        "listTemplates",
+        "getTemplateDetails",
+        "listWebhookEvents",
+        "deleteDocument",
         "custom_api_call",
     ),
     "paperform": (
@@ -62254,8 +65000,11 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "paylocity": (
         "list_employees",
         "get_employee",
+        "list_changed_employees",
         "list_earnings",
+        "get_earning_by_code",
         "get_company_codes",
+        "get_employee_custom_fields",
         "get_employee_benefits",
     ),
     "paypal": (
@@ -62956,7 +65705,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_services",
         "get_service",
         "list_deploys",
+        "get_deploy",
         "create_deploy",
+        "cancel_deploy",
+        "list_environment_variables",
+        "set_environment_variable",
+        "list_jobs",
+        "create_job",
+        "get_job",
+        "cancel_job",
+        "list_events",
     ),
     "replicate": (
         "create_prediction",
@@ -63005,7 +65763,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "ringcentral": (
         "send_sms",
         "get_call_log",
+        "get_call_record",
         "list_extensions",
+        "list_phone_numbers",
+        "list_message_store",
     ),
     "rippling": (
         "list_employees",
@@ -63025,6 +65786,22 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_occurrences",
         "list_projects",
         "custom_api_call",
+    ),
+    "rootly": (
+        "validate_connection",
+        "list_incidents",
+        "get_incident",
+        "create_incident",
+        "update_incident",
+        "mitigate_incident",
+        "resolve_incident",
+        "cancel_incident",
+        "list_incident_events",
+        "create_incident_event",
+        "list_services",
+        "list_severities",
+        "list_users",
+        "list_teams",
     ),
     "route4me": (
         "optimize_route",
@@ -63091,7 +65868,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_people",
         "get_person",
         "create_person",
+        "update_person",
+        "list_accounts",
+        "get_account",
+        "create_account",
         "list_cadences",
+        "get_cadence",
+        "list_cadence_memberships",
+        "list_tasks",
+        "list_calls",
+        "list_webhook_subscriptions",
+        "create_webhook_subscription",
+        "delete_webhook_subscription",
     ),
     "advanced-code": (
         "run_code",
@@ -63153,6 +65941,11 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_templates",
         "list_verified_senders",
         "list_global_suppressions",
+        "add_or_update_contact",
+        "search_contacts_by_email",
+        "list_marketing_lists",
+        "delete_contact",
+        "get_email_activity",
     ),
     "sendpulse": (
         "add-subscriber",
@@ -63196,6 +65989,8 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "serpapi": (
         "google_search",
+        "google_maps_search",
+        "search_locations",
         "account_status",
     ),
     "service-now": (
@@ -63781,9 +66576,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "telnyx": (
         "send_message",
+        "get_message",
+        "search_detail_records",
         "list_messaging_profiles",
         "list_phone_numbers",
+        "list_call_control_applications",
+        "get_call_control_application",
         "create_call",
+    ),
+    "tenable": (
+        "list_assets",
+        "get_asset",
+        "list_vulnerabilities",
+        "get_plugin_details",
+        "list_assets_with_vulnerabilities",
+        "list_asset_vulnerabilities",
     ),
     "terraform-cloud": (
         "list_workspaces",
@@ -63841,6 +66648,8 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_campaigns",
         "get_campaign",
         "list_ad_groups",
+        "get_ad_group",
+        "list_ads",
         "get_ad_report",
     ),
     "timescale": (
@@ -64093,6 +66902,8 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "send_verification",
         "check_verification",
         "cancel_verification",
+        "get_account_balance",
+        "list_owned_numbers",
     ),
     "vtex": (
         "get-product-by-id",
@@ -64149,10 +66960,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "webex": (
         "list_rooms",
+        "create_room",
+        "list_memberships",
         "create_message",
+        "get_message",
+        "delete_message",
         "list_people",
         "get_person",
         "list_messages",
+        "list_meetings",
+        "create_meeting",
     ),
     "webflow": (
         "list_sites",
@@ -64361,10 +67178,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_invoices",
         "get_invoice",
         "create_invoice",
+        "update_invoice",
+        "delete_invoice",
         "list_contacts",
         "get_contact",
         "create_contact",
-        "custom_api_call",
+        "list_expenses",
+        "create_expense",
+        "list_customer_payments",
+        "create_customer_payment",
+        "list_items",
+        "create_item",
     ),
     "zoho-campaigns": (
         "createCampaign",
@@ -64978,6 +67802,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "atlassian.confluence_add_label": AtlassianConfluenceAddLabelInput,
     "atlassian.get_next_page": AtlassianGetNextPageInput,
     "atlassian.custom_api_call": AtlassianCustomApiCallInput,
+    "statuspage.validate_connection": StatuspageValidateConnectionInput,
+    "statuspage.list_pages": StatuspageListPagesInput,
+    "statuspage.get_page": StatuspageGetPageInput,
+    "statuspage.list_components": StatuspageListComponentsInput,
+    "statuspage.get_component": StatuspageGetComponentInput,
+    "statuspage.create_component": StatuspageCreateComponentInput,
+    "statuspage.update_component": StatuspageUpdateComponentInput,
+    "statuspage.list_incidents": StatuspageListIncidentsInput,
+    "statuspage.get_incident": StatuspageGetIncidentInput,
+    "statuspage.create_incident": StatuspageCreateIncidentInput,
+    "statuspage.update_incident": StatuspageUpdateIncidentInput,
+    "statuspage.list_incident_updates": StatuspageListIncidentUpdatesInput,
     "attention.validate_connection": AttentionValidateConnectionInput,
     "attention.list_conversations": AttentionListConversationsInput,
     "attention.get_conversation": AttentionGetConversationInput,
@@ -65018,6 +67854,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "avalara.get_transaction": AvalaraGetTransactionInput,
     "avalara.void_transaction": AvalaraVoidTransactionInput,
     "avalara.resolve_address": AvalaraResolveAddressInput,
+    "aws-appconfig.list_applications": AwsAppconfigListApplicationsInput,
+    "aws-appconfig.get_application": AwsAppconfigGetApplicationInput,
+    "aws-appconfig.list_environments": AwsAppconfigListEnvironmentsInput,
+    "aws-appconfig.list_configuration_profiles": AwsAppconfigListConfigurationProfilesInput,
+    "aws-appconfig.list_hosted_configuration_versions": AwsAppconfigListHostedConfigurationVersionsInput,
+    "aws-appconfig.get_hosted_configuration_version": AwsAppconfigGetHostedConfigurationVersionInput,
+    "aws-appconfig.list_deployments": AwsAppconfigListDeploymentsInput,
+    "aws-appconfig.get_deployment": AwsAppconfigGetDeploymentInput,
+    "aws-appconfig.start_deployment": AwsAppconfigStartDeploymentInput,
+    "aws-appconfig.stop_deployment": AwsAppconfigStopDeploymentInput,
+    "aws-appconfig.start_configuration_session": AwsAppconfigStartConfigurationSessionInput,
+    "aws-appconfig.get_latest_configuration": AwsAppconfigGetLatestConfigurationInput,
     "aws-athena.start_query_execution": AwsAthenaStartQueryExecutionInput,
     "aws-athena.get_query_execution": AwsAthenaGetQueryExecutionInput,
     "aws-athena.get_query_results": AwsAthenaGetQueryResultsInput,
@@ -65042,6 +67890,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "aws-cloudwatch.put_metric_data": AwsCloudwatchPutMetricDataInput,
     "aws-cloudwatch.describe_log_groups": AwsCloudwatchDescribeLogGroupsInput,
     "aws-cloudwatch.filter_log_events": AwsCloudwatchFilterLogEventsInput,
+    "aws-codepipeline.list_pipelines": AwsCodepipelineListPipelinesInput,
+    "aws-codepipeline.get_pipeline": AwsCodepipelineGetPipelineInput,
+    "aws-codepipeline.get_pipeline_state": AwsCodepipelineGetPipelineStateInput,
+    "aws-codepipeline.list_pipeline_executions": AwsCodepipelineListPipelineExecutionsInput,
+    "aws-codepipeline.get_pipeline_execution": AwsCodepipelineGetPipelineExecutionInput,
+    "aws-codepipeline.list_action_executions": AwsCodepipelineListActionExecutionsInput,
+    "aws-codepipeline.start_pipeline_execution": AwsCodepipelineStartPipelineExecutionInput,
+    "aws-codepipeline.stop_pipeline_execution": AwsCodepipelineStopPipelineExecutionInput,
     "aws-dynamodb.list_tables": AwsDynamodbListTablesInput,
     "aws-dynamodb.describe_table": AwsDynamodbDescribeTableInput,
     "aws-dynamodb.get_item": AwsDynamodbGetItemInput,
@@ -65209,6 +68065,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "bigdata-com.get_quote": BigdataComGetQuoteInput,
     "bigdata-com.get_subscription_quotas": BigdataComGetSubscriptionQuotasInput,
     "bigdata-com.custom_api_call": BigdataComCustomApiCallInput,
+    "biorxiv-medrxiv.list_preprints": BiorxivMedrxivListPreprintsInput,
+    "biorxiv-medrxiv.get_preprint_by_doi": BiorxivMedrxivGetPreprintByDoiInput,
+    "biorxiv-medrxiv.list_publication_links": BiorxivMedrxivListPublicationLinksInput,
+    "biorxiv-medrxiv.get_publication_by_doi": BiorxivMedrxivGetPublicationByDoiInput,
+    "biorxiv-medrxiv.summary_statistics": BiorxivMedrxivSummaryStatisticsInput,
+    "biorxiv-medrxiv.usage_statistics": BiorxivMedrxivUsageStatisticsInput,
     "messagebird.send-sms": MessagebirdSendSmsInput,
     "messagebird.listMessages": MessagebirdListMessagesInput,
     "messagebird.custom_api_call": MessagebirdCustomApiCallInput,
@@ -65347,6 +68209,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "brex.get_budget": BrexGetBudgetInput,
     "brex.list_spend_limits": BrexListSpendLimitsInput,
     "brex.get_spend_limit": BrexGetSpendLimitInput,
+    "bright-data.unlock_url": BrightDataUnlockUrlInput,
+    "bright-data.google_search": BrightDataGoogleSearchInput,
     "buffer.create_post": BufferCreatePostInput,
     "buffer.list_profiles": BufferListProfilesInput,
     "buffer.get_post": BufferGetPostInput,
@@ -65726,8 +68590,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "connectwise.list_companies": ConnectwiseListCompaniesInput,
     "connectwise.list_contacts": ConnectwiseListContactsInput,
     "connectwise.custom_api_call": ConnectwiseCustomApiCallInput,
-    "constant-contact.create_or_update_contact": ConstantContactCreateOrUpdateContactInput,
-    "constant-contact.custom_api_call": ConstantContactCustomApiCallInput,
+    "constant-contact.list_contacts": ConstantContactListContactsInput,
+    "constant-contact.create_contact": ConstantContactCreateContactInput,
+    "constant-contact.update_contact": ConstantContactUpdateContactInput,
+    "constant-contact.delete_contact": ConstantContactDeleteContactInput,
+    "constant-contact.list_contact_lists": ConstantContactListContactListsInput,
+    "constant-contact.list_email_campaigns": ConstantContactListEmailCampaignsInput,
+    "constant-contact.get_email_campaign": ConstantContactGetEmailCampaignInput,
+    "constant-contact.test_send_campaign_activity": ConstantContactTestSendCampaignActivityInput,
+    "constant-contact.get_email_campaign_stats": ConstantContactGetEmailCampaignStatsInput,
     "contentful.contentful_record_search": ContentfulContentfulRecordSearchInput,
     "contentful.contentful_record_get": ContentfulContentfulRecordGetInput,
     "contentful.contentful_record_create": ContentfulContentfulRecordCreateInput,
@@ -65736,41 +68607,6 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "context-dev.extract_structured_data": ContextDevExtractStructuredDataInput,
     "context-dev.retrieve_brand": ContextDevRetrieveBrandInput,
     "context-dev.screenshot": ContextDevScreenshotInput,
-    "convertkit.subscribers_get_subscriber_by_id": ConvertkitSubscribersGetSubscriberByIdInput,
-    "convertkit.subscribers_get_subscriber_by_email": ConvertkitSubscribersGetSubscriberByEmailInput,
-    "convertkit.subscribers_list_subscribers": ConvertkitSubscribersListSubscribersInput,
-    "convertkit.subscribers_update_subscriber": ConvertkitSubscribersUpdateSubscriberInput,
-    "convertkit.subscribers_unsubscribe_subscriber": ConvertkitSubscribersUnsubscribeSubscriberInput,
-    "convertkit.subscribers_list_tags_by_email": ConvertkitSubscribersListTagsByEmailInput,
-    "convertkit.subscribers_list_tags_by_subscriber_id": ConvertkitSubscribersListTagsBySubscriberIdInput,
-    "convertkit.create_webhook": ConvertkitCreateWebhookInput,
-    "convertkit.destroy_webhook": ConvertkitDestroyWebhookInput,
-    "convertkit.custom_fields_list_fields": ConvertkitCustomFieldsListFieldsInput,
-    "convertkit.custom_fields_create_field": ConvertkitCustomFieldsCreateFieldInput,
-    "convertkit.custom_fields_update_field": ConvertkitCustomFieldsUpdateFieldInput,
-    "convertkit.custom_fields_delete_field": ConvertkitCustomFieldsDeleteFieldInput,
-    "convertkit.broadcasts_list_broadcasts": ConvertkitBroadcastsListBroadcastsInput,
-    "convertkit.broadcasts_create_broadcast": ConvertkitBroadcastsCreateBroadcastInput,
-    "convertkit.broadcasts_get_broadcast": ConvertkitBroadcastsGetBroadcastInput,
-    "convertkit.broadcasts_update_broadcast": ConvertkitBroadcastsUpdateBroadcastInput,
-    "convertkit.broadcasts_delete_broadcast": ConvertkitBroadcastsDeleteBroadcastInput,
-    "convertkit.broadcasts_broadcast_stats": ConvertkitBroadcastsBroadcastStatsInput,
-    "convertkit.forms_list_forms": ConvertkitFormsListFormsInput,
-    "convertkit.forms_add_subscriber_to_form": ConvertkitFormsAddSubscriberToFormInput,
-    "convertkit.forms_list_form_subscriptions": ConvertkitFormsListFormSubscriptionsInput,
-    "convertkit.sequences_list_sequences": ConvertkitSequencesListSequencesInput,
-    "convertkit.sequences_add_subscriber_to_sequence": ConvertkitSequencesAddSubscriberToSequenceInput,
-    "convertkit.sequences_list_subscriptions_to_sequence": ConvertkitSequencesListSubscriptionsToSequenceInput,
-    "convertkit.tags_list_tags": ConvertkitTagsListTagsInput,
-    "convertkit.tags_create_tag": ConvertkitTagsCreateTagInput,
-    "convertkit.tags_tag_subscriber": ConvertkitTagsTagSubscriberInput,
-    "convertkit.tags_remove_tag_from_subscriber_by_email": ConvertkitTagsRemoveTagFromSubscriberByEmailInput,
-    "convertkit.tags_remove_tag_from_subscriber_by_id": ConvertkitTagsRemoveTagFromSubscriberByIdInput,
-    "convertkit.tags_list_subscriptions_to_tag": ConvertkitTagsListSubscriptionsToTagInput,
-    "convertkit.purchases_list_purchases": ConvertkitPurchasesListPurchasesInput,
-    "convertkit.purchases_get_purchase_by_id": ConvertkitPurchasesGetPurchaseByIdInput,
-    "convertkit.purchases_create_purchase": ConvertkitPurchasesCreatePurchaseInput,
-    "convertkit.purchases_create_multiple_purchases": ConvertkitPurchasesCreateMultiplePurchasesInput,
     "convex.run_query": ConvexRunQueryInput,
     "convex.run_mutation": ConvexRunMutationInput,
     "convex.run_action": ConvexRunActionInput,
@@ -65842,8 +68678,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "culture-amp.custom_api_call": CultureAmpCustomApiCallInput,
     "customer-io.identify_person": CustomerIoIdentifyPersonInput,
     "customer-io.track_event": CustomerIoTrackEventInput,
+    "customer-io.list_people": CustomerIoListPeopleInput,
+    "customer-io.get_person": CustomerIoGetPersonInput,
+    "customer-io.delete_person": CustomerIoDeletePersonInput,
     "customer-io.list_segments": CustomerIoListSegmentsInput,
     "customer-io.list_campaigns": CustomerIoListCampaignsInput,
+    "customer-io.send_transactional_email": CustomerIoSendTransactionalEmailInput,
     "cvent.list_events": CventListEventsInput,
     "cvent.get_event": CventGetEventInput,
     "cvent.list_registrants": CventListRegistrantsInput,
@@ -65887,6 +68727,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "datadog.send_log": DatadogSendLogInput,
     "dataforseo.google_organic_live_advanced": DataforseoGoogleOrganicLiveAdvancedInput,
     "dataforseo.google_maps_live_advanced": DataforseoGoogleMapsLiveAdvancedInput,
+    "dataforseo.google_search_volume_live": DataforseoGoogleSearchVolumeLiveInput,
+    "dataforseo.google_keyword_ideas_live": DataforseoGoogleKeywordIdeasLiveInput,
+    "dataforseo.backlinks_summary_live": DataforseoBacklinksSummaryLiveInput,
     "dataforseo.list_google_locations": DataforseoListGoogleLocationsInput,
     "datetime.parse_date": DatetimeParseDateInput,
     "datetime.format_date": DatetimeFormatDateInput,
@@ -65965,10 +68808,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "devrev.create_work": DevrevCreateWorkInput,
     "dialpad.list_calls": DialpadListCallsInput,
     "dialpad.get_call": DialpadGetCallInput,
+    "dialpad.get_call_transcript": DialpadGetCallTranscriptInput,
     "dialpad.list_contacts": DialpadListContactsInput,
     "dialpad.send_sms": DialpadSendSmsInput,
+    "dialpad.list_users": DialpadListUsersInput,
     "dialpad.get_user": DialpadGetUserInput,
-    "dialpad.custom_api_call": DialpadCustomApiCallInput,
+    "dialpad.list_webhooks": DialpadListWebhooksInput,
     "digital-ocean.list_domains": DigitalOceanListDomainsInput,
     "digital-ocean.create_domain": DigitalOceanCreateDomainInput,
     "digital-ocean.get_domain": DigitalOceanGetDomainInput,
@@ -66110,7 +68955,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "dropbox-sign.list_signature_requests": DropboxSignListSignatureRequestsInput,
     "dropbox-sign.get_signature_request": DropboxSignGetSignatureRequestInput,
     "dropbox-sign.send_signature_request": DropboxSignSendSignatureRequestInput,
+    "dropbox-sign.send_with_template": DropboxSignSendWithTemplateInput,
+    "dropbox-sign.update_signature_request": DropboxSignUpdateSignatureRequestInput,
     "dropbox-sign.cancel_signature_request": DropboxSignCancelSignatureRequestInput,
+    "dropbox-sign.download_files": DropboxSignDownloadFilesInput,
+    "dropbox-sign.list_templates": DropboxSignListTemplatesInput,
+    "dropbox-sign.get_template": DropboxSignGetTemplateInput,
+    "dropbox-sign.set_account_callback": DropboxSignSetAccountCallbackInput,
+    "dropbox-sign.custom_api_call": DropboxSignCustomApiCallInput,
     "dub.create_link": DubCreateLinkInput,
     "dub.get_link": DubGetLinkInput,
     "dub.list_links": DubListLinksInput,
@@ -66321,6 +69173,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fireflies.search_transcripts": FirefliesSearchTranscriptsInput,
     "fireflies.get_transcript": FirefliesGetTranscriptInput,
     "fireflies.get_active_meetings": FirefliesGetActiveMeetingsInput,
+    "firehydrant.validate_connection": FirehydrantValidateConnectionInput,
+    "firehydrant.list_incidents": FirehydrantListIncidentsInput,
+    "firehydrant.get_incident": FirehydrantGetIncidentInput,
+    "firehydrant.create_incident": FirehydrantCreateIncidentInput,
+    "firehydrant.update_incident": FirehydrantUpdateIncidentInput,
+    "firehydrant.resolve_incident": FirehydrantResolveIncidentInput,
+    "firehydrant.close_incident": FirehydrantCloseIncidentInput,
+    "firehydrant.add_incident_note": FirehydrantAddIncidentNoteInput,
+    "firehydrant.list_incident_events": FirehydrantListIncidentEventsInput,
+    "firehydrant.list_services": FirehydrantListServicesInput,
+    "firehydrant.list_incident_types": FirehydrantListIncidentTypesInput,
+    "firehydrant.list_incident_roles": FirehydrantListIncidentRolesInput,
+    "firehydrant.list_teams": FirehydrantListTeamsInput,
+    "firehydrant.list_severity_matrix": FirehydrantListSeverityMatrixInput,
     "fireworks-ai.chat_completion": FireworksAiChatCompletionInput,
     "fireworks-ai.create_embedding": FireworksAiCreateEmbeddingInput,
     "fireworks-ai.rerank_documents": FireworksAiRerankDocumentsInput,
@@ -66364,9 +69230,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fleetio.create_service_entry": FleetioCreateServiceEntryInput,
     "fleetio.custom_api_call": FleetioCustomApiCallInput,
     "fly-io.list_apps": FlyIoListAppsInput,
+    "fly-io.get_app": FlyIoGetAppInput,
     "fly-io.list_machines": FlyIoListMachinesInput,
     "fly-io.get_machine": FlyIoGetMachineInput,
     "fly-io.create_machine": FlyIoCreateMachineInput,
+    "fly-io.start_machine": FlyIoStartMachineInput,
+    "fly-io.stop_machine": FlyIoStopMachineInput,
+    "fly-io.restart_machine": FlyIoRestartMachineInput,
+    "fly-io.delete_machine": FlyIoDeleteMachineInput,
+    "fly-io.list_machine_events": FlyIoListMachineEventsInput,
+    "fly-io.wait_for_machine": FlyIoWaitForMachineInput,
+    "fly-io.list_secrets": FlyIoListSecretsInput,
+    "fly-io.set_secret": FlyIoSetSecretInput,
+    "fly-io.delete_secret": FlyIoDeleteSecretInput,
     "folk-crm.create_person": FolkCrmCreatePersonInput,
     "folk-crm.find_person": FolkCrmFindPersonInput,
     "folk-crm.get_person": FolkCrmGetPersonInput,
@@ -66394,9 +69270,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "framer.list_pages": FramerListPagesInput,
     "framer.custom_api_call": FramerCustomApiCallInput,
     "freshbooks.list_clients": FreshbooksListClientsInput,
+    "freshbooks.get_client": FreshbooksGetClientInput,
+    "freshbooks.create_client": FreshbooksCreateClientInput,
     "freshbooks.list_invoices": FreshbooksListInvoicesInput,
+    "freshbooks.get_invoice": FreshbooksGetInvoiceInput,
     "freshbooks.create_invoice": FreshbooksCreateInvoiceInput,
+    "freshbooks.update_invoice": FreshbooksUpdateInvoiceInput,
     "freshbooks.list_expenses": FreshbooksListExpensesInput,
+    "freshbooks.create_expense": FreshbooksCreateExpenseInput,
+    "freshbooks.list_payments": FreshbooksListPaymentsInput,
+    "freshbooks.create_payment": FreshbooksCreatePaymentInput,
+    "freshbooks.list_items": FreshbooksListItemsInput,
+    "freshbooks.create_item": FreshbooksCreateItemInput,
     "freshdesk.list_tickets": FreshdeskListTicketsInput,
     "freshdesk.search_tickets": FreshdeskSearchTicketsInput,
     "freshdesk.get_ticket": FreshdeskGetTicketInput,
@@ -66561,13 +69446,26 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gocardless.cancel_payment": GocardlessCancelPaymentInput,
     "gocardless.create_refund": GocardlessCreateRefundInput,
     "gong.list_calls": GongListCallsInput,
+    "gong.get_call": GongGetCallInput,
+    "gong.list_call_details": GongListCallDetailsInput,
     "gong.get_call_transcript": GongGetCallTranscriptInput,
     "gong.list_users": GongListUsersInput,
+    "gong.list_workspaces": GongListWorkspacesInput,
+    "gong.list_scorecards": GongListScorecardsInput,
+    "google-ads.list_accessible_customers": GoogleAdsListAccessibleCustomersInput,
     "google-ads.list_campaigns": GoogleAdsListCampaignsInput,
     "google-ads.get_campaign": GoogleAdsGetCampaignInput,
+    "google-ads.list_ad_groups": GoogleAdsListAdGroupsInput,
+    "google-ads.list_ads": GoogleAdsListAdsInput,
+    "google-ads.run_campaign_report": GoogleAdsRunCampaignReportInput,
+    "google-ads.update_campaign_status": GoogleAdsUpdateCampaignStatusInput,
     "google-ads.search": GoogleAdsSearchInput,
     "google-analytics.run_report": GoogleAnalyticsRunReportInput,
+    "google-analytics.run_realtime_report": GoogleAnalyticsRunRealtimeReportInput,
     "google-analytics.get_metadata": GoogleAnalyticsGetMetadataInput,
+    "google-analytics.check_compatibility": GoogleAnalyticsCheckCompatibilityInput,
+    "google-analytics.list_account_summaries": GoogleAnalyticsListAccountSummariesInput,
+    "google-analytics.list_properties": GoogleAnalyticsListPropertiesInput,
     "google-bigquery.list_projects": GoogleBigqueryListProjectsInput,
     "google-bigquery.list_datasets": GoogleBigqueryListDatasetsInput,
     "google-bigquery.get_dataset": GoogleBigqueryGetDatasetInput,
@@ -66789,7 +69687,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gusto.list_employees": GustoListEmployeesInput,
     "gusto.get_employee": GustoGetEmployeeInput,
     "gusto.list_payrolls": GustoListPayrollsInput,
+    "gusto.get_payroll": GustoGetPayrollInput,
     "gusto.get_company": GustoGetCompanyInput,
+    "gusto.list_departments": GustoListDepartmentsInput,
+    "gusto.list_time_off_policies": GustoListTimeOffPoliciesInput,
     "harvest.get_clients": HarvestGetClientsInput,
     "harvest.get_estimates": HarvestGetEstimatesInput,
     "harvest.get_expenses": HarvestGetExpensesInput,
@@ -66816,8 +69717,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hawksoft.get_claims": HawksoftGetClaimsInput,
     "hawksoft.custom_api_call": HawksoftCustomApiCallInput,
     "heap.track_event": HeapTrackEventInput,
+    "heap.identify_user": HeapIdentifyUserInput,
     "heap.add_user_properties": HeapAddUserPropertiesInput,
-    "heap.custom_api_call": HeapCustomApiCallInput,
+    "heap.add_account_properties": HeapAddAccountPropertiesInput,
     "height.create_task": HeightCreateTaskInput,
     "height.list_tasks": HeightListTasksInput,
     "height.get_task": HeightGetTaskInput,
@@ -66857,7 +69759,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hibob.list_employees": HibobListEmployeesInput,
     "hibob.get_employee": HibobGetEmployeeInput,
     "hibob.list_time_off": HibobListTimeOffInput,
+    "hibob.list_attendance_entries": HibobListAttendanceEntriesInput,
     "hibob.list_company_lists": HibobListCompanyListsInput,
+    "hibob.list_people_fields": HibobListPeopleFieldsInput,
     "hightouch.list_sources": HightouchListSourcesInput,
     "hightouch.get_source": HightouchGetSourceInput,
     "hightouch.list_models": HightouchListModelsInput,
@@ -66874,6 +69778,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hive.get_action": HiveGetActionInput,
     "hive.list_projects": HiveListProjectsInput,
     "hive.custom_api_call": HiveCustomApiCallInput,
+    "homebase.list_locations": HomebaseListLocationsInput,
+    "homebase.get_location": HomebaseGetLocationInput,
+    "homebase.get_company": HomebaseGetCompanyInput,
+    "homebase.list_employees": HomebaseListEmployeesInput,
+    "homebase.get_employee": HomebaseGetEmployeeInput,
+    "homebase.list_shifts": HomebaseListShiftsInput,
+    "homebase.get_shift": HomebaseGetShiftInput,
+    "homebase.list_timecards": HomebaseListTimecardsInput,
+    "homebase.get_timecard": HomebaseGetTimecardInput,
+    "homebase.list_deleted_shift_ids": HomebaseListDeletedShiftIdsInput,
+    "homebase.list_deleted_timecard_ids": HomebaseListDeletedTimecardIdsInput,
+    "homebase.get_labor": HomebaseGetLaborInput,
+    "homebase.get_labor_by_employee": HomebaseGetLaborByEmployeeInput,
+    "homebase.get_timeclock_status": HomebaseGetTimeclockStatusInput,
     "honeycomb.list_datasets": HoneycombListDatasetsInput,
     "honeycomb.create_dataset": HoneycombCreateDatasetInput,
     "honeycomb.create_query": HoneycombCreateQueryInput,
@@ -67125,6 +70043,21 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "jira-cloud.add_watcher": JiraCloudAddWatcherInput,
     "jira-cloud.find_user": JiraCloudFindUserInput,
     "jira-cloud.custom_api_call": JiraCloudCustomApiCallInput,
+    "jira-service-management.validate_connection": JiraServiceManagementValidateConnectionInput,
+    "jira-service-management.list_service_desks": JiraServiceManagementListServiceDesksInput,
+    "jira-service-management.get_service_desk": JiraServiceManagementGetServiceDeskInput,
+    "jira-service-management.list_request_types": JiraServiceManagementListRequestTypesInput,
+    "jira-service-management.get_request_type_fields": JiraServiceManagementGetRequestTypeFieldsInput,
+    "jira-service-management.list_customer_requests": JiraServiceManagementListCustomerRequestsInput,
+    "jira-service-management.create_customer_request": JiraServiceManagementCreateCustomerRequestInput,
+    "jira-service-management.get_customer_request": JiraServiceManagementGetCustomerRequestInput,
+    "jira-service-management.list_request_comments": JiraServiceManagementListRequestCommentsInput,
+    "jira-service-management.add_request_comment": JiraServiceManagementAddRequestCommentInput,
+    "jira-service-management.list_customer_transitions": JiraServiceManagementListCustomerTransitionsInput,
+    "jira-service-management.perform_customer_transition": JiraServiceManagementPerformCustomerTransitionInput,
+    "jira-service-management.list_organizations": JiraServiceManagementListOrganizationsInput,
+    "jira-service-management.create_organization": JiraServiceManagementCreateOrganizationInput,
+    "jira-service-management.create_customer": JiraServiceManagementCreateCustomerInput,
     "jobber.get_client": JobberGetClientInput,
     "jobber.create_client": JobberCreateClientInput,
     "jobber.get_job": JobberGetJobInput,
@@ -67139,7 +70072,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "jumpcloud.list_system_users": JumpcloudListSystemUsersInput,
     "jumpcloud.get_system_user": JumpcloudGetSystemUserInput,
     "jumpcloud.list_systems": JumpcloudListSystemsInput,
+    "jumpcloud.get_system": JumpcloudGetSystemInput,
     "jumpcloud.list_user_groups": JumpcloudListUserGroupsInput,
+    "jumpcloud.get_user_group": JumpcloudGetUserGroupInput,
+    "jumpcloud.list_system_groups": JumpcloudListSystemGroupsInput,
+    "jumpcloud.get_system_group": JumpcloudGetSystemGroupInput,
+    "jumpcloud.list_applications": JumpcloudListApplicationsInput,
     "kajabi.list_products": KajabiListProductsInput,
     "kajabi.list_members": KajabiListMembersInput,
     "kajabi.get_member": KajabiGetMemberInput,
@@ -67165,6 +70103,17 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "keap.custom_api_call": KeapCustomApiCallInput,
     "kissflow.downloadAttachmentFromFormField": KissflowDownloadAttachmentFromFormFieldInput,
     "kissflow.custom_api_call": KissflowCustomApiCallInput,
+    "convertkit.list_subscribers": ConvertkitListSubscribersInput,
+    "convertkit.create_subscriber": ConvertkitCreateSubscriberInput,
+    "convertkit.update_subscriber": ConvertkitUpdateSubscriberInput,
+    "convertkit.unsubscribe_subscriber": ConvertkitUnsubscribeSubscriberInput,
+    "convertkit.list_tags": ConvertkitListTagsInput,
+    "convertkit.tag_subscriber": ConvertkitTagSubscriberInput,
+    "convertkit.list_broadcasts": ConvertkitListBroadcastsInput,
+    "convertkit.create_broadcast": ConvertkitCreateBroadcastInput,
+    "convertkit.update_broadcast": ConvertkitUpdateBroadcastInput,
+    "convertkit.get_broadcast_stats": ConvertkitGetBroadcastStatsInput,
+    "convertkit.delete_broadcast": ConvertkitDeleteBroadcastInput,
     "klaviyo.list_profiles": KlaviyoListProfilesInput,
     "klaviyo.get_profile": KlaviyoGetProfileInput,
     "klaviyo.create_event": KlaviyoCreateEventInput,
@@ -67346,6 +70295,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "linkedin-ads.get_campaign": LinkedinAdsGetCampaignInput,
     "linkedin-ads.get_ad_analytics": LinkedinAdsGetAdAnalyticsInput,
     "linkedin-ads.list_campaign_groups": LinkedinAdsListCampaignGroupsInput,
+    "linkedin-ads.list_creatives": LinkedinAdsListCreativesInput,
+    "linkedin-ads.get_creative": LinkedinAdsGetCreativeInput,
     "local-computer-control.start_session": LocalComputerControlStartSessionInput,
     "local-computer-control.ensure_connected": LocalComputerControlEnsureConnectedInput,
     "local-computer-control.session_status": LocalComputerControlSessionStatusInput,
@@ -67457,6 +70408,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "mailchimp.find_customer": MailchimpFindCustomerInput,
     "mailchimp.find_tag": MailchimpFindTagInput,
     "mailchimp.find_subscriber": MailchimpFindSubscriberInput,
+    "mandrill.send_email": MandrillSendEmailInput,
+    "mandrill.send_template_email": MandrillSendTemplateEmailInput,
+    "mandrill.search_messages": MandrillSearchMessagesInput,
+    "mandrill.get_message_info": MandrillGetMessageInfoInput,
+    "mandrill.list_templates": MandrillListTemplatesInput,
+    "mandrill.list_senders": MandrillListSendersInput,
     "mailer-lite.list_subscribers": MailerLiteListSubscribersInput,
     "mailer-lite.upsert_subscriber": MailerLiteUpsertSubscriberInput,
     "mailer-lite.get_subscriber": MailerLiteGetSubscriberInput,
@@ -67898,10 +70855,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "neoncrm.create_donation": NeoncrmCreateDonationInput,
     "neoncrm.get_events": NeoncrmGetEventsInput,
     "neoncrm.custom_api_call": NeoncrmCustomApiCallInput,
-    "netlify.start_deploy": NetlifyStartDeployInput,
+    "netlify.list_sites": NetlifyListSitesInput,
     "netlify.get_site": NetlifyGetSiteInput,
     "netlify.list_site_deploys": NetlifyListSiteDeploysInput,
-    "netlify.list_files": NetlifyListFilesInput,
+    "netlify.get_deploy": NetlifyGetDeployInput,
+    "netlify.create_deploy": NetlifyCreateDeployInput,
+    "netlify.cancel_deploy": NetlifyCancelDeployInput,
+    "netlify.list_environment_variables": NetlifyListEnvironmentVariablesInput,
+    "netlify.set_environment_variable": NetlifySetEnvironmentVariableInput,
+    "netlify.list_build_hooks": NetlifyListBuildHooksInput,
+    "netlify.create_build_hook": NetlifyCreateBuildHookInput,
+    "netlify.list_dns_zones": NetlifyListDnsZonesInput,
+    "netlify.list_dns_records": NetlifyListDnsRecordsInput,
+    "netlify.create_dns_record": NetlifyCreateDnsRecordInput,
+    "netlify.delete_dns_record": NetlifyDeleteDnsRecordInput,
     "netsuite.test_connection": NetsuiteTestConnectionInput,
     "netsuite.get_metadata_catalog": NetsuiteGetMetadataCatalogInput,
     "netsuite.list_records": NetsuiteListRecordsInput,
@@ -68063,7 +71030,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "outreach.list_prospects": OutreachListProspectsInput,
     "outreach.get_prospect": OutreachGetProspectInput,
     "outreach.create_prospect": OutreachCreateProspectInput,
+    "outreach.update_prospect": OutreachUpdateProspectInput,
+    "outreach.list_accounts": OutreachListAccountsInput,
+    "outreach.get_account": OutreachGetAccountInput,
+    "outreach.create_account": OutreachCreateAccountInput,
     "outreach.list_sequences": OutreachListSequencesInput,
+    "outreach.list_sequence_states": OutreachListSequenceStatesInput,
+    "outreach.list_tasks": OutreachListTasksInput,
+    "outreach.list_calls": OutreachListCallsInput,
     "paddle.list_products": PaddleListProductsInput,
     "paddle.get_product": PaddleGetProductInput,
     "paddle.list_prices": PaddleListPricesInput,
@@ -68086,6 +71060,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "pagerduty.get_user": PagerdutyGetUserInput,
     "pagerduty.list_on_calls": PagerdutyListOnCallsInput,
     "pagerduty.list_escalation_policies": PagerdutyListEscalationPoliciesInput,
+    "pagerduty.get_escalation_policy": PagerdutyGetEscalationPolicyInput,
+    "pagerduty.list_schedules": PagerdutyListSchedulesInput,
+    "pagerduty.get_schedule": PagerdutyGetScheduleInput,
     "pandadoc.createDocumentFromTemplate": PandadocCreateDocumentFromTemplateInput,
     "pandadoc.createAttachment": PandadocCreateAttachmentInput,
     "pandadoc.createOrUpdateContact": PandadocCreateOrUpdateContactInput,
@@ -68093,6 +71070,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "pandadoc.getDocumentAttachments": PandadocGetDocumentAttachmentsInput,
     "pandadoc.getDocumentDetails": PandadocGetDocumentDetailsInput,
     "pandadoc.downloadDocument": PandadocDownloadDocumentInput,
+    "pandadoc.sendDocument": PandadocSendDocumentInput,
+    "pandadoc.createDocumentSession": PandadocCreateDocumentSessionInput,
+    "pandadoc.listTemplates": PandadocListTemplatesInput,
+    "pandadoc.getTemplateDetails": PandadocGetTemplateDetailsInput,
+    "pandadoc.listWebhookEvents": PandadocListWebhookEventsInput,
+    "pandadoc.deleteDocument": PandadocDeleteDocumentInput,
     "pandadoc.custom_api_call": PandadocCustomApiCallInput,
     "paperform.deleteFormSubmission": PaperformDeleteFormSubmissionInput,
     "paperform.deletePartialFormSubmission": PaperformDeletePartialFormSubmissionInput,
@@ -68128,8 +71111,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "payhawk.custom_api_call": PayhawkCustomApiCallInput,
     "paylocity.list_employees": PaylocityListEmployeesInput,
     "paylocity.get_employee": PaylocityGetEmployeeInput,
+    "paylocity.list_changed_employees": PaylocityListChangedEmployeesInput,
     "paylocity.list_earnings": PaylocityListEarningsInput,
+    "paylocity.get_earning_by_code": PaylocityGetEarningByCodeInput,
     "paylocity.get_company_codes": PaylocityGetCompanyCodesInput,
+    "paylocity.get_employee_custom_fields": PaylocityGetEmployeeCustomFieldsInput,
     "paylocity.get_employee_benefits": PaylocityGetEmployeeBenefitsInput,
     "paypal.create_order": PaypalCreateOrderInput,
     "paypal.get_order": PaypalGetOrderInput,
@@ -68710,7 +71696,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "render.list_services": RenderListServicesInput,
     "render.get_service": RenderGetServiceInput,
     "render.list_deploys": RenderListDeploysInput,
+    "render.get_deploy": RenderGetDeployInput,
     "render.create_deploy": RenderCreateDeployInput,
+    "render.cancel_deploy": RenderCancelDeployInput,
+    "render.list_environment_variables": RenderListEnvironmentVariablesInput,
+    "render.set_environment_variable": RenderSetEnvironmentVariableInput,
+    "render.list_jobs": RenderListJobsInput,
+    "render.create_job": RenderCreateJobInput,
+    "render.get_job": RenderGetJobInput,
+    "render.cancel_job": RenderCancelJobInput,
+    "render.list_events": RenderListEventsInput,
     "replicate.create_prediction": ReplicateCreatePredictionInput,
     "replicate.get_prediction": ReplicateGetPredictionInput,
     "replicate.list_models": ReplicateListModelsInput,
@@ -68745,7 +71740,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "revenuecat.list_offerings": RevenuecatListOfferingsInput,
     "ringcentral.send_sms": RingcentralSendSmsInput,
     "ringcentral.get_call_log": RingcentralGetCallLogInput,
+    "ringcentral.get_call_record": RingcentralGetCallRecordInput,
     "ringcentral.list_extensions": RingcentralListExtensionsInput,
+    "ringcentral.list_phone_numbers": RingcentralListPhoneNumbersInput,
+    "ringcentral.list_message_store": RingcentralListMessageStoreInput,
     "rippling.list_employees": RipplingListEmployeesInput,
     "rippling.get_employee": RipplingGetEmployeeInput,
     "rippling.list_departments": RipplingListDepartmentsInput,
@@ -68759,6 +71757,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "rollbar.list_occurrences": RollbarListOccurrencesInput,
     "rollbar.list_projects": RollbarListProjectsInput,
     "rollbar.custom_api_call": RollbarCustomApiCallInput,
+    "rootly.validate_connection": RootlyValidateConnectionInput,
+    "rootly.list_incidents": RootlyListIncidentsInput,
+    "rootly.get_incident": RootlyGetIncidentInput,
+    "rootly.create_incident": RootlyCreateIncidentInput,
+    "rootly.update_incident": RootlyUpdateIncidentInput,
+    "rootly.mitigate_incident": RootlyMitigateIncidentInput,
+    "rootly.resolve_incident": RootlyResolveIncidentInput,
+    "rootly.cancel_incident": RootlyCancelIncidentInput,
+    "rootly.list_incident_events": RootlyListIncidentEventsInput,
+    "rootly.create_incident_event": RootlyCreateIncidentEventInput,
+    "rootly.list_services": RootlyListServicesInput,
+    "rootly.list_severities": RootlyListSeveritiesInput,
+    "rootly.list_users": RootlyListUsersInput,
+    "rootly.list_teams": RootlyListTeamsInput,
     "route4me.optimize_route": Route4meOptimizeRouteInput,
     "route4me.create_address": Route4meCreateAddressInput,
     "route4me.get_orders": Route4meGetOrdersInput,
@@ -68811,7 +71823,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "salesloft.list_people": SalesloftListPeopleInput,
     "salesloft.get_person": SalesloftGetPersonInput,
     "salesloft.create_person": SalesloftCreatePersonInput,
+    "salesloft.update_person": SalesloftUpdatePersonInput,
+    "salesloft.list_accounts": SalesloftListAccountsInput,
+    "salesloft.get_account": SalesloftGetAccountInput,
+    "salesloft.create_account": SalesloftCreateAccountInput,
     "salesloft.list_cadences": SalesloftListCadencesInput,
+    "salesloft.get_cadence": SalesloftGetCadenceInput,
+    "salesloft.list_cadence_memberships": SalesloftListCadenceMembershipsInput,
+    "salesloft.list_tasks": SalesloftListTasksInput,
+    "salesloft.list_calls": SalesloftListCallsInput,
+    "salesloft.list_webhook_subscriptions": SalesloftListWebhookSubscriptionsInput,
+    "salesloft.create_webhook_subscription": SalesloftCreateWebhookSubscriptionInput,
+    "salesloft.delete_webhook_subscription": SalesloftDeleteWebhookSubscriptionInput,
     "advanced-code.run_code": AdvancedCodeRunCodeInput,
     "sanity.query": SanityQueryInput,
     "sanity.get_document": SanityGetDocumentInput,
@@ -68853,6 +71876,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "sendgrid.list_templates": SendgridListTemplatesInput,
     "sendgrid.list_verified_senders": SendgridListVerifiedSendersInput,
     "sendgrid.list_global_suppressions": SendgridListGlobalSuppressionsInput,
+    "sendgrid.add_or_update_contact": SendgridAddOrUpdateContactInput,
+    "sendgrid.search_contacts_by_email": SendgridSearchContactsByEmailInput,
+    "sendgrid.list_marketing_lists": SendgridListMarketingListsInput,
+    "sendgrid.delete_contact": SendgridDeleteContactInput,
+    "sendgrid.get_email_activity": SendgridGetEmailActivityInput,
     "sendpulse.add-subscriber": SendpulseAddSubscriberInput,
     "sendpulse.change-variable-for-subscriber": SendpulseChangeVariableForSubscriberInput,
     "sendpulse.delete-contact": SendpulseDeleteContactInput,
@@ -68888,6 +71916,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "sequential-thinking.get_chain": SequentialThinkingGetChainInput,
     "sequential-thinking.summarize_chain": SequentialThinkingSummarizeChainInput,
     "serpapi.google_search": SerpapiGoogleSearchInput,
+    "serpapi.google_maps_search": SerpapiGoogleMapsSearchInput,
+    "serpapi.search_locations": SerpapiSearchLocationsInput,
     "serpapi.account_status": SerpapiAccountStatusInput,
     "service-now.list_records": ServiceNowListRecordsInput,
     "service-now.get_record": ServiceNowGetRecordInput,
@@ -69371,9 +72401,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "telegram-bot.get_bot_info": TelegramBotGetBotInfoInput,
     "telegram-bot.custom_api_call": TelegramBotCustomApiCallInput,
     "telnyx.send_message": TelnyxSendMessageInput,
+    "telnyx.get_message": TelnyxGetMessageInput,
+    "telnyx.search_detail_records": TelnyxSearchDetailRecordsInput,
     "telnyx.list_messaging_profiles": TelnyxListMessagingProfilesInput,
     "telnyx.list_phone_numbers": TelnyxListPhoneNumbersInput,
+    "telnyx.list_call_control_applications": TelnyxListCallControlApplicationsInput,
+    "telnyx.get_call_control_application": TelnyxGetCallControlApplicationInput,
     "telnyx.create_call": TelnyxCreateCallInput,
+    "tenable.list_assets": TenableListAssetsInput,
+    "tenable.get_asset": TenableGetAssetInput,
+    "tenable.list_vulnerabilities": TenableListVulnerabilitiesInput,
+    "tenable.get_plugin_details": TenableGetPluginDetailsInput,
+    "tenable.list_assets_with_vulnerabilities": TenableListAssetsWithVulnerabilitiesInput,
+    "tenable.list_asset_vulnerabilities": TenableListAssetVulnerabilitiesInput,
     "terraform-cloud.list_workspaces": TerraformCloudListWorkspacesInput,
     "terraform-cloud.get_run": TerraformCloudGetRunInput,
     "terraform-cloud.create_run": TerraformCloudCreateRunInput,
@@ -69415,6 +72455,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "tiktok-ads.list_campaigns": TiktokAdsListCampaignsInput,
     "tiktok-ads.get_campaign": TiktokAdsGetCampaignInput,
     "tiktok-ads.list_ad_groups": TiktokAdsListAdGroupsInput,
+    "tiktok-ads.get_ad_group": TiktokAdsGetAdGroupInput,
+    "tiktok-ads.list_ads": TiktokAdsListAdsInput,
     "tiktok-ads.get_ad_report": TiktokAdsGetAdReportInput,
     "timescale.get_auth_info": TimescaleGetAuthInfoInput,
     "timescale.list_services": TimescaleListServicesInput,
@@ -69605,6 +72647,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "vonage.send_verification": VonageSendVerificationInput,
     "vonage.check_verification": VonageCheckVerificationInput,
     "vonage.cancel_verification": VonageCancelVerificationInput,
+    "vonage.get_account_balance": VonageGetAccountBalanceInput,
+    "vonage.list_owned_numbers": VonageListOwnedNumbersInput,
     "vtex.get-product-by-id": VtexGetProductByIdInput,
     "vtex.create-product": VtexCreateProductInput,
     "vtex.Update-product": VtexUpdateProductInput,
@@ -69647,10 +72691,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "web-reader.extract_structured_data": WebReaderExtractStructuredDataInput,
     "web-reader.fetch_multiple": WebReaderFetchMultipleInput,
     "webex.list_rooms": WebexListRoomsInput,
+    "webex.create_room": WebexCreateRoomInput,
+    "webex.list_memberships": WebexListMembershipsInput,
     "webex.create_message": WebexCreateMessageInput,
+    "webex.get_message": WebexGetMessageInput,
+    "webex.delete_message": WebexDeleteMessageInput,
     "webex.list_people": WebexListPeopleInput,
     "webex.get_person": WebexGetPersonInput,
     "webex.list_messages": WebexListMessagesInput,
+    "webex.list_meetings": WebexListMeetingsInput,
+    "webex.create_meeting": WebexCreateMeetingInput,
     "webflow.list_sites": WebflowListSitesInput,
     "webflow.list_collections": WebflowListCollectionsInput,
     "webflow.get_collection": WebflowGetCollectionInput,
@@ -69811,10 +72861,17 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "zoho-books.list_invoices": ZohoBooksListInvoicesInput,
     "zoho-books.get_invoice": ZohoBooksGetInvoiceInput,
     "zoho-books.create_invoice": ZohoBooksCreateInvoiceInput,
+    "zoho-books.update_invoice": ZohoBooksUpdateInvoiceInput,
+    "zoho-books.delete_invoice": ZohoBooksDeleteInvoiceInput,
     "zoho-books.list_contacts": ZohoBooksListContactsInput,
     "zoho-books.get_contact": ZohoBooksGetContactInput,
     "zoho-books.create_contact": ZohoBooksCreateContactInput,
-    "zoho-books.custom_api_call": ZohoBooksCustomApiCallInput,
+    "zoho-books.list_expenses": ZohoBooksListExpensesInput,
+    "zoho-books.create_expense": ZohoBooksCreateExpenseInput,
+    "zoho-books.list_customer_payments": ZohoBooksListCustomerPaymentsInput,
+    "zoho-books.create_customer_payment": ZohoBooksCreateCustomerPaymentInput,
+    "zoho-books.list_items": ZohoBooksListItemsInput,
+    "zoho-books.create_item": ZohoBooksCreateItemInput,
     "zoho-campaigns.createCampaign": ZohoCampaignsCreateCampaignInput,
     "zoho-campaigns.cloneCampaign": ZohoCampaignsCloneCampaignInput,
     "zoho-campaigns.sendCampaign": ZohoCampaignsSendCampaignInput,
