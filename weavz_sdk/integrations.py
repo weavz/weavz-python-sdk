@@ -1918,6 +1918,83 @@ class AgentScratchpadClearAllInput(BaseModel):
     pass
 
 
+class AhaListProductsInput(BaseModel):
+    """Aha! — List Products"""
+    page: Optional[float] = Field(None, description="1-indexed page number.")
+    perPage: Optional[float] = Field(None, description="1 to 200 records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaListFeaturesInput(BaseModel):
+    """Aha! — List Features"""
+    productId: Optional[str] = Field(None, description="Optional Aha! product/workspace ID.")
+    releaseId: Optional[str] = Field(None, description="Release ID")
+    initiativeId: Optional[str] = Field(None, description="Initiative ID")
+    goalId: Optional[str] = Field(None, description="Goal ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="1 to 200 records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaGetFeatureInput(BaseModel):
+    """Aha! — Get Feature"""
+    featureId: str = Field(..., description="Feature ID or Reference")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaCreateFeatureInput(BaseModel):
+    """Aha! — Create Feature"""
+    parentType: str = Field(..., description="Parent Type")
+    parentId: str = Field(..., description="Product ID for product parent or release ID for release parent.")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    workflowStatus: Optional[str] = Field(None, description="Workflow Status")
+    assignedToUser: Optional[str] = Field(None, description="Assigned To User Email or ID")
+    additionalFields: Optional[Any] = Field(None, description="Extra fields merged into the feature object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaUpdateFeatureInput(BaseModel):
+    """Aha! — Update Feature"""
+    featureId: str = Field(..., description="Feature ID or Reference")
+    name: Optional[str] = Field(None, description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    workflowStatus: Optional[str] = Field(None, description="Workflow Status")
+    additionalFields: Optional[Any] = Field(None, description="Additional Feature Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaListIdeasInput(BaseModel):
+    """Aha! — List Ideas"""
+    productId: Optional[str] = Field(None, description="Product ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="1 to 200 records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaPromoteIdeaInput(BaseModel):
+    """Aha! — Promote Idea"""
+    ideaId: str = Field(..., description="Idea ID")
+    fields: Optional[Any] = Field(None, description="Aha! promotion payload fields.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AhaAddCommentInput(BaseModel):
+    """Aha! — Add Comment"""
+    parentType: str = Field(..., description="Parent Type")
+    parentId: str = Field(..., description="Parent ID")
+    body: str = Field(..., description="Comment Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class AhrefsGetBacklinksInput(BaseModel):
     """Ahrefs — Get Backlinks"""
     target: str = Field(..., description="Domain or URL to get backlinks for")
@@ -2732,6 +2809,107 @@ class AirwallexCustomWriteApiCallInput(BaseModel):
     on_behalf_of: Optional[str] = Field(None, description="Connected account open ID for platform requests, for example acct_xxxxxx")
     auth_2fa_token: Optional[str] = Field(None, description="x-auth-2fa-token value when Airwallex requires second-factor authorization")
     sca_session_code: Optional[str] = Field(None, description="x-sca-session-code value from Airwallex SCA Verify when applicable")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenListProjectsInput(BaseModel):
+    """Aiven — List Projects"""
+    pass
+
+
+class AivenListCloudsInput(BaseModel):
+    """Aiven — List Clouds"""
+    pass
+
+
+class AivenListServicesInput(BaseModel):
+    """Aiven — List Services"""
+    project: str = Field(..., description="Project")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenGetServiceInput(BaseModel):
+    """Aiven — Get Service"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenCreateServiceInput(BaseModel):
+    """Aiven — Create Service"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+    serviceType: str = Field(..., description="For example pg, kafka, redis, clickhouse, opensearch, or mysql.")
+    cloud: str = Field(..., description="Aiven cloud region, for example aws-us-east-1.")
+    plan: str = Field(..., description="Plan")
+    diskSpaceMb: Optional[float] = Field(None, description="Disk Space MB")
+    terminationProtection: Optional[bool] = Field(None, description="Termination Protection")
+    tags: Optional[Any] = Field(None, description="Optional service tags as a JSON object.")
+    userConfig: Optional[Any] = Field(None, description="Optional Aiven service user_config JSON object.")
+    confirmCreate: bool = Field(..., description="Confirm Create")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenUpdateServiceInput(BaseModel):
+    """Aiven — Update Service"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+    update: Any = Field(..., description="Update Body")
+    confirmUpdate: bool = Field(..., description="Confirm Update")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenTerminateServiceInput(BaseModel):
+    """Aiven — Terminate Service"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+    confirmServiceName: str = Field(..., description="Confirm Service Name")
+    confirmDelete: bool = Field(..., description="Confirm Termination")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenListProjectEventsInput(BaseModel):
+    """Aiven — List Project Events"""
+    project: str = Field(..., description="Project")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenListServiceLogsInput(BaseModel):
+    """Aiven — List Service Logs"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[str] = Field(None, description="Opaque Aiven log offset.")
+    severity: Optional[str] = Field(None, description="Minimum Severity")
+    sortOrder: Optional[str] = Field(None, description="Sort Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenFetchServiceMetricsInput(BaseModel):
+    """Aiven — Fetch Service Metrics"""
+    project: str = Field(..., description="Project")
+    serviceName: str = Field(..., description="Service Name")
+    period: str = Field(..., description="Period")
+    kafkaTopicName: Optional[str] = Field(None, description="Kafka Topic Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AivenCustomApiCallInput(BaseModel):
+    """Aiven — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path under /v1, for example /project/my-project/service.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmMutation: Optional[bool] = Field(None, description="Required for POST, PUT, and DELETE custom calls.")
 
     model_config = {"populate_by_name": True}
 
@@ -4362,6 +4540,377 @@ class AutotaskCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AvalaraTestConnectionInput(BaseModel):
+    """Avalara AvaTax — Test Connection"""
+    pass
+
+
+class AvalaraListCompaniesInput(BaseModel):
+    """Avalara AvaTax — List Companies"""
+    top: Optional[float] = Field(None, description="Top")
+    skip: Optional[float] = Field(None, description="Skip")
+
+    model_config = {"populate_by_name": True}
+
+
+class AvalaraCalculateTransactionTaxInput(BaseModel):
+    """Avalara AvaTax — Calculate Transaction Tax"""
+    companyCode: Optional[str] = Field(None, description="Overrides the connection company code.")
+    type_: str = Field(..., alias="type", description="Transaction Type")
+    code: str = Field(..., description="Unique document/order code.")
+    date: str = Field(..., description="YYYY-MM-DD.")
+    customerCode: str = Field(..., description="Customer Code")
+    currencyCode: str = Field(..., description="Currency Code")
+    commit: Optional[bool] = Field(None, description="Commit only when the transaction should be recorded for reporting.")
+    addresses: Any = Field(..., description="AvaTax addresses object, for example ShipFrom and ShipTo.")
+    lines: Any = Field(..., description="AvaTax lines array with number, quantity, amount, itemCode, taxCode, and description.")
+    discount: Optional[float] = Field(None, description="Discount Amount")
+    purchaseOrderNo: Optional[str] = Field(None, description="Purchase Order Number")
+
+    model_config = {"populate_by_name": True}
+
+
+class AvalaraGetTransactionInput(BaseModel):
+    """Avalara AvaTax — Get Transaction"""
+    companyCode: Optional[str] = Field(None, description="Overrides the connection company code.")
+    transactionCode: str = Field(..., description="Transaction Code")
+    type_: str = Field(..., alias="type", description="Transaction Type")
+
+    model_config = {"populate_by_name": True}
+
+
+class AvalaraVoidTransactionInput(BaseModel):
+    """Avalara AvaTax — Void Transaction"""
+    companyCode: Optional[str] = Field(None, description="Overrides the connection company code.")
+    transactionCode: str = Field(..., description="Transaction Code")
+    type_: str = Field(..., alias="type", description="Transaction Type")
+    voidCode: str = Field(..., description="Void Code")
+    confirm: bool = Field(..., description="Confirm Void")
+
+    model_config = {"populate_by_name": True}
+
+
+class AvalaraResolveAddressInput(BaseModel):
+    """Avalara AvaTax — Resolve Address"""
+    line1: str = Field(..., description="Address Line 1")
+    line2: Optional[str] = Field(None, description="Address Line 2")
+    city: Optional[str] = Field(None, description="City")
+    region: Optional[str] = Field(None, description="Region/State")
+    postalCode: str = Field(..., description="Postal Code")
+    country: str = Field(..., description="Two-letter country code.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchListMetricsInput(BaseModel):
+    """AWS CloudWatch — List Metrics"""
+    namespace: Optional[str] = Field(None, description="Namespace")
+    metricName: Optional[str] = Field(None, description="Metric Name")
+    dimensionsJson: Optional[Any] = Field(None, description="Optional object such as {\"FunctionName\":\"my-function\"}.")
+    recentlyActive: Optional[str] = Field(None, description="Recently Active")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchGetMetricStatisticsInput(BaseModel):
+    """AWS CloudWatch — Get Metric Statistics"""
+    namespace: str = Field(..., description="Namespace")
+    metricName: str = Field(..., description="Metric Name")
+    startTime: str = Field(..., description="ISO timestamp.")
+    endTime: str = Field(..., description="ISO timestamp. Defaults are not used for this action.")
+    period: Optional[float] = Field(None, description="Period Seconds")
+    statistics: Optional[str] = Field(None, description="Comma- or newline-separated values such as Average, Sum, Minimum, Maximum.")
+    unit: Optional[str] = Field(None, description="Unit")
+    dimensionsJson: Optional[Any] = Field(None, description="Dimensions JSON")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchDescribeAlarmsInput(BaseModel):
+    """AWS CloudWatch — Describe Alarms"""
+    alarmNamePrefix: Optional[str] = Field(None, description="Alarm Name Prefix")
+    stateValue: Optional[str] = Field(None, description="State Value")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    maxRecords: Optional[float] = Field(None, description="1 to 100 alarms per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchPutMetricDataInput(BaseModel):
+    """AWS CloudWatch — Put Metric Data"""
+    namespace: str = Field(..., description="Namespace")
+    metricName: str = Field(..., description="Metric Name")
+    value: float = Field(..., description="Value")
+    unit: Optional[str] = Field(None, description="For example Count, Seconds, Percent, or Bytes.")
+    dimensionsJson: Optional[Any] = Field(None, description="Dimensions JSON")
+    timestamp: Optional[str] = Field(None, description="Optional ISO timestamp. Defaults to AWS receive time.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchDescribeLogGroupsInput(BaseModel):
+    """AWS CloudWatch — Describe Log Groups"""
+    logGroupNamePrefix: Optional[str] = Field(None, description="Log Group Name Prefix")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    limit: Optional[float] = Field(None, description="1 to 50 log groups per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsCloudwatchFilterLogEventsInput(BaseModel):
+    """AWS CloudWatch — Filter Log Events"""
+    logGroupName: str = Field(..., description="Log Group Name")
+    filterPattern: Optional[str] = Field(None, description="Filter Pattern")
+    logStreamNames: Optional[str] = Field(None, description="Optional comma- or newline-separated stream names.")
+    startTime: Optional[str] = Field(None, description="ISO timestamp or epoch milliseconds.")
+    endTime: Optional[str] = Field(None, description="ISO timestamp or epoch milliseconds.")
+    limit: Optional[float] = Field(None, description="1 to 100 events per call.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbListTablesInput(BaseModel):
+    """AWS DynamoDB — List Tables"""
+    exclusiveStartTableName: Optional[str] = Field(None, description="Exclusive Start Table Name")
+    limit: Optional[float] = Field(None, description="1 to 100 table names per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbDescribeTableInput(BaseModel):
+    """AWS DynamoDB — Describe Table"""
+    tableName: str = Field(..., description="Table Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbGetItemInput(BaseModel):
+    """AWS DynamoDB — Get Item"""
+    tableName: str = Field(..., description="Table Name")
+    keyJson: Any = Field(..., description="Normal JSON key object, for example {\"pk\":\"USER#1\",\"sk\":\"PROFILE\"}.")
+    projectionExpression: Optional[str] = Field(None, description="Projection Expression")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    consistentRead: Optional[bool] = Field(None, description="Consistent Read")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbPutItemInput(BaseModel):
+    """AWS DynamoDB — Put Item"""
+    tableName: str = Field(..., description="Table Name")
+    itemJson: Any = Field(..., description="Normal JSON item object. Existing items with the same key may be replaced unless you provide a condition.")
+    conditionExpression: Optional[str] = Field(None, description="Condition Expression")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    expressionAttributeValuesJson: Optional[Any] = Field(None, description="Expression Attribute Values JSON")
+    returnValues: Optional[str] = Field(None, description="Return Values")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbUpdateItemInput(BaseModel):
+    """AWS DynamoDB — Update Item"""
+    tableName: str = Field(..., description="Table Name")
+    keyJson: Any = Field(..., description="Key JSON")
+    updateExpression: str = Field(..., description="For example SET #name = :name.")
+    expressionAttributeValuesJson: Optional[Any] = Field(None, description="Expression Attribute Values JSON")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    conditionExpression: Optional[str] = Field(None, description="Condition Expression")
+    returnValues: Optional[str] = Field(None, description="Return Values")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbDeleteItemInput(BaseModel):
+    """AWS DynamoDB — Delete Item"""
+    tableName: str = Field(..., description="Table Name")
+    keyJson: Any = Field(..., description="Key JSON")
+    conditionExpression: Optional[str] = Field(None, description="Condition Expression")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    expressionAttributeValuesJson: Optional[Any] = Field(None, description="Expression Attribute Values JSON")
+    returnValues: Optional[str] = Field(None, description="Return Values")
+    confirmation: str = Field(..., description="Type DELETE_ITEM to delete this item.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbQueryInput(BaseModel):
+    """AWS DynamoDB — Query"""
+    tableName: str = Field(..., description="Table Name")
+    keyConditionExpression: str = Field(..., description="Key Condition Expression")
+    expressionAttributeValuesJson: Any = Field(..., description="Expression Attribute Values JSON")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    indexName: Optional[str] = Field(None, description="Index Name")
+    filterExpression: Optional[str] = Field(None, description="Filter Expression")
+    projectionExpression: Optional[str] = Field(None, description="Projection Expression")
+    limit: Optional[float] = Field(None, description="1 to 100 items evaluated per call.")
+    exclusiveStartKeyJson: Optional[Any] = Field(None, description="Exclusive Start Key JSON")
+    scanIndexForward: Optional[bool] = Field(None, description="Scan Index Forward")
+    consistentRead: Optional[bool] = Field(None, description="Consistent Read")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsDynamodbScanInput(BaseModel):
+    """AWS DynamoDB — Scan"""
+    tableName: str = Field(..., description="Table Name")
+    indexName: Optional[str] = Field(None, description="Index Name")
+    filterExpression: Optional[str] = Field(None, description="Filter Expression")
+    expressionAttributeValuesJson: Optional[Any] = Field(None, description="Expression Attribute Values JSON")
+    expressionAttributeNamesJson: Optional[Any] = Field(None, description="Expression Attribute Names JSON")
+    projectionExpression: Optional[str] = Field(None, description="Projection Expression")
+    limit: Optional[float] = Field(None, description="1 to 100 items evaluated per call.")
+    exclusiveStartKeyJson: Optional[Any] = Field(None, description="Exclusive Start Key JSON")
+    consistentRead: Optional[bool] = Field(None, description="Consistent Read")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeListEventBusesInput(BaseModel):
+    """AWS EventBridge — List Event Buses"""
+    namePrefix: Optional[str] = Field(None, description="Name Prefix")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    limit: Optional[float] = Field(None, description="1 to 100 event buses per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeListRulesInput(BaseModel):
+    """AWS EventBridge — List Rules"""
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+    namePrefix: Optional[str] = Field(None, description="Name Prefix")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    limit: Optional[float] = Field(None, description="1 to 100 rules per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeDescribeRuleInput(BaseModel):
+    """AWS EventBridge — Describe Rule"""
+    name: str = Field(..., description="Rule Name")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgePutRuleInput(BaseModel):
+    """AWS EventBridge — Put Rule"""
+    name: str = Field(..., description="Rule Name")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+    description: Optional[str] = Field(None, description="Description")
+    eventPatternJson: Optional[Any] = Field(None, description="Event Pattern JSON")
+    scheduleExpression: Optional[str] = Field(None, description="For example rate(5 minutes) or cron(...).")
+    state: Optional[str] = Field(None, description="State")
+    roleArn: Optional[str] = Field(None, description="Role ARN")
+    tagsJson: Optional[Any] = Field(None, description="Optional tags object used when creating a rule.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeListTargetsByRuleInput(BaseModel):
+    """AWS EventBridge — List Targets By Rule"""
+    rule: str = Field(..., description="Rule Name")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    limit: Optional[float] = Field(None, description="1 to 100 targets per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgePutTargetsInput(BaseModel):
+    """AWS EventBridge — Put Targets"""
+    rule: str = Field(..., description="Rule Name")
+    targetsJson: Any = Field(..., description="Array of official EventBridge target objects. Maximum 10.")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgePutEventsInput(BaseModel):
+    """AWS EventBridge — Put Events"""
+    entriesJson: Any = Field(..., description="Array of events with source, detailType, and detail. Maximum 10.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeRemoveTargetsInput(BaseModel):
+    """AWS EventBridge — Remove Targets"""
+    rule: str = Field(..., description="Rule Name")
+    targetIds: str = Field(..., description="Comma- or newline-separated target IDs. Maximum 10.")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+    force: Optional[bool] = Field(None, description="Force")
+    confirmation: str = Field(..., description="Type REMOVE_TARGETS to remove these targets.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsEventbridgeDeleteRuleInput(BaseModel):
+    """AWS EventBridge — Delete Rule"""
+    name: str = Field(..., description="Rule Name")
+    eventBusName: Optional[str] = Field(None, description="Event Bus Name")
+    force: Optional[bool] = Field(None, description="Force")
+    confirmation: str = Field(..., description="Type DELETE_RULE to delete this rule.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaListFunctionsInput(BaseModel):
+    """AWS Lambda — List Functions"""
+    marker: Optional[str] = Field(None, description="Marker")
+    maxItems: Optional[float] = Field(None, description="1 to 50 functions per call.")
+    functionVersion: Optional[str] = Field(None, description="Function Version")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaGetFunctionInput(BaseModel):
+    """AWS Lambda — Get Function"""
+    functionName: str = Field(..., description="Function Name or ARN")
+    qualifier: Optional[str] = Field(None, description="Optional version or alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaGetFunctionConfigurationInput(BaseModel):
+    """AWS Lambda — Get Function Configuration"""
+    functionName: str = Field(..., description="Function Name or ARN")
+    qualifier: Optional[str] = Field(None, description="Optional version or alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaInvokeFunctionInput(BaseModel):
+    """AWS Lambda — Invoke Function"""
+    functionName: str = Field(..., description="Function Name or ARN")
+    payload: Optional[Any] = Field(None, description="Optional JSON payload sent as the invocation body.")
+    invocationType: Optional[str] = Field(None, description="Invocation Type")
+    logType: Optional[str] = Field(None, description="Log Type")
+    qualifier: Optional[str] = Field(None, description="Optional version or alias.")
+    clientContextBase64: Optional[str] = Field(None, description="Optional base64-encoded client context for synchronous invocations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaListVersionsInput(BaseModel):
+    """AWS Lambda — List Versions"""
+    functionName: str = Field(..., description="Function Name or ARN")
+    marker: Optional[str] = Field(None, description="Marker")
+    maxItems: Optional[float] = Field(None, description="1 to 50 versions per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsLambdaListAliasesInput(BaseModel):
+    """AWS Lambda — List Aliases"""
+    functionName: str = Field(..., description="Function Name or ARN")
+    functionVersion: Optional[str] = Field(None, description="Function Version")
+    marker: Optional[str] = Field(None, description="Marker")
+    maxItems: Optional[float] = Field(None, description="1 to 50 aliases per call.")
+
+    model_config = {"populate_by_name": True}
+
+
 class AwsS3ListObjectsInput(BaseModel):
     """AWS S3 — List Objects"""
     prefix: Optional[str] = Field(None, description="Filter objects by prefix (e.g., folder/)")
@@ -4528,6 +5077,80 @@ class AwsSesGetEmailIdentityInput(BaseModel):
 class AwsSesGetAccountInput(BaseModel):
     """AWS SES — Get Account Details"""
     pass
+
+
+class AwsSnsListTopicsInput(BaseModel):
+    """AWS SNS — List Topics"""
+    nextToken: Optional[str] = Field(None, description="Next Token")
+    maxResults: Optional[float] = Field(None, description="1 to 100 topics per call.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsGetTopicAttributesInput(BaseModel):
+    """AWS SNS — Get Topic Attributes"""
+    topicArn: str = Field(..., description="Topic ARN")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsCreateTopicInput(BaseModel):
+    """AWS SNS — Create Topic"""
+    name: str = Field(..., description="Topic Name")
+    attributesJson: Optional[Any] = Field(None, description="Optional SNS topic attributes object.")
+    tagsJson: Optional[Any] = Field(None, description="Optional tags object such as {\"env\":\"prod\"}.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsPublishMessageInput(BaseModel):
+    """AWS SNS — Publish Message"""
+    topicArn: Optional[str] = Field(None, description="Topic ARN")
+    targetArn: Optional[str] = Field(None, description="Target ARN")
+    phoneNumber: Optional[str] = Field(None, description="Phone Number")
+    message: str = Field(..., description="Message")
+    subject: Optional[str] = Field(None, description="Optional subject for email-capable subscriptions.")
+    messageStructure: Optional[str] = Field(None, description="Message Structure")
+    messageAttributesJson: Optional[Any] = Field(None, description="Optional object of SNS message attributes.")
+    messageGroupId: Optional[str] = Field(None, description="Required for FIFO topics.")
+    messageDeduplicationId: Optional[str] = Field(None, description="Optional for FIFO topics with content-based deduplication.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsListSubscriptionsInput(BaseModel):
+    """AWS SNS — List Subscriptions"""
+    topicArn: Optional[str] = Field(None, description="When set, uses ListSubscriptionsByTopic.")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsSubscribeInput(BaseModel):
+    """AWS SNS — Subscribe Endpoint"""
+    topicArn: str = Field(..., description="Topic ARN")
+    protocol: str = Field(..., description="Protocol")
+    endpoint: str = Field(..., description="Endpoint")
+    attributesJson: Optional[Any] = Field(None, description="Attributes JSON")
+    returnSubscriptionArn: Optional[bool] = Field(None, description="Return Subscription ARN")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsUnsubscribeInput(BaseModel):
+    """AWS SNS — Unsubscribe"""
+    subscriptionArn: str = Field(..., description="Subscription ARN")
+    confirmation: str = Field(..., description="Type UNSUBSCRIBE to unsubscribe this endpoint.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSnsDeleteTopicInput(BaseModel):
+    """AWS SNS — Delete Topic"""
+    topicArn: str = Field(..., description="Topic ARN")
+    confirmation: str = Field(..., description="Type DELETE_TOPIC to delete this topic.")
+
+    model_config = {"populate_by_name": True}
 
 
 class AwsStsGetCallerIdentityInput(BaseModel):
@@ -5403,54 +6026,65 @@ class BloomerangCustomApiCallInput(BaseModel):
 
 class BlueskyCreatePostInput(BaseModel):
     """Bluesky — Create Post"""
-    postType: Optional[str] = Field(None, description="Type of content you're sharing")
-    text: str = Field(..., description="What do you want to post? (Max 300 characters)")
-    language: Optional[str] = Field(None, description="Language of your post")
-    imageUrls: Optional[list[Any]] = Field(None, description="Add up to 4 images by URL")
-    imageDescriptions: Optional[list[Any]] = Field(None, description="Describe each image for accessibility")
-    videoUrl: Optional[str] = Field(None, description="Link to video file (MP4, max 100MB)")
-    videoAltText: Optional[str] = Field(None, description="Describe the video for accessibility")
-    videoCaptions: Optional[list[Any]] = Field(None, description="Caption file URLs (optional)")
-    linkUrl: Optional[str] = Field(None, description="URL to share with your post")
-    replyToPost: Optional[str] = Field(None, description="URL of post to reply to")
-    threadContent: Optional[list[Any]] = Field(None, description="Create additional connected posts")
-    additionalHashtags: Optional[str] = Field(None, description="Add hashtags (e.g., tech,bluesky)")
-    contentWarnings: Optional[list[str]] = Field(None, description="Add warnings for sensitive content")
-    audience: Optional[str] = Field(None, description="Who can see this post")
+    text: str = Field(..., description="Text")
+    languages: Optional[str] = Field(None, description="Optional comma-separated BCP 47 language tags.")
+    reply_root_uri: Optional[str] = Field(None, description="Reply Root URI")
+    reply_root_cid: Optional[str] = Field(None, description="Reply Root CID")
+    reply_parent_uri: Optional[str] = Field(None, description="Reply Parent URI")
+    reply_parent_cid: Optional[str] = Field(None, description="Reply Parent CID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BlueskyDeleteRecordInput(BaseModel):
+    """Bluesky — Delete Record"""
+    at_uri: Optional[str] = Field(None, description="Optional full AT URI, for example at://did/app.bsky.feed.post/rkey.")
+    repo: Optional[str] = Field(None, description="Repo DID or Handle")
+    collection: Optional[str] = Field(None, description="Collection")
+    rkey: Optional[str] = Field(None, description="Record Key")
+
+    model_config = {"populate_by_name": True}
+
+
+class BlueskySearchPostsInput(BaseModel):
+    """Bluesky — Search Posts"""
+    query: str = Field(..., description="Query")
+    author: Optional[str] = Field(None, description="Optional handle or DID to filter results.")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class BlueskyGetPostThreadInput(BaseModel):
+    """Bluesky — Get Post Thread"""
+    uri: str = Field(..., description="Post AT URI")
+    depth: Optional[float] = Field(None, description="Depth")
+    parent_height: Optional[float] = Field(None, description="Parent Height")
+
+    model_config = {"populate_by_name": True}
+
+
+class BlueskyListAuthorFeedInput(BaseModel):
+    """Bluesky — List Author Feed"""
+    actor: str = Field(..., description="Handle or DID.")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class BlueskyGetProfileInput(BaseModel):
+    """Bluesky — Get Profile"""
+    actor: str = Field(..., description="Actor")
 
     model_config = {"populate_by_name": True}
 
 
 class BlueskyLikePostInput(BaseModel):
     """Bluesky — Like Post"""
-    selectionMethod: str = Field(..., description="How to choose the post")
-    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when \"From my timeline\" is selected above)")
-    postUrl: Optional[str] = Field(None, description="Paste the Bluesky post URL")
-
-    model_config = {"populate_by_name": True}
-
-
-class BlueskyRepostPostInput(BaseModel):
-    """Bluesky — Repost Post"""
-    selectionMethod: str = Field(..., description="How to choose the post")
-    postSelection: Optional[str] = Field(None, description="Choose from your recent timeline posts (only when \"From my timeline\" is selected above)")
-    postUrl: Optional[str] = Field(None, description="Paste the Bluesky post URL")
-
-    model_config = {"populate_by_name": True}
-
-
-class BlueskyFindPostInput(BaseModel):
-    """Bluesky — Find Post"""
-    postUrl: str = Field(..., description="Paste the Bluesky post URL (e.g., https://bsky.app/profile/username.bsky.social/post/xxx)")
-
-    model_config = {"populate_by_name": True}
-
-
-class BlueskyFindThreadInput(BaseModel):
-    """Bluesky — Find Thread"""
-    postUrl: str = Field(..., description="Paste the Bluesky post URL (e.g., https://bsky.app/profile/username.bsky.social/post/xxx)")
-    depth: Optional[str] = Field(None, description="How many levels deep to retrieve replies")
-    parentHeight: Optional[str] = Field(None, description="How many parent posts to retrieve")
+    uri: str = Field(..., description="Post AT URI")
+    cid: str = Field(..., description="Post CID")
 
     model_config = {"populate_by_name": True}
 
@@ -6684,6 +7318,104 @@ class CampaignMonitorFindSubscriberInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CannyListBoardsInput(BaseModel):
+    """Canny — List Boards"""
+    pass
+
+
+class CannyListPostsInput(BaseModel):
+    """Canny — List Posts"""
+    boardId: Optional[str] = Field(None, description="Board ID")
+    status: Optional[str] = Field(None, description="Status")
+    authorId: Optional[str] = Field(None, description="Author ID")
+    tagId: Optional[str] = Field(None, description="Tag ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    skip: Optional[float] = Field(None, description="Skip")
+    sort: Optional[str] = Field(None, description="Sort")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyRetrievePostInput(BaseModel):
+    """Canny — Retrieve Post"""
+    postId: str = Field(..., description="Post ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyCreatePostInput(BaseModel):
+    """Canny — Create Post"""
+    boardId: str = Field(..., description="Board ID")
+    title: str = Field(..., description="Title")
+    details: Optional[str] = Field(None, description="Details")
+    authorId: Optional[str] = Field(None, description="Author ID")
+    authorEmail: Optional[str] = Field(None, description="Author Email")
+    authorName: Optional[str] = Field(None, description="Author Name")
+    by: Optional[Any] = Field(None, description="Optional Canny user object for the creator.")
+    customFields: Optional[Any] = Field(None, description="Custom Fields")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyUpdatePostInput(BaseModel):
+    """Canny — Update Post"""
+    postId: str = Field(..., description="Post ID")
+    title: Optional[str] = Field(None, description="Title")
+    details: Optional[str] = Field(None, description="Details")
+    status: Optional[str] = Field(None, description="Status")
+    ownerId: Optional[str] = Field(None, description="Owner ID")
+    eta: Optional[str] = Field(None, description="ETA")
+    categoryId: Optional[str] = Field(None, description="Category ID")
+    customFields: Optional[Any] = Field(None, description="Custom Fields")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyDeletePostInput(BaseModel):
+    """Canny — Delete Post"""
+    postId: str = Field(..., description="Post ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyListCommentsInput(BaseModel):
+    """Canny — List Comments"""
+    postId: str = Field(..., description="Post ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    skip: Optional[float] = Field(None, description="Skip")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyCreateCommentInput(BaseModel):
+    """Canny — Create Comment"""
+    postId: str = Field(..., description="Post ID")
+    value: str = Field(..., description="Comment")
+    authorId: Optional[str] = Field(None, description="Author ID")
+    authorEmail: Optional[str] = Field(None, description="Author Email")
+    authorName: Optional[str] = Field(None, description="Author Name")
+    internal: Optional[bool] = Field(None, description="Internal")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyCreateVoteInput(BaseModel):
+    """Canny — Create Vote"""
+    postId: str = Field(..., description="Post ID")
+    voterId: Optional[str] = Field(None, description="Voter ID")
+    voterEmail: Optional[str] = Field(None, description="Voter Email")
+    voterName: Optional[str] = Field(None, description="Voter Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class CannyListTagsInput(BaseModel):
+    """Canny — List Tags"""
+    pass
+
+
 class CantoSearchAssetsInput(BaseModel):
     """Canto — Search Assets"""
     keyword: str = Field(..., description="Keyword")
@@ -7149,6 +7881,175 @@ class CapsuleCrmFindProjectInput(BaseModel):
 class CapsuleCrmFindOpportunityInput(BaseModel):
     """Capsule CRM — Find Opportunity"""
     filter: Any = Field(..., description="The structured filter query. See the [documentation](https://capsulecrm.com/developer/api-v2/filters/) for examples.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaSynthesizeSpeechInput(BaseModel):
+    """Cartesia — Synthesize Speech"""
+    modelId: str = Field(..., description="Model ID")
+    transcript: str = Field(..., description="Text to synthesize. Keep length explicit to control spend.")
+    voiceId: str = Field(..., description="Voice ID")
+    container: str = Field(..., description="Container")
+    sampleRate: Optional[float] = Field(None, description="Sample Rate")
+    speed: Optional[str] = Field(None, description="Speed")
+    generationConfig: Optional[Any] = Field(None, description="Optional generation_config JSON, for example volume and numeric speed.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaTranscribeAudioInput(BaseModel):
+    """Cartesia — Transcribe Audio"""
+    audioUrl: str = Field(..., description="HTTP(S) URL for the audio file to transcribe.")
+    model: str = Field(..., description="Model")
+    language: Optional[str] = Field(None, description="Optional BCP-47/ISO language code such as en.")
+    timestampGranularities: Optional[list[Any]] = Field(None, description="Optional values such as word.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaListVoicesInput(BaseModel):
+    """Cartesia — List Voices"""
+    limit: Optional[float] = Field(None, description="Limit")
+    startingAfter: Optional[str] = Field(None, description="Starting After")
+    isOwner: Optional[bool] = Field(None, description="Owned Voices Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaGetVoiceInput(BaseModel):
+    """Cartesia — Get Voice"""
+    voiceId: str = Field(..., description="Voice ID")
+    includePreviewUrl: Optional[bool] = Field(None, description="Include Preview URL")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaDeleteVoiceInput(BaseModel):
+    """Cartesia — Delete Voice"""
+    voiceId: str = Field(..., description="Voice ID")
+    confirm: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class CartesiaCreateAccessTokenInput(BaseModel):
+    """Cartesia — Create Access Token"""
+    tts: Optional[bool] = Field(None, description="Grant TTS")
+    stt: Optional[bool] = Field(None, description="Grant STT")
+    agent: Optional[bool] = Field(None, description="Grant Agent")
+    expiresIn: float = Field(..., description="Expires In Seconds")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusListSourcesInput(BaseModel):
+    """Census — List Sources"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    order: Optional[str] = Field(None, description="Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusGetSourceInput(BaseModel):
+    """Census — Get Source"""
+    sourceId: float = Field(..., description="Source ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusListDestinationsInput(BaseModel):
+    """Census — List Destinations"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    order: Optional[str] = Field(None, description="Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusGetDestinationInput(BaseModel):
+    """Census — Get Destination"""
+    destinationId: float = Field(..., description="Destination ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusListDestinationTypesInput(BaseModel):
+    """Census — List Destination Types"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    order: Optional[str] = Field(None, description="Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusListSyncsInput(BaseModel):
+    """Census — List Syncs"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    order: Optional[str] = Field(None, description="Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusGetSyncInput(BaseModel):
+    """Census — Get Sync"""
+    syncId: float = Field(..., description="Sync ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusTriggerSyncInput(BaseModel):
+    """Census — Trigger Sync"""
+    syncId: float = Field(..., description="Sync ID")
+    fullSync: Optional[bool] = Field(None, description="Full Sync")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusListSyncRunsInput(BaseModel):
+    """Census — List Sync Runs"""
+    syncId: float = Field(..., description="Sync ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    order: Optional[str] = Field(None, description="Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusGetSyncRunInput(BaseModel):
+    """Census — Get Sync Run"""
+    syncRunId: float = Field(..., description="Sync Run ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusCancelSyncRunInput(BaseModel):
+    """Census — Cancel Sync Run"""
+    syncRunId: float = Field(..., description="Sync Run ID")
+    confirmCancel: bool = Field(..., description="Confirm Cancel")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusGetSyncRunRecordsCountInput(BaseModel):
+    """Census — Get Sync Run Records Count"""
+    syncRunId: float = Field(..., description="Sync Run ID")
+    primaryIdentifier: Optional[str] = Field(None, description="Primary Identifier")
+    status: Optional[str] = Field(None, description="Record Status")
+    operation: Optional[str] = Field(None, description="Operation")
+
+    model_config = {"populate_by_name": True}
+
+
+class CensusCustomApiCallInput(BaseModel):
+    """Census — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path relative to /api/v1, for example /syncs or /sources/{sourceId}.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Confirm DELETE")
 
     model_config = {"populate_by_name": True}
 
@@ -9072,6 +9973,100 @@ class ConfluenceCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ConfluentCloudListEnvironmentsInput(BaseModel):
+    """Confluent Cloud — List Environments"""
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudGetEnvironmentInput(BaseModel):
+    """Confluent Cloud — Get Environment"""
+    environmentId: str = Field(..., description="Environment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudListKafkaClustersInput(BaseModel):
+    """Confluent Cloud — List Kafka Clusters"""
+    environmentId: str = Field(..., description="Environment ID")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudGetKafkaClusterInput(BaseModel):
+    """Confluent Cloud — Get Kafka Cluster"""
+    environmentId: str = Field(..., description="Environment ID")
+    clusterId: str = Field(..., description="Cluster ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudListServiceAccountsInput(BaseModel):
+    """Confluent Cloud — List Service Accounts"""
+    displayName: Optional[str] = Field(None, description="Display Name Filter")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudGetServiceAccountInput(BaseModel):
+    """Confluent Cloud — Get Service Account"""
+    serviceAccountId: str = Field(..., description="Service Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudListApiKeysInput(BaseModel):
+    """Confluent Cloud — List API Keys"""
+    owner: Optional[str] = Field(None, description="Exact spec.owner filter such as a user or service account ID.")
+    resource: Optional[str] = Field(None, description="Exact spec.resource filter such as a cluster ID.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudGetApiKeyInput(BaseModel):
+    """Confluent Cloud — Get API Key"""
+    apiKeyId: str = Field(..., description="API Key ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudListMetricDescriptorsInput(BaseModel):
+    """Confluent Cloud — List Metric Descriptors"""
+    dataset: str = Field(..., description="Dataset")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudQueryMetricsInput(BaseModel):
+    """Confluent Cloud — Query Metrics"""
+    dataset: str = Field(..., description="Dataset")
+    query: Any = Field(..., description="Metrics API query body, for example aggregations, filter, group_by, intervals, granularity, and limit.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ConfluentCloudCustomApiCallInput(BaseModel):
+    """Confluent Cloud — Custom API Call"""
+    surface: str = Field(..., description="API Surface")
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path under the selected API origin, for example /org/v2/environments.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmMutation: Optional[bool] = Field(None, description="Confirm Mutation")
+
+    model_config = {"populate_by_name": True}
+
+
 class ConnectwiseCreateTicketInput(BaseModel):
     """ConnectWise — Create Ticket"""
     siteUrl: str = Field(..., description="Your ConnectWise site URL (e.g., api-na.myconnectwise.net)")
@@ -9986,6 +10981,105 @@ class CrispCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CrowdinListProjectsInput(BaseModel):
+    """Crowdin — List Projects"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinGetProjectInput(BaseModel):
+    """Crowdin — Get Project"""
+    projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinListFilesInput(BaseModel):
+    """Crowdin — List Files"""
+    projectId: str = Field(..., description="Project ID")
+    directoryId: Optional[float] = Field(None, description="Directory ID")
+    branchId: Optional[float] = Field(None, description="Branch ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinListStringsInput(BaseModel):
+    """Crowdin — List Strings"""
+    projectId: str = Field(..., description="Project ID")
+    fileId: Optional[float] = Field(None, description="File ID")
+    labelIdsCsv: Optional[str] = Field(None, description="Label IDs CSV")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinGetStringInput(BaseModel):
+    """Crowdin — Get String"""
+    projectId: str = Field(..., description="Project ID")
+    stringId: str = Field(..., description="String ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinCreateStringInput(BaseModel):
+    """Crowdin — Create String"""
+    projectId: str = Field(..., description="Project ID")
+    text: str = Field(..., description="Source text to localize. Keep PII-sensitive text explicit and bounded.")
+    identifier: str = Field(..., description="Identifier")
+    fileId: Optional[float] = Field(None, description="File ID")
+    context: Optional[str] = Field(None, description="Context")
+    maxLength: Optional[float] = Field(None, description="Max Length")
+    hidden: Optional[bool] = Field(None, description="Hidden")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinUpdateStringInput(BaseModel):
+    """Crowdin — Update String"""
+    projectId: str = Field(..., description="Project ID")
+    stringId: str = Field(..., description="String ID")
+    text: Optional[str] = Field(None, description="Source Text")
+    context: Optional[str] = Field(None, description="Context")
+    hidden: Optional[bool] = Field(None, description="Hidden")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinUploadFileInput(BaseModel):
+    """Crowdin — Upload File"""
+    projectId: str = Field(..., description="Project ID")
+    filename: str = Field(..., description="Filename")
+    fileContent: str = Field(..., description="Text content to upload. Avoid secrets or unbounded export payloads.")
+    fileType: str = Field(..., description="Crowdin file type such as json, yaml, gettext, android, ios_strings, or xml.")
+    directoryId: Optional[float] = Field(None, description="Directory ID")
+    branchId: Optional[float] = Field(None, description="Branch ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinCreateTranslationBuildInput(BaseModel):
+    """Crowdin — Create Translation Build"""
+    projectId: str = Field(..., description="Project ID")
+    targetLanguageIdsCsv: str = Field(..., description="Comma-separated Crowdin target language IDs.")
+    skipUntranslatedStrings: Optional[bool] = Field(None, description="Skip Untranslated Strings")
+    exportApprovedOnly: Optional[bool] = Field(None, description="Export Approved Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class CrowdinGetTranslationBuildInput(BaseModel):
+    """Crowdin — Get Translation Build"""
+    projectId: str = Field(..., description="Project ID")
+    buildId: str = Field(..., description="Build ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class CultureAmpValidateConnectionInput(BaseModel):
     """Culture Amp — Validate Connection"""
     pass
@@ -10498,6 +11592,39 @@ class DatadogSendLogInput(BaseModel):
     hostname: Optional[str] = Field(None, description="Hostname")
     tags: Optional[list[Any]] = Field(None, description="Tags")
     attributes: Optional[Any] = Field(None, description="Optional JSON object merged into the log.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoGoogleOrganicLiveAdvancedInput(BaseModel):
+    """DataForSEO — Google Organic Live SERP"""
+    keyword: str = Field(..., description="One keyword or search query. This action sends exactly one live SERP task.")
+    locationCode: Optional[float] = Field(None, description="Optional DataForSEO location code. Use this or Location Name.")
+    locationName: Optional[str] = Field(None, description="Optional full location name if no location code is provided.")
+    languageCode: Optional[str] = Field(None, description="Language Code")
+    device: Optional[str] = Field(None, description="Device")
+    os: Optional[str] = Field(None, description="Operating System")
+    depth: Optional[float] = Field(None, description="Number of SERP results to return, capped at 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoGoogleMapsLiveAdvancedInput(BaseModel):
+    """DataForSEO — Google Maps Live SERP"""
+    keyword: str = Field(..., description="One keyword or search query. This action sends exactly one live SERP task.")
+    locationCode: Optional[float] = Field(None, description="Optional DataForSEO location code. Use this or Location Name.")
+    locationName: Optional[str] = Field(None, description="Optional full location name if no location code is provided.")
+    languageCode: Optional[str] = Field(None, description="Language Code")
+    device: Optional[str] = Field(None, description="Device")
+    os: Optional[str] = Field(None, description="Operating System")
+    depth: Optional[float] = Field(None, description="Number of SERP results to return, capped at 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DataforseoListGoogleLocationsInput(BaseModel):
+    """DataForSEO — List Google Locations"""
+    limit: Optional[float] = Field(None, description="Maximum locations to return from the full DataForSEO list.")
 
     model_config = {"populate_by_name": True}
 
@@ -11422,60 +12549,71 @@ class DiscordCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class DiscourseCreatePostInput(BaseModel):
-    """Discourse — Create Post"""
-    raw: str = Field(..., description="Content of the post")
-    topic_id: str = Field(..., description="ID of the topic to post in")
+class DiscourseListLatestTopicsInput(BaseModel):
+    """Discourse — List Latest Topics"""
+    page: Optional[float] = Field(None, description="Page")
 
     model_config = {"populate_by_name": True}
+
+
+class DiscourseSearchTopicsInput(BaseModel):
+    """Discourse — Search Topics"""
+    query: str = Field(..., description="Query")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscourseGetTopicInput(BaseModel):
+    """Discourse — Get Topic"""
+    topic_id: float = Field(..., description="Topic ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DiscourseListCategoriesInput(BaseModel):
+    """Discourse — List Categories"""
+    pass
 
 
 class DiscourseCreateTopicInput(BaseModel):
     """Discourse — Create Topic"""
-    title: str = Field(..., description="Title of the Topic")
-    raw: str = Field(..., description="Content of the topic")
-    category: Optional[str] = Field(None, description="ID of the category to post in")
+    title: str = Field(..., description="Title")
+    raw: str = Field(..., description="Body")
+    category: Optional[float] = Field(None, description="Category ID")
+    tags: Optional[Any] = Field(None, description="Optional JSON array of tag names.")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscourseChangeUserTrustLevelInput(BaseModel):
-    """Discourse — Change User Trust Level"""
-    user_id: str = Field(..., description="ID of the user")
-    new_trust_level: str = Field(..., description="New trust level of the user")
+class DiscourseCreateReplyInput(BaseModel):
+    """Discourse — Create Reply"""
+    topic_id: float = Field(..., description="Topic ID")
+    raw: str = Field(..., description="Body")
+    reply_to_post_number: Optional[float] = Field(None, description="Reply To Post Number")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscourseAddUsersToGroupInput(BaseModel):
-    """Discourse — Add Users to Group"""
-    group_id: str = Field(..., description="Id of the group")
-    users: list[Any] = Field(..., description="List of users to add to the group")
+class DiscourseUpdatePostInput(BaseModel):
+    """Discourse — Update Post"""
+    post_id: float = Field(..., description="Post ID")
+    raw: str = Field(..., description="Body")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscourseSendPrivateMessageInput(BaseModel):
-    """Discourse — Send Private Message"""
-    title: str = Field(..., description="Title for the PM")
-    raw: str = Field(..., description="Content of the post")
-    target_recipients: list[Any] = Field(..., description="List of users to send the PM to (can be one or more)")
+class DiscourseDeletePostInput(BaseModel):
+    """Discourse — Delete Post"""
+    post_id: float = Field(..., description="Post ID")
 
     model_config = {"populate_by_name": True}
 
 
-class DiscourseCustomApiCallInput(BaseModel):
-    """Discourse — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class DiscourseUpdateTopicStatusInput(BaseModel):
+    """Discourse — Update Topic Status"""
+    topic_id: float = Field(..., description="Topic ID")
+    status: str = Field(..., description="Status")
+    enabled: bool = Field(..., description="Enabled")
 
     model_config = {"populate_by_name": True}
 
@@ -11981,6 +13119,90 @@ class DoodleCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="Path")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerListProjectsInput(BaseModel):
+    """Doppler — List Projects"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerGetProjectInput(BaseModel):
+    """Doppler — Get Project"""
+    project: str = Field(..., description="Project slug or ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerListConfigsInput(BaseModel):
+    """Doppler — List Configs"""
+    project: str = Field(..., description="Project")
+    environment: Optional[str] = Field(None, description="Environment")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerListSecretNamesInput(BaseModel):
+    """Doppler — List Secret Names"""
+    project: str = Field(..., description="Project")
+    config: str = Field(..., description="Config")
+    includeDynamicSecrets: Optional[bool] = Field(None, description="Include Dynamic Secrets")
+    includeManagedSecrets: Optional[bool] = Field(None, description="Include Managed Secrets")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerGetSecretInput(BaseModel):
+    """Doppler — Get Secret"""
+    project: str = Field(..., description="Project")
+    config: str = Field(..., description="Config")
+    name: str = Field(..., description="Secret Name")
+    confirmation: str = Field(..., description="Type ACCESS_SECRET to retrieve the secret value.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerGetSecretsInput(BaseModel):
+    """Doppler — Get Secret Values"""
+    project: Optional[str] = Field(None, description="Not required when using a config-scoped service token.")
+    config: Optional[str] = Field(None, description="Not required when using a config-scoped service token.")
+    secretNames: Optional[str] = Field(None, description="Comma-separated names to return. Leave empty only when Include All Secrets is enabled.")
+    includeAllSecrets: Optional[bool] = Field(None, description="Include All Secrets")
+    includeDynamicSecrets: Optional[bool] = Field(None, description="Include Dynamic Secrets")
+    confirmation: str = Field(..., description="Type ACCESS_SECRETS to retrieve values.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerUpdateSecretsInput(BaseModel):
+    """Doppler — Update Secrets"""
+    project: str = Field(..., description="Project")
+    config: str = Field(..., description="Config")
+    secrets: Any = Field(..., description="JSON object of secret names to values.")
+    confirmation: str = Field(..., description="Type WRITE_SECRETS to update secrets.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerDeleteSecretInput(BaseModel):
+    """Doppler — Delete Secret"""
+    project: str = Field(..., description="Project")
+    config: str = Field(..., description="Config")
+    name: str = Field(..., description="Secret Name")
+    confirmation: str = Field(..., description="Type DELETE_SECRET to delete this secret.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DopplerListWebhooksInput(BaseModel):
+    """Doppler — List Webhooks"""
+    project: str = Field(..., description="Project")
 
     model_config = {"populate_by_name": True}
 
@@ -13561,6 +14783,51 @@ class FacebookPagesCreateVideoPostInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class FalAiSubmitRequestInput(BaseModel):
+    """Fal.ai — Submit Request"""
+    endpoint: str = Field(..., description="Fal endpoint slug, for example fal-ai/flux/dev.")
+    arguments: Any = Field(..., description="Model input JSON. Include prompt/media/duration/limit fields explicitly for costly requests.")
+    path: Optional[str] = Field(None, description="Optional endpoint subpath.")
+    webhookUrl: Optional[str] = Field(None, description="Optional Fal webhook URL for completion callbacks.")
+    priority: Optional[str] = Field(None, description="Priority")
+
+    model_config = {"populate_by_name": True}
+
+
+class FalAiGetStatusInput(BaseModel):
+    """Fal.ai — Get Status"""
+    endpoint: str = Field(..., description="Fal endpoint slug used for the original request.")
+    requestId: str = Field(..., description="Request ID")
+    includeLogs: Optional[bool] = Field(None, description="Include Logs")
+
+    model_config = {"populate_by_name": True}
+
+
+class FalAiGetResultInput(BaseModel):
+    """Fal.ai — Get Result"""
+    endpoint: str = Field(..., description="Fal endpoint slug used for the original request.")
+    requestId: str = Field(..., description="Request ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FalAiCancelRequestInput(BaseModel):
+    """Fal.ai — Cancel Request"""
+    endpoint: str = Field(..., description="Fal endpoint slug used for the original request.")
+    requestId: str = Field(..., description="Request ID")
+    confirm: bool = Field(..., description="Confirm Cancellation")
+
+    model_config = {"populate_by_name": True}
+
+
+class FalAiListModelsInput(BaseModel):
+    """Fal.ai — List Models"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
 class FathomValidateConnectionInput(BaseModel):
     """Fathom — Validate Connection"""
     pass
@@ -14346,6 +15613,58 @@ class FirefliesGetActiveMeetingsInput(BaseModel):
     """Fireflies.ai — Get Active Meetings"""
     email: Optional[str] = Field(None, description="Omit to query active meetings for the authenticated user. Admin permissions are required to query another team user.")
     states: Optional[list[str]] = Field(None, description="Omit to return both active and paused meetings.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FireworksAiChatCompletionInput(BaseModel):
+    """Fireworks AI — Chat Completion"""
+    model: str = Field(..., description="Fireworks model name, for example accounts/fireworks/models/llama-v3p1-70b-instruct.")
+    messages: Any = Field(..., description="Array of OpenAI-compatible messages. Include only the conversation needed for this request.")
+    maxTokens: float = Field(..., description="Maximum output tokens. Set this explicitly to control spend.")
+    temperature: Optional[float] = Field(None, description="Temperature")
+    topP: Optional[float] = Field(None, description="Top P")
+    stop: Optional[list[Any]] = Field(None, description="Stop Sequences")
+    responseFormat: Optional[Any] = Field(None, description="Optional response_format object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FireworksAiCreateEmbeddingInput(BaseModel):
+    """Fireworks AI — Create Embedding"""
+    model: str = Field(..., description="Embedding model, for example nomic-ai/nomic-embed-text-v1.5 or a Fireworks account model path.")
+    input: Any = Field(..., description="String or array of strings to embed. Avoid sending unnecessary sensitive text.")
+    dimensions: Optional[float] = Field(None, description="Dimensions")
+
+    model_config = {"populate_by_name": True}
+
+
+class FireworksAiRerankDocumentsInput(BaseModel):
+    """Fireworks AI — Rerank Documents"""
+    model: str = Field(..., description="Reranker model, for example accounts/fireworks/models/qwen3-reranker-8b.")
+    query: str = Field(..., description="Query")
+    documents: list[Any] = Field(..., description="Candidate document strings to rank.")
+    topN: Optional[float] = Field(None, description="Maximum number of results to return.")
+    returnDocuments: Optional[bool] = Field(None, description="Return Documents")
+
+    model_config = {"populate_by_name": True}
+
+
+class FireworksAiGenerateImageInput(BaseModel):
+    """Fireworks AI — Generate Image"""
+    endpointPath: str = Field(..., description="Fireworks image endpoint path from the model docs, for example /v1/workflows/accounts/fireworks/models/flux-1-schnell-fp8/text_to_image.")
+    prompt: str = Field(..., description="Prompt")
+    modelInputs: Optional[Any] = Field(None, description="Optional endpoint-specific JSON fields such as aspect ratio, seed, or safety settings.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FireworksAiListModelsInput(BaseModel):
+    """Fireworks AI — List Models"""
+    accountId: str = Field(..., description="Fireworks account ID.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    pageToken: Optional[str] = Field(None, description="Page Token")
+    filter: Optional[str] = Field(None, description="Filter")
 
     model_config = {"populate_by_name": True}
 
@@ -19247,6 +20566,94 @@ class HibobListCompanyListsInput(BaseModel):
     pass
 
 
+class HightouchListSourcesInput(BaseModel):
+    """Hightouch — List Sources"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchGetSourceInput(BaseModel):
+    """Hightouch — Get Source"""
+    sourceId: str = Field(..., description="Source ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchListModelsInput(BaseModel):
+    """Hightouch — List Models"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchGetModelInput(BaseModel):
+    """Hightouch — Get Model"""
+    modelId: str = Field(..., description="Model ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchListDestinationsInput(BaseModel):
+    """Hightouch — List Destinations"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchGetDestinationInput(BaseModel):
+    """Hightouch — Get Destination"""
+    destinationId: str = Field(..., description="Destination ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchListSyncsInput(BaseModel):
+    """Hightouch — List Syncs"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchGetSyncInput(BaseModel):
+    """Hightouch — Get Sync"""
+    syncIdOrSlug: str = Field(..., description="Sync ID or Slug")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchTriggerSyncInput(BaseModel):
+    """Hightouch — Trigger Sync"""
+    syncIdOrSlug: str = Field(..., description="Sync ID or Slug")
+    fullResync: Optional[bool] = Field(None, description="Run a full resync instead of an incremental sync.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchListSyncRunsInput(BaseModel):
+    """Hightouch — List Sync Runs"""
+    syncIdOrSlug: str = Field(..., description="Sync ID or Slug")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class HightouchCustomApiCallInput(BaseModel):
+    """Hightouch — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path relative to /api/v1, for example /syncs or /models/{modelId}.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Confirm DELETE")
+
+    model_config = {"populate_by_name": True}
+
+
 class HiveCreateActionInput(BaseModel):
     """Hive — Create Action"""
     title: str = Field(..., description="Title")
@@ -19286,6 +20693,67 @@ class HiveCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g. /actions)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombListDatasetsInput(BaseModel):
+    """Honeycomb — List Datasets"""
+    pass
+
+
+class HoneycombCreateDatasetInput(BaseModel):
+    """Honeycomb — Create Dataset"""
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    expandJsonDepth: Optional[float] = Field(None, description="Expand JSON Depth")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombCreateQueryInput(BaseModel):
+    """Honeycomb — Create Query"""
+    datasetSlug: str = Field(..., description="Use __all__ for environment-wide query endpoints that support it.")
+    query: Any = Field(..., description="Honeycomb query JSON, for example calculations and time_range.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombCreateQueryResultInput(BaseModel):
+    """Honeycomb — Create Query Result"""
+    datasetSlug: str = Field(..., description="Dataset Slug")
+    queryId: str = Field(..., description="Query ID")
+    disableSeries: Optional[bool] = Field(None, description="Disable Series")
+    disableTotalByAggregate: Optional[bool] = Field(None, description="Disable Total By Aggregate")
+    disableOtherByAggregate: Optional[bool] = Field(None, description="Disable Other By Aggregate")
+    limit: Optional[float] = Field(None, description="Used when Disable Series is true. Maximum 10000.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombGetQueryResultInput(BaseModel):
+    """Honeycomb — Get Query Result"""
+    datasetSlug: str = Field(..., description="Dataset Slug")
+    queryResultId: str = Field(..., description="Query Result ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombCreateMarkerInput(BaseModel):
+    """Honeycomb — Create Marker"""
+    datasetSlug: str = Field(..., description="Use __all__ for an environment marker.")
+    message: str = Field(..., description="Message")
+    type_: Optional[str] = Field(None, alias="type", description="Groups similar markers, for example deploy.")
+    startTime: Optional[float] = Field(None, description="Unix time. Defaults to Honeycomb request time when omitted.")
+    endTime: Optional[float] = Field(None, description="Unix time for range markers.")
+    url: Optional[str] = Field(None, description="URL")
+
+    model_config = {"populate_by_name": True}
+
+
+class HoneycombListTriggersInput(BaseModel):
+    """Honeycomb — List Triggers"""
+    datasetSlug: str = Field(..., description="Use __all__ for environment-level triggers.")
 
     model_config = {"populate_by_name": True}
 
@@ -20349,6 +21817,55 @@ class HuggingFaceImageClassificationInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class HumeAiSynthesizeSpeechInput(BaseModel):
+    """Hume AI — Synthesize Speech"""
+    text: str = Field(..., description="Text to synthesize. Keep inputs bounded to control cost.")
+    voiceName: Optional[str] = Field(None, description="Optional voice name from Hume voice library or custom voices.")
+    voiceId: Optional[str] = Field(None, description="Optional voice ID. Preferred when using a saved custom voice.")
+    voiceProvider: Optional[str] = Field(None, description="Voice Provider")
+    description: Optional[str] = Field(None, description="Optional style/prosody instruction for this utterance.")
+    format: Optional[str] = Field(None, description="Audio Format")
+    numGenerations: float = Field(..., description="1 to 5. Higher values spend more credits.")
+    version: Optional[str] = Field(None, description="Octave Version")
+    temperature: Optional[float] = Field(None, description="Temperature")
+    context: Optional[Any] = Field(None, description="Optional Hume TTS context object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HumeAiListVoicesInput(BaseModel):
+    """Hume AI — List Voices"""
+    provider: str = Field(..., description="Provider")
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    filterTags: Optional[list[Any]] = Field(None, description="Optional tags like GENDER:Male or LANGUAGE:Japanese.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HumeAiListEviConfigsInput(BaseModel):
+    """Hume AI — List EVI Configs"""
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class HumeAiListChatsInput(BaseModel):
+    """Hume AI — List EVI Chats"""
+    pageNumber: Optional[float] = Field(None, description="Page Number")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class HumeAiGetChatAudioInput(BaseModel):
+    """Hume AI — Get Chat Audio"""
+    chatId: str = Field(..., description="Chat ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class HunterIoFindEmailInput(BaseModel):
     """Hunter.io — Find Email"""
     domain: str = Field(..., description="The company domain (e.g. stripe.com)")
@@ -20831,6 +22348,85 @@ class IncidentIoListFollowUpsInput(BaseModel):
 class IncidentIoGetFollowUpInput(BaseModel):
     """incident.io — Get Follow-up"""
     followUpId: str = Field(..., description="Follow-up ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbHealthInput(BaseModel):
+    """InfluxDB — Health"""
+    pass
+
+
+class InfluxdbListOrganizationsInput(BaseModel):
+    """InfluxDB — List Organizations"""
+    org: Optional[str] = Field(None, description="Org Name Filter")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbListBucketsInput(BaseModel):
+    """InfluxDB — List Buckets"""
+    org: Optional[str] = Field(None, description="Org")
+    orgId: Optional[str] = Field(None, description="Org ID")
+    name: Optional[str] = Field(None, description="Bucket Name Filter")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbGetBucketInput(BaseModel):
+    """InfluxDB — Get Bucket"""
+    bucketId: str = Field(..., description="Bucket ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbQueryFluxInput(BaseModel):
+    """InfluxDB — Query Flux"""
+    org: Optional[str] = Field(None, description="Org")
+    orgId: Optional[str] = Field(None, description="Org ID")
+    query: str = Field(..., description="Flux Query")
+    dialect: Optional[Any] = Field(None, description="Optional InfluxDB CSV dialect JSON object.")
+    responseFormat: str = Field(..., description="Response Format")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbWriteLineProtocolInput(BaseModel):
+    """InfluxDB — Write Line Protocol"""
+    org: Optional[str] = Field(None, description="Org")
+    orgId: Optional[str] = Field(None, description="Org ID")
+    bucket: str = Field(..., description="Bucket")
+    precision: str = Field(..., description="Precision")
+    lineProtocol: str = Field(..., description="Line Protocol")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbDeleteDataInput(BaseModel):
+    """InfluxDB — Delete Data"""
+    org: Optional[str] = Field(None, description="Org")
+    orgId: Optional[str] = Field(None, description="Org ID")
+    bucket: str = Field(..., description="Bucket")
+    start: str = Field(..., description="RFC3339 timestamp.")
+    stop: str = Field(..., description="RFC3339 timestamp.")
+    predicate: Optional[str] = Field(None, description="Optional delete predicate, for example _measurement=\"cpu\".")
+    confirmBucket: str = Field(..., description="Confirm Bucket")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class InfluxdbCustomApiCallInput(BaseModel):
+    """InfluxDB — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="For example /api/v2/buckets.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmMutation: Optional[bool] = Field(None, description="Confirm Mutation")
 
     model_config = {"populate_by_name": True}
 
@@ -24332,6 +25928,94 @@ class LocalComputerControlAgentStopTaskInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class LokaliseListProjectsInput(BaseModel):
+    """Lokalise — List Projects"""
+    page: Optional[float] = Field(None, description="Page")
+    limit: Optional[float] = Field(None, description="Maximum projects to return, up to the Lokalise API limit.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseGetProjectInput(BaseModel):
+    """Lokalise — Get Project"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseListLanguagesInput(BaseModel):
+    """Lokalise — List Languages"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseListKeysInput(BaseModel):
+    """Lokalise — List Keys"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    limit: Optional[float] = Field(None, description="Limit")
+    page: Optional[float] = Field(None, description="Page")
+    cursor: Optional[str] = Field(None, description="Cursor from Lokalise cursor pagination.")
+    includeTranslations: Optional[bool] = Field(None, description="Include translation values in the response. This can contain localized user-facing text.")
+    filterKeys: Optional[str] = Field(None, description="Optional key-name filter supported by Lokalise.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseGetKeyInput(BaseModel):
+    """Lokalise — Get Key"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    keyId: str = Field(..., description="Key ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseCreateKeyInput(BaseModel):
+    """Lokalise — Create Key"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    keyName: str = Field(..., description="Key Name")
+    platform: str = Field(..., description="Platform")
+    description: Optional[str] = Field(None, description="Description")
+    languageIso: Optional[str] = Field(None, description="Optional language ISO for the initial translation.")
+    translation: Optional[str] = Field(None, description="Optional localized text to store with the key.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseUpdateKeyInput(BaseModel):
+    """Lokalise — Update Key"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    keyId: str = Field(..., description="Key ID")
+    keyName: Optional[str] = Field(None, description="Key Name")
+    description: Optional[str] = Field(None, description="Description")
+    platformsCsv: Optional[str] = Field(None, description="Optional comma-separated platforms such as web,ios,android.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseUploadFileInput(BaseModel):
+    """Lokalise — Upload File"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    filename: str = Field(..., description="Filename")
+    languageIso: str = Field(..., description="Language ISO")
+    format: str = Field(..., description="Lokalise file format such as json, yaml, po, strings, or xml.")
+    fileContent: str = Field(..., description="Text content to upload. Avoid pasting secrets or unbounded production exports.")
+    replaceModified: Optional[bool] = Field(None, description="Replace Modified")
+
+    model_config = {"populate_by_name": True}
+
+
+class LokaliseDownloadFileInput(BaseModel):
+    """Lokalise — Download File"""
+    projectId: str = Field(..., description="Lokalise project ID, including branch suffix when using branches.")
+    format: str = Field(..., description="Format")
+    originalFilenames: Optional[bool] = Field(None, description="Original Filenames")
+    allPlatforms: Optional[bool] = Field(None, description="All Platforms")
+    languageIso: Optional[str] = Field(None, description="Optional single language ISO to export.")
+
+    model_config = {"populate_by_name": True}
+
+
 class LoomListVideosInput(BaseModel):
     """Loom — List Videos"""
     page: Optional[float] = Field(None, description="Page number for pagination")
@@ -25031,26 +26715,106 @@ class MapboxCreateIsochroneInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class MastodonPostStatusInput(BaseModel):
-    """Mastodon — Post Status"""
-    status: str = Field(..., description="The text of your status")
-    media: Optional[Union[str, dict[str, Any]]] = Field(None, description="The media attachment for your status")
+class MastodonCreateStatusInput(BaseModel):
+    """Mastodon — Create Status"""
+    status: str = Field(..., description="Status Text")
+    visibility: Optional[str] = Field(None, description="Visibility")
+    in_reply_to_id: Optional[str] = Field(None, description="Reply To Status ID")
+    sensitive: Optional[bool] = Field(None, description="Sensitive Media")
+    spoiler_text: Optional[str] = Field(None, description="Content Warning")
+    language: Optional[str] = Field(None, description="Optional ISO 639-1 language code.")
+    scheduled_at: Optional[str] = Field(None, description="Optional ISO datetime at least 5 minutes in the future.")
 
     model_config = {"populate_by_name": True}
 
 
-class MastodonCustomApiCallInput(BaseModel):
-    """Mastodon — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class MastodonUpdateStatusInput(BaseModel):
+    """Mastodon — Update Status"""
+    status_id: str = Field(..., description="Status ID")
+    status: str = Field(..., description="Status Text")
+    sensitive: Optional[bool] = Field(None, description="Sensitive Media")
+    spoiler_text: Optional[str] = Field(None, description="Content Warning")
+    language: Optional[str] = Field(None, description="Language")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonDeleteStatusInput(BaseModel):
+    """Mastodon — Delete Status"""
+    status_id: str = Field(..., description="Status ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonGetStatusInput(BaseModel):
+    """Mastodon — Get Status"""
+    status_id: str = Field(..., description="Status ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonSearchInput(BaseModel):
+    """Mastodon — Search"""
+    query: str = Field(..., description="Query")
+    type_: Optional[str] = Field(None, alias="type", description="Type")
+    limit: Optional[float] = Field(None, description="Limit")
+    resolve: Optional[bool] = Field(None, description="Resolve Remote Results")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonListHomeTimelineInput(BaseModel):
+    """Mastodon — List Home Timeline"""
+    limit: Optional[float] = Field(None, description="Limit")
+    max_id: Optional[str] = Field(None, description="Return results older than this status ID.")
+    since_id: Optional[str] = Field(None, description="Return results newer than this status ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonListAccountStatusesInput(BaseModel):
+    """Mastodon — List Account Statuses"""
+    account_id: str = Field(..., description="Account ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    exclude_replies: Optional[bool] = Field(None, description="Exclude Replies")
+    exclude_reblogs: Optional[bool] = Field(None, description="Exclude Boosts")
+    max_id: Optional[str] = Field(None, description="Max ID")
+    since_id: Optional[str] = Field(None, description="Since ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonGetAccountInput(BaseModel):
+    """Mastodon — Get Account"""
+    account_id: str = Field(..., description="Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonFavouriteStatusInput(BaseModel):
+    """Mastodon — Favourite Status"""
+    status_id: str = Field(..., description="Status ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonUnfavouriteStatusInput(BaseModel):
+    """Mastodon — Unfavourite Status"""
+    status_id: str = Field(..., description="Status ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonBoostStatusInput(BaseModel):
+    """Mastodon — Boost Status"""
+    status_id: str = Field(..., description="Status ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MastodonUnboostStatusInput(BaseModel):
+    """Mastodon — Unboost Status"""
+    status_id: str = Field(..., description="Status ID")
 
     model_config = {"populate_by_name": True}
 
@@ -29848,31 +31612,42 @@ class OpencageReverseGeocodeInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class OpenRouterAskLmmInput(BaseModel):
-    """OpenRouter — Ask LLM"""
-    model: str = Field(..., description="The model which will generate the completion. Some models are suitable for natural language tasks, others specialize in code.")
-    prompt: str = Field(..., description="The prompt to send to the model.")
-    temperature: Optional[float] = Field(None, description="Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive.")
-    maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate. Requests can use up to 2,048 or 4,096 tokens shared between prompt and completion, don't set the value to maximum and leave some tokens for the input. The exact limit varies by model. (One token is roughly 4 characters for normal English text)")
-    topP: Optional[float] = Field(None, description="An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.")
+class OpenRouterChatCompletionInput(BaseModel):
+    """OpenRouter — Chat Completion"""
+    model: str = Field(..., description="OpenRouter model slug, for example openai/gpt-5.2 or anthropic/claude-sonnet-4.5.")
+    messages: Any = Field(..., description="Array of chat messages. Include only needed context to control token spend.")
+    maxTokens: float = Field(..., description="Maximum output tokens. Set explicitly to control cost.")
+    temperature: Optional[float] = Field(None, description="Temperature")
+    topP: Optional[float] = Field(None, description="Top P")
+    responseFormat: Optional[Any] = Field(None, description="Optional response_format object.")
+    providerRouting: Optional[Any] = Field(None, description="Optional OpenRouter provider routing preferences.")
+    includeMetadata: Optional[bool] = Field(None, description="Include Routing Metadata")
 
     model_config = {"populate_by_name": True}
 
 
-class OpenRouterCustomApiCallInput(BaseModel):
-    """OpenRouter — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class OpenRouterListModelsInput(BaseModel):
+    """OpenRouter — List Models"""
+    query: Optional[str] = Field(None, description="Search Query")
+    inputModalities: Optional[str] = Field(None, description="Comma-separated values: text,image,audio,file.")
+    outputModalities: Optional[str] = Field(None, description="Comma-separated values: text,image,audio,embeddings or all.")
+    supportedParameters: Optional[str] = Field(None, description="Comma-separated parameter names such as tools,max_tokens.")
+    providers: Optional[str] = Field(None, description="Comma-separated provider names.")
+    sort: Optional[str] = Field(None, description="Sort")
 
     model_config = {"populate_by_name": True}
+
+
+class OpenRouterListModelEndpointsInput(BaseModel):
+    """OpenRouter — List Model Endpoints"""
+    model: str = Field(..., description="Model slug like openai/gpt-4. Use author/slug format.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OpenRouterGetCreditsInput(BaseModel):
+    """OpenRouter — Get Credits"""
+    pass
 
 
 class OpentableListReservationsInput(BaseModel):
@@ -31178,6 +32953,89 @@ class PhantombusterCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PhraseListProjectsInput(BaseModel):
+    """Phrase — List Projects"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseGetProjectInput(BaseModel):
+    """Phrase — Get Project"""
+    projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseListLocalesInput(BaseModel):
+    """Phrase — List Locales"""
+    projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseListKeysInput(BaseModel):
+    """Phrase — List Keys"""
+    projectId: str = Field(..., description="Project ID")
+    query: Optional[str] = Field(None, description="Optional Phrase key search query.")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseGetKeyInput(BaseModel):
+    """Phrase — Get Key"""
+    projectId: str = Field(..., description="Project ID")
+    keyId: str = Field(..., description="Key ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseCreateKeyInput(BaseModel):
+    """Phrase — Create Key"""
+    projectId: str = Field(..., description="Project ID")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    tagsCsv: Optional[str] = Field(None, description="Optional comma-separated tags.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseUploadFileInput(BaseModel):
+    """Phrase — Upload File"""
+    projectId: str = Field(..., description="Project ID")
+    localeId: str = Field(..., description="Locale ID")
+    fileFormat: str = Field(..., description="Phrase file format such as simple_json, yml, gettext, strings, or xml.")
+    filename: str = Field(..., description="Filename")
+    fileContent: str = Field(..., description="Text content to upload. Keep payloads bounded and avoid secrets.")
+    updateTranslations: Optional[bool] = Field(None, description="Update Translations")
+    tagsCsv: Optional[str] = Field(None, description="Tags CSV")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseListUploadsInput(BaseModel):
+    """Phrase — List Uploads"""
+    projectId: str = Field(..., description="Project ID")
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class PhraseDownloadLocaleFileInput(BaseModel):
+    """Phrase — Download Locale File"""
+    projectId: str = Field(..., description="Project ID")
+    localeId: str = Field(..., description="Locale ID")
+    fileFormat: str = Field(..., description="File Format")
+    includeEmptyTranslations: Optional[bool] = Field(None, description="Include Empty Translations")
+    tag: Optional[str] = Field(None, description="Tag")
+
+    model_config = {"populate_by_name": True}
+
+
 class PikaCreateVideoInput(BaseModel):
     """Pika — Create Video"""
     prompt: str = Field(..., description="Text description of the video to generate")
@@ -32472,6 +34330,227 @@ class PracticePantherCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class PrintfulListStoresInput(BaseModel):
+    """Printful — List Stores"""
+    limit: Optional[float] = Field(None, description="1-100 results.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulListCatalogProductsInput(BaseModel):
+    """Printful — List Catalog Products"""
+    categoryId: Optional[str] = Field(None, description="Category ID")
+    sellingRegionName: Optional[str] = Field(None, description="Example: usa, europe, brazil.")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulGetCatalogProductInput(BaseModel):
+    """Printful — Get Catalog Product"""
+    productId: str = Field(..., description="Product ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulListCatalogVariantsInput(BaseModel):
+    """Printful — List Catalog Variants"""
+    productId: str = Field(..., description="Product ID")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulListOrdersInput(BaseModel):
+    """Printful — List Orders"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    status: Optional[str] = Field(None, description="Optional Printful order status filter.")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulGetOrderInput(BaseModel):
+    """Printful — Get Order"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    orderId: str = Field(..., description="Order ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulCreateOrderInput(BaseModel):
+    """Printful — Create Draft Order"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    order: Any = Field(..., description="Printful v2 order JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulUpdateOrderInput(BaseModel):
+    """Printful — Update Draft Order"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    orderId: str = Field(..., description="Order ID")
+    patch: Any = Field(..., description="Printful v2 PATCH body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulConfirmOrderInput(BaseModel):
+    """Printful — Confirm Order"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    orderId: str = Field(..., description="Order ID")
+    confirm: bool = Field(..., description="Confirm Fulfillment")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulCancelOrderInput(BaseModel):
+    """Printful — Cancel Order"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    orderId: str = Field(..., description="Order ID")
+    confirm: bool = Field(..., description="Confirm Cancel")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulCalculateShippingRatesInput(BaseModel):
+    """Printful — Calculate Shipping Rates"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    shipping: Any = Field(..., description="Printful v2 shipping rates JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulListOrderShipmentsInput(BaseModel):
+    """Printful — List Order Shipments"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    orderId: str = Field(..., description="Order ID")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulCreateOrderEstimationInput(BaseModel):
+    """Printful — Create Order Estimation"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    estimation: Any = Field(..., description="Printful v2 order estimation JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintfulGetOrderEstimationInput(BaseModel):
+    """Printful — Get Order Estimation"""
+    storeId: Optional[str] = Field(None, description="Required when using an account-level Printful token and targeting a specific store.")
+    taskId: str = Field(..., description="Task ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyListShopsInput(BaseModel):
+    """Printify — List Shops"""
+    pass
+
+
+class PrintifyListCatalogBlueprintsInput(BaseModel):
+    """Printify — List Catalog Blueprints"""
+    page: Optional[float] = Field(None, description="Page")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyListProductsInput(BaseModel):
+    """Printify — List Products"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    page: Optional[float] = Field(None, description="Page")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyGetProductInput(BaseModel):
+    """Printify — Get Product"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    productId: str = Field(..., description="Product ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyCreateProductInput(BaseModel):
+    """Printify — Create Product"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    product: Any = Field(..., description="Printify product JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyPublishProductInput(BaseModel):
+    """Printify — Publish Product"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    productId: str = Field(..., description="Product ID")
+    publish: Any = Field(..., description="Publish flags such as title, description, images, variants, tags, and keyFeatures.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyListOrdersInput(BaseModel):
+    """Printify — List Orders"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    status: Optional[str] = Field(None, description="Optional Printify order status filter.")
+    createdAtMin: Optional[str] = Field(None, description="Optional ISO/date lower bound if supported by your Printify account.")
+    createdAtMax: Optional[str] = Field(None, description="Optional ISO/date upper bound if supported by your Printify account.")
+    page: Optional[float] = Field(None, description="Page")
+    limit: Optional[float] = Field(None, description="1-100 results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyGetOrderInput(BaseModel):
+    """Printify — Get Order"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    orderId: str = Field(..., description="Order ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyCreateOrderInput(BaseModel):
+    """Printify — Create Order"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    order: Any = Field(..., description="Printify order JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyCalculateShippingInput(BaseModel):
+    """Printify — Calculate Shipping"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    shipping: Any = Field(..., description="Printify shipping calculation JSON body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyCancelOrderInput(BaseModel):
+    """Printify — Cancel Order"""
+    shopId: str = Field(..., description="Printify shop ID from List Shops.")
+    orderId: str = Field(..., description="Order ID")
+    confirm: bool = Field(..., description="Confirm Cancel")
+
+    model_config = {"populate_by_name": True}
+
+
+class PrintifyUploadImageFromUrlInput(BaseModel):
+    """Printify — Upload Image From URL"""
+    fileName: str = Field(..., description="File Name")
+    url: str = Field(..., description="Image URL")
+
+    model_config = {"populate_by_name": True}
+
+
 class PrismicQueryDocumentsInput(BaseModel):
     """Prismic — Query Documents"""
     query: Optional[str] = Field(None, description="Prismic query predicate (e.g., [[at(document.type, \"blog_post\")]])")
@@ -32533,6 +34612,238 @@ class ProcoreListSubmittalsInput(BaseModel):
     """Procore — List Submittals"""
     companyId: str = Field(..., description="Company ID")
     projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardListEntitiesInput(BaseModel):
+    """Productboard — List Entities"""
+    type_: str = Field(..., alias="type", description="Entity Type")
+    pageCursor: Optional[str] = Field(None, description="Page Cursor")
+    fields: Optional[list[Any]] = Field(None, description="Optional field IDs or all.")
+    parentId: Optional[str] = Field(None, description="Parent ID")
+    status: Optional[str] = Field(None, description="Status")
+    updatedFrom: Optional[str] = Field(None, description="ISO 8601 date-time filter.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardSearchEntitiesInput(BaseModel):
+    """Productboard — Search Entities"""
+    type_: str = Field(..., alias="type", description="Entity Type")
+    searchPayload: Optional[Any] = Field(None, description="Body data for POST /v2/entities/search.")
+    pageCursor: Optional[str] = Field(None, description="Page Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardGetEntityInput(BaseModel):
+    """Productboard — Get Entity"""
+    entityId: str = Field(..., description="Entity ID")
+    fields: Optional[list[Any]] = Field(None, description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardCreateEntityInput(BaseModel):
+    """Productboard — Create Entity"""
+    type_: str = Field(..., alias="type", description="Entity Type")
+    fields: Any = Field(..., description="Productboard fields object. Use configurations to discover required fields.")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardUpdateEntityInput(BaseModel):
+    """Productboard — Update Entity"""
+    entityId: str = Field(..., description="Entity ID")
+    fields: Optional[Any] = Field(None, description="Fields")
+    patch: Optional[Any] = Field(None, description="Array of Productboard patch operations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardDeleteEntityInput(BaseModel):
+    """Productboard — Delete Entity"""
+    entityId: str = Field(..., description="Entity ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardListNotesInput(BaseModel):
+    """Productboard — List Notes"""
+    pageCursor: Optional[str] = Field(None, description="Page Cursor")
+    type_: Optional[list[Any]] = Field(None, alias="type", description="textNote, conversationNote, or opportunityNote.")
+    archived: Optional[bool] = Field(None, description="Archived")
+    processed: Optional[bool] = Field(None, description="Processed")
+    sourceSystem: Optional[str] = Field(None, description="Source System")
+    sourceRecordId: Optional[str] = Field(None, description="Source Record ID")
+    createdFrom: Optional[str] = Field(None, description="Created From")
+    updatedFrom: Optional[str] = Field(None, description="Updated From")
+    fields: Optional[list[Any]] = Field(None, description="Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardCreateNoteInput(BaseModel):
+    """Productboard — Create Note"""
+    type_: str = Field(..., alias="type", description="Note Type")
+    name: str = Field(..., description="Name")
+    content: Optional[str] = Field(None, description="Content")
+    metadata: Optional[Any] = Field(None, description="Optional metadata such as source system and recordId.")
+    relationships: Optional[Any] = Field(None, description="Optional customer/link relationships supported by Productboard.")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardUpdateNoteInput(BaseModel):
+    """Productboard — Update Note"""
+    noteId: str = Field(..., description="Note ID")
+    fields: Optional[Any] = Field(None, description="Fields")
+    patch: Optional[Any] = Field(None, description="Patch Operations")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardListWebhooksInput(BaseModel):
+    """Productboard — List Webhooks"""
+    pageCursor: Optional[str] = Field(None, description="Page Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardCreateWebhookInput(BaseModel):
+    """Productboard — Create Webhook"""
+    webhookData: Any = Field(..., description="The data object for POST /v2/webhooks. Include notification.url and event subscriptions per Productboard configuration.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductboardDeleteWebhookInput(BaseModel):
+    """Productboard — Delete Webhook"""
+    webhookId: str = Field(..., description="Webhook ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneGetAuthenticatedIdentityInput(BaseModel):
+    """Productlane — Get Authenticated Identity"""
+    pass
+
+
+class ProductlaneListThreadsInput(BaseModel):
+    """Productlane — List Threads"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+    status: Optional[str] = Field(None, description="Status")
+    contactEmail: Optional[str] = Field(None, description="Contact Email")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    issueId: Optional[str] = Field(None, description="Issue ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneCreateThreadInput(BaseModel):
+    """Productlane — Create Thread"""
+    title: Optional[str] = Field(None, description="Title")
+    text: str = Field(..., description="Thread body; Productlane accepts HTML.")
+    contactEmail: str = Field(..., description="Contact Email")
+    contactName: Optional[str] = Field(None, description="Contact Name")
+    painLevel: Optional[str] = Field(None, description="Pain Level")
+    status: Optional[str] = Field(None, description="Status")
+    origin: Optional[str] = Field(None, description="Defaults to api.")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    issueId: Optional[str] = Field(None, description="Issue ID")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneUpdateThreadInput(BaseModel):
+    """Productlane — Update Thread"""
+    threadId: str = Field(..., description="Thread ID")
+    title: Optional[str] = Field(None, description="Title")
+    status: Optional[str] = Field(None, description="Status")
+    assigneeId: Optional[str] = Field(None, description="Assignee ID")
+    painLevel: Optional[str] = Field(None, description="Pain Level")
+    additionalFields: Optional[Any] = Field(None, description="Additional Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlanePostInternalCommentInput(BaseModel):
+    """Productlane — Post Internal Comment"""
+    threadId: str = Field(..., description="Thread ID")
+    content: str = Field(..., description="Content")
+    attachments: Optional[Any] = Field(None, description="Optional attachment array.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneListProjectsInput(BaseModel):
+    """Productlane — List Projects"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+    state: Optional[str] = Field(None, description="State")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneCreateProjectInput(BaseModel):
+    """Productlane — Create Project"""
+    name: str = Field(..., description="Name")
+    teamId: str = Field(..., description="Linear Team ID")
+    description: Optional[str] = Field(None, description="Description")
+    state: Optional[str] = Field(None, description="State")
+    linearStatusId: Optional[str] = Field(None, description="Linear Status ID")
+    color: Optional[str] = Field(None, description="Hex color.")
+    icon: Optional[str] = Field(None, description="Icon")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneListIssuesInput(BaseModel):
+    """Productlane — List Issues"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+    projectId: Optional[str] = Field(None, description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneCreateIssueInput(BaseModel):
+    """Productlane — Create Issue"""
+    title: str = Field(..., description="Title")
+    teamId: str = Field(..., description="Linear Team ID")
+    stateId: str = Field(..., description="Linear Workflow State ID")
+    priority: str = Field(..., description="Priority")
+    description: Optional[str] = Field(None, description="Description")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    assigneeId: Optional[str] = Field(None, description="Assignee ID")
+    labelIds: Optional[Any] = Field(None, description="Array of Linear label IDs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneListChangelogsInput(BaseModel):
+    """Productlane — List Changelogs"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+    published: Optional[bool] = Field(None, description="Published")
+
+    model_config = {"populate_by_name": True}
+
+
+class ProductlaneCreateChangelogInput(BaseModel):
+    """Productlane — Create Changelog"""
+    title: str = Field(..., description="Title")
+    content: str = Field(..., description="Markdown body.")
+    date: Optional[str] = Field(None, description="ISO 8601 date-time.")
+    published: Optional[bool] = Field(None, description="Published")
+    imageUrl: Optional[str] = Field(None, description="Image URL")
+    language: Optional[str] = Field(None, description="Optional BCP-47 language code.")
+    tagIds: Optional[Any] = Field(None, description="Array of changelog tag IDs.")
 
     model_config = {"populate_by_name": True}
 
@@ -34760,90 +37071,89 @@ class RecurlyGetPlanInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class RedditRetrieveRedditPostInput(BaseModel):
-    """Reddit — Retrieve Post"""
-    post_category: str = Field(..., description="Select the category of posts to retrieve")
-    subreddit: str = Field(..., description="The subreddit to fetch posts from")
-    size: Optional[float] = Field(None, description="Number of posts to fetch (max 100)")
+class RedditListSubredditPostsInput(BaseModel):
+    """Reddit — List Subreddit Posts"""
+    subreddit: str = Field(..., description="Subreddit name without r/.")
+    sort: Optional[str] = Field(None, description="Sort")
+    time: Optional[str] = Field(None, description="Time")
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[str] = Field(None, description="After Cursor")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditGetRedditPostDetailsInput(BaseModel):
+class RedditSearchSubredditInput(BaseModel):
+    """Reddit — Search Subreddit"""
+    subreddit: str = Field(..., description="Subreddit")
+    query: str = Field(..., description="Query")
+    sort: Optional[str] = Field(None, description="Sort")
+    time: Optional[str] = Field(None, description="Time")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedditGetPostDetailsInput(BaseModel):
     """Reddit — Get Post Details"""
-    post_id: str = Field(..., description="The ID of the Reddit post (e.g. \"t3_abc123\" or \"abc123\")")
+    subreddit: str = Field(..., description="Subreddit")
+    post_id: str = Field(..., description="Base36 ID or t3_ fullname.")
+    comment_sort: Optional[str] = Field(None, description="Comment Sort")
+    limit: Optional[float] = Field(None, description="Comment Limit")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditCreateRedditPostInput(BaseModel):
-    """Reddit — Create Post"""
-    subreddit: str = Field(..., description="The subreddit to post in (without r/).")
-    title: str = Field(..., description="Title of the Reddit post.")
-    content: str = Field(..., description="Text content of the post.")
+class RedditCreateTextPostInput(BaseModel):
+    """Reddit — Create Text Post"""
+    subreddit: str = Field(..., description="Subreddit")
+    title: str = Field(..., description="Title")
+    text: str = Field(..., description="Text")
+    nsfw: Optional[bool] = Field(None, description="NSFW")
+    spoiler: Optional[bool] = Field(None, description="Spoiler")
+    sendreplies: Optional[bool] = Field(None, description="Send Replies")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditCreateRedditCommentInput(BaseModel):
+class RedditCreateLinkPostInput(BaseModel):
+    """Reddit — Create Link Post"""
+    subreddit: str = Field(..., description="Subreddit")
+    title: str = Field(..., description="Title")
+    url: str = Field(..., description="URL")
+    nsfw: Optional[bool] = Field(None, description="NSFW")
+    spoiler: Optional[bool] = Field(None, description="Spoiler")
+    sendreplies: Optional[bool] = Field(None, description="Send Replies")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedditCreateCommentInput(BaseModel):
     """Reddit — Create Comment"""
-    parent_id: str = Field(..., description="ID of the post (t3_*) or comment (t1_*) to reply to.")
-    content: str = Field(..., description="Text of the comment.")
+    thing_id: str = Field(..., description="Post/comment fullname such as t3_abc123 or t1_def456.")
+    text: str = Field(..., description="Text")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditFetchPostCommentsInput(BaseModel):
-    """Reddit — Fetch Post Comments"""
-    post_id: str = Field(..., description="The ID of the Reddit post (e.g. \"abc123\" or \"t3_abc123\").")
-    sort: Optional[str] = Field(None, description="Sorting method for comments")
-    limit: Optional[float] = Field(None, description="Maximum number of top-level comments to fetch")
+class RedditEditThingInput(BaseModel):
+    """Reddit — Edit Post Or Comment"""
+    thing_id: str = Field(..., description="Post/comment fullname such as t3_abc123 or t1_def456.")
+    text: str = Field(..., description="Text")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditEditRedditPostInput(BaseModel):
-    """Reddit — Edit Post"""
-    post_id: str = Field(..., description="ID of the Reddit post to edit (e.g., \"abc123\" or \"t3_abc123\").")
-    content: str = Field(..., description="Updated text content for the post.")
+class RedditDeleteThingInput(BaseModel):
+    """Reddit — Delete Post Or Comment"""
+    thing_id: str = Field(..., description="Post/comment fullname such as t3_abc123 or t1_def456.")
 
     model_config = {"populate_by_name": True}
 
 
-class RedditEditRedditCommentInput(BaseModel):
-    """Reddit — Edit Comment"""
-    comment_id: str = Field(..., description="ID of the Reddit comment to edit (e.g., \"def456\" or \"t1_def456\").")
-    content: str = Field(..., description="Updated text content for the comment.")
-
-    model_config = {"populate_by_name": True}
-
-
-class RedditDeleteRedditPostInput(BaseModel):
-    """Reddit — Delete Post"""
-    post_id: str = Field(..., description="ID of the Reddit post to delete (e.g., \"abc123\" or \"t3_abc123\").")
-
-    model_config = {"populate_by_name": True}
-
-
-class RedditDeleteRedditCommentInput(BaseModel):
-    """Reddit — Delete Comment"""
-    comment_id: str = Field(..., description="ID of the Reddit comment to delete (e.g., \"def456\" or \"t1_def456\").")
-
-    model_config = {"populate_by_name": True}
-
-
-class RedditCustomApiCallInput(BaseModel):
-    """Reddit — Custom API Call"""
-    url: dict[str, Any] = Field(..., description="url")
-    method: str = Field(..., description="Method")
-    headers: dict[str, Any] = Field(..., description="Authorization headers are injected automatically from your connection.")
-    queryParams: dict[str, Any] = Field(..., description="Query Parameters")
-    body_type: Optional[str] = Field(None, description="Body Type")
-    body: Optional[dict[str, Any]] = Field(None, description="Body")
-    response_is_binary: Optional[bool] = Field(None, description="Enable for files like PDFs, images, etc.")
-    failsafe: Optional[bool] = Field(None, description="No Error on Failure")
-    timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
-    followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+class RedditReportThingInput(BaseModel):
+    """Reddit — Report Post Or Comment"""
+    thing_id: str = Field(..., description="Thing ID")
+    reason: str = Field(..., description="Reason")
 
     model_config = {"populate_by_name": True}
 
@@ -35515,6 +37825,90 @@ class RssSearchEntriesInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class RudderstackTrackInput(BaseModel):
+    """RudderStack — Track Event"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    event: str = Field(..., description="Event")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackIdentifyInput(BaseModel):
+    """RudderStack — Identify User"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    traits: Optional[Any] = Field(None, description="Traits")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackGroupInput(BaseModel):
+    """RudderStack — Group User"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    groupId: str = Field(..., description="Group ID")
+    traits: Optional[Any] = Field(None, description="Group Traits")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackPageInput(BaseModel):
+    """RudderStack — Page View"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    name: Optional[str] = Field(None, description="Page Name")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackScreenInput(BaseModel):
+    """RudderStack — Screen View"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    name: str = Field(..., description="Screen Name")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackAliasInput(BaseModel):
+    """RudderStack — Alias User"""
+    previousId: str = Field(..., description="Previous ID")
+    userId: str = Field(..., description="User ID")
+    timestamp: Optional[str] = Field(None, description="Timestamp")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+
+    model_config = {"populate_by_name": True}
+
+
+class RudderstackBatchInput(BaseModel):
+    """RudderStack — Batch Events"""
+    batch: Any = Field(..., description="Array of RudderStack event payloads. Each item must include a type.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+
+    model_config = {"populate_by_name": True}
+
+
 class RunwayGenerateVideoInput(BaseModel):
     """Runway — Generate Video"""
     model: Optional[str] = Field(None, description="Model")
@@ -36014,6 +38408,30 @@ class ScraperapiCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ScrapingbeeScrapeUrlInput(BaseModel):
+    """ScrapingBee — Scrape URL"""
+    url: str = Field(..., description="Absolute http or https URL to scrape.")
+    renderJs: Optional[bool] = Field(None, description="Render JavaScript")
+    premiumProxy: Optional[bool] = Field(None, description="Use only when the target needs premium proxy handling.")
+    countryCode: Optional[str] = Field(None, description="Optional two-letter country code for geotargeting.")
+    waitMs: Optional[float] = Field(None, description="Optional wait before returning the page, capped at 10000 ms.")
+    blockResources: Optional[bool] = Field(None, description="Block images and CSS where possible to reduce cost and latency.")
+    returnPageSource: Optional[bool] = Field(None, description="Return HTML page source instead of rendered DOM when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ScrapingbeeGoogleSearchInput(BaseModel):
+    """ScrapingBee — Google Search"""
+    query: str = Field(..., description="Search query to run.")
+    countryCode: Optional[str] = Field(None, description="Optional two-letter country code.")
+    language: Optional[str] = Field(None, description="Optional Google interface language code.")
+    resultLimit: Optional[float] = Field(None, description="Maximum organic results requested, capped at 100.")
+    includeHtml: Optional[bool] = Field(None, description="Include the full Google HTML response when supported.")
+
+    model_config = {"populate_by_name": True}
+
+
 class ScreenshotOneTakeScreenshotInput(BaseModel):
     """ScreenshotOne — Take Screenshot"""
     url: str = Field(..., description="The webpage URL to screenshot")
@@ -36041,8 +38459,150 @@ class ScreenshotOneCustomApiCallInput(BaseModel):
 
 class SegmentIdentifyUserInput(BaseModel):
     """Segment — Identify User"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    traits: Optional[Any] = Field(None, description="Traits")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentTrackEventInput(BaseModel):
+    """Segment — Track Event"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    event: str = Field(..., description="Event")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentGroupUserInput(BaseModel):
+    """Segment — Group User"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    groupId: str = Field(..., description="Group ID")
+    traits: Optional[Any] = Field(None, description="Group Traits")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentPageViewInput(BaseModel):
+    """Segment — Page View"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    name: Optional[str] = Field(None, description="Page Name")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentScreenViewInput(BaseModel):
+    """Segment — Screen View"""
+    userId: Optional[str] = Field(None, description="User ID")
+    anonymousId: Optional[str] = Field(None, description="Anonymous ID")
+    timestamp: Optional[str] = Field(None, description="Optional ISO-8601 timestamp.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+    name: str = Field(..., description="Screen Name")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentAliasUserInput(BaseModel):
+    """Segment — Alias User"""
+    previousId: str = Field(..., description="Previous ID")
     userId: str = Field(..., description="User ID")
-    traits: dict[str, Any] = Field(..., description="The traits to associate with the user")
+    timestamp: Optional[str] = Field(None, description="Timestamp")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+
+    model_config = {"populate_by_name": True}
+
+
+class SegmentBatchEventsInput(BaseModel):
+    """Segment — Batch Events"""
+    batch: Any = Field(..., description="Array of Segment event payloads. Each item must include a type.")
+    context: Optional[Any] = Field(None, description="Context")
+    integrations: Optional[Any] = Field(None, description="Integrations")
+
+    model_config = {"populate_by_name": True}
+
+
+class SemgrepListDeploymentsInput(BaseModel):
+    """Semgrep — List Deployments"""
+    pass
+
+
+class SemgrepListProjectsInput(BaseModel):
+    """Semgrep — List Projects"""
+    deploymentSlug: str = Field(..., description="Deployment Slug")
+    page: Optional[float] = Field(None, description="Pages are numbered from 0.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class SemgrepGetProjectInput(BaseModel):
+    """Semgrep — Get Project"""
+    deploymentSlug: str = Field(..., description="Deployment Slug")
+    projectName: str = Field(..., description="Repository-style project name, for example org/repo.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SemgrepListFindingsInput(BaseModel):
+    """Semgrep — List Findings"""
+    deploymentSlug: str = Field(..., description="Deployment Slug")
+    issueType: Optional[str] = Field(None, description="Issue Type")
+    sinceEpoch: Optional[float] = Field(None, description="Filter by relevant_since using epoch seconds.")
+    page: Optional[float] = Field(None, description="Page")
+    pageSize: Optional[float] = Field(None, description="Semgrep supports 100 to 3000.")
+    status: Optional[str] = Field(None, description="Status")
+    severities: Optional[str] = Field(None, description="Comma-separated: low, medium, high, critical.")
+    repos: Optional[str] = Field(None, description="Comma-separated repository names.")
+    ref: Optional[str] = Field(None, description="Ref")
+    dedup: Optional[bool] = Field(None, description="Deduplicate Across Refs")
+
+    model_config = {"populate_by_name": True}
+
+
+class SemgrepListSecretFindingsInput(BaseModel):
+    """Semgrep — List Secret Findings"""
+    deploymentId: str = Field(..., description="Numeric deployment ID.")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    limit: Optional[float] = Field(None, description="Limit")
+    since: Optional[str] = Field(None, description="ISO date-time filter.")
+    status: Optional[str] = Field(None, description="Status")
+    severity: Optional[str] = Field(None, description="Severity")
+    repos: Optional[str] = Field(None, description="Comma-separated repository names.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SemgrepBulkTriageFindingsInput(BaseModel):
+    """Semgrep — Bulk Triage Findings"""
+    deploymentSlug: str = Field(..., description="Deployment Slug")
+    issueType: str = Field(..., description="Issue Type")
+    newTriageState: Optional[str] = Field(None, description="New Triage State")
+    newTriageReason: Optional[str] = Field(None, description="New Triage Reason")
+    newNote: Optional[str] = Field(None, description="New Note")
+    issueIds: Optional[Any] = Field(None, description="JSON array of numeric finding IDs. Preferred for precise triage.")
+    filters: Optional[Any] = Field(None, description="Optional Semgrep triage filters when issue IDs are not used.")
+    limit: Optional[float] = Field(None, description="Limit")
+    confirmation: str = Field(..., description="Type TRIAGE_FINDINGS to update matching findings.")
 
     model_config = {"populate_by_name": True}
 
@@ -36482,6 +39042,26 @@ class SequentialThinkingSummarizeChainInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SerpapiGoogleSearchInput(BaseModel):
+    """SerpApi — Google Search"""
+    query: str = Field(..., description="Query")
+    location: Optional[str] = Field(None, description="Optional SerpApi location such as Austin, Texas, United States.")
+    googleDomain: Optional[str] = Field(None, description="Optional domain such as google.com.")
+    country: Optional[str] = Field(None, description="Optional Google country code, for example us.")
+    language: Optional[str] = Field(None, description="Optional Google language code, for example en.")
+    resultLimit: Optional[float] = Field(None, description="Number of results requested, capped at 100.")
+    start: Optional[float] = Field(None, description="Zero-based result offset.")
+    safe: Optional[str] = Field(None, description="Safe Search")
+    noCache: Optional[bool] = Field(None, description="Use only when fresh paid results are required.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SerpapiAccountStatusInput(BaseModel):
+    """SerpApi — Account Status"""
+    pass
+
+
 class ServiceNowListRecordsInput(BaseModel):
     """ServiceNow — List Records"""
     tableName: str = Field(..., description="The ServiceNow table name (e.g., incident, sys_user, change_request)")
@@ -36898,6 +39478,110 @@ class ShortIoCustomApiCallInput(BaseModel):
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
+
+
+class ShortcutListStoriesInput(BaseModel):
+    """Shortcut — List Stories"""
+    includesDescription: Optional[bool] = Field(None, description="Include Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutSearchStoriesInput(BaseModel):
+    """Shortcut — Search Stories"""
+    query: str = Field(..., description="Example: state:started owner:me text.")
+    pageSize: Optional[float] = Field(None, description="Page Size")
+    next: Optional[str] = Field(None, description="Next Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutGetStoryInput(BaseModel):
+    """Shortcut — Get Story"""
+    storyId: float = Field(..., description="Story ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutCreateStoryInput(BaseModel):
+    """Shortcut — Create Story"""
+    name: str = Field(..., description="Name")
+    projectId: float = Field(..., description="Project ID")
+    storyType: Optional[str] = Field(None, description="Story Type")
+    description: Optional[str] = Field(None, description="Description")
+    workflowStateId: Optional[float] = Field(None, description="Workflow State ID")
+    epicId: Optional[float] = Field(None, description="Epic ID")
+    estimate: Optional[float] = Field(None, description="Estimate")
+    ownerIds: Optional[Any] = Field(None, description="JSON array of member UUIDs.")
+    labelIds: Optional[Any] = Field(None, description="JSON array of numeric label IDs.")
+    additionalFields: Optional[Any] = Field(None, description="Additional Story Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutUpdateStoryInput(BaseModel):
+    """Shortcut — Update Story"""
+    storyId: float = Field(..., description="Story ID")
+    name: Optional[str] = Field(None, description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    workflowStateId: Optional[float] = Field(None, description="Workflow State ID")
+    epicId: Optional[float] = Field(None, description="Epic ID")
+    estimate: Optional[float] = Field(None, description="Estimate")
+    archived: Optional[bool] = Field(None, description="Archived")
+    additionalFields: Optional[Any] = Field(None, description="Additional Story Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutDeleteStoryInput(BaseModel):
+    """Shortcut — Delete Story"""
+    storyId: float = Field(..., description="Story ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutAddStoryCommentInput(BaseModel):
+    """Shortcut — Add Story Comment"""
+    storyId: float = Field(..., description="Story ID")
+    text: str = Field(..., description="Comment Text")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutListEpicsInput(BaseModel):
+    """Shortcut — List Epics"""
+    pass
+
+
+class ShortcutCreateEpicInput(BaseModel):
+    """Shortcut — Create Epic"""
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    state: Optional[str] = Field(None, description="State")
+    plannedStartDate: Optional[str] = Field(None, description="YYYY-MM-DD.")
+    deadline: Optional[str] = Field(None, description="YYYY-MM-DD.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ShortcutListProjectsInput(BaseModel):
+    """Shortcut — List Projects"""
+    pass
+
+
+class ShortcutListWorkflowsInput(BaseModel):
+    """Shortcut — List Workflows"""
+    pass
+
+
+class ShortcutListIterationsInput(BaseModel):
+    """Shortcut — List Iterations"""
+    pass
+
+
+class ShortcutListWebhooksInput(BaseModel):
+    """Shortcut — List Webhooks"""
+    pass
 
 
 class SierraInteractiveListLeadsInput(BaseModel):
@@ -40501,6 +43185,88 @@ class TavilyExtractInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class TaxjarCalculateTaxInput(BaseModel):
+    """TaxJar — Calculate Tax"""
+    fromCountry: Optional[str] = Field(None, description="From Country")
+    fromZip: Optional[str] = Field(None, description="From ZIP/Postal Code")
+    fromState: Optional[str] = Field(None, description="From State/Region")
+    fromCity: Optional[str] = Field(None, description="From City")
+    fromStreet: Optional[str] = Field(None, description="From Street")
+    toCountry: str = Field(..., description="To Country")
+    toZip: str = Field(..., description="To ZIP/Postal Code")
+    toState: Optional[str] = Field(None, description="To State/Region")
+    toCity: Optional[str] = Field(None, description="To City")
+    toStreet: Optional[str] = Field(None, description="To Street")
+    amount: float = Field(..., description="Order subtotal excluding shipping.")
+    shipping: Optional[float] = Field(None, description="Shipping Amount")
+    currency: Optional[str] = Field(None, description="ISO currency code where applicable.")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+    exemptionType: Optional[str] = Field(None, description="Exemption Type")
+    nexusAddresses: Optional[Any] = Field(None, description="Optional TaxJar nexus_addresses array.")
+    lineItems: Optional[Any] = Field(None, description="Optional TaxJar line_items array with quantity, unit_price, discount, product_tax_code, and identifiers.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TaxjarGetRatesForLocationInput(BaseModel):
+    """TaxJar — Get Rates For Location"""
+    country: str = Field(..., description="Two-letter country code, for example US.")
+    zip: str = Field(..., description="ZIP/Postal Code")
+    state: Optional[str] = Field(None, description="State/Region")
+    city: Optional[str] = Field(None, description="City")
+    street: Optional[str] = Field(None, description="Street")
+
+    model_config = {"populate_by_name": True}
+
+
+class TaxjarValidateAddressInput(BaseModel):
+    """TaxJar — Validate Address"""
+    country: str = Field(..., description="Two-letter country code, for example US.")
+    zip: str = Field(..., description="ZIP/Postal Code")
+    state: Optional[str] = Field(None, description="State/Region")
+    city: Optional[str] = Field(None, description="City")
+    street: Optional[str] = Field(None, description="Street")
+
+    model_config = {"populate_by_name": True}
+
+
+class TaxjarListCategoriesInput(BaseModel):
+    """TaxJar — List Tax Categories"""
+    pass
+
+
+class TaxjarCreateOrderTransactionInput(BaseModel):
+    """TaxJar — Create Order Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    transactionDate: str = Field(..., description="YYYY/MM/DD or ISO date.")
+    toCountry: str = Field(..., description="To Country")
+    toZip: str = Field(..., description="To ZIP/Postal Code")
+    toState: Optional[str] = Field(None, description="To State/Region")
+    toCity: Optional[str] = Field(None, description="To City")
+    toStreet: Optional[str] = Field(None, description="To Street")
+    amount: float = Field(..., description="Order Amount")
+    shipping: Optional[float] = Field(None, description="Shipping Amount")
+    salesTax: float = Field(..., description="Sales Tax Amount")
+    lineItems: Optional[Any] = Field(None, description="TaxJar transaction line_items array.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TaxjarGetOrderTransactionInput(BaseModel):
+    """TaxJar — Get Order Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class TaxjarDeleteOrderTransactionInput(BaseModel):
+    """TaxJar — Delete Order Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    confirm: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
 class TeachableListCoursesInput(BaseModel):
     """Teachable — List Courses"""
     page: Optional[float] = Field(None, description="Page")
@@ -41249,6 +44015,92 @@ class TiktokAdsGetAdReportInput(BaseModel):
     metrics: list[Any] = Field(..., description="Metrics to include (e.g., \"spend\", \"impressions\", \"clicks\", \"ctr\", \"cpc\", \"conversions\")")
     dimensions: Optional[list[Any]] = Field(None, description="Dimensions for grouping (e.g., \"campaign_id\", \"adgroup_id\", \"stat_time_day\")")
     pageSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleGetAuthInfoInput(BaseModel):
+    """Timescale — Get Auth Info"""
+    pass
+
+
+class TimescaleListServicesInput(BaseModel):
+    """Timescale — List Services"""
+    projectId: Optional[str] = Field(None, description="Overrides the connection default project ID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleGetServiceInput(BaseModel):
+    """Timescale — Get Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    serviceId: str = Field(..., description="Service ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleCreateServiceInput(BaseModel):
+    """Timescale — Create Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    name: str = Field(..., description="Service Name")
+    regionCode: str = Field(..., description="Region Code")
+    cpuMillis: float = Field(..., description="CPU Millis")
+    memoryGbs: float = Field(..., description="Memory GBs")
+    replicaCount: Optional[float] = Field(None, description="Replica Count")
+    addons: Optional[Any] = Field(None, description="Optional JSON array of service addons.")
+    extraBody: Optional[Any] = Field(None, description="Optional additional create-service fields as a JSON object.")
+    confirmCreate: bool = Field(..., description="Confirm Create")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleResizeServiceInput(BaseModel):
+    """Timescale — Resize Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    serviceId: str = Field(..., description="Service ID")
+    cpuMillis: float = Field(..., description="CPU Millis")
+    memoryGbs: float = Field(..., description="Memory GBs")
+    confirmServiceId: str = Field(..., description="Confirm Service ID")
+    confirmResize: bool = Field(..., description="Confirm Resize")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleStartServiceInput(BaseModel):
+    """Timescale — Start Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    serviceId: str = Field(..., description="Service ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleStopServiceInput(BaseModel):
+    """Timescale — Stop Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    serviceId: str = Field(..., description="Service ID")
+    confirmServiceId: str = Field(..., description="Confirm Service ID")
+    confirmStop: bool = Field(..., description="Confirm Stop")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleDeleteServiceInput(BaseModel):
+    """Timescale — Delete Service"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    serviceId: str = Field(..., description="Service ID")
+    confirmServiceId: str = Field(..., description="Confirm Service ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class TimescaleCustomApiCallInput(BaseModel):
+    """Timescale — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path under /public/api/v1, for example /projects/{project_id}/services.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmMutation: Optional[bool] = Field(None, description="Confirm Mutation")
 
     model_config = {"populate_by_name": True}
 
@@ -46013,6 +48865,26 @@ class ZuoraFindProductInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ZyteFetchPageInput(BaseModel):
+    """Zyte — Fetch Page"""
+    url: str = Field(..., description="Absolute http or https URL with a domain hostname.")
+    mode: str = Field(..., description="Fetch Mode")
+    includeResponseHeaders: Optional[bool] = Field(None, description="Include Response Headers")
+    screenshot: Optional[bool] = Field(None, description="Only valid with Browser HTML mode.")
+    ipType: Optional[str] = Field(None, description="Leave automatic unless a site requires a specific type.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ZyteExtractStructuredDataInput(BaseModel):
+    """Zyte — Extract Structured Data"""
+    url: str = Field(..., description="URL")
+    extractionType: str = Field(..., description="Extraction Type")
+    extractFrom: Optional[str] = Field(None, description="SERP extraction ignores this setting because Zyte SERP cannot be combined with body/browser fields.")
+
+    model_config = {"populate_by_name": True}
+
+
 # ============================================================================
 # Integration and Action Name Types
 # ============================================================================
@@ -46036,11 +48908,13 @@ IntegrationName = Literal[
     "agent-local-browser-control",
     "agent-memory",
     "agent-scratchpad",
+    "aha",
     "ahrefs",
     "ai-toolkit",
     "aircall",
     "airtable",
     "airwallex",
+    "aiven",
     "algolia",
     "alma",
     "amazon-s3",
@@ -46062,9 +48936,15 @@ IntegrationName = Literal[
     "auth0",
     "authorize-net",
     "autotask",
+    "avalara",
+    "aws-cloudwatch",
+    "aws-dynamodb",
+    "aws-eventbridge",
+    "aws-lambda",
     "aws-s3",
     "aws-secrets-manager",
     "aws-ses",
+    "aws-sns",
     "aws-sts",
     "azure-blob-storage",
     "azure-devops",
@@ -46097,10 +48977,13 @@ IntegrationName = Literal[
     "cal-com",
     "calendly",
     "campaign-monitor",
+    "canny",
     "canto",
     "canva",
     "canvas-lms",
     "capsule-crm",
+    "cartesia",
+    "census",
     "chargebee",
     "chromadb",
     "churnzero",
@@ -46131,6 +49014,7 @@ IntegrationName = Literal[
     "common-room",
     "companycam",
     "confluence",
+    "confluent-cloud",
     "connectwise",
     "constant-contact",
     "contentful",
@@ -46139,12 +49023,14 @@ IntegrationName = Literal[
     "courier",
     "crates-io",
     "crisp",
+    "crowdin",
     "culture-amp",
     "customer-io",
     "cvent",
     "data-transformer",
     "databricks",
     "datadog",
+    "dataforseo",
     "datetime",
     "datocms",
     "dbt-cloud",
@@ -46166,6 +49052,7 @@ IntegrationName = Literal[
     "docusign",
     "donorbox",
     "doodle",
+    "doppler",
     "dotloop",
     "doxy-me",
     "drata",
@@ -46189,6 +49076,7 @@ IntegrationName = Literal[
     "facebook-ads",
     "facebook-leads",
     "facebook-pages",
+    "fal-ai",
     "fathom",
     "fellow",
     "fieldwire",
@@ -46199,6 +49087,7 @@ IntegrationName = Literal[
     "firebase",
     "firecrawl",
     "fireflies",
+    "fireworks-ai",
     "fishbowl",
     "fivetran",
     "fleetio",
@@ -46267,19 +49156,23 @@ IntegrationName = Literal[
     "hex",
     "heygen",
     "hibob",
+    "hightouch",
     "hive",
+    "honeycomb",
     "hostaway",
     "hotjar",
     "housecall-pro",
     "http",
     "hubspot",
     "hugging-face",
+    "hume-ai",
     "hunter-io",
     "ibkr",
     "ideogram",
     "imanage",
     "imap",
     "incident-io",
+    "influxdb",
     "infobip",
     "insightly",
     "instagram-business",
@@ -46326,6 +49219,7 @@ IntegrationName = Literal[
     "linkedin-ads",
     "local-computer-control",
     "local-computer-control-agent",
+    "lokalise",
     "loom",
     "loops",
     "lucid",
@@ -46414,6 +49308,7 @@ IntegrationName = Literal[
     "perplexity-ai",
     "personio",
     "phantombuster",
+    "phrase",
     "pika",
     "pinecone",
     "pinterest",
@@ -46434,8 +49329,12 @@ IntegrationName = Literal[
     "powerschool",
     "practice-better",
     "practice-panther",
+    "printful",
+    "printify",
     "prismic",
     "procore",
+    "productboard",
+    "productlane",
     "propertyware",
     "protocols-io",
     "proxycurl",
@@ -46468,6 +49367,7 @@ IntegrationName = Literal[
     "rollbar",
     "route4me",
     "rss",
+    "rudderstack",
     "runway",
     "saleor",
     "salesforce",
@@ -46476,19 +49376,23 @@ IntegrationName = Literal[
     "sanity",
     "schoology",
     "scraperapi",
+    "scrapingbee",
     "screenshot-one",
     "segment",
+    "semgrep",
     "semrush",
     "sendgrid",
     "sendpulse",
     "sentry",
     "sequential-thinking",
+    "serpapi",
     "service-now",
     "service-titan",
     "shippo",
     "shipstation",
     "shopify",
     "short-io",
+    "shortcut",
     "sierra-interactive",
     "similarweb",
     "simple-practice",
@@ -46527,6 +49431,7 @@ IntegrationName = Literal[
     "talkdesk",
     "tally",
     "tavily",
+    "taxjar",
     "teachable",
     "teamtailor",
     "teamwork",
@@ -46540,6 +49445,7 @@ IntegrationName = Literal[
     "tidycal",
     "tiktok",
     "tiktok-ads",
+    "timescale",
     "timesolv",
     "tithe-ly",
     "tldv",
@@ -46608,6 +49514,7 @@ IntegrationName = Literal[
     "zoho-mail",
     "zoom",
     "zuora",
+    "zyte",
 ]
 
 IntegrationActionKey = Literal[
@@ -46832,6 +49739,14 @@ IntegrationActionKey = Literal[
     "agent-scratchpad.search_pages",
     "agent-scratchpad.delete_page",
     "agent-scratchpad.clear_all",
+    "aha.list_products",
+    "aha.list_features",
+    "aha.get_feature",
+    "aha.create_feature",
+    "aha.update_feature",
+    "aha.list_ideas",
+    "aha.promote_idea",
+    "aha.add_comment",
     "ahrefs.get_backlinks",
     "ahrefs.get_organic_keywords",
     "ahrefs.get_domain_rating",
@@ -46907,6 +49822,17 @@ IntegrationActionKey = Literal[
     "airwallex.get_card_transaction",
     "airwallex.custom_api_call",
     "airwallex.custom_write_api_call",
+    "aiven.list_projects",
+    "aiven.list_clouds",
+    "aiven.list_services",
+    "aiven.get_service",
+    "aiven.create_service",
+    "aiven.update_service",
+    "aiven.terminate_service",
+    "aiven.list_project_events",
+    "aiven.list_service_logs",
+    "aiven.fetch_service_metrics",
+    "aiven.custom_api_call",
     "algolia.list_indexes",
     "algolia.search_index",
     "algolia.browse_records",
@@ -47077,6 +50003,41 @@ IntegrationActionKey = Literal[
     "autotask.list_companies",
     "autotask.list_contacts",
     "autotask.custom_api_call",
+    "avalara.test_connection",
+    "avalara.list_companies",
+    "avalara.calculate_transaction_tax",
+    "avalara.get_transaction",
+    "avalara.void_transaction",
+    "avalara.resolve_address",
+    "aws-cloudwatch.list_metrics",
+    "aws-cloudwatch.get_metric_statistics",
+    "aws-cloudwatch.describe_alarms",
+    "aws-cloudwatch.put_metric_data",
+    "aws-cloudwatch.describe_log_groups",
+    "aws-cloudwatch.filter_log_events",
+    "aws-dynamodb.list_tables",
+    "aws-dynamodb.describe_table",
+    "aws-dynamodb.get_item",
+    "aws-dynamodb.put_item",
+    "aws-dynamodb.update_item",
+    "aws-dynamodb.delete_item",
+    "aws-dynamodb.query",
+    "aws-dynamodb.scan",
+    "aws-eventbridge.list_event_buses",
+    "aws-eventbridge.list_rules",
+    "aws-eventbridge.describe_rule",
+    "aws-eventbridge.put_rule",
+    "aws-eventbridge.list_targets_by_rule",
+    "aws-eventbridge.put_targets",
+    "aws-eventbridge.put_events",
+    "aws-eventbridge.remove_targets",
+    "aws-eventbridge.delete_rule",
+    "aws-lambda.list_functions",
+    "aws-lambda.get_function",
+    "aws-lambda.get_function_configuration",
+    "aws-lambda.invoke_function",
+    "aws-lambda.list_versions",
+    "aws-lambda.list_aliases",
     "aws-s3.list_objects",
     "aws-s3.get_object",
     "aws-s3.put_object",
@@ -47095,6 +50056,14 @@ IntegrationActionKey = Literal[
     "aws-ses.list_identities",
     "aws-ses.get_email_identity",
     "aws-ses.get_account",
+    "aws-sns.list_topics",
+    "aws-sns.get_topic_attributes",
+    "aws-sns.create_topic",
+    "aws-sns.publish_message",
+    "aws-sns.list_subscriptions",
+    "aws-sns.subscribe",
+    "aws-sns.unsubscribe",
+    "aws-sns.delete_topic",
     "aws-sts.get_caller_identity",
     "aws-sts.get_access_key_info",
     "aws-sts.assume_role",
@@ -47181,11 +50150,13 @@ IntegrationActionKey = Literal[
     "bloomerang.create_donation",
     "bloomerang.get_campaigns",
     "bloomerang.custom_api_call",
-    "bluesky.createPost",
-    "bluesky.likePost",
-    "bluesky.repostPost",
-    "bluesky.findPost",
-    "bluesky.findThread",
+    "bluesky.create_post",
+    "bluesky.delete_record",
+    "bluesky.search_posts",
+    "bluesky.get_post_thread",
+    "bluesky.list_author_feed",
+    "bluesky.get_profile",
+    "bluesky.like_post",
     "box.list_folder_items",
     "box.get_folder_info",
     "box.get_file_info",
@@ -47321,6 +50292,16 @@ IntegrationActionKey = Literal[
     "campaign-monitor.update_subscriber_details",
     "campaign-monitor.unsubscribe_subscriber",
     "campaign-monitor.find_subscriber",
+    "canny.list_boards",
+    "canny.list_posts",
+    "canny.retrieve_post",
+    "canny.create_post",
+    "canny.update_post",
+    "canny.delete_post",
+    "canny.list_comments",
+    "canny.create_comment",
+    "canny.create_vote",
+    "canny.list_tags",
     "canto.search_assets",
     "canto.get_folders",
     "canto.upload_asset",
@@ -47373,6 +50354,25 @@ IntegrationActionKey = Literal[
     "capsule-crm.find_contact",
     "capsule-crm.find_project",
     "capsule-crm.find_opportunity",
+    "cartesia.synthesize_speech",
+    "cartesia.transcribe_audio",
+    "cartesia.list_voices",
+    "cartesia.get_voice",
+    "cartesia.delete_voice",
+    "cartesia.create_access_token",
+    "census.list_sources",
+    "census.get_source",
+    "census.list_destinations",
+    "census.get_destination",
+    "census.list_destination_types",
+    "census.list_syncs",
+    "census.get_sync",
+    "census.trigger_sync",
+    "census.list_sync_runs",
+    "census.get_sync_run",
+    "census.cancel_sync_run",
+    "census.get_sync_run_records_count",
+    "census.custom_api_call",
     "chargebee.list_subscriptions",
     "chargebee.get_subscription",
     "chargebee.list_customers",
@@ -47582,6 +50582,17 @@ IntegrationActionKey = Literal[
     "confluence.update_page",
     "confluence.search",
     "confluence.custom_api_call",
+    "confluent-cloud.list_environments",
+    "confluent-cloud.get_environment",
+    "confluent-cloud.list_kafka_clusters",
+    "confluent-cloud.get_kafka_cluster",
+    "confluent-cloud.list_service_accounts",
+    "confluent-cloud.get_service_account",
+    "confluent-cloud.list_api_keys",
+    "confluent-cloud.get_api_key",
+    "confluent-cloud.list_metric_descriptors",
+    "confluent-cloud.query_metrics",
+    "confluent-cloud.custom_api_call",
     "connectwise.create_ticket",
     "connectwise.list_tickets",
     "connectwise.update_ticket",
@@ -47664,6 +50675,16 @@ IntegrationActionKey = Literal[
     "crisp.find_conversation",
     "crisp.find_user_profile",
     "crisp.custom_api_call",
+    "crowdin.list_projects",
+    "crowdin.get_project",
+    "crowdin.list_files",
+    "crowdin.list_strings",
+    "crowdin.get_string",
+    "crowdin.create_string",
+    "crowdin.update_string",
+    "crowdin.upload_file",
+    "crowdin.create_translation_build",
+    "crowdin.get_translation_build",
     "culture-amp.validate_connection",
     "culture-amp.list_employees",
     "culture-amp.get_employee",
@@ -47722,6 +50743,9 @@ IntegrationActionKey = Literal[
     "datadog.post_event",
     "datadog.search_logs",
     "datadog.send_log",
+    "dataforseo.google_organic_live_advanced",
+    "dataforseo.google_maps_live_advanced",
+    "dataforseo.list_google_locations",
     "datetime.parse_date",
     "datetime.format_date",
     "datetime.date_math",
@@ -47818,12 +50842,15 @@ IntegrationActionKey = Literal[
     "discord.create_role",
     "discord.delete_role",
     "discord.custom_api_call",
-    "discourse.create_post",
+    "discourse.list_latest_topics",
+    "discourse.search_topics",
+    "discourse.get_topic",
+    "discourse.list_categories",
     "discourse.create_topic",
-    "discourse.change_user_trust_level",
-    "discourse.add_users_to_group",
-    "discourse.send_private_message",
-    "discourse.custom_api_call",
+    "discourse.create_reply",
+    "discourse.update_post",
+    "discourse.delete_post",
+    "discourse.update_topic_status",
     "docebo.get_user",
     "docebo.create_user",
     "docebo.enroll_course",
@@ -47881,6 +50908,15 @@ IntegrationActionKey = Literal[
     "doodle.list_polls",
     "doodle.get_poll",
     "doodle.custom_api_call",
+    "doppler.list_projects",
+    "doppler.get_project",
+    "doppler.list_configs",
+    "doppler.list_secret_names",
+    "doppler.get_secret",
+    "doppler.get_secrets",
+    "doppler.update_secrets",
+    "doppler.delete_secret",
+    "doppler.list_webhooks",
     "dotloop.create_loop",
     "dotloop.get_loop",
     "dotloop.add_participant",
@@ -48041,6 +51077,11 @@ IntegrationActionKey = Literal[
     "facebook-pages.create_post",
     "facebook-pages.create_photo_post",
     "facebook-pages.create_video_post",
+    "fal-ai.submit_request",
+    "fal-ai.get_status",
+    "fal-ai.get_result",
+    "fal-ai.cancel_request",
+    "fal-ai.list_models",
     "fathom.validate_connection",
     "fathom.list_meetings",
     "fathom.find_meetings",
@@ -48128,6 +51169,11 @@ IntegrationActionKey = Literal[
     "fireflies.search_transcripts",
     "fireflies.get_transcript",
     "fireflies.get_active_meetings",
+    "fireworks-ai.chat_completion",
+    "fireworks-ai.create_embedding",
+    "fireworks-ai.rerank_documents",
+    "fireworks-ai.generate_image",
+    "fireworks-ai.list_models",
     "fishbowl.get_product",
     "fishbowl.create_product",
     "fishbowl.create_sales_order",
@@ -48626,11 +51672,29 @@ IntegrationActionKey = Literal[
     "hibob.get_employee",
     "hibob.list_time_off",
     "hibob.list_company_lists",
+    "hightouch.list_sources",
+    "hightouch.get_source",
+    "hightouch.list_models",
+    "hightouch.get_model",
+    "hightouch.list_destinations",
+    "hightouch.get_destination",
+    "hightouch.list_syncs",
+    "hightouch.get_sync",
+    "hightouch.trigger_sync",
+    "hightouch.list_sync_runs",
+    "hightouch.custom_api_call",
     "hive.create_action",
     "hive.list_actions",
     "hive.get_action",
     "hive.list_projects",
     "hive.custom_api_call",
+    "honeycomb.list_datasets",
+    "honeycomb.create_dataset",
+    "honeycomb.create_query",
+    "honeycomb.create_query_result",
+    "honeycomb.get_query_result",
+    "honeycomb.create_marker",
+    "honeycomb.list_triggers",
     "hostaway.list_reservations",
     "hostaway.get_reservation",
     "hostaway.list_listings",
@@ -48725,6 +51789,11 @@ IntegrationActionKey = Literal[
     "hugging-face.create_image",
     "hugging-face.object_detection",
     "hugging-face.image_classification",
+    "hume-ai.synthesize_speech",
+    "hume-ai.list_voices",
+    "hume-ai.list_evi_configs",
+    "hume-ai.list_chats",
+    "hume-ai.get_chat_audio",
     "hunter-io.find_email",
     "hunter-io.verify_email",
     "hunter-io.domain_search",
@@ -48778,6 +51847,14 @@ IntegrationActionKey = Literal[
     "incident-io.get_action",
     "incident-io.list_follow_ups",
     "incident-io.get_follow_up",
+    "influxdb.health",
+    "influxdb.list_organizations",
+    "influxdb.list_buckets",
+    "influxdb.get_bucket",
+    "influxdb.query_flux",
+    "influxdb.write_line_protocol",
+    "influxdb.delete_data",
+    "influxdb.custom_api_call",
     "infobip.send_sms",
     "infobip.send_email",
     "infobip.get_delivery_report",
@@ -49139,6 +52216,15 @@ IntegrationActionKey = Literal[
     "local-computer-control-agent.extract_from_screen",
     "local-computer-control-agent.run_recipe",
     "local-computer-control-agent.stop_task",
+    "lokalise.list_projects",
+    "lokalise.get_project",
+    "lokalise.list_languages",
+    "lokalise.list_keys",
+    "lokalise.get_key",
+    "lokalise.create_key",
+    "lokalise.update_key",
+    "lokalise.upload_file",
+    "lokalise.download_file",
     "loom.list_videos",
     "loom.get_video",
     "loom.update_video",
@@ -49207,8 +52293,18 @@ IntegrationActionKey = Literal[
     "mapbox.reverse_geocode",
     "mapbox.get_directions",
     "mapbox.create_isochrone",
-    "mastodon.post_status",
-    "mastodon.custom_api_call",
+    "mastodon.create_status",
+    "mastodon.update_status",
+    "mastodon.delete_status",
+    "mastodon.get_status",
+    "mastodon.search",
+    "mastodon.list_home_timeline",
+    "mastodon.list_account_statuses",
+    "mastodon.get_account",
+    "mastodon.favourite_status",
+    "mastodon.unfavourite_status",
+    "mastodon.boost_status",
+    "mastodon.unboost_status",
     "mattermost.send_message",
     "mattermost.custom_api_call",
     "medium.create_post",
@@ -49735,8 +52831,10 @@ IntegrationActionKey = Literal[
     "openai.custom_api_call",
     "opencage.forward_geocode",
     "opencage.reverse_geocode",
-    "open-router.ask-lmm",
-    "open-router.custom_api_call",
+    "open-router.chat_completion",
+    "open-router.list_models",
+    "open-router.list_model_endpoints",
+    "open-router.get_credits",
     "opentable.list_reservations",
     "opentable.get_availability",
     "opentable.list_restaurants",
@@ -49871,6 +52969,15 @@ IntegrationActionKey = Literal[
     "phantombuster.list_agents",
     "phantombuster.get_agent",
     "phantombuster.custom_api_call",
+    "phrase.list_projects",
+    "phrase.get_project",
+    "phrase.list_locales",
+    "phrase.list_keys",
+    "phrase.get_key",
+    "phrase.create_key",
+    "phrase.upload_file",
+    "phrase.list_uploads",
+    "phrase.download_locale_file",
     "pika.create_video",
     "pika.get_video",
     "pika.list_videos",
@@ -50005,6 +53112,32 @@ IntegrationActionKey = Literal[
     "practice-panther.create_contact",
     "practice-panther.list_tasks",
     "practice-panther.custom_api_call",
+    "printful.list_stores",
+    "printful.list_catalog_products",
+    "printful.get_catalog_product",
+    "printful.list_catalog_variants",
+    "printful.list_orders",
+    "printful.get_order",
+    "printful.create_order",
+    "printful.update_order",
+    "printful.confirm_order",
+    "printful.cancel_order",
+    "printful.calculate_shipping_rates",
+    "printful.list_order_shipments",
+    "printful.create_order_estimation",
+    "printful.get_order_estimation",
+    "printify.list_shops",
+    "printify.list_catalog_blueprints",
+    "printify.list_products",
+    "printify.get_product",
+    "printify.create_product",
+    "printify.publish_product",
+    "printify.list_orders",
+    "printify.get_order",
+    "printify.create_order",
+    "printify.calculate_shipping",
+    "printify.cancel_order",
+    "printify.upload_image_from_url",
     "prismic.query_documents",
     "prismic.get_document_by_id",
     "prismic.get_document_by_uid",
@@ -50013,6 +53146,29 @@ IntegrationActionKey = Literal[
     "procore.get_project",
     "procore.list_rfis",
     "procore.list_submittals",
+    "productboard.list_entities",
+    "productboard.search_entities",
+    "productboard.get_entity",
+    "productboard.create_entity",
+    "productboard.update_entity",
+    "productboard.delete_entity",
+    "productboard.list_notes",
+    "productboard.create_note",
+    "productboard.update_note",
+    "productboard.list_webhooks",
+    "productboard.create_webhook",
+    "productboard.delete_webhook",
+    "productlane.get_authenticated_identity",
+    "productlane.list_threads",
+    "productlane.create_thread",
+    "productlane.update_thread",
+    "productlane.post_internal_comment",
+    "productlane.list_projects",
+    "productlane.create_project",
+    "productlane.list_issues",
+    "productlane.create_issue",
+    "productlane.list_changelogs",
+    "productlane.create_changelog",
     "propertyware.list_units",
     "propertyware.list_tenants",
     "propertyware.list_work_orders",
@@ -50285,16 +53441,15 @@ IntegrationActionKey = Literal[
     "recurly.get_invoice",
     "recurly.list_plans",
     "recurly.get_plan",
-    "reddit.retrieveRedditPost",
-    "reddit.getRedditPostDetails",
-    "reddit.createRedditPost",
-    "reddit.createRedditComment",
-    "reddit.fetchPostComments",
-    "reddit.editRedditPost",
-    "reddit.editRedditComment",
-    "reddit.deleteRedditPost",
-    "reddit.deleteRedditComment",
-    "reddit.custom_api_call",
+    "reddit.list_subreddit_posts",
+    "reddit.search_subreddit",
+    "reddit.get_post_details",
+    "reddit.create_text_post",
+    "reddit.create_link_post",
+    "reddit.create_comment",
+    "reddit.edit_thing",
+    "reddit.delete_thing",
+    "reddit.report_thing",
     "redis-cloud.list_pro_subscriptions",
     "redis-cloud.get_pro_subscription",
     "redis-cloud.list_essentials_subscriptions",
@@ -50375,6 +53530,13 @@ IntegrationActionKey = Literal[
     "rss.parse_feed",
     "rss.get_entries",
     "rss.search_entries",
+    "rudderstack.track",
+    "rudderstack.identify",
+    "rudderstack.group",
+    "rudderstack.page",
+    "rudderstack.screen",
+    "rudderstack.alias",
+    "rudderstack.batch",
     "runway.generate_video",
     "runway.get_task",
     "runway.list_assets",
@@ -50428,9 +53590,23 @@ IntegrationActionKey = Literal[
     "scraperapi.scrape_url",
     "scraperapi.structured_data",
     "scraperapi.custom_api_call",
+    "scrapingbee.scrape_url",
+    "scrapingbee.google_search",
     "screenshot-one.take_screenshot",
     "screenshot-one.custom_api_call",
     "segment.identifyUser",
+    "segment.track_event",
+    "segment.group_user",
+    "segment.page_view",
+    "segment.screen_view",
+    "segment.alias_user",
+    "segment.batch_events",
+    "semgrep.list_deployments",
+    "semgrep.list_projects",
+    "semgrep.get_project",
+    "semgrep.list_findings",
+    "semgrep.list_secret_findings",
+    "semgrep.bulk_triage_findings",
     "semrush.get_domain_overview",
     "semrush.get_organic_keywords",
     "semrush.get_backlinks",
@@ -50474,6 +53650,8 @@ IntegrationActionKey = Literal[
     "sequential-thinking.revise_thought",
     "sequential-thinking.get_chain",
     "sequential-thinking.summarize_chain",
+    "serpapi.google_search",
+    "serpapi.account_status",
     "service-now.list_records",
     "service-now.get_record",
     "service-now.create_record",
@@ -50519,6 +53697,19 @@ IntegrationActionKey = Literal[
     "short-io.get_link",
     "short-io.list_links",
     "short-io.custom_api_call",
+    "shortcut.list_stories",
+    "shortcut.search_stories",
+    "shortcut.get_story",
+    "shortcut.create_story",
+    "shortcut.update_story",
+    "shortcut.delete_story",
+    "shortcut.add_story_comment",
+    "shortcut.list_epics",
+    "shortcut.create_epic",
+    "shortcut.list_projects",
+    "shortcut.list_workflows",
+    "shortcut.list_iterations",
+    "shortcut.list_webhooks",
     "sierra-interactive.list_leads",
     "sierra-interactive.create_lead",
     "sierra-interactive.list_properties",
@@ -50900,6 +54091,13 @@ IntegrationActionKey = Literal[
     "tally.list_webhooks",
     "tavily.search",
     "tavily.extract",
+    "taxjar.calculate_tax",
+    "taxjar.get_rates_for_location",
+    "taxjar.validate_address",
+    "taxjar.list_categories",
+    "taxjar.create_order_transaction",
+    "taxjar.get_order_transaction",
+    "taxjar.delete_order_transaction",
     "teachable.list_courses",
     "teachable.get_course",
     "teachable.list_users",
@@ -50981,6 +54179,15 @@ IntegrationActionKey = Literal[
     "tiktok-ads.get_campaign",
     "tiktok-ads.list_ad_groups",
     "tiktok-ads.get_ad_report",
+    "timescale.get_auth_info",
+    "timescale.list_services",
+    "timescale.get_service",
+    "timescale.create_service",
+    "timescale.resize_service",
+    "timescale.start_service",
+    "timescale.stop_service",
+    "timescale.delete_service",
+    "timescale.custom_api_call",
     "timesolv.list_time_entries",
     "timesolv.create_time_entry",
     "timesolv.list_matters",
@@ -51461,6 +54668,8 @@ IntegrationActionKey = Literal[
     "zuora.find-account",
     "zuora.find-product-rate-plan",
     "zuora.find-product",
+    "zyte.fetch_page",
+    "zyte.extract_structured_data",
 ]
 
 # ============================================================================
@@ -51725,6 +54934,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "delete_page",
         "clear_all",
     ),
+    "aha": (
+        "list_products",
+        "list_features",
+        "get_feature",
+        "create_feature",
+        "update_feature",
+        "list_ideas",
+        "promote_idea",
+        "add_comment",
+    ),
     "ahrefs": (
         "get_backlinks",
         "get_organic_keywords",
@@ -51809,6 +55028,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_card_transaction",
         "custom_api_call",
         "custom_write_api_call",
+    ),
+    "aiven": (
+        "list_projects",
+        "list_clouds",
+        "list_services",
+        "get_service",
+        "create_service",
+        "update_service",
+        "terminate_service",
+        "list_project_events",
+        "list_service_logs",
+        "fetch_service_metrics",
+        "custom_api_call",
     ),
     "algolia": (
         "list_indexes",
@@ -52022,6 +55254,51 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_contacts",
         "custom_api_call",
     ),
+    "avalara": (
+        "test_connection",
+        "list_companies",
+        "calculate_transaction_tax",
+        "get_transaction",
+        "void_transaction",
+        "resolve_address",
+    ),
+    "aws-cloudwatch": (
+        "list_metrics",
+        "get_metric_statistics",
+        "describe_alarms",
+        "put_metric_data",
+        "describe_log_groups",
+        "filter_log_events",
+    ),
+    "aws-dynamodb": (
+        "list_tables",
+        "describe_table",
+        "get_item",
+        "put_item",
+        "update_item",
+        "delete_item",
+        "query",
+        "scan",
+    ),
+    "aws-eventbridge": (
+        "list_event_buses",
+        "list_rules",
+        "describe_rule",
+        "put_rule",
+        "list_targets_by_rule",
+        "put_targets",
+        "put_events",
+        "remove_targets",
+        "delete_rule",
+    ),
+    "aws-lambda": (
+        "list_functions",
+        "get_function",
+        "get_function_configuration",
+        "invoke_function",
+        "list_versions",
+        "list_aliases",
+    ),
     "aws-s3": (
         "list_objects",
         "get_object",
@@ -52045,6 +55322,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_identities",
         "get_email_identity",
         "get_account",
+    ),
+    "aws-sns": (
+        "list_topics",
+        "get_topic_attributes",
+        "create_topic",
+        "publish_message",
+        "list_subscriptions",
+        "subscribe",
+        "unsubscribe",
+        "delete_topic",
     ),
     "aws-sts": (
         "get_caller_identity",
@@ -52161,11 +55448,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "bluesky": (
-        "createPost",
-        "likePost",
-        "repostPost",
-        "findPost",
-        "findThread",
+        "create_post",
+        "delete_record",
+        "search_posts",
+        "get_post_thread",
+        "list_author_feed",
+        "get_profile",
+        "like_post",
     ),
     "box": (
         "list_folder_items",
@@ -52336,6 +55625,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "unsubscribe_subscriber",
         "find_subscriber",
     ),
+    "canny": (
+        "list_boards",
+        "list_posts",
+        "retrieve_post",
+        "create_post",
+        "update_post",
+        "delete_post",
+        "list_comments",
+        "create_comment",
+        "create_vote",
+        "list_tags",
+    ),
     "canto": (
         "search_assets",
         "get_folders",
@@ -52395,6 +55696,29 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_contact",
         "find_project",
         "find_opportunity",
+    ),
+    "cartesia": (
+        "synthesize_speech",
+        "transcribe_audio",
+        "list_voices",
+        "get_voice",
+        "delete_voice",
+        "create_access_token",
+    ),
+    "census": (
+        "list_sources",
+        "get_source",
+        "list_destinations",
+        "get_destination",
+        "list_destination_types",
+        "list_syncs",
+        "get_sync",
+        "trigger_sync",
+        "list_sync_runs",
+        "get_sync_run",
+        "cancel_sync_run",
+        "get_sync_run_records_count",
+        "custom_api_call",
     ),
     "chargebee": (
         "list_subscriptions",
@@ -52665,6 +55989,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "search",
         "custom_api_call",
     ),
+    "confluent-cloud": (
+        "list_environments",
+        "get_environment",
+        "list_kafka_clusters",
+        "get_kafka_cluster",
+        "list_service_accounts",
+        "get_service_account",
+        "list_api_keys",
+        "get_api_key",
+        "list_metric_descriptors",
+        "query_metrics",
+        "custom_api_call",
+    ),
     "connectwise": (
         "create_ticket",
         "list_tickets",
@@ -52763,6 +56100,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_user_profile",
         "custom_api_call",
     ),
+    "crowdin": (
+        "list_projects",
+        "get_project",
+        "list_files",
+        "list_strings",
+        "get_string",
+        "create_string",
+        "update_string",
+        "upload_file",
+        "create_translation_build",
+        "get_translation_build",
+    ),
     "culture-amp": (
         "validate_connection",
         "list_employees",
@@ -52832,6 +56181,11 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "post_event",
         "search_logs",
         "send_log",
+    ),
+    "dataforseo": (
+        "google_organic_live_advanced",
+        "google_maps_live_advanced",
+        "list_google_locations",
     ),
     "datetime": (
         "parse_date",
@@ -52956,12 +56310,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "custom_api_call",
     ),
     "discourse": (
-        "create_post",
+        "list_latest_topics",
+        "search_topics",
+        "get_topic",
+        "list_categories",
         "create_topic",
-        "change_user_trust_level",
-        "add_users_to_group",
-        "send_private_message",
-        "custom_api_call",
+        "create_reply",
+        "update_post",
+        "delete_post",
+        "update_topic_status",
     ),
     "docebo": (
         "get_user",
@@ -53033,6 +56390,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_polls",
         "get_poll",
         "custom_api_call",
+    ),
+    "doppler": (
+        "list_projects",
+        "get_project",
+        "list_configs",
+        "list_secret_names",
+        "get_secret",
+        "get_secrets",
+        "update_secrets",
+        "delete_secret",
+        "list_webhooks",
     ),
     "dotloop": (
         "create_loop",
@@ -53240,6 +56608,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_photo_post",
         "create_video_post",
     ),
+    "fal-ai": (
+        "submit_request",
+        "get_status",
+        "get_result",
+        "cancel_request",
+        "list_models",
+    ),
     "fathom": (
         "validate_connection",
         "list_meetings",
@@ -53346,6 +56721,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "search_transcripts",
         "get_transcript",
         "get_active_meetings",
+    ),
+    "fireworks-ai": (
+        "chat_completion",
+        "create_embedding",
+        "rerank_documents",
+        "generate_image",
+        "list_models",
     ),
     "fishbowl": (
         "get_product",
@@ -53981,12 +57363,34 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_time_off",
         "list_company_lists",
     ),
+    "hightouch": (
+        "list_sources",
+        "get_source",
+        "list_models",
+        "get_model",
+        "list_destinations",
+        "get_destination",
+        "list_syncs",
+        "get_sync",
+        "trigger_sync",
+        "list_sync_runs",
+        "custom_api_call",
+    ),
     "hive": (
         "create_action",
         "list_actions",
         "get_action",
         "list_projects",
         "custom_api_call",
+    ),
+    "honeycomb": (
+        "list_datasets",
+        "create_dataset",
+        "create_query",
+        "create_query_result",
+        "get_query_result",
+        "create_marker",
+        "list_triggers",
     ),
     "hostaway": (
         "list_reservations",
@@ -54094,6 +57498,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "object_detection",
         "image_classification",
     ),
+    "hume-ai": (
+        "synthesize_speech",
+        "list_voices",
+        "list_evi_configs",
+        "list_chats",
+        "get_chat_audio",
+    ),
     "hunter-io": (
         "find_email",
         "verify_email",
@@ -54158,6 +57569,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_action",
         "list_follow_ups",
         "get_follow_up",
+    ),
+    "influxdb": (
+        "health",
+        "list_organizations",
+        "list_buckets",
+        "get_bucket",
+        "query_flux",
+        "write_line_protocol",
+        "delete_data",
+        "custom_api_call",
     ),
     "infobip": (
         "send_sms",
@@ -54612,6 +58033,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "run_recipe",
         "stop_task",
     ),
+    "lokalise": (
+        "list_projects",
+        "get_project",
+        "list_languages",
+        "list_keys",
+        "get_key",
+        "create_key",
+        "update_key",
+        "upload_file",
+        "download_file",
+    ),
     "loom": (
         "list_videos",
         "get_video",
@@ -54701,8 +58133,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_isochrone",
     ),
     "mastodon": (
-        "post_status",
-        "custom_api_call",
+        "create_status",
+        "update_status",
+        "delete_status",
+        "get_status",
+        "search",
+        "list_home_timeline",
+        "list_account_statuses",
+        "get_account",
+        "favourite_status",
+        "unfavourite_status",
+        "boost_status",
+        "unboost_status",
     ),
     "mattermost": (
         "send_message",
@@ -55343,8 +58785,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "reverse_geocode",
     ),
     "open-router": (
-        "ask-lmm",
-        "custom_api_call",
+        "chat_completion",
+        "list_models",
+        "list_model_endpoints",
+        "get_credits",
     ),
     "opentable": (
         "list_reservations",
@@ -55520,6 +58964,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_agent",
         "custom_api_call",
     ),
+    "phrase": (
+        "list_projects",
+        "get_project",
+        "list_locales",
+        "list_keys",
+        "get_key",
+        "create_key",
+        "upload_file",
+        "list_uploads",
+        "download_locale_file",
+    ),
     "pika": (
         "create_video",
         "get_video",
@@ -55694,6 +59149,36 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_tasks",
         "custom_api_call",
     ),
+    "printful": (
+        "list_stores",
+        "list_catalog_products",
+        "get_catalog_product",
+        "list_catalog_variants",
+        "list_orders",
+        "get_order",
+        "create_order",
+        "update_order",
+        "confirm_order",
+        "cancel_order",
+        "calculate_shipping_rates",
+        "list_order_shipments",
+        "create_order_estimation",
+        "get_order_estimation",
+    ),
+    "printify": (
+        "list_shops",
+        "list_catalog_blueprints",
+        "list_products",
+        "get_product",
+        "create_product",
+        "publish_product",
+        "list_orders",
+        "get_order",
+        "create_order",
+        "calculate_shipping",
+        "cancel_order",
+        "upload_image_from_url",
+    ),
     "prismic": (
         "query_documents",
         "get_document_by_id",
@@ -55705,6 +59190,33 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_project",
         "list_rfis",
         "list_submittals",
+    ),
+    "productboard": (
+        "list_entities",
+        "search_entities",
+        "get_entity",
+        "create_entity",
+        "update_entity",
+        "delete_entity",
+        "list_notes",
+        "create_note",
+        "update_note",
+        "list_webhooks",
+        "create_webhook",
+        "delete_webhook",
+    ),
+    "productlane": (
+        "get_authenticated_identity",
+        "list_threads",
+        "create_thread",
+        "update_thread",
+        "post_internal_comment",
+        "list_projects",
+        "create_project",
+        "list_issues",
+        "create_issue",
+        "list_changelogs",
+        "create_changelog",
     ),
     "propertyware": (
         "list_units",
@@ -56013,16 +59525,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_plan",
     ),
     "reddit": (
-        "retrieveRedditPost",
-        "getRedditPostDetails",
-        "createRedditPost",
-        "createRedditComment",
-        "fetchPostComments",
-        "editRedditPost",
-        "editRedditComment",
-        "deleteRedditPost",
-        "deleteRedditComment",
-        "custom_api_call",
+        "list_subreddit_posts",
+        "search_subreddit",
+        "get_post_details",
+        "create_text_post",
+        "create_link_post",
+        "create_comment",
+        "edit_thing",
+        "delete_thing",
+        "report_thing",
     ),
     "redis-cloud": (
         "list_pro_subscriptions",
@@ -56132,6 +59643,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_entries",
         "search_entries",
     ),
+    "rudderstack": (
+        "track",
+        "identify",
+        "group",
+        "page",
+        "screen",
+        "alias",
+        "batch",
+    ),
     "runway": (
         "generate_video",
         "get_task",
@@ -56201,12 +59721,30 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "structured_data",
         "custom_api_call",
     ),
+    "scrapingbee": (
+        "scrape_url",
+        "google_search",
+    ),
     "screenshot-one": (
         "take_screenshot",
         "custom_api_call",
     ),
     "segment": (
         "identifyUser",
+        "track_event",
+        "group_user",
+        "page_view",
+        "screen_view",
+        "alias_user",
+        "batch_events",
+    ),
+    "semgrep": (
+        "list_deployments",
+        "list_projects",
+        "get_project",
+        "list_findings",
+        "list_secret_findings",
+        "bulk_triage_findings",
     ),
     "semrush": (
         "get_domain_overview",
@@ -56260,6 +59798,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "revise_thought",
         "get_chain",
         "summarize_chain",
+    ),
+    "serpapi": (
+        "google_search",
+        "account_status",
     ),
     "service-now": (
         "list_records",
@@ -56317,6 +59859,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_link",
         "list_links",
         "custom_api_call",
+    ),
+    "shortcut": (
+        "list_stories",
+        "search_stories",
+        "get_story",
+        "create_story",
+        "update_story",
+        "delete_story",
+        "add_story_comment",
+        "list_epics",
+        "create_epic",
+        "list_projects",
+        "list_workflows",
+        "list_iterations",
+        "list_webhooks",
     ),
     "sierra-interactive": (
         "list_leads",
@@ -56775,6 +60332,15 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "search",
         "extract",
     ),
+    "taxjar": (
+        "calculate_tax",
+        "get_rates_for_location",
+        "validate_address",
+        "list_categories",
+        "create_order_transaction",
+        "get_order_transaction",
+        "delete_order_transaction",
+    ),
     "teachable": (
         "list_courses",
         "get_course",
@@ -56881,6 +60447,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_campaign",
         "list_ad_groups",
         "get_ad_report",
+    ),
+    "timescale": (
+        "get_auth_info",
+        "list_services",
+        "get_service",
+        "create_service",
+        "resize_service",
+        "start_service",
+        "stop_service",
+        "delete_service",
+        "custom_api_call",
     ),
     "timesolv": (
         "list_time_entries",
@@ -57498,6 +61075,10 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find-product-rate-plan",
         "find-product",
     ),
+    "zyte": (
+        "fetch_page",
+        "extract_structured_data",
+    ),
 }
 
 INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
@@ -57722,6 +61303,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "agent-scratchpad.search_pages": AgentScratchpadSearchPagesInput,
     "agent-scratchpad.delete_page": AgentScratchpadDeletePageInput,
     "agent-scratchpad.clear_all": AgentScratchpadClearAllInput,
+    "aha.list_products": AhaListProductsInput,
+    "aha.list_features": AhaListFeaturesInput,
+    "aha.get_feature": AhaGetFeatureInput,
+    "aha.create_feature": AhaCreateFeatureInput,
+    "aha.update_feature": AhaUpdateFeatureInput,
+    "aha.list_ideas": AhaListIdeasInput,
+    "aha.promote_idea": AhaPromoteIdeaInput,
+    "aha.add_comment": AhaAddCommentInput,
     "ahrefs.get_backlinks": AhrefsGetBacklinksInput,
     "ahrefs.get_organic_keywords": AhrefsGetOrganicKeywordsInput,
     "ahrefs.get_domain_rating": AhrefsGetDomainRatingInput,
@@ -57797,6 +61386,17 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "airwallex.get_card_transaction": AirwallexGetCardTransactionInput,
     "airwallex.custom_api_call": AirwallexCustomApiCallInput,
     "airwallex.custom_write_api_call": AirwallexCustomWriteApiCallInput,
+    "aiven.list_projects": AivenListProjectsInput,
+    "aiven.list_clouds": AivenListCloudsInput,
+    "aiven.list_services": AivenListServicesInput,
+    "aiven.get_service": AivenGetServiceInput,
+    "aiven.create_service": AivenCreateServiceInput,
+    "aiven.update_service": AivenUpdateServiceInput,
+    "aiven.terminate_service": AivenTerminateServiceInput,
+    "aiven.list_project_events": AivenListProjectEventsInput,
+    "aiven.list_service_logs": AivenListServiceLogsInput,
+    "aiven.fetch_service_metrics": AivenFetchServiceMetricsInput,
+    "aiven.custom_api_call": AivenCustomApiCallInput,
     "algolia.list_indexes": AlgoliaListIndexesInput,
     "algolia.search_index": AlgoliaSearchIndexInput,
     "algolia.browse_records": AlgoliaBrowseRecordsInput,
@@ -57967,6 +61567,41 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "autotask.list_companies": AutotaskListCompaniesInput,
     "autotask.list_contacts": AutotaskListContactsInput,
     "autotask.custom_api_call": AutotaskCustomApiCallInput,
+    "avalara.test_connection": AvalaraTestConnectionInput,
+    "avalara.list_companies": AvalaraListCompaniesInput,
+    "avalara.calculate_transaction_tax": AvalaraCalculateTransactionTaxInput,
+    "avalara.get_transaction": AvalaraGetTransactionInput,
+    "avalara.void_transaction": AvalaraVoidTransactionInput,
+    "avalara.resolve_address": AvalaraResolveAddressInput,
+    "aws-cloudwatch.list_metrics": AwsCloudwatchListMetricsInput,
+    "aws-cloudwatch.get_metric_statistics": AwsCloudwatchGetMetricStatisticsInput,
+    "aws-cloudwatch.describe_alarms": AwsCloudwatchDescribeAlarmsInput,
+    "aws-cloudwatch.put_metric_data": AwsCloudwatchPutMetricDataInput,
+    "aws-cloudwatch.describe_log_groups": AwsCloudwatchDescribeLogGroupsInput,
+    "aws-cloudwatch.filter_log_events": AwsCloudwatchFilterLogEventsInput,
+    "aws-dynamodb.list_tables": AwsDynamodbListTablesInput,
+    "aws-dynamodb.describe_table": AwsDynamodbDescribeTableInput,
+    "aws-dynamodb.get_item": AwsDynamodbGetItemInput,
+    "aws-dynamodb.put_item": AwsDynamodbPutItemInput,
+    "aws-dynamodb.update_item": AwsDynamodbUpdateItemInput,
+    "aws-dynamodb.delete_item": AwsDynamodbDeleteItemInput,
+    "aws-dynamodb.query": AwsDynamodbQueryInput,
+    "aws-dynamodb.scan": AwsDynamodbScanInput,
+    "aws-eventbridge.list_event_buses": AwsEventbridgeListEventBusesInput,
+    "aws-eventbridge.list_rules": AwsEventbridgeListRulesInput,
+    "aws-eventbridge.describe_rule": AwsEventbridgeDescribeRuleInput,
+    "aws-eventbridge.put_rule": AwsEventbridgePutRuleInput,
+    "aws-eventbridge.list_targets_by_rule": AwsEventbridgeListTargetsByRuleInput,
+    "aws-eventbridge.put_targets": AwsEventbridgePutTargetsInput,
+    "aws-eventbridge.put_events": AwsEventbridgePutEventsInput,
+    "aws-eventbridge.remove_targets": AwsEventbridgeRemoveTargetsInput,
+    "aws-eventbridge.delete_rule": AwsEventbridgeDeleteRuleInput,
+    "aws-lambda.list_functions": AwsLambdaListFunctionsInput,
+    "aws-lambda.get_function": AwsLambdaGetFunctionInput,
+    "aws-lambda.get_function_configuration": AwsLambdaGetFunctionConfigurationInput,
+    "aws-lambda.invoke_function": AwsLambdaInvokeFunctionInput,
+    "aws-lambda.list_versions": AwsLambdaListVersionsInput,
+    "aws-lambda.list_aliases": AwsLambdaListAliasesInput,
     "aws-s3.list_objects": AwsS3ListObjectsInput,
     "aws-s3.get_object": AwsS3GetObjectInput,
     "aws-s3.put_object": AwsS3PutObjectInput,
@@ -57985,6 +61620,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "aws-ses.list_identities": AwsSesListIdentitiesInput,
     "aws-ses.get_email_identity": AwsSesGetEmailIdentityInput,
     "aws-ses.get_account": AwsSesGetAccountInput,
+    "aws-sns.list_topics": AwsSnsListTopicsInput,
+    "aws-sns.get_topic_attributes": AwsSnsGetTopicAttributesInput,
+    "aws-sns.create_topic": AwsSnsCreateTopicInput,
+    "aws-sns.publish_message": AwsSnsPublishMessageInput,
+    "aws-sns.list_subscriptions": AwsSnsListSubscriptionsInput,
+    "aws-sns.subscribe": AwsSnsSubscribeInput,
+    "aws-sns.unsubscribe": AwsSnsUnsubscribeInput,
+    "aws-sns.delete_topic": AwsSnsDeleteTopicInput,
     "aws-sts.get_caller_identity": AwsStsGetCallerIdentityInput,
     "aws-sts.get_access_key_info": AwsStsGetAccessKeyInfoInput,
     "aws-sts.assume_role": AwsStsAssumeRoleInput,
@@ -58071,11 +61714,13 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "bloomerang.create_donation": BloomerangCreateDonationInput,
     "bloomerang.get_campaigns": BloomerangGetCampaignsInput,
     "bloomerang.custom_api_call": BloomerangCustomApiCallInput,
-    "bluesky.createPost": BlueskyCreatePostInput,
-    "bluesky.likePost": BlueskyLikePostInput,
-    "bluesky.repostPost": BlueskyRepostPostInput,
-    "bluesky.findPost": BlueskyFindPostInput,
-    "bluesky.findThread": BlueskyFindThreadInput,
+    "bluesky.create_post": BlueskyCreatePostInput,
+    "bluesky.delete_record": BlueskyDeleteRecordInput,
+    "bluesky.search_posts": BlueskySearchPostsInput,
+    "bluesky.get_post_thread": BlueskyGetPostThreadInput,
+    "bluesky.list_author_feed": BlueskyListAuthorFeedInput,
+    "bluesky.get_profile": BlueskyGetProfileInput,
+    "bluesky.like_post": BlueskyLikePostInput,
     "box.list_folder_items": BoxListFolderItemsInput,
     "box.get_folder_info": BoxGetFolderInfoInput,
     "box.get_file_info": BoxGetFileInfoInput,
@@ -58211,6 +61856,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "campaign-monitor.update_subscriber_details": CampaignMonitorUpdateSubscriberDetailsInput,
     "campaign-monitor.unsubscribe_subscriber": CampaignMonitorUnsubscribeSubscriberInput,
     "campaign-monitor.find_subscriber": CampaignMonitorFindSubscriberInput,
+    "canny.list_boards": CannyListBoardsInput,
+    "canny.list_posts": CannyListPostsInput,
+    "canny.retrieve_post": CannyRetrievePostInput,
+    "canny.create_post": CannyCreatePostInput,
+    "canny.update_post": CannyUpdatePostInput,
+    "canny.delete_post": CannyDeletePostInput,
+    "canny.list_comments": CannyListCommentsInput,
+    "canny.create_comment": CannyCreateCommentInput,
+    "canny.create_vote": CannyCreateVoteInput,
+    "canny.list_tags": CannyListTagsInput,
     "canto.search_assets": CantoSearchAssetsInput,
     "canto.get_folders": CantoGetFoldersInput,
     "canto.upload_asset": CantoUploadAssetInput,
@@ -58263,6 +61918,25 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "capsule-crm.find_contact": CapsuleCrmFindContactInput,
     "capsule-crm.find_project": CapsuleCrmFindProjectInput,
     "capsule-crm.find_opportunity": CapsuleCrmFindOpportunityInput,
+    "cartesia.synthesize_speech": CartesiaSynthesizeSpeechInput,
+    "cartesia.transcribe_audio": CartesiaTranscribeAudioInput,
+    "cartesia.list_voices": CartesiaListVoicesInput,
+    "cartesia.get_voice": CartesiaGetVoiceInput,
+    "cartesia.delete_voice": CartesiaDeleteVoiceInput,
+    "cartesia.create_access_token": CartesiaCreateAccessTokenInput,
+    "census.list_sources": CensusListSourcesInput,
+    "census.get_source": CensusGetSourceInput,
+    "census.list_destinations": CensusListDestinationsInput,
+    "census.get_destination": CensusGetDestinationInput,
+    "census.list_destination_types": CensusListDestinationTypesInput,
+    "census.list_syncs": CensusListSyncsInput,
+    "census.get_sync": CensusGetSyncInput,
+    "census.trigger_sync": CensusTriggerSyncInput,
+    "census.list_sync_runs": CensusListSyncRunsInput,
+    "census.get_sync_run": CensusGetSyncRunInput,
+    "census.cancel_sync_run": CensusCancelSyncRunInput,
+    "census.get_sync_run_records_count": CensusGetSyncRunRecordsCountInput,
+    "census.custom_api_call": CensusCustomApiCallInput,
     "chargebee.list_subscriptions": ChargebeeListSubscriptionsInput,
     "chargebee.get_subscription": ChargebeeGetSubscriptionInput,
     "chargebee.list_customers": ChargebeeListCustomersInput,
@@ -58472,6 +62146,17 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "confluence.update_page": ConfluenceUpdatePageInput,
     "confluence.search": ConfluenceSearchInput,
     "confluence.custom_api_call": ConfluenceCustomApiCallInput,
+    "confluent-cloud.list_environments": ConfluentCloudListEnvironmentsInput,
+    "confluent-cloud.get_environment": ConfluentCloudGetEnvironmentInput,
+    "confluent-cloud.list_kafka_clusters": ConfluentCloudListKafkaClustersInput,
+    "confluent-cloud.get_kafka_cluster": ConfluentCloudGetKafkaClusterInput,
+    "confluent-cloud.list_service_accounts": ConfluentCloudListServiceAccountsInput,
+    "confluent-cloud.get_service_account": ConfluentCloudGetServiceAccountInput,
+    "confluent-cloud.list_api_keys": ConfluentCloudListApiKeysInput,
+    "confluent-cloud.get_api_key": ConfluentCloudGetApiKeyInput,
+    "confluent-cloud.list_metric_descriptors": ConfluentCloudListMetricDescriptorsInput,
+    "confluent-cloud.query_metrics": ConfluentCloudQueryMetricsInput,
+    "confluent-cloud.custom_api_call": ConfluentCloudCustomApiCallInput,
     "connectwise.create_ticket": ConnectwiseCreateTicketInput,
     "connectwise.list_tickets": ConnectwiseListTicketsInput,
     "connectwise.update_ticket": ConnectwiseUpdateTicketInput,
@@ -58554,6 +62239,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "crisp.find_conversation": CrispFindConversationInput,
     "crisp.find_user_profile": CrispFindUserProfileInput,
     "crisp.custom_api_call": CrispCustomApiCallInput,
+    "crowdin.list_projects": CrowdinListProjectsInput,
+    "crowdin.get_project": CrowdinGetProjectInput,
+    "crowdin.list_files": CrowdinListFilesInput,
+    "crowdin.list_strings": CrowdinListStringsInput,
+    "crowdin.get_string": CrowdinGetStringInput,
+    "crowdin.create_string": CrowdinCreateStringInput,
+    "crowdin.update_string": CrowdinUpdateStringInput,
+    "crowdin.upload_file": CrowdinUploadFileInput,
+    "crowdin.create_translation_build": CrowdinCreateTranslationBuildInput,
+    "crowdin.get_translation_build": CrowdinGetTranslationBuildInput,
     "culture-amp.validate_connection": CultureAmpValidateConnectionInput,
     "culture-amp.list_employees": CultureAmpListEmployeesInput,
     "culture-amp.get_employee": CultureAmpGetEmployeeInput,
@@ -58612,6 +62307,9 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "datadog.post_event": DatadogPostEventInput,
     "datadog.search_logs": DatadogSearchLogsInput,
     "datadog.send_log": DatadogSendLogInput,
+    "dataforseo.google_organic_live_advanced": DataforseoGoogleOrganicLiveAdvancedInput,
+    "dataforseo.google_maps_live_advanced": DataforseoGoogleMapsLiveAdvancedInput,
+    "dataforseo.list_google_locations": DataforseoListGoogleLocationsInput,
     "datetime.parse_date": DatetimeParseDateInput,
     "datetime.format_date": DatetimeFormatDateInput,
     "datetime.date_math": DatetimeDateMathInput,
@@ -58708,12 +62406,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "discord.create_role": DiscordCreateRoleInput,
     "discord.delete_role": DiscordDeleteRoleInput,
     "discord.custom_api_call": DiscordCustomApiCallInput,
-    "discourse.create_post": DiscourseCreatePostInput,
+    "discourse.list_latest_topics": DiscourseListLatestTopicsInput,
+    "discourse.search_topics": DiscourseSearchTopicsInput,
+    "discourse.get_topic": DiscourseGetTopicInput,
+    "discourse.list_categories": DiscourseListCategoriesInput,
     "discourse.create_topic": DiscourseCreateTopicInput,
-    "discourse.change_user_trust_level": DiscourseChangeUserTrustLevelInput,
-    "discourse.add_users_to_group": DiscourseAddUsersToGroupInput,
-    "discourse.send_private_message": DiscourseSendPrivateMessageInput,
-    "discourse.custom_api_call": DiscourseCustomApiCallInput,
+    "discourse.create_reply": DiscourseCreateReplyInput,
+    "discourse.update_post": DiscourseUpdatePostInput,
+    "discourse.delete_post": DiscourseDeletePostInput,
+    "discourse.update_topic_status": DiscourseUpdateTopicStatusInput,
     "docebo.get_user": DoceboGetUserInput,
     "docebo.create_user": DoceboCreateUserInput,
     "docebo.enroll_course": DoceboEnrollCourseInput,
@@ -58771,6 +62472,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "doodle.list_polls": DoodleListPollsInput,
     "doodle.get_poll": DoodleGetPollInput,
     "doodle.custom_api_call": DoodleCustomApiCallInput,
+    "doppler.list_projects": DopplerListProjectsInput,
+    "doppler.get_project": DopplerGetProjectInput,
+    "doppler.list_configs": DopplerListConfigsInput,
+    "doppler.list_secret_names": DopplerListSecretNamesInput,
+    "doppler.get_secret": DopplerGetSecretInput,
+    "doppler.get_secrets": DopplerGetSecretsInput,
+    "doppler.update_secrets": DopplerUpdateSecretsInput,
+    "doppler.delete_secret": DopplerDeleteSecretInput,
+    "doppler.list_webhooks": DopplerListWebhooksInput,
     "dotloop.create_loop": DotloopCreateLoopInput,
     "dotloop.get_loop": DotloopGetLoopInput,
     "dotloop.add_participant": DotloopAddParticipantInput,
@@ -58931,6 +62641,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "facebook-pages.create_post": FacebookPagesCreatePostInput,
     "facebook-pages.create_photo_post": FacebookPagesCreatePhotoPostInput,
     "facebook-pages.create_video_post": FacebookPagesCreateVideoPostInput,
+    "fal-ai.submit_request": FalAiSubmitRequestInput,
+    "fal-ai.get_status": FalAiGetStatusInput,
+    "fal-ai.get_result": FalAiGetResultInput,
+    "fal-ai.cancel_request": FalAiCancelRequestInput,
+    "fal-ai.list_models": FalAiListModelsInput,
     "fathom.validate_connection": FathomValidateConnectionInput,
     "fathom.list_meetings": FathomListMeetingsInput,
     "fathom.find_meetings": FathomFindMeetingsInput,
@@ -59018,6 +62733,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fireflies.search_transcripts": FirefliesSearchTranscriptsInput,
     "fireflies.get_transcript": FirefliesGetTranscriptInput,
     "fireflies.get_active_meetings": FirefliesGetActiveMeetingsInput,
+    "fireworks-ai.chat_completion": FireworksAiChatCompletionInput,
+    "fireworks-ai.create_embedding": FireworksAiCreateEmbeddingInput,
+    "fireworks-ai.rerank_documents": FireworksAiRerankDocumentsInput,
+    "fireworks-ai.generate_image": FireworksAiGenerateImageInput,
+    "fireworks-ai.list_models": FireworksAiListModelsInput,
     "fishbowl.get_product": FishbowlGetProductInput,
     "fishbowl.create_product": FishbowlCreateProductInput,
     "fishbowl.create_sales_order": FishbowlCreateSalesOrderInput,
@@ -59516,11 +63236,29 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hibob.get_employee": HibobGetEmployeeInput,
     "hibob.list_time_off": HibobListTimeOffInput,
     "hibob.list_company_lists": HibobListCompanyListsInput,
+    "hightouch.list_sources": HightouchListSourcesInput,
+    "hightouch.get_source": HightouchGetSourceInput,
+    "hightouch.list_models": HightouchListModelsInput,
+    "hightouch.get_model": HightouchGetModelInput,
+    "hightouch.list_destinations": HightouchListDestinationsInput,
+    "hightouch.get_destination": HightouchGetDestinationInput,
+    "hightouch.list_syncs": HightouchListSyncsInput,
+    "hightouch.get_sync": HightouchGetSyncInput,
+    "hightouch.trigger_sync": HightouchTriggerSyncInput,
+    "hightouch.list_sync_runs": HightouchListSyncRunsInput,
+    "hightouch.custom_api_call": HightouchCustomApiCallInput,
     "hive.create_action": HiveCreateActionInput,
     "hive.list_actions": HiveListActionsInput,
     "hive.get_action": HiveGetActionInput,
     "hive.list_projects": HiveListProjectsInput,
     "hive.custom_api_call": HiveCustomApiCallInput,
+    "honeycomb.list_datasets": HoneycombListDatasetsInput,
+    "honeycomb.create_dataset": HoneycombCreateDatasetInput,
+    "honeycomb.create_query": HoneycombCreateQueryInput,
+    "honeycomb.create_query_result": HoneycombCreateQueryResultInput,
+    "honeycomb.get_query_result": HoneycombGetQueryResultInput,
+    "honeycomb.create_marker": HoneycombCreateMarkerInput,
+    "honeycomb.list_triggers": HoneycombListTriggersInput,
     "hostaway.list_reservations": HostawayListReservationsInput,
     "hostaway.get_reservation": HostawayGetReservationInput,
     "hostaway.list_listings": HostawayListListingsInput,
@@ -59615,6 +63353,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "hugging-face.create_image": HuggingFaceCreateImageInput,
     "hugging-face.object_detection": HuggingFaceObjectDetectionInput,
     "hugging-face.image_classification": HuggingFaceImageClassificationInput,
+    "hume-ai.synthesize_speech": HumeAiSynthesizeSpeechInput,
+    "hume-ai.list_voices": HumeAiListVoicesInput,
+    "hume-ai.list_evi_configs": HumeAiListEviConfigsInput,
+    "hume-ai.list_chats": HumeAiListChatsInput,
+    "hume-ai.get_chat_audio": HumeAiGetChatAudioInput,
     "hunter-io.find_email": HunterIoFindEmailInput,
     "hunter-io.verify_email": HunterIoVerifyEmailInput,
     "hunter-io.domain_search": HunterIoDomainSearchInput,
@@ -59668,6 +63411,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "incident-io.get_action": IncidentIoGetActionInput,
     "incident-io.list_follow_ups": IncidentIoListFollowUpsInput,
     "incident-io.get_follow_up": IncidentIoGetFollowUpInput,
+    "influxdb.health": InfluxdbHealthInput,
+    "influxdb.list_organizations": InfluxdbListOrganizationsInput,
+    "influxdb.list_buckets": InfluxdbListBucketsInput,
+    "influxdb.get_bucket": InfluxdbGetBucketInput,
+    "influxdb.query_flux": InfluxdbQueryFluxInput,
+    "influxdb.write_line_protocol": InfluxdbWriteLineProtocolInput,
+    "influxdb.delete_data": InfluxdbDeleteDataInput,
+    "influxdb.custom_api_call": InfluxdbCustomApiCallInput,
     "infobip.send_sms": InfobipSendSmsInput,
     "infobip.send_email": InfobipSendEmailInput,
     "infobip.get_delivery_report": InfobipGetDeliveryReportInput,
@@ -60029,6 +63780,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "local-computer-control-agent.extract_from_screen": LocalComputerControlAgentExtractFromScreenInput,
     "local-computer-control-agent.run_recipe": LocalComputerControlAgentRunRecipeInput,
     "local-computer-control-agent.stop_task": LocalComputerControlAgentStopTaskInput,
+    "lokalise.list_projects": LokaliseListProjectsInput,
+    "lokalise.get_project": LokaliseGetProjectInput,
+    "lokalise.list_languages": LokaliseListLanguagesInput,
+    "lokalise.list_keys": LokaliseListKeysInput,
+    "lokalise.get_key": LokaliseGetKeyInput,
+    "lokalise.create_key": LokaliseCreateKeyInput,
+    "lokalise.update_key": LokaliseUpdateKeyInput,
+    "lokalise.upload_file": LokaliseUploadFileInput,
+    "lokalise.download_file": LokaliseDownloadFileInput,
     "loom.list_videos": LoomListVideosInput,
     "loom.get_video": LoomGetVideoInput,
     "loom.update_video": LoomUpdateVideoInput,
@@ -60097,8 +63857,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "mapbox.reverse_geocode": MapboxReverseGeocodeInput,
     "mapbox.get_directions": MapboxGetDirectionsInput,
     "mapbox.create_isochrone": MapboxCreateIsochroneInput,
-    "mastodon.post_status": MastodonPostStatusInput,
-    "mastodon.custom_api_call": MastodonCustomApiCallInput,
+    "mastodon.create_status": MastodonCreateStatusInput,
+    "mastodon.update_status": MastodonUpdateStatusInput,
+    "mastodon.delete_status": MastodonDeleteStatusInput,
+    "mastodon.get_status": MastodonGetStatusInput,
+    "mastodon.search": MastodonSearchInput,
+    "mastodon.list_home_timeline": MastodonListHomeTimelineInput,
+    "mastodon.list_account_statuses": MastodonListAccountStatusesInput,
+    "mastodon.get_account": MastodonGetAccountInput,
+    "mastodon.favourite_status": MastodonFavouriteStatusInput,
+    "mastodon.unfavourite_status": MastodonUnfavouriteStatusInput,
+    "mastodon.boost_status": MastodonBoostStatusInput,
+    "mastodon.unboost_status": MastodonUnboostStatusInput,
     "mattermost.send_message": MattermostSendMessageInput,
     "mattermost.custom_api_call": MattermostCustomApiCallInput,
     "medium.create_post": MediumCreatePostInput,
@@ -60625,8 +64395,10 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "openai.custom_api_call": OpenaiCustomApiCallInput,
     "opencage.forward_geocode": OpencageForwardGeocodeInput,
     "opencage.reverse_geocode": OpencageReverseGeocodeInput,
-    "open-router.ask-lmm": OpenRouterAskLmmInput,
-    "open-router.custom_api_call": OpenRouterCustomApiCallInput,
+    "open-router.chat_completion": OpenRouterChatCompletionInput,
+    "open-router.list_models": OpenRouterListModelsInput,
+    "open-router.list_model_endpoints": OpenRouterListModelEndpointsInput,
+    "open-router.get_credits": OpenRouterGetCreditsInput,
     "opentable.list_reservations": OpentableListReservationsInput,
     "opentable.get_availability": OpentableGetAvailabilityInput,
     "opentable.list_restaurants": OpentableListRestaurantsInput,
@@ -60761,6 +64533,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "phantombuster.list_agents": PhantombusterListAgentsInput,
     "phantombuster.get_agent": PhantombusterGetAgentInput,
     "phantombuster.custom_api_call": PhantombusterCustomApiCallInput,
+    "phrase.list_projects": PhraseListProjectsInput,
+    "phrase.get_project": PhraseGetProjectInput,
+    "phrase.list_locales": PhraseListLocalesInput,
+    "phrase.list_keys": PhraseListKeysInput,
+    "phrase.get_key": PhraseGetKeyInput,
+    "phrase.create_key": PhraseCreateKeyInput,
+    "phrase.upload_file": PhraseUploadFileInput,
+    "phrase.list_uploads": PhraseListUploadsInput,
+    "phrase.download_locale_file": PhraseDownloadLocaleFileInput,
     "pika.create_video": PikaCreateVideoInput,
     "pika.get_video": PikaGetVideoInput,
     "pika.list_videos": PikaListVideosInput,
@@ -60895,6 +64676,32 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "practice-panther.create_contact": PracticePantherCreateContactInput,
     "practice-panther.list_tasks": PracticePantherListTasksInput,
     "practice-panther.custom_api_call": PracticePantherCustomApiCallInput,
+    "printful.list_stores": PrintfulListStoresInput,
+    "printful.list_catalog_products": PrintfulListCatalogProductsInput,
+    "printful.get_catalog_product": PrintfulGetCatalogProductInput,
+    "printful.list_catalog_variants": PrintfulListCatalogVariantsInput,
+    "printful.list_orders": PrintfulListOrdersInput,
+    "printful.get_order": PrintfulGetOrderInput,
+    "printful.create_order": PrintfulCreateOrderInput,
+    "printful.update_order": PrintfulUpdateOrderInput,
+    "printful.confirm_order": PrintfulConfirmOrderInput,
+    "printful.cancel_order": PrintfulCancelOrderInput,
+    "printful.calculate_shipping_rates": PrintfulCalculateShippingRatesInput,
+    "printful.list_order_shipments": PrintfulListOrderShipmentsInput,
+    "printful.create_order_estimation": PrintfulCreateOrderEstimationInput,
+    "printful.get_order_estimation": PrintfulGetOrderEstimationInput,
+    "printify.list_shops": PrintifyListShopsInput,
+    "printify.list_catalog_blueprints": PrintifyListCatalogBlueprintsInput,
+    "printify.list_products": PrintifyListProductsInput,
+    "printify.get_product": PrintifyGetProductInput,
+    "printify.create_product": PrintifyCreateProductInput,
+    "printify.publish_product": PrintifyPublishProductInput,
+    "printify.list_orders": PrintifyListOrdersInput,
+    "printify.get_order": PrintifyGetOrderInput,
+    "printify.create_order": PrintifyCreateOrderInput,
+    "printify.calculate_shipping": PrintifyCalculateShippingInput,
+    "printify.cancel_order": PrintifyCancelOrderInput,
+    "printify.upload_image_from_url": PrintifyUploadImageFromUrlInput,
     "prismic.query_documents": PrismicQueryDocumentsInput,
     "prismic.get_document_by_id": PrismicGetDocumentByIdInput,
     "prismic.get_document_by_uid": PrismicGetDocumentByUidInput,
@@ -60903,6 +64710,29 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "procore.get_project": ProcoreGetProjectInput,
     "procore.list_rfis": ProcoreListRfisInput,
     "procore.list_submittals": ProcoreListSubmittalsInput,
+    "productboard.list_entities": ProductboardListEntitiesInput,
+    "productboard.search_entities": ProductboardSearchEntitiesInput,
+    "productboard.get_entity": ProductboardGetEntityInput,
+    "productboard.create_entity": ProductboardCreateEntityInput,
+    "productboard.update_entity": ProductboardUpdateEntityInput,
+    "productboard.delete_entity": ProductboardDeleteEntityInput,
+    "productboard.list_notes": ProductboardListNotesInput,
+    "productboard.create_note": ProductboardCreateNoteInput,
+    "productboard.update_note": ProductboardUpdateNoteInput,
+    "productboard.list_webhooks": ProductboardListWebhooksInput,
+    "productboard.create_webhook": ProductboardCreateWebhookInput,
+    "productboard.delete_webhook": ProductboardDeleteWebhookInput,
+    "productlane.get_authenticated_identity": ProductlaneGetAuthenticatedIdentityInput,
+    "productlane.list_threads": ProductlaneListThreadsInput,
+    "productlane.create_thread": ProductlaneCreateThreadInput,
+    "productlane.update_thread": ProductlaneUpdateThreadInput,
+    "productlane.post_internal_comment": ProductlanePostInternalCommentInput,
+    "productlane.list_projects": ProductlaneListProjectsInput,
+    "productlane.create_project": ProductlaneCreateProjectInput,
+    "productlane.list_issues": ProductlaneListIssuesInput,
+    "productlane.create_issue": ProductlaneCreateIssueInput,
+    "productlane.list_changelogs": ProductlaneListChangelogsInput,
+    "productlane.create_changelog": ProductlaneCreateChangelogInput,
     "propertyware.list_units": PropertywareListUnitsInput,
     "propertyware.list_tenants": PropertywareListTenantsInput,
     "propertyware.list_work_orders": PropertywareListWorkOrdersInput,
@@ -61175,16 +65005,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "recurly.get_invoice": RecurlyGetInvoiceInput,
     "recurly.list_plans": RecurlyListPlansInput,
     "recurly.get_plan": RecurlyGetPlanInput,
-    "reddit.retrieveRedditPost": RedditRetrieveRedditPostInput,
-    "reddit.getRedditPostDetails": RedditGetRedditPostDetailsInput,
-    "reddit.createRedditPost": RedditCreateRedditPostInput,
-    "reddit.createRedditComment": RedditCreateRedditCommentInput,
-    "reddit.fetchPostComments": RedditFetchPostCommentsInput,
-    "reddit.editRedditPost": RedditEditRedditPostInput,
-    "reddit.editRedditComment": RedditEditRedditCommentInput,
-    "reddit.deleteRedditPost": RedditDeleteRedditPostInput,
-    "reddit.deleteRedditComment": RedditDeleteRedditCommentInput,
-    "reddit.custom_api_call": RedditCustomApiCallInput,
+    "reddit.list_subreddit_posts": RedditListSubredditPostsInput,
+    "reddit.search_subreddit": RedditSearchSubredditInput,
+    "reddit.get_post_details": RedditGetPostDetailsInput,
+    "reddit.create_text_post": RedditCreateTextPostInput,
+    "reddit.create_link_post": RedditCreateLinkPostInput,
+    "reddit.create_comment": RedditCreateCommentInput,
+    "reddit.edit_thing": RedditEditThingInput,
+    "reddit.delete_thing": RedditDeleteThingInput,
+    "reddit.report_thing": RedditReportThingInput,
     "redis-cloud.list_pro_subscriptions": RedisCloudListProSubscriptionsInput,
     "redis-cloud.get_pro_subscription": RedisCloudGetProSubscriptionInput,
     "redis-cloud.list_essentials_subscriptions": RedisCloudListEssentialsSubscriptionsInput,
@@ -61265,6 +65094,13 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "rss.parse_feed": RssParseFeedInput,
     "rss.get_entries": RssGetEntriesInput,
     "rss.search_entries": RssSearchEntriesInput,
+    "rudderstack.track": RudderstackTrackInput,
+    "rudderstack.identify": RudderstackIdentifyInput,
+    "rudderstack.group": RudderstackGroupInput,
+    "rudderstack.page": RudderstackPageInput,
+    "rudderstack.screen": RudderstackScreenInput,
+    "rudderstack.alias": RudderstackAliasInput,
+    "rudderstack.batch": RudderstackBatchInput,
     "runway.generate_video": RunwayGenerateVideoInput,
     "runway.get_task": RunwayGetTaskInput,
     "runway.list_assets": RunwayListAssetsInput,
@@ -61318,9 +65154,23 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "scraperapi.scrape_url": ScraperapiScrapeUrlInput,
     "scraperapi.structured_data": ScraperapiStructuredDataInput,
     "scraperapi.custom_api_call": ScraperapiCustomApiCallInput,
+    "scrapingbee.scrape_url": ScrapingbeeScrapeUrlInput,
+    "scrapingbee.google_search": ScrapingbeeGoogleSearchInput,
     "screenshot-one.take_screenshot": ScreenshotOneTakeScreenshotInput,
     "screenshot-one.custom_api_call": ScreenshotOneCustomApiCallInput,
     "segment.identifyUser": SegmentIdentifyUserInput,
+    "segment.track_event": SegmentTrackEventInput,
+    "segment.group_user": SegmentGroupUserInput,
+    "segment.page_view": SegmentPageViewInput,
+    "segment.screen_view": SegmentScreenViewInput,
+    "segment.alias_user": SegmentAliasUserInput,
+    "segment.batch_events": SegmentBatchEventsInput,
+    "semgrep.list_deployments": SemgrepListDeploymentsInput,
+    "semgrep.list_projects": SemgrepListProjectsInput,
+    "semgrep.get_project": SemgrepGetProjectInput,
+    "semgrep.list_findings": SemgrepListFindingsInput,
+    "semgrep.list_secret_findings": SemgrepListSecretFindingsInput,
+    "semgrep.bulk_triage_findings": SemgrepBulkTriageFindingsInput,
     "semrush.get_domain_overview": SemrushGetDomainOverviewInput,
     "semrush.get_organic_keywords": SemrushGetOrganicKeywordsInput,
     "semrush.get_backlinks": SemrushGetBacklinksInput,
@@ -61364,6 +65214,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "sequential-thinking.revise_thought": SequentialThinkingReviseThoughtInput,
     "sequential-thinking.get_chain": SequentialThinkingGetChainInput,
     "sequential-thinking.summarize_chain": SequentialThinkingSummarizeChainInput,
+    "serpapi.google_search": SerpapiGoogleSearchInput,
+    "serpapi.account_status": SerpapiAccountStatusInput,
     "service-now.list_records": ServiceNowListRecordsInput,
     "service-now.get_record": ServiceNowGetRecordInput,
     "service-now.create_record": ServiceNowCreateRecordInput,
@@ -61409,6 +65261,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "short-io.get_link": ShortIoGetLinkInput,
     "short-io.list_links": ShortIoListLinksInput,
     "short-io.custom_api_call": ShortIoCustomApiCallInput,
+    "shortcut.list_stories": ShortcutListStoriesInput,
+    "shortcut.search_stories": ShortcutSearchStoriesInput,
+    "shortcut.get_story": ShortcutGetStoryInput,
+    "shortcut.create_story": ShortcutCreateStoryInput,
+    "shortcut.update_story": ShortcutUpdateStoryInput,
+    "shortcut.delete_story": ShortcutDeleteStoryInput,
+    "shortcut.add_story_comment": ShortcutAddStoryCommentInput,
+    "shortcut.list_epics": ShortcutListEpicsInput,
+    "shortcut.create_epic": ShortcutCreateEpicInput,
+    "shortcut.list_projects": ShortcutListProjectsInput,
+    "shortcut.list_workflows": ShortcutListWorkflowsInput,
+    "shortcut.list_iterations": ShortcutListIterationsInput,
+    "shortcut.list_webhooks": ShortcutListWebhooksInput,
     "sierra-interactive.list_leads": SierraInteractiveListLeadsInput,
     "sierra-interactive.create_lead": SierraInteractiveCreateLeadInput,
     "sierra-interactive.list_properties": SierraInteractiveListPropertiesInput,
@@ -61790,6 +65655,13 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "tally.list_webhooks": TallyListWebhooksInput,
     "tavily.search": TavilySearchInput,
     "tavily.extract": TavilyExtractInput,
+    "taxjar.calculate_tax": TaxjarCalculateTaxInput,
+    "taxjar.get_rates_for_location": TaxjarGetRatesForLocationInput,
+    "taxjar.validate_address": TaxjarValidateAddressInput,
+    "taxjar.list_categories": TaxjarListCategoriesInput,
+    "taxjar.create_order_transaction": TaxjarCreateOrderTransactionInput,
+    "taxjar.get_order_transaction": TaxjarGetOrderTransactionInput,
+    "taxjar.delete_order_transaction": TaxjarDeleteOrderTransactionInput,
     "teachable.list_courses": TeachableListCoursesInput,
     "teachable.get_course": TeachableGetCourseInput,
     "teachable.list_users": TeachableListUsersInput,
@@ -61871,6 +65743,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "tiktok-ads.get_campaign": TiktokAdsGetCampaignInput,
     "tiktok-ads.list_ad_groups": TiktokAdsListAdGroupsInput,
     "tiktok-ads.get_ad_report": TiktokAdsGetAdReportInput,
+    "timescale.get_auth_info": TimescaleGetAuthInfoInput,
+    "timescale.list_services": TimescaleListServicesInput,
+    "timescale.get_service": TimescaleGetServiceInput,
+    "timescale.create_service": TimescaleCreateServiceInput,
+    "timescale.resize_service": TimescaleResizeServiceInput,
+    "timescale.start_service": TimescaleStartServiceInput,
+    "timescale.stop_service": TimescaleStopServiceInput,
+    "timescale.delete_service": TimescaleDeleteServiceInput,
+    "timescale.custom_api_call": TimescaleCustomApiCallInput,
     "timesolv.list_time_entries": TimesolvListTimeEntriesInput,
     "timesolv.create_time_entry": TimesolvCreateTimeEntryInput,
     "timesolv.list_matters": TimesolvListMattersInput,
@@ -62351,6 +66232,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "zuora.find-account": ZuoraFindAccountInput,
     "zuora.find-product-rate-plan": ZuoraFindProductRatePlanInput,
     "zuora.find-product": ZuoraFindProductInput,
+    "zyte.fetch_page": ZyteFetchPageInput,
+    "zyte.extract_structured_data": ZyteExtractStructuredDataInput,
 }
 
 
