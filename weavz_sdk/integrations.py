@@ -4258,6 +4258,61 @@ class Auth0ListConnectionsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AuthorizeNetCreateTransactionInput(BaseModel):
+    """Authorize.net — Create Transaction"""
+    transactionType: str = Field(..., description="Transaction Type")
+    amount: str = Field(..., description="Decimal amount, for example 10.00.")
+    payment: Optional[Any] = Field(None, description="Authorize.net payment object, for example opaqueData.")
+    profile: Optional[Any] = Field(None, description="Optional profile object with customerProfileId/paymentProfile.")
+    order: Optional[Any] = Field(None, description="Order")
+    customer: Optional[Any] = Field(None, description="Customer")
+    billTo: Optional[Any] = Field(None, description="Bill To")
+    lineItems: Optional[Any] = Field(None, description="Line Items")
+    refId: Optional[str] = Field(None, description="Reference ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AuthorizeNetGetTransactionInput(BaseModel):
+    """Authorize.net — Get Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    refId: Optional[str] = Field(None, description="Reference ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AuthorizeNetRefundTransactionInput(BaseModel):
+    """Authorize.net — Refund Transaction"""
+    transactionId: str = Field(..., description="Original Transaction ID")
+    amount: str = Field(..., description="Amount")
+    cardLastFour: str = Field(..., description="Card Last Four")
+    expirationDate: Optional[str] = Field(None, description="Use XXXX for opaque refund profile flows when allowed.")
+    refId: Optional[str] = Field(None, description="Reference ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AuthorizeNetVoidTransactionInput(BaseModel):
+    """Authorize.net — Void Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    refId: Optional[str] = Field(None, description="Reference ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AuthorizeNetCreateCustomerProfileInput(BaseModel):
+    """Authorize.net — Create Customer Profile"""
+    merchantCustomerId: Optional[str] = Field(None, description="Merchant Customer ID")
+    description: Optional[str] = Field(None, description="Description")
+    email: Optional[str] = Field(None, description="Email")
+    paymentProfiles: Optional[Any] = Field(None, description="Payment Profiles")
+    shipToList: Optional[Any] = Field(None, description="Ship To List")
+    validationMode: Optional[str] = Field(None, description="Validation Mode")
+    refId: Optional[str] = Field(None, description="Reference ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class AutotaskCreateTicketInput(BaseModel):
     """Autotask — Create Ticket"""
     title: str = Field(..., description="Title")
@@ -4347,6 +4402,100 @@ class AwsS3HeadObjectInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class AwsSecretsManagerListSecretsInput(BaseModel):
+    """AWS Secrets Manager — List Secrets"""
+    nameFilter: Optional[str] = Field(None, description="Optional value for a name filter.")
+    tagKey: Optional[str] = Field(None, description="Tag Key Filter")
+    tagValue: Optional[str] = Field(None, description="Tag Value Filter")
+    includePlannedDeletion: Optional[bool] = Field(None, description="Include Planned Deletion")
+    sortBy: Optional[str] = Field(None, description="Sort By")
+    sortOrder: Optional[str] = Field(None, description="Sort Order")
+    maxResults: Optional[float] = Field(None, description="Max Results")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerDescribeSecretInput(BaseModel):
+    """AWS Secrets Manager — Describe Secret"""
+    secretId: str = Field(..., description="Secret name or ARN.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerGetSecretValueInput(BaseModel):
+    """AWS Secrets Manager — Get Secret Value"""
+    secretId: str = Field(..., description="Secret name or ARN.")
+    versionId: Optional[str] = Field(None, description="Version ID")
+    versionStage: Optional[str] = Field(None, description="For example AWSCURRENT or AWSPREVIOUS.")
+    confirmation: str = Field(..., description="Type ACCESS_SECRET to return the secret value.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerListSecretVersionIdsInput(BaseModel):
+    """AWS Secrets Manager — List Secret Version IDs"""
+    secretId: str = Field(..., description="Secret ID")
+    includeDeprecated: Optional[bool] = Field(None, description="Include Deprecated")
+    maxResults: Optional[float] = Field(None, description="Max Results")
+    nextToken: Optional[str] = Field(None, description="Next Token")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerCreateSecretInput(BaseModel):
+    """AWS Secrets Manager — Create Secret"""
+    name: str = Field(..., description="Name")
+    secretString: str = Field(..., description="Secret String")
+    description: Optional[str] = Field(None, description="Description")
+    kmsKeyId: Optional[str] = Field(None, description="KMS Key ID")
+    clientRequestToken: Optional[str] = Field(None, description="Client Request Token")
+    tagsJson: Optional[str] = Field(None, description="Optional object such as {\"env\":\"prod\"}.")
+    confirmation: str = Field(..., description="Type WRITE_SECRET to create this secret value.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerPutSecretValueInput(BaseModel):
+    """AWS Secrets Manager — Put Secret Value"""
+    secretId: str = Field(..., description="Secret ID")
+    secretString: str = Field(..., description="Secret String")
+    clientRequestToken: Optional[str] = Field(None, description="Client Request Token")
+    versionStages: Optional[str] = Field(None, description="Optional comma- or newline-separated staging labels.")
+    confirmation: str = Field(..., description="Type WRITE_SECRET to write this secret value.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerUpdateSecretInput(BaseModel):
+    """AWS Secrets Manager — Update Secret"""
+    secretId: str = Field(..., description="Secret ID")
+    description: Optional[str] = Field(None, description="Description")
+    kmsKeyId: Optional[str] = Field(None, description="KMS Key ID")
+    secretString: Optional[str] = Field(None, description="Secret String")
+    clientRequestToken: Optional[str] = Field(None, description="Client Request Token")
+    confirmation: Optional[str] = Field(None, description="Required as WRITE_SECRET when Secret String is provided.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerDeleteSecretInput(BaseModel):
+    """AWS Secrets Manager — Delete Secret"""
+    secretId: str = Field(..., description="Secret ID")
+    recoveryWindowInDays: Optional[float] = Field(None, description="7 to 30 days. Leave empty when force deleting.")
+    forceDeleteWithoutRecovery: Optional[bool] = Field(None, description="Force Delete Without Recovery")
+    confirmation: str = Field(..., description="Type DELETE to delete this secret.")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsSecretsManagerRestoreSecretInput(BaseModel):
+    """AWS Secrets Manager — Restore Secret"""
+    secretId: str = Field(..., description="Secret ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class AwsSesSendEmailInput(BaseModel):
     """AWS SES — Send Email"""
     from_: str = Field(..., alias="from", description="Sender email address (must be verified in SES)")
@@ -4379,6 +4528,35 @@ class AwsSesGetEmailIdentityInput(BaseModel):
 class AwsSesGetAccountInput(BaseModel):
     """AWS SES — Get Account Details"""
     pass
+
+
+class AwsStsGetCallerIdentityInput(BaseModel):
+    """AWS STS — Get Caller Identity"""
+    pass
+
+
+class AwsStsGetAccessKeyInfoInput(BaseModel):
+    """AWS STS — Get Access Key Info"""
+    accessKeyId: str = Field(..., description="Access Key ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class AwsStsAssumeRoleInput(BaseModel):
+    """AWS STS — Assume Role"""
+    roleArn: str = Field(..., description="Role ARN")
+    roleSessionName: str = Field(..., description="Role Session Name")
+    durationSeconds: Optional[float] = Field(None, description="900 to 43200, subject to the role maximum session duration.")
+    externalId: Optional[str] = Field(None, description="External ID")
+    sourceIdentity: Optional[str] = Field(None, description="Source Identity")
+    serialNumber: Optional[str] = Field(None, description="MFA Serial Number")
+    tokenCode: Optional[str] = Field(None, description="MFA Token Code")
+    policyJson: Optional[str] = Field(None, description="Inline Session Policy JSON")
+    tagsJson: Optional[str] = Field(None, description="Optional object such as {\"project\":\"weavz\"}.")
+    transitiveTagKeys: Optional[str] = Field(None, description="Optional comma- or newline-separated tag keys.")
+    confirmation: str = Field(..., description="Type ASSUME_ROLE to return temporary credentials.")
+
+    model_config = {"populate_by_name": True}
 
 
 class AzureBlobStorageListContainersInput(BaseModel):
@@ -5477,6 +5655,48 @@ class BoxCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class BraintreeGetPaymentInput(BaseModel):
+    """Braintree — Get Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BraintreeCaptureTransactionInput(BaseModel):
+    """Braintree — Capture Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    amount: Optional[str] = Field(None, description="Optional decimal amount for partial capture.")
+    clientMutationId: Optional[str] = Field(None, description="Client Mutation ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BraintreeReverseTransactionInput(BaseModel):
+    """Braintree — Reverse Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    clientMutationId: Optional[str] = Field(None, description="Client Mutation ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BraintreeRefundTransactionInput(BaseModel):
+    """Braintree — Refund Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    amount: Optional[str] = Field(None, description="Optional decimal amount for partial refunds.")
+    orderId: Optional[str] = Field(None, description="Refund Order ID")
+    clientMutationId: Optional[str] = Field(None, description="Client Mutation ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BraintreeVoidTransactionInput(BaseModel):
+    """Braintree — Void Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    clientMutationId: Optional[str] = Field(None, description="Client Mutation ID")
+
+    model_config = {"populate_by_name": True}
+
+
 class BrandfolderGetAssetInput(BaseModel):
     """Brandfolder — Get Asset"""
     assetId: str = Field(..., description="Asset ID")
@@ -5547,6 +5767,106 @@ class BraveSearchCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeTrackUsersInput(BaseModel):
+    """Braze — Create or Update Users"""
+    attributes: Optional[Any] = Field(None, description="Array of Braze user attribute objects.")
+    events: Optional[Any] = Field(None, description="Array of Braze event objects.")
+    purchases: Optional[Any] = Field(None, description="Array of Braze purchase objects.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeExportUsersByIdentifierInput(BaseModel):
+    """Braze — Export Users by Identifier"""
+    externalIds: Optional[Any] = Field(None, description="Array of external_id values.")
+    brazeIds: Optional[Any] = Field(None, description="Array of braze_id values.")
+    userAliases: Optional[Any] = Field(None, description="Array of user alias objects.")
+    emailAddresses: Optional[Any] = Field(None, description="Array of email addresses.")
+    phoneNumbers: Optional[Any] = Field(None, description="Array of phone numbers.")
+    fieldsToExport: Optional[Any] = Field(None, description="Optional array of profile fields to return.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeDeleteUsersInput(BaseModel):
+    """Braze — Delete Users"""
+    externalIds: Optional[Any] = Field(None, description="Array of external_id values.")
+    brazeIds: Optional[Any] = Field(None, description="Array of braze_id values.")
+    userAliases: Optional[Any] = Field(None, description="Array of user alias objects.")
+    confirmDelete: bool = Field(..., description="Required because this permanently deletes user profiles.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeListCampaignsInput(BaseModel):
+    """Braze — List Campaigns"""
+    page: Optional[float] = Field(None, description="Page")
+    includeArchived: Optional[bool] = Field(None, description="Include Archived")
+    sortDirection: Optional[str] = Field(None, description="Sort Direction")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeGetCampaignDetailsInput(BaseModel):
+    """Braze — Get Campaign Details"""
+    campaignId: str = Field(..., description="Campaign ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeSendTriggeredCampaignInput(BaseModel):
+    """Braze — Send Triggered Campaign"""
+    campaignId: str = Field(..., description="Campaign ID")
+    recipients: Any = Field(..., description="Array of Braze recipient objects.")
+    triggerProperties: Optional[Any] = Field(None, description="Trigger Properties")
+    broadcast: Optional[bool] = Field(None, description="Send to the campaign audience instead of explicit recipients.")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeListSegmentsInput(BaseModel):
+    """Braze — List Segments"""
+    page: Optional[float] = Field(None, description="Page")
+    sortDirection: Optional[str] = Field(None, description="Sort Direction")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeGetSegmentDetailsInput(BaseModel):
+    """Braze — Get Segment Details"""
+    segmentId: str = Field(..., description="Segment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeUpdateSubscriptionGroupStatusInput(BaseModel):
+    """Braze — Update Subscription Group Status"""
+    subscriptionGroupId: str = Field(..., description="Subscription Group ID")
+    subscriptionState: str = Field(..., description="Subscription State")
+    externalId: Optional[str] = Field(None, description="External ID")
+    email: Optional[str] = Field(None, description="Email")
+    phone: Optional[str] = Field(None, description="Phone")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeChangeEmailSubscriptionStatusInput(BaseModel):
+    """Braze — Change Email Subscription Status"""
+    email: str = Field(..., description="Email")
+    subscriptionState: str = Field(..., description="Subscription State")
+
+    model_config = {"populate_by_name": True}
+
+
+class BrazeCustomApiCallInput(BaseModel):
+    """Braze — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path starting with /, for example /campaigns/list.")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -7286,6 +7606,180 @@ class ClearbitCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ClerkListUsersInput(BaseModel):
+    """Clerk — List Users"""
+    query: Optional[str] = Field(None, description="Search by user ID, name, email, or phone.")
+    emailAddress: Optional[str] = Field(None, description="Optional comma- or newline-separated exact email addresses.")
+    organizationId: Optional[str] = Field(None, description="Optional comma- or newline-separated organization IDs.")
+    banned: Optional[bool] = Field(None, description="Banned Only")
+    orderBy: Optional[str] = Field(None, description="Order By")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkGetUserInput(BaseModel):
+    """Clerk — Get User"""
+    userId: str = Field(..., description="User ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkCreateUserInput(BaseModel):
+    """Clerk — Create User"""
+    emailAddress: Optional[str] = Field(None, description="Email Addresses")
+    phoneNumber: Optional[str] = Field(None, description="Phone Numbers")
+    username: Optional[str] = Field(None, description="Username")
+    password: Optional[str] = Field(None, description="Optional plaintext password to set on the new user.")
+    externalId: Optional[str] = Field(None, description="External ID")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    publicMetadata: Optional[str] = Field(None, description="Public Metadata JSON")
+    privateMetadata: Optional[str] = Field(None, description="Private Metadata JSON")
+    skipPasswordRequirement: Optional[bool] = Field(None, description="Skip Password Requirement")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkUpdateUserInput(BaseModel):
+    """Clerk — Update User"""
+    userId: str = Field(..., description="User ID")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    username: Optional[str] = Field(None, description="Username")
+    externalId: Optional[str] = Field(None, description="External ID")
+    publicMetadata: Optional[str] = Field(None, description="Public Metadata JSON")
+    privateMetadata: Optional[str] = Field(None, description="Private Metadata JSON")
+    unsafeMetadata: Optional[str] = Field(None, description="Unsafe Metadata JSON")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkDeleteUserInput(BaseModel):
+    """Clerk — Delete User"""
+    userId: str = Field(..., description="User ID")
+    confirmation: str = Field(..., description="Type DELETE to delete the user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkListOrganizationsInput(BaseModel):
+    """Clerk — List Organizations"""
+    query: Optional[str] = Field(None, description="Query")
+    userId: Optional[str] = Field(None, description="Optional comma- or newline-separated user IDs.")
+    includeMembersCount: Optional[bool] = Field(None, description="Include Members Count")
+    orderBy: Optional[str] = Field(None, description="Order By")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkGetOrganizationInput(BaseModel):
+    """Clerk — Get Organization"""
+    organizationId: str = Field(..., description="Organization ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkCreateOrganizationInput(BaseModel):
+    """Clerk — Create Organization"""
+    name: str = Field(..., description="Name")
+    slug: Optional[str] = Field(None, description="Slug")
+    createdBy: Optional[str] = Field(None, description="Created By User ID")
+    publicMetadata: Optional[str] = Field(None, description="Public Metadata JSON")
+    privateMetadata: Optional[str] = Field(None, description="Private Metadata JSON")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkUpdateOrganizationInput(BaseModel):
+    """Clerk — Update Organization"""
+    organizationId: str = Field(..., description="Organization ID")
+    name: Optional[str] = Field(None, description="Name")
+    slug: Optional[str] = Field(None, description="Slug")
+    maxAllowedMemberships: Optional[float] = Field(None, description="Max Allowed Memberships")
+    publicMetadata: Optional[str] = Field(None, description="Public Metadata JSON")
+    privateMetadata: Optional[str] = Field(None, description="Private Metadata JSON")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkDeleteOrganizationInput(BaseModel):
+    """Clerk — Delete Organization"""
+    organizationId: str = Field(..., description="Organization ID")
+    confirmation: str = Field(..., description="Type DELETE to delete the organization.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkListOrganizationMembershipsInput(BaseModel):
+    """Clerk — List Organization Memberships"""
+    organizationId: str = Field(..., description="Organization ID")
+    query: Optional[str] = Field(None, description="Query")
+    role: Optional[str] = Field(None, description="Optional comma- or newline-separated role keys.")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkCreateOrganizationMembershipInput(BaseModel):
+    """Clerk — Create Organization Membership"""
+    organizationId: str = Field(..., description="Organization ID")
+    userId: str = Field(..., description="User ID")
+    role: str = Field(..., description="Organization role key, for example org:member or org:admin.")
+    publicMetadata: Optional[str] = Field(None, description="Public Metadata JSON")
+    privateMetadata: Optional[str] = Field(None, description="Private Metadata JSON")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkUpdateOrganizationMembershipInput(BaseModel):
+    """Clerk — Update Organization Membership"""
+    organizationId: str = Field(..., description="Organization ID")
+    userId: str = Field(..., description="User ID")
+    role: str = Field(..., description="Role")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkRemoveOrganizationMembershipInput(BaseModel):
+    """Clerk — Remove Organization Membership"""
+    organizationId: str = Field(..., description="Organization ID")
+    userId: str = Field(..., description="User ID")
+    confirmation: str = Field(..., description="Type DELETE to remove the membership.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkListSessionsInput(BaseModel):
+    """Clerk — List Sessions"""
+    userId: Optional[str] = Field(None, description="User ID")
+    clientId: Optional[str] = Field(None, description="Client ID")
+    status: Optional[str] = Field(None, description="Status")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkGetSessionInput(BaseModel):
+    """Clerk — Get Session"""
+    sessionId: str = Field(..., description="Session ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClerkRevokeSessionInput(BaseModel):
+    """Clerk — Revoke Session"""
+    sessionId: str = Field(..., description="Session ID")
+    confirmation: str = Field(..., description="Type REVOKE to revoke the session.")
+
+    model_config = {"populate_by_name": True}
+
+
 class ClickfunnelsCreateOpportunityInput(BaseModel):
     """ClickFunnels — Create Opportunity"""
     name: str = Field(..., description="The name or title of the opportunity.")
@@ -7366,6 +7860,77 @@ class ClickfunnelsCustomApiCallInput(BaseModel):
     failsafe: Optional[bool] = Field(None, description="No Error on Failure")
     timeout: Optional[float] = Field(None, description="Timeout (in seconds)")
     followRedirects: Optional[bool] = Field(None, description="Follow redirects")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhousePingInput(BaseModel):
+    """ClickHouse — Ping"""
+    pass
+
+
+class ClickhouseExecuteQueryInput(BaseModel):
+    """ClickHouse — Execute Query"""
+    query: str = Field(..., description="Query")
+    database: Optional[str] = Field(None, description="Overrides the default database from the connection.")
+    format: Optional[str] = Field(None, description="Response Format")
+    settings: Optional[Any] = Field(None, description="Optional ClickHouse HTTP settings as a JSON object.")
+    params: Optional[Any] = Field(None, description="Named parameters used as {name:Type} in SQL.")
+    queryId: Optional[str] = Field(None, description="Optional query_id for tracking or cancellation.")
+    allowMutatingQuery: Optional[bool] = Field(None, description="Required for INSERT, ALTER, DROP, KILL, and other non-read-only SQL.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseListDatabasesInput(BaseModel):
+    """ClickHouse — List Databases"""
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseListTablesInput(BaseModel):
+    """ClickHouse — List Tables"""
+    database: str = Field(..., description="Database")
+    tableNamePattern: Optional[str] = Field(None, description="Optional SQL LIKE pattern, for example events_%.")
+    limit: Optional[float] = Field(None, description="Limit")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseDescribeTableInput(BaseModel):
+    """ClickHouse — Describe Table"""
+    database: str = Field(..., description="Database")
+    table: str = Field(..., description="Table")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseShowCreateTableInput(BaseModel):
+    """ClickHouse — Show Create Table"""
+    database: str = Field(..., description="Database")
+    table: str = Field(..., description="Table")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseKillQueryInput(BaseModel):
+    """ClickHouse — Kill Query"""
+    queryId: str = Field(..., description="Query ID")
+    database: Optional[str] = Field(None, description="Optional database context.")
+    sync: Optional[bool] = Field(None, description="Wait for Cancellation")
+    confirmKill: bool = Field(..., description="Must be enabled to cancel a running query.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ClickhouseCloudApiCallInput(BaseModel):
+    """ClickHouse — Cloud API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="ClickHouse Cloud API path beginning with /v1/.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Required when Method is DELETE.")
 
     model_config = {"populate_by_name": True}
 
@@ -8116,6 +8681,81 @@ class CodacyCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CognismSearchContactsInput(BaseModel):
+    """Cognism — Search Contacts"""
+    filters: Any = Field(..., description="Cognism contact search JSON body.")
+    indexSize: Optional[float] = Field(None, description="Number of records to return.")
+    lastReturnedKey: Optional[str] = Field(None, description="Pagination key from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismSearchAccountsInput(BaseModel):
+    """Cognism — Search Accounts"""
+    filters: Any = Field(..., description="Cognism account search JSON body.")
+    indexSize: Optional[float] = Field(None, description="Page Size")
+    lastReturnedKey: Optional[str] = Field(None, description="Last Returned Key")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismRedeemContactsInput(BaseModel):
+    """Cognism — Redeem Contacts"""
+    ids: list[Any] = Field(..., description="Cognism contact IDs to redeem.")
+    mergePhonesAndLocations: Optional[bool] = Field(None, description="Merge Phones And Locations")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismRedeemAccountsInput(BaseModel):
+    """Cognism — Redeem Accounts"""
+    ids: list[Any] = Field(..., description="Account IDs")
+    mergePhonesAndLocations: Optional[bool] = Field(None, description="Merge Phones And Locations")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismEnrichContactInput(BaseModel):
+    """Cognism — Enrich Contact"""
+    identifiers: Any = Field(..., description="Contact enrichment JSON, for example email, name, account, country, or LinkedIn URL fields.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismEnrichAccountInput(BaseModel):
+    """Cognism — Enrich Account"""
+    identifiers: Any = Field(..., description="Account enrichment JSON, for example domain, name, country, or city.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismGetContactEntitlementsInput(BaseModel):
+    """Cognism — Get Contact Entitlements"""
+    pass
+
+
+class CognismGetAccountEntitlementsInput(BaseModel):
+    """Cognism — Get Account Entitlements"""
+    pass
+
+
+class CognismListFilterValuesInput(BaseModel):
+    """Cognism — List Filter Values"""
+    filter: str = Field(..., description="Filter")
+    search: Optional[str] = Field(None, description="Optional search term for technologiesSearch.")
+    lastReturnedKey: Optional[str] = Field(None, description="Last Returned Key")
+    indexSize: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class CognismGetOptOutByEmailInput(BaseModel):
+    """Cognism — Get Opt-Out By Email"""
+    email: str = Field(..., description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
 class CognitoFormsListFormsInput(BaseModel):
     """Cognito Forms — List Forms"""
     pass
@@ -8260,6 +8900,81 @@ class CohereRerankInput(BaseModel):
     query: str = Field(..., description="The search query")
     documents: list[Any] = Field(..., description="List of documents to rerank")
     topN: Optional[float] = Field(None, description="Number of results to return")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomGetTokenStatusInput(BaseModel):
+    """Common Room — Get Token Status"""
+    pass
+
+
+class CommonRoomAddOrUpdateContactInput(BaseModel):
+    """Common Room — Add Or Update Contact"""
+    destinationSourceId: float = Field(..., description="Destination Source ID")
+    id: str = Field(..., description="External Contact ID")
+    fullName: Optional[str] = Field(None, description="Full Name")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    email: Optional[str] = Field(None, description="Email")
+    linkedin: Optional[str] = Field(None, description="LinkedIn Handle Or URL")
+    twitter: Optional[str] = Field(None, description="Twitter/X Handle")
+    github: Optional[str] = Field(None, description="GitHub Handle")
+    organization: Optional[str] = Field(None, description="Organization")
+    title: Optional[str] = Field(None, description="Title")
+    customFields: Optional[Any] = Field(None, description="Custom Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomGetContactByEmailInput(BaseModel):
+    """Common Room — Get Contact By Email"""
+    email: str = Field(..., description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomAnonymizeContactInput(BaseModel):
+    """Common Room — Anonymize Contact"""
+    email: str = Field(..., description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomAddOrUpdateActivityInput(BaseModel):
+    """Common Room — Add Or Update Activity"""
+    destinationSourceId: float = Field(..., description="Destination Source ID")
+    activity: Any = Field(..., description="Common Room ApiActivity request body.")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomGetActivityTypesInput(BaseModel):
+    """Common Room — Get Activity Types"""
+    pass
+
+
+class CommonRoomListSegmentsInput(BaseModel):
+    """Common Room — List Segments"""
+    pass
+
+
+class CommonRoomListTagsInput(BaseModel):
+    """Common Room — List Tags"""
+    pass
+
+
+class CommonRoomCreateTagInput(BaseModel):
+    """Common Room — Create Tag"""
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class CommonRoomDeleteTagInput(BaseModel):
+    """Common Room — Delete Tag"""
+    tagId: str = Field(..., description="Tag ID")
 
     model_config = {"populate_by_name": True}
 
@@ -9271,6 +9986,103 @@ class CrispCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class CultureAmpValidateConnectionInput(BaseModel):
+    """Culture Amp — Validate Connection"""
+    pass
+
+
+class CultureAmpListEmployeesInput(BaseModel):
+    """Culture Amp — List Employees"""
+    email: Optional[str] = Field(None, description="Email")
+    employee_identifier: Optional[str] = Field(None, description="Employee Identifier")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpGetEmployeeInput(BaseModel):
+    """Culture Amp — Get Employee"""
+    employee_id: str = Field(..., description="Employee ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListEmployeeDemographicsInput(BaseModel):
+    """Culture Amp — List Employee Demographics"""
+    employee_id: str = Field(..., description="Employee ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListPerformanceCyclesInput(BaseModel):
+    """Culture Amp — List Performance Cycles"""
+    after: Optional[str] = Field(None, description="ISO date or datetime.")
+    cursor: Optional[str] = Field(None, description="Cursor")
+    state: Optional[str] = Field(None, description="State")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpGetPerformanceCycleInput(BaseModel):
+    """Culture Amp — Get Performance Cycle"""
+    performance_cycle_id: str = Field(..., description="Performance Cycle ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListManagerReviewsInput(BaseModel):
+    """Culture Amp — List Manager Reviews"""
+    after: Optional[str] = Field(None, description="ISO date or datetime.")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpGetManagerReviewInput(BaseModel):
+    """Culture Amp — Get Manager Review"""
+    manager_review_id: str = Field(..., description="Manager Review ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListEmployeeManagerReviewsInput(BaseModel):
+    """Culture Amp — List Employee Manager Reviews"""
+    employee_id: str = Field(..., description="Employee ID")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListCycleManagerReviewsInput(BaseModel):
+    """Culture Amp — List Cycle Manager Reviews"""
+    performance_cycle_id: str = Field(..., description="Performance Cycle ID")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpListSurveysInput(BaseModel):
+    """Culture Amp — List Surveys"""
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpGetSurveyInput(BaseModel):
+    """Culture Amp — Get Survey"""
+    survey_id: str = Field(..., description="Survey ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class CultureAmpCustomApiCallInput(BaseModel):
+    """Culture Amp — Custom API Call"""
+    path: str = Field(..., description="Relative API path, for example /employees.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+
+    model_config = {"populate_by_name": True}
+
+
 class CustomerIoIdentifyPersonInput(BaseModel):
     """Customer.io — Identify Person"""
     identifier: str = Field(..., description="Unique identifier for the customer")
@@ -9778,6 +10590,120 @@ class DatocmsCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class DbtCloudListProjectsInput(BaseModel):
+    """dbt Cloud — List Projects"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudGetProjectInput(BaseModel):
+    """dbt Cloud — Get Project"""
+    projectId: str = Field(..., description="Project ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudListJobsInput(BaseModel):
+    """dbt Cloud — List Jobs"""
+    projectId: Optional[str] = Field(None, description="Project ID")
+    environmentId: Optional[str] = Field(None, description="Environment ID")
+    orderBy: Optional[str] = Field(None, description="Order By")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudGetJobInput(BaseModel):
+    """dbt Cloud — Get Job"""
+    jobId: str = Field(..., description="Job ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudTriggerJobRunInput(BaseModel):
+    """dbt Cloud — Trigger Job Run"""
+    jobId: str = Field(..., description="Job ID")
+    cause: Optional[str] = Field(None, description="Cause")
+    gitSha: Optional[str] = Field(None, description="Git SHA")
+    gitBranch: Optional[str] = Field(None, description="Git Branch")
+    schemaOverride: Optional[str] = Field(None, description="Schema Override")
+    dbtVersionOverride: Optional[str] = Field(None, description="dbt Version Override")
+    threadsOverride: Optional[float] = Field(None, description="Threads Override")
+    targetNameOverride: Optional[str] = Field(None, description="Target Name Override")
+    generateDocsOverride: Optional[bool] = Field(None, description="Generate Docs Override")
+    timeoutSecondsOverride: Optional[float] = Field(None, description="Timeout Seconds Override")
+    stepsOverride: Optional[Any] = Field(None, description="Optional JSON array of dbt command strings.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudListRunsInput(BaseModel):
+    """dbt Cloud — List Runs"""
+    jobId: Optional[str] = Field(None, description="Job ID")
+    projectId: Optional[str] = Field(None, description="Project ID")
+    environmentId: Optional[str] = Field(None, description="Environment ID")
+    status: Optional[str] = Field(None, description="Optional numeric dbt run status code.")
+    orderBy: Optional[str] = Field(None, description="Order By")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudGetRunInput(BaseModel):
+    """dbt Cloud — Get Run"""
+    runId: str = Field(..., description="Run ID")
+    includeRelated: Optional[Any] = Field(None, description="Optional include_related array or object accepted by the dbt Cloud API.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudCancelRunInput(BaseModel):
+    """dbt Cloud — Cancel Run"""
+    runId: str = Field(..., description="Run ID")
+    confirmCancel: bool = Field(..., description="Confirm Cancel")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudListRunArtifactsInput(BaseModel):
+    """dbt Cloud — List Run Artifacts"""
+    runId: str = Field(..., description="Run ID")
+    step: Optional[float] = Field(None, description="Step")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudGetRunArtifactInput(BaseModel):
+    """dbt Cloud — Get Run Artifact"""
+    runId: str = Field(..., description="Run ID")
+    path: str = Field(..., description="Artifact Path")
+    step: Optional[float] = Field(None, description="Step")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudGetStepInput(BaseModel):
+    """dbt Cloud — Get Step"""
+    stepId: str = Field(..., description="Step ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DbtCloudCustomApiCallInput(BaseModel):
+    """dbt Cloud — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path relative to /api/v2/accounts/{accountId}, for example /jobs/ or /runs/{runId}/.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Required when Method is DELETE.")
+
+    model_config = {"populate_by_name": True}
+
+
 class DeelListContractsInput(BaseModel):
     """Deel — List Contracts"""
     limit: Optional[float] = Field(None, description="Limit")
@@ -9955,6 +10881,104 @@ class DeepseekAskJsonInput(BaseModel):
     instructions: Optional[str] = Field(None, description="Optional extra constraints for the JSON response.")
     temperature: Optional[float] = Field(None, description="Sampling temperature between 0 and 2.")
     maxTokens: Optional[float] = Field(None, description="The maximum number of tokens to generate.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyValidateConnectionInput(BaseModel):
+    """Deputy — Validate Connection"""
+    pass
+
+
+class DeputyListEmployeesInput(BaseModel):
+    """Deputy — List Employees"""
+    start: Optional[float] = Field(None, description="Start")
+    max: Optional[float] = Field(None, description="Deputy generally caps list responses at 500 records.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyGetEmployeeInput(BaseModel):
+    """Deputy — Get Employee"""
+    employee_id: str = Field(..., description="Employee ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyListLocationsInput(BaseModel):
+    """Deputy — List Locations"""
+    start: Optional[float] = Field(None, description="Start")
+    max: Optional[float] = Field(None, description="Max Records")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyListOperationalUnitsInput(BaseModel):
+    """Deputy — List Operational Units"""
+    start: Optional[float] = Field(None, description="Start")
+    max: Optional[float] = Field(None, description="Max Records")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyQueryResourceInput(BaseModel):
+    """Deputy — Query Resource"""
+    resource: str = Field(..., description="Resource")
+    query: Any = Field(..., description="Deputy QUERY payload.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyListRostersInput(BaseModel):
+    """Deputy — List Rosters"""
+    query: Optional[Any] = Field(None, description="Optional Deputy Roster QUERY payload.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyListTimesheetsInput(BaseModel):
+    """Deputy — List Timesheets"""
+    query: Optional[Any] = Field(None, description="Optional Deputy Timesheet QUERY payload.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyCreateResourceInput(BaseModel):
+    """Deputy — Create Resource"""
+    resource: str = Field(..., description="Resource")
+    data: Any = Field(..., description="Resource Data")
+    confirm: bool = Field(..., description="Confirm Create")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyDeleteResourceInput(BaseModel):
+    """Deputy — Delete Resource"""
+    resource: str = Field(..., description="Resource")
+    resource_id: str = Field(..., description="Resource ID")
+    confirm: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyCreateWebhookInput(BaseModel):
+    """Deputy — Create Webhook"""
+    topic: str = Field(..., description="For example Employee.Update or Timesheet.Insert.")
+    address: str = Field(..., description="Webhook callback URL.")
+    headers: Optional[Any] = Field(None, description="Headers")
+    filters: Optional[Any] = Field(None, description="Filters")
+    enabled: Optional[bool] = Field(None, description="Enabled")
+    confirm: bool = Field(..., description="Confirm Webhook Create")
+
+    model_config = {"populate_by_name": True}
+
+
+class DeputyCustomApiCallInput(BaseModel):
+    """Deputy — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path under /api, for example /api/v1/me.")
+    body: Optional[Any] = Field(None, description="Body")
+    confirm: Optional[bool] = Field(None, description="Confirm Non-GET Call")
 
     model_config = {"populate_by_name": True}
 
@@ -10548,6 +11572,142 @@ class DockerHubCustomApiCallInput(BaseModel):
     """Docker Hub — Custom API Call"""
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g., /repositories/{namespace}/{repo}/tags/)")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoListDocumentsInput(BaseModel):
+    """Documenso — List Documents"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+    status: Optional[str] = Field(None, description="Status")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoGetDocumentInput(BaseModel):
+    """Documenso — Get Document"""
+    documentId: float = Field(..., description="Document ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoCreateDocumentInput(BaseModel):
+    """Documenso — Create Document"""
+    title: str = Field(..., description="Title")
+    recipients: Optional[Any] = Field(None, description="Recipient array accepted by the Documenso Documents API.")
+    meta: Optional[Any] = Field(None, description="Metadata")
+    source: Optional[Any] = Field(None, description="Document source/upload object accepted by the API.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoSendDocumentInput(BaseModel):
+    """Documenso — Send Document"""
+    documentId: float = Field(..., description="Document ID")
+    subject: Optional[str] = Field(None, description="Email Subject")
+    message: Optional[str] = Field(None, description="Email Message")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoDeleteDocumentInput(BaseModel):
+    """Documenso — Delete Document"""
+    documentId: float = Field(..., description="Document ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoListTemplatesInput(BaseModel):
+    """Documenso — List Templates"""
+    page: Optional[float] = Field(None, description="Page")
+    perPage: Optional[float] = Field(None, description="Per Page")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocumensoCustomApiCallInput(BaseModel):
+    """Documenso — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="API path starting with /, relative to /api/v2.")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealListSubmissionsInput(BaseModel):
+    """DocuSeal — List Submissions"""
+    templateId: Optional[float] = Field(None, description="Template ID")
+    status: Optional[str] = Field(None, description="Status")
+    query: Optional[str] = Field(None, description="Submitter name, email, or phone partial match.")
+    archived: Optional[bool] = Field(None, description="Archived Only")
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[float] = Field(None, description="After ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealGetSubmissionInput(BaseModel):
+    """DocuSeal — Get Submission"""
+    submissionId: float = Field(..., description="Submission ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealCreateSubmissionInput(BaseModel):
+    """DocuSeal — Create Submission"""
+    templateId: float = Field(..., description="Template ID")
+    submitters: Any = Field(..., description="Submitters array accepted by the DocuSeal API.")
+    sendEmail: Optional[bool] = Field(None, description="Send Email")
+    sendSms: Optional[bool] = Field(None, description="Send SMS")
+    message: Optional[Any] = Field(None, description="Optional subject/body message object.")
+    expireAt: Optional[str] = Field(None, description="Optional ISO timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealGetSubmissionDocumentsInput(BaseModel):
+    """DocuSeal — Get Submission Documents"""
+    submissionId: float = Field(..., description="Submission ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealArchiveSubmissionInput(BaseModel):
+    """DocuSeal — Archive Submission"""
+    submissionId: float = Field(..., description="Submission ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealListTemplatesInput(BaseModel):
+    """DocuSeal — List Templates"""
+    limit: Optional[float] = Field(None, description="Limit")
+    after: Optional[float] = Field(None, description="After ID")
+    archived: Optional[bool] = Field(None, description="Archived Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealGetTemplateInput(BaseModel):
+    """DocuSeal — Get Template"""
+    templateId: float = Field(..., description="Template ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealArchiveTemplateInput(BaseModel):
+    """DocuSeal — Archive Template"""
+    templateId: float = Field(..., description="Template ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class DocusealCustomApiCallInput(BaseModel):
+    """DocuSeal — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="API path starting with /.")
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
@@ -12189,6 +13349,113 @@ class ExaCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ExpensifyExportReportsInput(BaseModel):
+    """Expensify — Export Reports"""
+    inputSettings: Any = Field(..., description="Exporter inputSettings from Expensify docs, for example report IDs or a date range.")
+    outputSettings: Any = Field(..., description="Exporter outputSettings from Expensify docs.")
+    onReceive: Optional[Any] = Field(None, description="Optional onReceive object from Expensify docs.")
+    template: Optional[str] = Field(None, description="Optional Freemarker template content passed as the Integration Server template parameter.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyExportCardReconciliationInput(BaseModel):
+    """Expensify — Export Card Reconciliation"""
+    inputSettings: Any = Field(..., description="Reconciliation inputSettings from Expensify docs.")
+    outputSettings: Any = Field(..., description="Reconciliation outputSettings from Expensify docs.")
+    onReceive: Optional[Any] = Field(None, description="Optional onReceive object from Expensify docs.")
+    template: Optional[str] = Field(None, description="Optional Freemarker template content passed as the Integration Server template parameter.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyDownloadFileInput(BaseModel):
+    """Expensify — Download File"""
+    fileName: str = Field(..., description="Filename returned by an Expensify export or reconciliation job.")
+    fileSystem: Optional[str] = Field(None, description="File System")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyCreateReportInput(BaseModel):
+    """Expensify — Create Report"""
+    inputSettings: Any = Field(..., description="Create report inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyCreateExpensesInput(BaseModel):
+    """Expensify — Create Expenses"""
+    inputSettings: Any = Field(..., description="Create expenses inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyCreatePolicyInput(BaseModel):
+    """Expensify — Create Policy"""
+    inputSettings: Any = Field(..., description="Create policy inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyCreateExpenseRulesInput(BaseModel):
+    """Expensify — Create Expense Rules"""
+    inputSettings: Any = Field(..., description="Create expenseRules inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyGetPolicyInput(BaseModel):
+    """Expensify — Get Policy"""
+    inputSettings: Any = Field(..., description="Get policy inputSettings excluding the type field, such as policyID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyGetPolicyListInput(BaseModel):
+    """Expensify — Get Policy List"""
+    inputSettings: Optional[Any] = Field(None, description="Optional get policyList inputSettings excluding the type field.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyGetDomainCardListInput(BaseModel):
+    """Expensify — Get Domain Card List"""
+    inputSettings: Any = Field(..., description="Get domainCardList inputSettings excluding the type field.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyUpdatePolicyInput(BaseModel):
+    """Expensify — Update Policy"""
+    inputSettings: Any = Field(..., description="Update policy inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifyUpdateReportStatusInput(BaseModel):
+    """Expensify — Update Report Status"""
+    inputSettings: Any = Field(..., description="Update reportStatus inputSettings excluding the type field.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpensifySubmitJobInput(BaseModel):
+    """Expensify — Submit Job"""
+    jobDescription: Any = Field(..., description="Full requestJobDescription object from Expensify docs. Do not include credentials; they are injected from auth.")
+    template: Optional[str] = Field(None, description="Optional Freemarker template content passed as the Integration Server template parameter.")
+    formParams: Optional[Any] = Field(None, description="Optional additional form fields as a JSON object. Values are URL-encoded.")
+    confirmFinancialChange: bool = Field(..., description="Required for jobs that create, update, or otherwise mutate Expensify financial or policy data.")
+
+    model_config = {"populate_by_name": True}
+
+
 class FacebookAdsListCampaignsInput(BaseModel):
     """Facebook Ads — List Campaigns"""
     adAccountId: str = Field(..., description="The ad account ID (e.g., act_123456)")
@@ -13121,6 +14388,123 @@ class FishbowlCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g. /products)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranListGroupsInput(BaseModel):
+    """Fivetran — List Groups"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranGetGroupInput(BaseModel):
+    """Fivetran — Get Group"""
+    groupId: str = Field(..., description="Group ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranListDestinationsInput(BaseModel):
+    """Fivetran — List Destinations"""
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranGetDestinationInput(BaseModel):
+    """Fivetran — Get Destination"""
+    destinationId: str = Field(..., description="Destination ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranRunDestinationSetupTestsInput(BaseModel):
+    """Fivetran — Run Destination Setup Tests"""
+    destinationId: str = Field(..., description="Destination ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranListConnectionsInput(BaseModel):
+    """Fivetran — List Connections"""
+    groupId: Optional[str] = Field(None, description="Group ID")
+    schema_: Optional[str] = Field(None, alias="schema", description="Schema")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranListGroupConnectionsInput(BaseModel):
+    """Fivetran — List Group Connections"""
+    groupId: str = Field(..., description="Group ID")
+    limit: Optional[float] = Field(None, description="Limit")
+    cursor: Optional[str] = Field(None, description="Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranGetConnectionInput(BaseModel):
+    """Fivetran — Get Connection"""
+    connectionId: str = Field(..., description="Connection ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranSyncConnectionInput(BaseModel):
+    """Fivetran — Sync Connection"""
+    connectionId: str = Field(..., description="Connection ID")
+    force: Optional[bool] = Field(None, description="If enabled, Fivetran stops an in-progress sync and reruns it.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranResyncConnectionInput(BaseModel):
+    """Fivetran — Re-sync Connection"""
+    connectionId: str = Field(..., description="Connection ID")
+    scope: Optional[Any] = Field(None, description="Optional schema/table scope object. Leave blank to resync the whole connection.")
+    confirmResync: bool = Field(..., description="Required because a historical sync can be expensive.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranRunConnectionSetupTestsInput(BaseModel):
+    """Fivetran — Run Connection Setup Tests"""
+    connectionId: str = Field(..., description="Connection ID")
+    trustCertificates: Optional[bool] = Field(None, description="Trust Certificates")
+    trustFingerprints: Optional[bool] = Field(None, description="Trust Fingerprints")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranUpdateConnectionInput(BaseModel):
+    """Fivetran — Update Connection"""
+    connectionId: str = Field(..., description="Connection ID")
+    connection: Any = Field(..., description="PATCH body from the Fivetran Update Connection API.")
+    confirmUpdate: bool = Field(..., description="Confirm Update")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranDeleteConnectionInput(BaseModel):
+    """Fivetran — Delete Connection"""
+    connectionId: str = Field(..., description="Connection ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class FivetranCustomApiCallInput(BaseModel):
+    """Fivetran — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path relative to /v1, for example /connections or /groups/{groupId}.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Required when Method is DELETE.")
 
     model_config = {"populate_by_name": True}
 
@@ -15014,6 +16398,94 @@ class GmailCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     headers: Optional[dict[str, Any]] = Field(None, description="Headers")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessListCustomersInput(BaseModel):
+    """GoCardless — List Customers"""
+    limit: Optional[float] = Field(None, description="1-500 records.")
+    after: Optional[str] = Field(None, description="Cursor from response meta.cursors.after.")
+    email: Optional[str] = Field(None, description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessGetCustomerInput(BaseModel):
+    """GoCardless — Get Customer"""
+    customerId: str = Field(..., description="Customer ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessCreateCustomerInput(BaseModel):
+    """GoCardless — Create Customer"""
+    givenName: Optional[str] = Field(None, description="Given Name")
+    familyName: Optional[str] = Field(None, description="Family Name")
+    email: str = Field(..., description="Email")
+    companyName: Optional[str] = Field(None, description="Company Name")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessListMandatesInput(BaseModel):
+    """GoCardless — List Mandates"""
+    limit: Optional[float] = Field(None, description="1-500 records.")
+    after: Optional[str] = Field(None, description="Cursor from response meta.cursors.after.")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+    status: Optional[str] = Field(None, description="Status")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessListPaymentsInput(BaseModel):
+    """GoCardless — List Payments"""
+    limit: Optional[float] = Field(None, description="1-500 records.")
+    after: Optional[str] = Field(None, description="Cursor from response meta.cursors.after.")
+    customerId: Optional[str] = Field(None, description="Customer ID")
+    mandateId: Optional[str] = Field(None, description="Mandate ID")
+    status: Optional[str] = Field(None, description="Status")
+    createdAtGte: Optional[str] = Field(None, description="ISO 8601 timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessGetPaymentInput(BaseModel):
+    """GoCardless — Get Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessCreatePaymentInput(BaseModel):
+    """GoCardless — Create Payment"""
+    amount: float = Field(..., description="Amount in minor units.")
+    currency: str = Field(..., description="ISO 4217 currency code.")
+    mandateId: str = Field(..., description="Mandate ID")
+    description: Optional[str] = Field(None, description="Description")
+    reference: Optional[str] = Field(None, description="Reference")
+    chargeDate: Optional[str] = Field(None, description="Optional YYYY-MM-DD charge date.")
+    idempotencyKey: Optional[str] = Field(None, description="Idempotency Key")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessCancelPaymentInput(BaseModel):
+    """GoCardless — Cancel Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class GocardlessCreateRefundInput(BaseModel):
+    """GoCardless — Create Refund"""
+    paymentId: str = Field(..., description="Payment ID")
+    amount: Optional[float] = Field(None, description="Amount in minor units. Leave empty for full eligible amount.")
+    reference: Optional[str] = Field(None, description="Reference")
+    metadata: Optional[Any] = Field(None, description="Metadata")
 
     model_config = {"populate_by_name": True}
 
@@ -17035,6 +18507,74 @@ class GumroadCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class GuruListCollectionsInput(BaseModel):
+    """Guru — List Collections"""
+    pass
+
+
+class GuruSearchCardsInput(BaseModel):
+    """Guru — Search Cards"""
+    query: str = Field(..., description="Guru Query Language text.")
+    showArchived: Optional[bool] = Field(None, description="Show Archived")
+    maxResults: Optional[float] = Field(None, description="Max Results")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruGetCardInput(BaseModel):
+    """Guru — Get Card"""
+    cardId: str = Field(..., description="Card ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruCreateCardInput(BaseModel):
+    """Guru — Create Card"""
+    title: str = Field(..., description="Title")
+    content: str = Field(..., description="Content")
+    collectionId: str = Field(..., description="Collection ID")
+    shareStatus: Optional[str] = Field(None, description="Share Status")
+    folderIds: Optional[list[Any]] = Field(None, description="Folder IDs")
+    tagIds: Optional[list[Any]] = Field(None, description="Tag IDs")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruUpdateCardInput(BaseModel):
+    """Guru — Update Card"""
+    cardId: str = Field(..., description="Card ID")
+    title: str = Field(..., description="Title")
+    content: str = Field(..., description="Content")
+    shareStatus: Optional[str] = Field(None, description="Share Status")
+    tagIds: Optional[list[Any]] = Field(None, description="If supplied as an empty list, Guru removes existing tags.")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruDeleteCardInput(BaseModel):
+    """Guru — Delete Card"""
+    cardId: str = Field(..., description="Card ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruAskQuestionInput(BaseModel):
+    """Guru — Ask Question"""
+    question: str = Field(..., description="Question")
+    assistantId: Optional[str] = Field(None, description="Knowledge Assistant ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class GuruCustomApiCallInput(BaseModel):
+    """Guru — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="API path starting with /, relative to /api/v1.")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class GustoListEmployeesInput(BaseModel):
     """Gusto — List Employees"""
     companyId: str = Field(..., description="Company ID")
@@ -17504,6 +19044,105 @@ class HelpScoutListCustomersInput(BaseModel):
     email: Optional[str] = Field(None, description="Email")
     first_name: Optional[str] = Field(None, description="First Name")
     last_name: Optional[str] = Field(None, description="Last Name")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexValidateConnectionInput(BaseModel):
+    """Hex — Validate Connection"""
+    pass
+
+
+class HexListProjectsInput(BaseModel):
+    """Hex — List Projects"""
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexGetProjectInput(BaseModel):
+    """Hex — Get Project"""
+    projectId: str = Field(..., description="Hex project UUID.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexRunProjectInput(BaseModel):
+    """Hex — Run Project"""
+    projectId: str = Field(..., description="Hex project UUID.")
+    inputParams: Optional[Any] = Field(None, description="Optional inputParams object for the published project.")
+    updatePublishedResults: Optional[bool] = Field(None, description="When true, update the published app cache state.")
+    useCachedSqlResults: Optional[bool] = Field(None, description="When false, SQL cells run without cached SQL results.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexListProjectRunsInput(BaseModel):
+    """Hex — List Project Runs"""
+    projectId: str = Field(..., description="Hex project UUID.")
+    statusFilter: Optional[str] = Field(None, description="Status Filter")
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexGetProjectRunInput(BaseModel):
+    """Hex — Get Project Run"""
+    projectId: str = Field(..., description="Project ID")
+    runId: str = Field(..., description="Run ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexCancelProjectRunInput(BaseModel):
+    """Hex — Cancel Project Run"""
+    projectId: str = Field(..., description="Project ID")
+    runId: str = Field(..., description="Run ID")
+    confirm: bool = Field(..., description="Required to cancel the run.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexListUsersInput(BaseModel):
+    """Hex — List Users"""
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexListGroupsInput(BaseModel):
+    """Hex — List Groups"""
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexListCollectionsInput(BaseModel):
+    """Hex — List Collections"""
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexListDataConnectionsInput(BaseModel):
+    """Hex — List Data Connections"""
+    limit: Optional[float] = Field(None, description="Maximum number of items to return.")
+    after: Optional[str] = Field(None, description="Pagination cursor from the previous response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class HexCustomApiCallInput(BaseModel):
+    """Hex — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path under /api/v1, for example /projects.")
+    queryParams: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -19631,6 +21270,91 @@ class IpinfoCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class IterableUpsertUserInput(BaseModel):
+    """Iterable — Upsert User"""
+    email: Optional[str] = Field(None, description="Email")
+    userId: Optional[str] = Field(None, description="User ID")
+    dataFields: Optional[Any] = Field(None, description="Profile fields to set.")
+    mergeNestedObjects: Optional[bool] = Field(None, description="Merge Nested Objects")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableGetUserByEmailInput(BaseModel):
+    """Iterable — Get User by Email"""
+    email: str = Field(..., description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableDeleteUserInput(BaseModel):
+    """Iterable — Delete User"""
+    email: Optional[str] = Field(None, description="Email")
+    userId: Optional[str] = Field(None, description="User ID")
+    preferUserId: Optional[bool] = Field(None, description="Prefer User ID")
+    confirmDelete: bool = Field(..., description="Required because this deletes a user profile.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableTrackEventInput(BaseModel):
+    """Iterable — Track Event"""
+    eventName: str = Field(..., description="Event Name")
+    email: Optional[str] = Field(None, description="Email")
+    userId: Optional[str] = Field(None, description="User ID")
+    id: Optional[str] = Field(None, description="Event ID")
+    createdAt: Optional[str] = Field(None, description="Optional timestamp in milliseconds since epoch.")
+    dataFields: Optional[Any] = Field(None, description="Data Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableListListsInput(BaseModel):
+    """Iterable — List Lists"""
+    pass
+
+
+class IterableSubscribeToListInput(BaseModel):
+    """Iterable — Subscribe to List"""
+    listId: float = Field(..., description="List ID")
+    subscribers: Any = Field(..., description="Array of subscriber objects with email or userId.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableUnsubscribeFromListInput(BaseModel):
+    """Iterable — Unsubscribe from List"""
+    listId: float = Field(..., description="List ID")
+    subscribers: Any = Field(..., description="Array of subscriber objects with email or userId.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableListCampaignsInput(BaseModel):
+    """Iterable — List Campaigns"""
+    pass
+
+
+class IterableSendTargetedEmailInput(BaseModel):
+    """Iterable — Send Targeted Email"""
+    campaignId: float = Field(..., description="Campaign ID")
+    recipientEmail: Optional[str] = Field(None, description="Recipient Email")
+    recipientUserId: Optional[str] = Field(None, description="Recipient User ID")
+    dataFields: Optional[Any] = Field(None, description="Data Fields")
+    sendAt: Optional[str] = Field(None, description="Optional scheduled timestamp.")
+
+    model_config = {"populate_by_name": True}
+
+
+class IterableCustomApiCallInput(BaseModel):
+    """Iterable — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path under /api, for example /users/getByEmail?email=a@example.com.")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class CodeRunCodeInput(BaseModel):
     """JavaScript Sandbox — Run Code"""
     code: str = Field(..., description="JavaScript code to execute. The return value of the last expression is captured as output. `inputs` variable contains your input data.")
@@ -20915,6 +22639,120 @@ class LaterCustomApiCallInput(BaseModel):
     """Later — Custom API Call"""
     method: str = Field(..., description="Method")
     path: str = Field(..., description="Path")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyListProjectsInput(BaseModel):
+    """LaunchDarkly — List Projects"""
+    limit: Optional[float] = Field(None, description="1 to 100 projects.")
+    offset: Optional[float] = Field(None, description="Offset")
+    filter: Optional[str] = Field(None, description="LaunchDarkly project filter expression.")
+    sort: Optional[str] = Field(None, description="Sort")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyListEnvironmentsInput(BaseModel):
+    """LaunchDarkly — List Environments"""
+    projectKey: str = Field(..., description="Project Key")
+    limit: Optional[float] = Field(None, description="1 to 100 environments.")
+    offset: Optional[float] = Field(None, description="Offset")
+    filter: Optional[str] = Field(None, description="Filter")
+    sort: Optional[str] = Field(None, description="Sort")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyListFeatureFlagsInput(BaseModel):
+    """LaunchDarkly — List Feature Flags"""
+    projectKey: str = Field(..., description="Project Key")
+    environmentKey: Optional[str] = Field(None, description="Optional env query value.")
+    tag: Optional[str] = Field(None, description="Tag")
+    archived: Optional[bool] = Field(None, description="Archived Only")
+    summary: Optional[bool] = Field(None, description="Summary Only")
+    filter: Optional[str] = Field(None, description="Filter")
+    sort: Optional[str] = Field(None, description="Sort")
+    limit: Optional[float] = Field(None, description="1 to 100 flags.")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyGetFeatureFlagInput(BaseModel):
+    """LaunchDarkly — Get Feature Flag"""
+    projectKey: str = Field(..., description="Project Key")
+    flagKey: str = Field(..., description="Flag Key")
+    environmentKey: Optional[str] = Field(None, description="Optional env query value.")
+    expand: Optional[str] = Field(None, description="Expand")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyCreateFeatureFlagInput(BaseModel):
+    """LaunchDarkly — Create Feature Flag"""
+    projectKey: str = Field(..., description="Project Key")
+    key: str = Field(..., description="Flag Key")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    kind: Optional[str] = Field(None, description="Kind")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    variations: Optional[Any] = Field(None, description="Optional LaunchDarkly variations array for non-boolean flags.")
+    clientSideAvailability: Optional[Any] = Field(None, description="Optional clientSideAvailability object.")
+    defaults: Optional[Any] = Field(None, description="Optional defaults object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyUpdateFeatureFlagPatchInput(BaseModel):
+    """LaunchDarkly — Update Feature Flag Patch"""
+    projectKey: str = Field(..., description="Project Key")
+    flagKey: str = Field(..., description="Flag Key")
+    patch: Any = Field(..., description="JSON Patch array, for example [{\"op\":\"replace\",\"path\":\"/description\",\"value\":\"New text\"}].")
+    comment: Optional[str] = Field(None, description="Comment")
+    ignoreConflicts: Optional[bool] = Field(None, description="Ignore Conflicts")
+    dryRun: Optional[bool] = Field(None, description="Dry Run")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklySetFlagEnabledInput(BaseModel):
+    """LaunchDarkly — Set Flag Enabled"""
+    projectKey: str = Field(..., description="Project Key")
+    flagKey: str = Field(..., description="Flag Key")
+    environmentKey: str = Field(..., description="Environment Key")
+    enabled: bool = Field(..., description="Enabled")
+    comment: Optional[str] = Field(None, description="Comment")
+    confirm: bool = Field(..., description="Required because this changes feature exposure.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyDeleteFeatureFlagInput(BaseModel):
+    """LaunchDarkly — Delete Feature Flag"""
+    projectKey: str = Field(..., description="Project Key")
+    flagKey: str = Field(..., description="Flag Key")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyListAuditLogEntriesInput(BaseModel):
+    """LaunchDarkly — List Audit Log Entries"""
+    after: Optional[float] = Field(None, description="Unix epoch milliseconds lower bound.")
+    before: Optional[float] = Field(None, description="Unix epoch milliseconds upper bound.")
+    query: Optional[str] = Field(None, description="LaunchDarkly q parameter.")
+    spec: Optional[str] = Field(None, description="LaunchDarkly spec filter.")
+    limit: Optional[float] = Field(None, description="1 to 100 entries.")
+
+    model_config = {"populate_by_name": True}
+
+
+class LaunchdarklyCustomApiCallInput(BaseModel):
+    """LaunchDarkly — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path must start with /api/v2/.")
     body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
@@ -23450,6 +25288,252 @@ class MeistertaskCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class MercadoPagoCreatePreferenceInput(BaseModel):
+    """Mercado Pago — Create Checkout Preference"""
+    items: Any = Field(..., description="Array of preference items.")
+    payer: Optional[Any] = Field(None, description="Payer")
+    backUrls: Optional[Any] = Field(None, description="Back URLs")
+    notificationUrl: Optional[str] = Field(None, description="Notification URL")
+    externalReference: Optional[str] = Field(None, description="External Reference")
+    expires: Optional[bool] = Field(None, description="Expires")
+    expirationDateFrom: Optional[str] = Field(None, description="Expiration Date From")
+    expirationDateTo: Optional[str] = Field(None, description="Expiration Date To")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercadoPagoGetPreferenceInput(BaseModel):
+    """Mercado Pago — Get Checkout Preference"""
+    preferenceId: str = Field(..., description="Preference ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercadoPagoSearchPaymentsInput(BaseModel):
+    """Mercado Pago — Search Payments"""
+    status: Optional[str] = Field(None, description="Status")
+    externalReference: Optional[str] = Field(None, description="External Reference")
+    range: Optional[str] = Field(None, description="Date Range Field")
+    beginDate: Optional[str] = Field(None, description="Begin Date")
+    endDate: Optional[str] = Field(None, description="End Date")
+    sort: Optional[str] = Field(None, description="Sort")
+    criteria: Optional[str] = Field(None, description="Criteria")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercadoPagoGetPaymentInput(BaseModel):
+    """Mercado Pago — Get Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercadoPagoRefundPaymentInput(BaseModel):
+    """Mercado Pago — Refund Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+    amount: Optional[float] = Field(None, description="Optional decimal amount for a partial refund.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercadoPagoCancelPaymentInput(BaseModel):
+    """Mercado Pago — Cancel Payment"""
+    paymentId: str = Field(..., description="Payment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryValidateConnectionInput(BaseModel):
+    """Mercury — Validate Connection"""
+    pass
+
+
+class MercuryListAccountsInput(BaseModel):
+    """Mercury — List Accounts"""
+    query: Optional[Any] = Field(None, description="Supports official parameters such as limit, order, start_after, and end_before.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryGetAccountInput(BaseModel):
+    """Mercury — Get Account"""
+    accountId: str = Field(..., description="Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListAccountTransactionsInput(BaseModel):
+    """Mercury — List Account Transactions"""
+    accountId: str = Field(..., description="Account ID")
+    query: Optional[Any] = Field(None, description="Supports date range, status, search, and cursor parameters from Mercury docs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListTransactionsInput(BaseModel):
+    """Mercury — List Transactions"""
+    query: Optional[Any] = Field(None, description="Official Mercury transaction query parameters as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryGetTransactionInput(BaseModel):
+    """Mercury — Get Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListRecipientsInput(BaseModel):
+    """Mercury — List Recipients"""
+    query: Optional[Any] = Field(None, description="Supports cursor parameters from Mercury docs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryGetRecipientInput(BaseModel):
+    """Mercury — Get Recipient"""
+    recipientId: str = Field(..., description="Recipient ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCreateRecipientInput(BaseModel):
+    """Mercury — Create Recipient"""
+    body: Any = Field(..., description="Recipient creation body from Mercury docs.")
+    confirmFinancialChange: Optional[bool] = Field(None, description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryUpdateRecipientInput(BaseModel):
+    """Mercury — Update Recipient"""
+    recipientId: str = Field(..., description="Recipient ID")
+    body: Any = Field(..., description="Recipient update body from Mercury docs.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListCategoriesInput(BaseModel):
+    """Mercury — List Categories"""
+    query: Optional[Any] = Field(None, description="Supports cursor parameters from Mercury docs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCreateCategoryInput(BaseModel):
+    """Mercury — Create Category"""
+    body: Any = Field(..., description="Category creation body from Mercury docs.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryUpdateCategoryInput(BaseModel):
+    """Mercury — Update Category"""
+    categoryId: str = Field(..., description="Category ID")
+    body: Any = Field(..., description="Category update body from Mercury docs.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryDeleteCategoryInput(BaseModel):
+    """Mercury — Delete Category"""
+    categoryId: str = Field(..., description="Category ID")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListInvoicesInput(BaseModel):
+    """Mercury — List Invoices"""
+    query: Optional[Any] = Field(None, description="Supports official invoice pagination and filtering parameters as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryGetInvoiceInput(BaseModel):
+    """Mercury — Get Invoice"""
+    invoiceId: str = Field(..., description="Invoice ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCreateInvoiceInput(BaseModel):
+    """Mercury — Create Invoice"""
+    body: Any = Field(..., description="Invoice creation body from Mercury docs.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryUpdateInvoiceInput(BaseModel):
+    """Mercury — Update Invoice"""
+    invoiceId: str = Field(..., description="Invoice ID")
+    body: Any = Field(..., description="Invoice update body from Mercury docs.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCancelInvoiceInput(BaseModel):
+    """Mercury — Cancel Invoice"""
+    invoiceId: str = Field(..., description="Invoice ID")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryListEventsInput(BaseModel):
+    """Mercury — List Events"""
+    query: Optional[Any] = Field(None, description="Official event query parameters as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryGetEventInput(BaseModel):
+    """Mercury — Get Event"""
+    eventId: str = Field(..., description="Event ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryRequestSendMoneyInput(BaseModel):
+    """Mercury — Request Send Money"""
+    accountId: str = Field(..., description="Account ID")
+    idempotencyKey: str = Field(..., description="Unique key for this money movement request.")
+    body: Any = Field(..., description="Request-send-money body from Mercury docs. The idempotencyKey field is merged from the dedicated property.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCreateInternalTransferInput(BaseModel):
+    """Mercury — Create Internal Transfer"""
+    idempotencyKey: str = Field(..., description="Unique key for this internal transfer.")
+    body: Any = Field(..., description="Internal transfer body from Mercury docs. The idempotencyKey field is merged from the dedicated property.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MercuryCustomApiCallInput(BaseModel):
+    """Mercury — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path, for example /accounts or /ar/invoices/{invoiceId}. Query strings are not allowed; use Query Parameters.")
+    query: Optional[Any] = Field(None, description="Official Mercury query parameters as a JSON object.")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes financial data, cancels an object, or initiates a money movement workflow.")
+
+    model_config = {"populate_by_name": True}
+
+
 class MetabaseListCardsInput(BaseModel):
     """Metabase — List Cards"""
     f: Optional[str] = Field(None, description="Optional Metabase card list filter")
@@ -24380,6 +26464,184 @@ class MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput(BaseModel):
     """Microsoft Dataverse / Dynamics 365 CRM — Delete Record"""
     entityType: str = Field(..., description="Dataverse EntitySetName, for example accounts.")
     recordId: str = Field(..., description="Record ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdListUsersInput(BaseModel):
+    """Microsoft Entra ID — List Users"""
+    select: Optional[str] = Field(None, description="Comma-separated properties to return.")
+    filter: Optional[str] = Field(None, description="$filter")
+    search: Optional[str] = Field(None, description="Microsoft Graph search expression, for example \"displayName:Alex\".")
+    orderBy: Optional[str] = Field(None, description="$orderby")
+    count: Optional[bool] = Field(None, description="Include Count")
+    top: Optional[float] = Field(None, description="Top")
+    nextLink: Optional[str] = Field(None, description="Optional @odata.nextLink from a previous Microsoft Graph response.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdGetUserInput(BaseModel):
+    """Microsoft Entra ID — Get User"""
+    userId: str = Field(..., description="User ID or UPN")
+    select: Optional[str] = Field(None, description="$select")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdCreateUserInput(BaseModel):
+    """Microsoft Entra ID — Create User"""
+    userPrincipalName: str = Field(..., description="User Principal Name")
+    displayName: str = Field(..., description="Display Name")
+    mailNickname: str = Field(..., description="Mail Nickname")
+    password: str = Field(..., description="Temporary Password")
+    forceChangePasswordNextSignIn: Optional[bool] = Field(None, description="Force Password Change Next Sign-In")
+    accountEnabled: Optional[bool] = Field(None, description="Account Enabled")
+    givenName: Optional[str] = Field(None, description="Given Name")
+    surname: Optional[str] = Field(None, description="Surname")
+    usageLocation: Optional[str] = Field(None, description="Two-letter country code, for example US.")
+    confirmation: str = Field(..., description="Type CREATE_USER to create the user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdUpdateUserInput(BaseModel):
+    """Microsoft Entra ID — Update User"""
+    userId: str = Field(..., description="User ID or UPN")
+    displayName: Optional[str] = Field(None, description="Display Name")
+    givenName: Optional[str] = Field(None, description="Given Name")
+    surname: Optional[str] = Field(None, description="Surname")
+    jobTitle: Optional[str] = Field(None, description="Job Title")
+    department: Optional[str] = Field(None, description="Department")
+    officeLocation: Optional[str] = Field(None, description="Office Location")
+    mobilePhone: Optional[str] = Field(None, description="Mobile Phone")
+    businessPhones: Optional[str] = Field(None, description="Comma- or newline-separated phone numbers.")
+    usageLocation: Optional[str] = Field(None, description="Usage Location")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdDeleteUserInput(BaseModel):
+    """Microsoft Entra ID — Delete User"""
+    userId: str = Field(..., description="User ID or UPN")
+    confirmation: str = Field(..., description="Type DELETE to delete the user.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdListGroupsInput(BaseModel):
+    """Microsoft Entra ID — List Groups"""
+    select: Optional[str] = Field(None, description="$select")
+    filter: Optional[str] = Field(None, description="$filter")
+    search: Optional[str] = Field(None, description="$search")
+    orderBy: Optional[str] = Field(None, description="$orderby")
+    count: Optional[bool] = Field(None, description="Include Count")
+    top: Optional[float] = Field(None, description="Top")
+    nextLink: Optional[str] = Field(None, description="Next Link")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdGetGroupInput(BaseModel):
+    """Microsoft Entra ID — Get Group"""
+    groupId: str = Field(..., description="Group ID")
+    select: Optional[str] = Field(None, description="$select")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdCreateSecurityGroupInput(BaseModel):
+    """Microsoft Entra ID — Create Security Group"""
+    displayName: str = Field(..., description="Display Name")
+    mailNickname: str = Field(..., description="Mail Nickname")
+    description: Optional[str] = Field(None, description="Description")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdUpdateGroupInput(BaseModel):
+    """Microsoft Entra ID — Update Group"""
+    groupId: str = Field(..., description="Group ID")
+    displayName: Optional[str] = Field(None, description="Display Name")
+    description: Optional[str] = Field(None, description="Description")
+    mailNickname: Optional[str] = Field(None, description="Mail Nickname")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdDeleteGroupInput(BaseModel):
+    """Microsoft Entra ID — Delete Group"""
+    groupId: str = Field(..., description="Group ID")
+    confirmation: str = Field(..., description="Type DELETE to delete the group.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdListGroupMembersInput(BaseModel):
+    """Microsoft Entra ID — List Group Members"""
+    groupId: str = Field(..., description="Group ID")
+    select: Optional[str] = Field(None, description="$select")
+    top: Optional[float] = Field(None, description="Top")
+    nextLink: Optional[str] = Field(None, description="Next Link")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdAddGroupMemberInput(BaseModel):
+    """Microsoft Entra ID — Add Group Member"""
+    groupId: str = Field(..., description="Group ID")
+    directoryObjectId: str = Field(..., description="Directory Object ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdRemoveGroupMemberInput(BaseModel):
+    """Microsoft Entra ID — Remove Group Member"""
+    groupId: str = Field(..., description="Group ID")
+    directoryObjectId: str = Field(..., description="Directory Object ID")
+    confirmation: str = Field(..., description="Type DELETE to remove the group member.")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdListApplicationsInput(BaseModel):
+    """Microsoft Entra ID — List Applications"""
+    select: Optional[str] = Field(None, description="$select")
+    filter: Optional[str] = Field(None, description="$filter")
+    search: Optional[str] = Field(None, description="$search")
+    orderBy: Optional[str] = Field(None, description="$orderby")
+    count: Optional[bool] = Field(None, description="Include Count")
+    top: Optional[float] = Field(None, description="Top")
+    nextLink: Optional[str] = Field(None, description="Next Link")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdGetApplicationInput(BaseModel):
+    """Microsoft Entra ID — Get Application"""
+    applicationObjectId: str = Field(..., description="Application Object ID")
+    select: Optional[str] = Field(None, description="$select")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdListServicePrincipalsInput(BaseModel):
+    """Microsoft Entra ID — List Service Principals"""
+    select: Optional[str] = Field(None, description="$select")
+    filter: Optional[str] = Field(None, description="$filter")
+    search: Optional[str] = Field(None, description="$search")
+    orderBy: Optional[str] = Field(None, description="$orderby")
+    count: Optional[bool] = Field(None, description="Include Count")
+    top: Optional[float] = Field(None, description="Top")
+    nextLink: Optional[str] = Field(None, description="Next Link")
+
+    model_config = {"populate_by_name": True}
+
+
+class MicrosoftEntraIdGetServicePrincipalInput(BaseModel):
+    """Microsoft Entra ID — Get Service Principal"""
+    servicePrincipalObjectId: str = Field(..., description="Service Principal Object ID")
+    select: Optional[str] = Field(None, description="$select")
 
     model_config = {"populate_by_name": True}
 
@@ -27270,6 +29532,91 @@ class OktaListApplicationsInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class OmnisendCreateContactInput(BaseModel):
+    """Omnisend — Create Contact"""
+    email: str = Field(..., description="Email")
+    emailStatus: Optional[str] = Field(None, description="Email Status")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    phone: Optional[str] = Field(None, description="Phone")
+    customProperties: Optional[Any] = Field(None, description="Custom Properties")
+    tags: Optional[Any] = Field(None, description="Array of tag strings.")
+    sendWelcomeMessage: Optional[bool] = Field(None, description="Send Welcome Message")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendUpdateContactInput(BaseModel):
+    """Omnisend — Update Contact"""
+    contactId: str = Field(..., description="Contact ID")
+    identifiers: Optional[Any] = Field(None, description="Optional Omnisend identifiers array.")
+    fields: Any = Field(..., description="Fields to patch on the contact.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendGetContactInput(BaseModel):
+    """Omnisend — Get Contact"""
+    contactId: str = Field(..., description="Contact ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendListContactsInput(BaseModel):
+    """Omnisend — List Contacts"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+    email: Optional[str] = Field(None, description="Email")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendDeleteContactInput(BaseModel):
+    """Omnisend — Delete Contact"""
+    contactId: str = Field(..., description="Contact ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendSendEventInput(BaseModel):
+    """Omnisend — Send Event"""
+    eventName: str = Field(..., description="Event Name")
+    eventId: Optional[str] = Field(None, description="Event ID")
+    eventVersion: Optional[str] = Field(None, description="Event Version")
+    contact: Any = Field(..., description="Contact object with id, email, or phone.")
+    properties: Optional[Any] = Field(None, description="Properties")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendCreateBatchInput(BaseModel):
+    """Omnisend — Create Batch"""
+    method: str = Field(..., description="Method")
+    endpoint: str = Field(..., description="Batch endpoint such as contacts or events.")
+    items: Any = Field(..., description="Array of batch items.")
+    eventId: Optional[str] = Field(None, description="Required for event batches when applicable.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendListCampaignsInput(BaseModel):
+    """Omnisend — List Campaigns"""
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class OmnisendCustomApiCallInput(BaseModel):
+    """Omnisend — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path under /api, for example /contacts.")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class OncehubFindContactInput(BaseModel):
     """Oncehub — Find Contact"""
     email: str = Field(..., description="Filter contacts by email address")
@@ -27724,6 +30071,104 @@ class OpsgenieListServicesInput(BaseModel):
 class OpsgenieGetServiceInput(BaseModel):
     """Opsgenie — Get Service"""
     serviceId: str = Field(..., description="Service ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoMergePeopleInput(BaseModel):
+    """Ortto — Create or Update People"""
+    people: Any = Field(..., description="Array of Ortto person objects.")
+    mergeBy: Optional[Any] = Field(None, description="Optional Ortto merge_by object.")
+    mergeStrategy: Optional[float] = Field(None, description="Optional Ortto merge strategy number.")
+    findStrategy: Optional[float] = Field(None, description="Optional Ortto find strategy number.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoGetPeopleInput(BaseModel):
+    """Ortto — Get People"""
+    filter: Optional[Any] = Field(None, description="Ortto filter object.")
+    fields: Optional[Any] = Field(None, description="Array of field IDs to return.")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+    sortByFieldId: Optional[str] = Field(None, description="Sort Field ID")
+    sortOrder: Optional[str] = Field(None, description="Sort Order")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoGetPersonSubscriptionsInput(BaseModel):
+    """Ortto — Get Person Subscriptions"""
+    people: Any = Field(..., description="Array of person identifiers.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoArchivePeopleInput(BaseModel):
+    """Ortto — Archive People"""
+    people: Any = Field(..., description="Array of person identifiers.")
+    confirmArchive: bool = Field(..., description="Confirm Archive")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoDeletePeopleInput(BaseModel):
+    """Ortto — Delete People"""
+    people: Any = Field(..., description="Array of person identifiers.")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoCreateActivitiesInput(BaseModel):
+    """Ortto — Create Activities"""
+    activities: Any = Field(..., description="Array of activity event objects.")
+    mergeBy: Optional[Any] = Field(None, description="Merge By")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoGetAudiencesInput(BaseModel):
+    """Ortto — Get Audiences"""
+    audienceIds: Optional[Any] = Field(None, description="Optional array of audience IDs.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoSubscribeToAudienceInput(BaseModel):
+    """Ortto — Subscribe to Audience"""
+    audienceId: str = Field(..., description="Audience ID")
+    people: Any = Field(..., description="Array of person identifiers.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoGetCampaignCalendarInput(BaseModel):
+    """Ortto — Get Campaign Calendar"""
+    startDate: str = Field(..., description="ISO date/time.")
+    endDate: str = Field(..., description="ISO date/time.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoGetTagsInput(BaseModel):
+    """Ortto — Get Tags"""
+    pass
+
+
+class OrttoSendTransactionalEmailInput(BaseModel):
+    """Ortto — Send Transactional Email"""
+    assetId: str = Field(..., description="Asset ID")
+    email: str = Field(..., description="Recipient Email")
+    data: Optional[Any] = Field(None, description="Template data object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class OrttoCustomApiCallInput(BaseModel):
+    """Ortto — Custom API Call"""
+    path: str = Field(..., description="Path starting with /v1/.")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -28381,6 +30826,69 @@ class PaypalCustomApiCallInput(BaseModel):
     path: str = Field(..., description="API path (e.g. /v2/checkout/orders)")
     body: Optional[Any] = Field(None, description="Body")
     queryParams: Optional[dict[str, Any]] = Field(None, description="Query Parameters")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackInitializeTransactionInput(BaseModel):
+    """Paystack — Initialize Transaction"""
+    email: str = Field(..., description="Customer Email")
+    amount: float = Field(..., description="Amount in the currency subunit.")
+    currency: Optional[str] = Field(None, description="Currency")
+    reference: Optional[str] = Field(None, description="Reference")
+    callbackUrl: Optional[str] = Field(None, description="Callback URL")
+    plan: Optional[str] = Field(None, description="Plan Code")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+    channels: Optional[Any] = Field(None, description="Optional array of channels such as [\"card\",\"bank_transfer\"].")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackVerifyTransactionInput(BaseModel):
+    """Paystack — Verify Transaction"""
+    reference: str = Field(..., description="Reference")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackListTransactionsInput(BaseModel):
+    """Paystack — List Transactions"""
+    perPage: Optional[float] = Field(None, description="Per Page")
+    page: Optional[float] = Field(None, description="Page")
+    customer: Optional[str] = Field(None, description="Customer ID or Code")
+    status: Optional[str] = Field(None, description="Status")
+    from_: Optional[str] = Field(None, alias="from", description="ISO 8601 date.")
+    to: Optional[str] = Field(None, description="ISO 8601 date.")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackCreateRefundInput(BaseModel):
+    """Paystack — Create Refund"""
+    transaction: str = Field(..., description="Transaction ID or Reference")
+    amount: Optional[float] = Field(None, description="Optional amount in the currency subunit.")
+    currency: Optional[str] = Field(None, description="Currency")
+    customerNote: Optional[str] = Field(None, description="Customer Note")
+    merchantNote: Optional[str] = Field(None, description="Merchant Note")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackCreateCustomerInput(BaseModel):
+    """Paystack — Create Customer"""
+    email: str = Field(..., description="Email")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    phone: Optional[str] = Field(None, description="Phone")
+    metadata: Optional[Any] = Field(None, description="Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class PaystackListCustomersInput(BaseModel):
+    """Paystack — List Customers"""
+    perPage: Optional[float] = Field(None, description="Per Page")
+    page: Optional[float] = Field(None, description="Page")
 
     model_config = {"populate_by_name": True}
 
@@ -31758,6 +34266,317 @@ class RailwayCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class RampValidateConnectionInput(BaseModel):
+    """Ramp — Validate Connection"""
+    pass
+
+
+class RampGetBusinessInput(BaseModel):
+    """Ramp — Get Business"""
+    pass
+
+
+class RampGetBusinessBalanceInput(BaseModel):
+    """Ramp — Get Business Balance"""
+    pass
+
+
+class RampListUsersInput(BaseModel):
+    """Ramp — List Users"""
+    query: Optional[Any] = Field(None, description="Supports Ramp pagination and user filters as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetUserInput(BaseModel):
+    """Ramp — Get User"""
+    userId: str = Field(..., description="User ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateUserInput(BaseModel):
+    """Ramp — Update User"""
+    userId: str = Field(..., description="User ID")
+    body: Any = Field(..., description="User update body from Ramp OpenAPI.")
+    confirmFinancialChange: Optional[bool] = Field(None, description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListDepartmentsInput(BaseModel):
+    """Ramp — List Departments"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampCreateDepartmentInput(BaseModel):
+    """Ramp — Create Department"""
+    body: Any = Field(..., description="Department creation body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListLocationsInput(BaseModel):
+    """Ramp — List Locations"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampCreateLocationInput(BaseModel):
+    """Ramp — Create Location"""
+    body: Any = Field(..., description="Location creation body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListCardsInput(BaseModel):
+    """Ramp — List Cards"""
+    query: Optional[Any] = Field(None, description="Supports Ramp card filters and pagination as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetCardInput(BaseModel):
+    """Ramp — Get Card"""
+    cardId: str = Field(..., description="Card ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateCardInput(BaseModel):
+    """Ramp — Update Card"""
+    cardId: str = Field(..., description="Card ID")
+    body: Any = Field(..., description="Card update body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListTransactionsInput(BaseModel):
+    """Ramp — List Transactions"""
+    query: Optional[Any] = Field(None, description="Supports synced_after, pagination, and transaction filters as JSON.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetTransactionInput(BaseModel):
+    """Ramp — Get Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateTransactionInput(BaseModel):
+    """Ramp — Update Transaction"""
+    transactionId: str = Field(..., description="Transaction ID")
+    body: Any = Field(..., description="Transaction update body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListReceiptsInput(BaseModel):
+    """Ramp — List Receipts"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetReceiptInput(BaseModel):
+    """Ramp — Get Receipt"""
+    receiptId: str = Field(..., description="Receipt ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUploadReceiptInput(BaseModel):
+    """Ramp — Upload Receipt"""
+    body: Any = Field(..., description="Receipt upload body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListReimbursementsInput(BaseModel):
+    """Ramp — List Reimbursements"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetReimbursementInput(BaseModel):
+    """Ramp — Get Reimbursement"""
+    reimbursementId: str = Field(..., description="Reimbursement ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListVendorsInput(BaseModel):
+    """Ramp — List Vendors"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetVendorInput(BaseModel):
+    """Ramp — Get Vendor"""
+    vendorId: str = Field(..., description="Vendor ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampCreateVendorInput(BaseModel):
+    """Ramp — Create Vendor"""
+    body: Any = Field(..., description="Vendor creation body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateVendorInput(BaseModel):
+    """Ramp — Update Vendor"""
+    vendorId: str = Field(..., description="Vendor ID")
+    body: Any = Field(..., description="Vendor update body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampDeleteVendorInput(BaseModel):
+    """Ramp — Delete Vendor"""
+    vendorId: str = Field(..., description="Vendor ID")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListBillsInput(BaseModel):
+    """Ramp — List Bills"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetBillInput(BaseModel):
+    """Ramp — Get Bill"""
+    billId: str = Field(..., description="Bill ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampCreateBillInput(BaseModel):
+    """Ramp — Create Bill"""
+    body: Any = Field(..., description="Bill creation body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateBillInput(BaseModel):
+    """Ramp — Update Bill"""
+    billId: str = Field(..., description="Bill ID")
+    body: Any = Field(..., description="Bill update body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampDeleteBillInput(BaseModel):
+    """Ramp — Delete Bill"""
+    billId: str = Field(..., description="Bill ID")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListStatementsInput(BaseModel):
+    """Ramp — List Statements"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetStatementInput(BaseModel):
+    """Ramp — Get Statement"""
+    statementId: str = Field(..., description="Statement ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListTransfersInput(BaseModel):
+    """Ramp — List Transfers"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetTransferInput(BaseModel):
+    """Ramp — Get Transfer"""
+    transferId: str = Field(..., description="Transfer ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampListAccountingConnectionsInput(BaseModel):
+    """Ramp — List Accounting Connections"""
+    pass
+
+
+class RampListGlAccountsInput(BaseModel):
+    """Ramp — List GL Accounts"""
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampGetGlAccountInput(BaseModel):
+    """Ramp — Get GL Account"""
+    glAccountId: str = Field(..., description="GL Account ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUploadGlAccountsInput(BaseModel):
+    """Ramp — Upload GL Accounts"""
+    body: Any = Field(..., description="GL account upload body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampUpdateGlAccountInput(BaseModel):
+    """Ramp — Update GL Account"""
+    glAccountId: str = Field(..., description="GL Account ID")
+    body: Any = Field(..., description="GL account update body from Ramp OpenAPI.")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampDeleteGlAccountInput(BaseModel):
+    """Ramp — Delete GL Account"""
+    glAccountId: str = Field(..., description="GL Account ID")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RampCustomApiCallInput(BaseModel):
+    """Ramp — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative /developer/v1 path. Query strings are not allowed; use Query Parameters.")
+    query: Optional[Any] = Field(None, description="Official Ramp query parameters as a JSON object.")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmFinancialChange: bool = Field(..., description="Required because this action changes spend, accounting, vendor, card, bill, or transaction data.")
+
+    model_config = {"populate_by_name": True}
+
+
 class RazorpayCustomApiCallInput(BaseModel):
     """Razorpay — Custom API Call"""
     url: dict[str, Any] = Field(..., description="url")
@@ -32029,6 +34848,243 @@ class RedditCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class RedisCloudListProSubscriptionsInput(BaseModel):
+    """Redis Cloud — List Pro Subscriptions"""
+    pass
+
+
+class RedisCloudGetProSubscriptionInput(BaseModel):
+    """Redis Cloud — Get Pro Subscription"""
+    subscriptionId: str = Field(..., description="Subscription ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudListEssentialsSubscriptionsInput(BaseModel):
+    """Redis Cloud — List Essentials Subscriptions"""
+    pass
+
+
+class RedisCloudGetEssentialsSubscriptionInput(BaseModel):
+    """Redis Cloud — Get Essentials Subscription"""
+    subscriptionId: str = Field(..., description="Subscription ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudListDatabasesInput(BaseModel):
+    """Redis Cloud — List Databases"""
+    subscriptionKind: str = Field(..., description="Subscription Kind")
+    subscriptionId: str = Field(..., description="Subscription ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudGetDatabaseInput(BaseModel):
+    """Redis Cloud — Get Database"""
+    subscriptionKind: str = Field(..., description="Subscription Kind")
+    subscriptionId: str = Field(..., description="Subscription ID")
+    databaseId: str = Field(..., description="Database ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudCreateDatabaseInput(BaseModel):
+    """Redis Cloud — Create Database"""
+    subscriptionKind: str = Field(..., description="Subscription Kind")
+    subscriptionId: str = Field(..., description="Subscription ID")
+    database: Any = Field(..., description="Redis Cloud database creation JSON body from the official API docs.")
+    confirmCreate: bool = Field(..., description="Required because this can create billable Redis Cloud resources.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudUpdateDatabaseInput(BaseModel):
+    """Redis Cloud — Update Database"""
+    subscriptionKind: str = Field(..., description="Subscription Kind")
+    subscriptionId: str = Field(..., description="Subscription ID")
+    databaseId: str = Field(..., description="Database ID")
+    database: Any = Field(..., description="Redis Cloud database update JSON body from the official API docs.")
+    confirmUpdate: bool = Field(..., description="Confirm Update")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudDeleteDatabaseInput(BaseModel):
+    """Redis Cloud — Delete Database"""
+    subscriptionKind: str = Field(..., description="Subscription Kind")
+    subscriptionId: str = Field(..., description="Subscription ID")
+    databaseId: str = Field(..., description="Database ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudGetTaskInput(BaseModel):
+    """Redis Cloud — Get Task"""
+    taskId: str = Field(..., description="Task ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RedisCloudCustomApiCallInput(BaseModel):
+    """Redis Cloud — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path relative to /v1, for example /subscriptions or /tasks/{taskId}.")
+    query: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+    confirmDelete: Optional[bool] = Field(None, description="Required when Method is DELETE.")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteValidateConnectionInput(BaseModel):
+    """Remote — Validate Connection"""
+    pass
+
+
+class RemoteListCountriesInput(BaseModel):
+    """Remote — List Countries"""
+    pass
+
+
+class RemoteListEmploymentsInput(BaseModel):
+    """Remote — List Employments"""
+    page: Optional[float] = Field(None, description="Page")
+    page_size: Optional[float] = Field(None, description="Page Size")
+    company_id: Optional[str] = Field(None, description="Company ID")
+    employment_status: Optional[str] = Field(None, description="Employment Status")
+    employment_lifecycle_stage: Optional[str] = Field(None, description="Employment Lifecycle Stage")
+    external_id: Optional[str] = Field(None, description="External ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteGetEmploymentInput(BaseModel):
+    """Remote — Get Employment"""
+    employment_id: str = Field(..., description="Employment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteUpdateEmploymentInput(BaseModel):
+    """Remote — Update Employment"""
+    employment_id: str = Field(..., description="Employment ID")
+    work_email: Optional[str] = Field(None, description="Work Email")
+    manager_id: Optional[str] = Field(None, description="Manager ID")
+    external_id: Optional[str] = Field(None, description="External ID")
+    emergency_contact_details: Optional[Any] = Field(None, description="Emergency Contact Details")
+    address_details: Optional[Any] = Field(None, description="Address Details")
+    personal_details: Optional[Any] = Field(None, description="Personal Details")
+    basic_information: Optional[Any] = Field(None, description="Basic Information")
+    confirm: bool = Field(..., description="Confirm Employment Update")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteInviteEmploymentInput(BaseModel):
+    """Remote — Invite Employment"""
+    employment_id: str = Field(..., description="Employment ID")
+    confirm: bool = Field(..., description="Confirm Invite")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteCancelOnboardingInput(BaseModel):
+    """Remote — Cancel Onboarding"""
+    employment_id: str = Field(..., description="Employment ID")
+    confirm: bool = Field(..., description="Confirm Onboarding Cancellation")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteListTimeOffInput(BaseModel):
+    """Remote — List Time Off"""
+    employment_id: Optional[str] = Field(None, description="Employment ID")
+    status: Optional[str] = Field(None, description="Status")
+    from_: Optional[str] = Field(None, alias="from", description="ISO date or datetime.")
+    to: Optional[str] = Field(None, description="ISO date or datetime.")
+    page: Optional[float] = Field(None, description="Page")
+    page_size: Optional[float] = Field(None, description="Page Size")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteGetTimeOffInput(BaseModel):
+    """Remote — Get Time Off"""
+    timeoff_id: str = Field(..., description="Time Off ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteCreateTimeOffInput(BaseModel):
+    """Remote — Create Time Off"""
+    body: Any = Field(..., description="Time Off Payload")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteApproveTimeOffInput(BaseModel):
+    """Remote — Approve Time Off"""
+    timeoff_id: str = Field(..., description="Time Off ID")
+    approver_id: Optional[str] = Field(None, description="Approver ID")
+    confirm: bool = Field(..., description="Confirm Approval")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteDeclineTimeOffInput(BaseModel):
+    """Remote — Decline Time Off"""
+    timeoff_id: str = Field(..., description="Time Off ID")
+    reason: Optional[str] = Field(None, description="Reason")
+    confirm: bool = Field(..., description="Confirm Decline")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteCancelTimeOffInput(BaseModel):
+    """Remote — Cancel Time Off"""
+    timeoff_id: str = Field(..., description="Time Off ID")
+    reason: Optional[str] = Field(None, description="Reason")
+    confirm: bool = Field(..., description="Confirm Cancellation")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteListWebhookCallbacksInput(BaseModel):
+    """Remote — List Webhook Callbacks"""
+    company_id: str = Field(..., description="Company ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteCreateWebhookCallbackInput(BaseModel):
+    """Remote — Create Webhook Callback"""
+    url: str = Field(..., description="Webhook URL")
+    subscribed_events: str = Field(..., description="Comma-separated Remote webhook event names.")
+    company_id: Optional[str] = Field(None, description="Company ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteDeleteWebhookCallbackInput(BaseModel):
+    """Remote — Delete Webhook Callback"""
+    webhook_callback_id: str = Field(..., description="Webhook Callback ID")
+    confirm: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class RemoteCustomApiCallInput(BaseModel):
+    """Remote — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path under /v1, for example /v1/employments.")
+    body: Optional[Any] = Field(None, description="Body")
+    confirm: Optional[bool] = Field(None, description="Confirm Non-GET Call")
+
+    model_config = {"populate_by_name": True}
+
+
 class RenderListServicesInput(BaseModel):
     """Render — List Services"""
     type_: Optional[str] = Field(None, alias="type", description="Service Type")
@@ -32078,6 +35134,89 @@ class ReplicateGetPredictionInput(BaseModel):
 class ReplicateListModelsInput(BaseModel):
     """Replicate — List Models"""
     pass
+
+
+class ReplyIoWhoamiInput(BaseModel):
+    """Reply.io — Who Am I"""
+    pass
+
+
+class ReplyIoListContactsInput(BaseModel):
+    """Reply.io — List Contacts"""
+    top: Optional[float] = Field(None, description="Maximum contacts to return. Reply.io allows up to 1000.")
+    skip: Optional[float] = Field(None, description="Skip")
+    email: Optional[str] = Field(None, description="Email")
+    linkedIn: Optional[str] = Field(None, description="LinkedIn URL")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoGetContactInput(BaseModel):
+    """Reply.io — Get Contact"""
+    contactId: float = Field(..., description="Contact ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoCreateContactInput(BaseModel):
+    """Reply.io — Create Contact"""
+    email: Optional[str] = Field(None, description="Email")
+    linkedInUrl: Optional[str] = Field(None, description="LinkedIn URL")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    phone: Optional[str] = Field(None, description="Phone")
+    title: Optional[str] = Field(None, description="Title")
+    company: Optional[str] = Field(None, description="Company")
+    city: Optional[str] = Field(None, description="City")
+    state: Optional[str] = Field(None, description="State")
+    country: Optional[str] = Field(None, description="Country")
+    customFields: Optional[Any] = Field(None, description="Optional Reply.io custom fields object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoUpdateContactInput(BaseModel):
+    """Reply.io — Update Contact"""
+    contactId: float = Field(..., description="Contact ID")
+    email: Optional[str] = Field(None, description="Email")
+    linkedInUrl: Optional[str] = Field(None, description="LinkedIn URL")
+    firstName: Optional[str] = Field(None, description="First Name")
+    lastName: Optional[str] = Field(None, description="Last Name")
+    phone: Optional[str] = Field(None, description="Phone")
+    title: Optional[str] = Field(None, description="Title")
+    company: Optional[str] = Field(None, description="Company")
+    customFields: Optional[Any] = Field(None, description="Custom Fields")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoDeleteContactInput(BaseModel):
+    """Reply.io — Delete Contact"""
+    contactId: float = Field(..., description="Contact ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoListSequencesInput(BaseModel):
+    """Reply.io — List Sequences"""
+    top: Optional[float] = Field(None, description="Limit")
+    skip: Optional[float] = Field(None, description="Skip")
+    status: Optional[str] = Field(None, description="Status")
+    ownerUserId: Optional[float] = Field(None, description="Owner User ID")
+    folderId: Optional[float] = Field(None, description="Folder ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class ReplyIoCreateWebhookSubscriptionInput(BaseModel):
+    """Reply.io — Create Webhook Subscription"""
+    eventType: str = Field(..., description="Use a value returned by Reply.io GET /v3/webhooks/events, for example email_replied.")
+    url: str = Field(..., description="Payload URL")
+    scope: Optional[str] = Field(None, description="Scope")
+    enabled: Optional[bool] = Field(None, description="Enabled")
+    payloadConfig: Optional[Any] = Field(None, description="Optional Reply.io payloadConfig object.")
+
+    model_config = {"populate_by_name": True}
 
 
 class ResendSendEmailInput(BaseModel):
@@ -33800,6 +36939,165 @@ class SierraInteractiveCustomApiCallInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SimilarwebValidateConnectionInput(BaseModel):
+    """Similarweb — Validate Connection"""
+    pass
+
+
+class SimilarwebCheckCapabilitiesInput(BaseModel):
+    """Similarweb — Check Capabilities"""
+    pass
+
+
+class SimilarwebCheckUserUsageInput(BaseModel):
+    """Similarweb — Check User Usage"""
+    pass
+
+
+class SimilarwebGetTotalVisitsInput(BaseModel):
+    """Similarweb — Get Total Visits"""
+    domainName: str = Field(..., description="Website domain such as example.com. Do not include protocol or path.")
+    startDate: Optional[str] = Field(None, description="Start month in YYYY-MM format.")
+    endDate: Optional[str] = Field(None, description="End month in YYYY-MM format.")
+    country: str = Field(..., description="Two-letter country code, or world for worldwide.")
+    granularity: str = Field(..., description="Granularity")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    showVerified: Optional[bool] = Field(None, description="Show shared Google Analytics data when available.")
+    monthToDate: Optional[bool] = Field(None, description="Only for daily granularity; may cost additional credits.")
+    engagedOnly: Optional[bool] = Field(None, description="Engaged Visits Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetPageViewsInput(BaseModel):
+    """Similarweb — Get Page Views"""
+    domainName: str = Field(..., description="Website domain such as example.com. Do not include protocol or path.")
+    startDate: Optional[str] = Field(None, description="Start month in YYYY-MM format.")
+    endDate: Optional[str] = Field(None, description="End month in YYYY-MM format.")
+    country: str = Field(..., description="Two-letter country code, or world for worldwide.")
+    granularity: str = Field(..., description="Granularity")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    showVerified: Optional[bool] = Field(None, description="Show shared Google Analytics data when available.")
+    monthToDate: Optional[bool] = Field(None, description="Only for daily granularity; may cost additional credits.")
+    engagedOnly: Optional[bool] = Field(None, description="Engaged Visits Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetPagesPerVisitInput(BaseModel):
+    """Similarweb — Get Pages Per Visit"""
+    domainName: str = Field(..., description="Website domain such as example.com. Do not include protocol or path.")
+    startDate: Optional[str] = Field(None, description="Start month in YYYY-MM format.")
+    endDate: Optional[str] = Field(None, description="End month in YYYY-MM format.")
+    country: str = Field(..., description="Two-letter country code, or world for worldwide.")
+    granularity: str = Field(..., description="Granularity")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    showVerified: Optional[bool] = Field(None, description="Show shared Google Analytics data when available.")
+    monthToDate: Optional[bool] = Field(None, description="Only for daily granularity; may cost additional credits.")
+    engagedOnly: Optional[bool] = Field(None, description="Engaged Visits Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetBounceRateInput(BaseModel):
+    """Similarweb — Get Bounce Rate"""
+    domainName: str = Field(..., description="Website domain such as example.com. Do not include protocol or path.")
+    startDate: Optional[str] = Field(None, description="Start month in YYYY-MM format.")
+    endDate: Optional[str] = Field(None, description="End month in YYYY-MM format.")
+    country: str = Field(..., description="Two-letter country code, or world for worldwide.")
+    granularity: str = Field(..., description="Granularity")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    showVerified: Optional[bool] = Field(None, description="Show shared Google Analytics data when available.")
+    monthToDate: Optional[bool] = Field(None, description="Only for daily granularity; may cost additional credits.")
+    engagedOnly: Optional[bool] = Field(None, description="Engaged Visits Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetAverageVisitDurationInput(BaseModel):
+    """Similarweb — Get Average Visit Duration"""
+    domainName: str = Field(..., description="Website domain such as example.com. Do not include protocol or path.")
+    startDate: Optional[str] = Field(None, description="Start month in YYYY-MM format.")
+    endDate: Optional[str] = Field(None, description="End month in YYYY-MM format.")
+    country: str = Field(..., description="Two-letter country code, or world for worldwide.")
+    granularity: str = Field(..., description="Granularity")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    showVerified: Optional[bool] = Field(None, description="Show shared Google Analytics data when available.")
+    monthToDate: Optional[bool] = Field(None, description="Only for daily granularity; may cost additional credits.")
+    engagedOnly: Optional[bool] = Field(None, description="Engaged Visits Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetDesktopTrafficSourcesInput(BaseModel):
+    """Similarweb — Get Desktop Traffic Sources"""
+    domainName: str = Field(..., description="Domain Name")
+    startDate: Optional[str] = Field(None, description="Start Date")
+    endDate: Optional[str] = Field(None, description="End Date")
+    country: str = Field(..., description="Country")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+    sort: Optional[str] = Field(None, description="Sort")
+    ascending: Optional[bool] = Field(None, description="Ascending")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetDesktopTrafficByCountryInput(BaseModel):
+    """Similarweb — Get Desktop Traffic By Country"""
+    domainName: str = Field(..., description="Domain Name")
+    startDate: Optional[str] = Field(None, description="Start Date")
+    endDate: Optional[str] = Field(None, description="End Date")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebGetDesktopReferralsInput(BaseModel):
+    """Similarweb — Get Desktop Referrals"""
+    domainName: str = Field(..., description="Domain Name")
+    startDate: Optional[str] = Field(None, description="Start Date")
+    endDate: Optional[str] = Field(None, description="End Date")
+    country: str = Field(..., description="Country")
+    mainDomainOnly: Optional[bool] = Field(None, description="Main Domain Only")
+    limit: Optional[float] = Field(None, description="Limit")
+    offset: Optional[float] = Field(None, description="Offset")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebSubscribeWebhookInput(BaseModel):
+    """Similarweb — Subscribe Webhook"""
+    webhookEventType: str = Field(..., description="Webhook Event Type")
+    url: str = Field(..., description="HTTPS endpoint to receive POST notifications. Similarweb limits URLs to 255 characters.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebListWebhookSubscriptionsInput(BaseModel):
+    """Similarweb — List Webhook Subscriptions"""
+    pass
+
+
+class SimilarwebUnsubscribeWebhookInput(BaseModel):
+    """Similarweb — Unsubscribe Webhook"""
+    subscriptionId: str = Field(..., description="Subscription ID")
+    confirm: bool = Field(..., description="Confirm Unsubscribe")
+
+    model_config = {"populate_by_name": True}
+
+
+class SimilarwebCustomApiCallInput(BaseModel):
+    """Similarweb — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Relative path such as /v1/website/example.com/total-traffic-and-engagement/visits.")
+    queryParams: Optional[Any] = Field(None, description="Query Parameters")
+    body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
 class SimplePracticeListClientsInput(BaseModel):
     """SimplePractice — List Clients"""
     page: Optional[float] = Field(None, description="Page")
@@ -33925,6 +37223,47 @@ class SkyslopeCustomApiCallInput(BaseModel):
     method: str = Field(..., description="Method")
     path: str = Field(..., description="API path (e.g. /transactions)")
     body: Optional[Any] = Field(None, description="Body")
+
+    model_config = {"populate_by_name": True}
+
+
+class SlabListPostsInput(BaseModel):
+    """Slab — List Posts"""
+    first: Optional[float] = Field(None, description="First")
+    after: Optional[str] = Field(None, description="After Cursor")
+
+    model_config = {"populate_by_name": True}
+
+
+class SlabGetPostInput(BaseModel):
+    """Slab — Get Post"""
+    postId: str = Field(..., description="Post ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class SlabSearchPostsInput(BaseModel):
+    """Slab — Search Posts"""
+    query: str = Field(..., description="Query")
+    first: Optional[float] = Field(None, description="First")
+
+    model_config = {"populate_by_name": True}
+
+
+class SlabCreatePostInput(BaseModel):
+    """Slab — Create Post"""
+    title: str = Field(..., description="Title")
+    content: str = Field(..., description="Content")
+    topicId: Optional[str] = Field(None, description="Topic ID")
+    extraInput: Optional[Any] = Field(None, description="Optional extra PostCreateInput fields supported by your Slab API version.")
+
+    model_config = {"populate_by_name": True}
+
+
+class SlabGraphqlInput(BaseModel):
+    """Slab — GraphQL Query"""
+    query: str = Field(..., description="Query")
+    variables: Optional[Any] = Field(None, description="Variables")
 
     model_config = {"populate_by_name": True}
 
@@ -35074,6 +38413,213 @@ class KvStoreRemoveFromListInput(BaseModel):
     """State KV — Remove from List"""
     key: str = Field(..., description="The key of the list")
     value: Any = Field(..., description="The value to remove from the list")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigListGatesInput(BaseModel):
+    """Statsig — List Gates"""
+    limit: Optional[float] = Field(None, description="1 to 100 results.")
+    page: Optional[float] = Field(None, description="Page")
+    status: Optional[str] = Field(None, description="Status")
+    tags: Optional[str] = Field(None, description="Statsig tag filter.")
+    creatorName: Optional[str] = Field(None, description="Creator Name")
+    includeArchived: Optional[bool] = Field(None, description="Include Archived")
+    includeArchiveMetadata: Optional[bool] = Field(None, description="Include Archive Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigGetGateInput(BaseModel):
+    """Statsig — Get Gate"""
+    id: str = Field(..., description="Gate ID")
+    includeArchiveMetadata: Optional[bool] = Field(None, description="Include Archive Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigCreateGateInput(BaseModel):
+    """Statsig — Create Gate"""
+    id: Optional[str] = Field(None, description="Optional Statsig ID/key.")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    idType: Optional[str] = Field(None, description="ID Type")
+    isEnabled: Optional[bool] = Field(None, description="Enabled")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    rules: Optional[Any] = Field(None, description="Optional Statsig rule array.")
+    advancedFields: Optional[Any] = Field(None, description="Optional additional Console API fields as an object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigUpdateGateInput(BaseModel):
+    """Statsig — Update Gate"""
+    id: str = Field(..., description="Gate ID")
+    name: Optional[str] = Field(None, description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    isEnabled: Optional[bool] = Field(None, description="Enabled")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    patchBody: Optional[Any] = Field(None, description="Optional Console API patch body object; merged with typed fields.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigEnableGateInput(BaseModel):
+    """Statsig — Enable Gate"""
+    id: str = Field(..., description="Gate ID")
+    confirm: bool = Field(..., description="Required for lifecycle mutations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigDisableGateInput(BaseModel):
+    """Statsig — Disable Gate"""
+    id: str = Field(..., description="Gate ID")
+    confirm: bool = Field(..., description="Required for lifecycle mutations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigArchiveGateInput(BaseModel):
+    """Statsig — Archive Gate"""
+    id: str = Field(..., description="Gate ID")
+    archiveReason: Optional[str] = Field(None, description="Archive Reason")
+    confirm: bool = Field(..., description="Required for lifecycle mutations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigUnarchiveGateInput(BaseModel):
+    """Statsig — Unarchive Gate"""
+    id: str = Field(..., description="Gate ID")
+    confirm: bool = Field(..., description="Required for lifecycle mutations.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigDeleteGateInput(BaseModel):
+    """Statsig — Delete Gate"""
+    id: str = Field(..., description="Gate ID")
+    confirmDelete: bool = Field(..., description="Confirm Delete")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigListDynamicConfigsInput(BaseModel):
+    """Statsig — List Dynamic Configs"""
+    limit: Optional[float] = Field(None, description="Limit")
+    page: Optional[float] = Field(None, description="Page")
+    tags: Optional[str] = Field(None, description="Tags")
+    includeArchived: Optional[bool] = Field(None, description="Include Archived")
+    includeArchiveMetadata: Optional[bool] = Field(None, description="Include Archive Metadata")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigGetDynamicConfigInput(BaseModel):
+    """Statsig — Get Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigCreateDynamicConfigInput(BaseModel):
+    """Statsig — Create Dynamic Config"""
+    id: Optional[str] = Field(None, description="Dynamic Config ID")
+    name: str = Field(..., description="Name")
+    description: Optional[str] = Field(None, description="Description")
+    isEnabled: Optional[bool] = Field(None, description="Enabled")
+    defaultValue: Optional[Any] = Field(None, description="JSON object returned when no rules match.")
+    rules: Optional[Any] = Field(None, description="Optional Statsig rule array.")
+    tags: Optional[list[Any]] = Field(None, description="Tags")
+    advancedFields: Optional[Any] = Field(None, description="Optional additional Console API fields as an object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigUpdateDynamicConfigInput(BaseModel):
+    """Statsig — Update Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+    patchBody: Any = Field(..., description="Console API patch body object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigEnableDynamicConfigInput(BaseModel):
+    """Statsig — Enable Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+    confirm: bool = Field(..., description="Confirm Change")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigDisableDynamicConfigInput(BaseModel):
+    """Statsig — Disable Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+    confirm: bool = Field(..., description="Confirm Change")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigArchiveDynamicConfigInput(BaseModel):
+    """Statsig — Archive Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+    archiveReason: Optional[str] = Field(None, description="Archive Reason")
+    confirm: bool = Field(..., description="Confirm Change")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigUnarchiveDynamicConfigInput(BaseModel):
+    """Statsig — Unarchive Dynamic Config"""
+    id: str = Field(..., description="Dynamic Config ID")
+    confirm: bool = Field(..., description="Confirm Change")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigListExperimentsInput(BaseModel):
+    """Statsig — List Experiments"""
+    limit: Optional[float] = Field(None, description="Limit")
+    page: Optional[float] = Field(None, description="Page")
+    status: Optional[str] = Field(None, description="Status")
+    experimentType: Optional[str] = Field(None, description="Experiment Type")
+    tags: Optional[str] = Field(None, description="Tags")
+    fields: Optional[str] = Field(None, description="Comma-separated sparse fieldset.")
+    ids: Optional[str] = Field(None, description="Comma-separated IDs, max 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigGetExperimentInput(BaseModel):
+    """Statsig — Get Experiment"""
+    id: str = Field(..., description="Experiment ID")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigUpdateExperimentInput(BaseModel):
+    """Statsig — Update Experiment"""
+    id: str = Field(..., description="Experiment ID")
+    patchBody: Any = Field(..., description="Console API patch body object.")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigArchiveExperimentInput(BaseModel):
+    """Statsig — Archive Experiment"""
+    id: str = Field(..., description="Experiment ID")
+    archiveReason: Optional[str] = Field(None, description="Archive Reason")
+    confirm: bool = Field(..., description="Confirm Archive")
+
+    model_config = {"populate_by_name": True}
+
+
+class StatsigCustomApiCallInput(BaseModel):
+    """Statsig — Custom API Call"""
+    method: str = Field(..., description="Method")
+    path: str = Field(..., description="Path must start with /console/v1/.")
+    body: Optional[Any] = Field(None, description="Body")
 
     model_config = {"populate_by_name": True}
 
@@ -38659,6 +42205,68 @@ class TypesenseUpsertDocumentInput(BaseModel):
     collectionName: str = Field(..., description="Collection Name")
     document: Any = Field(..., description="Document JSON object. Include id to control the document ID.")
     dirtyValues: Optional[str] = Field(None, description="How Typesense should handle fields that do not match the schema.")
+
+    model_config = {"populate_by_name": True}
+
+
+class UkgValidateConnectionInput(BaseModel):
+    """UKG — Validate Connection"""
+    pass
+
+
+class UkgListPersonDetailsInput(BaseModel):
+    """UKG — List Person Details"""
+    company_id: Optional[str] = Field(None, description="Company ID")
+    employee_id: Optional[str] = Field(None, description="Employee ID")
+    email_address: Optional[str] = Field(None, description="Email Address")
+    last_name: Optional[str] = Field(None, description="Last Name")
+    date_time_changed: Optional[str] = Field(None, description="Date-time filter accepted by UKG, for example 2026-06-20T00:00:00.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Mapped to UKG per_Page. Maximum 500.")
+
+    model_config = {"populate_by_name": True}
+
+
+class UkgListEmploymentDetailsInput(BaseModel):
+    """UKG — List Employment Details"""
+    company_id: Optional[str] = Field(None, description="Company ID")
+    employee_id: Optional[str] = Field(None, description="Employee ID")
+    email_address: Optional[str] = Field(None, description="Email Address")
+    last_name: Optional[str] = Field(None, description="Last Name")
+    date_time_changed: Optional[str] = Field(None, description="Changed Since")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Mapped to UKG per_Page. Maximum 500.")
+
+    model_config = {"populate_by_name": True}
+
+
+class UkgListEmployeeEmploymentDetailsInput(BaseModel):
+    """UKG — List Employee Employment Details"""
+    company_id: Optional[str] = Field(None, description="Company ID")
+    employee_id: Optional[str] = Field(None, description="Employee ID")
+    email_address: Optional[str] = Field(None, description="Email Address")
+    last_name: Optional[str] = Field(None, description="Last Name")
+    date_time_changed: Optional[str] = Field(None, description="Changed Since")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Mapped to UKG per_Page. Maximum 500.")
+
+    model_config = {"populate_by_name": True}
+
+
+class UkgListEmployeeChangesInput(BaseModel):
+    """UKG — List Employee Changes"""
+    start_date: str = Field(..., description="Start date or date-time accepted by UKG, for example 2026-06-20T00:00:00.")
+    end_date: str = Field(..., description="End date or date-time accepted by UKG.")
+    page: Optional[float] = Field(None, description="Page")
+    per_page: Optional[float] = Field(None, description="Maximum 500.")
+
+    model_config = {"populate_by_name": True}
+
+
+class UkgCustomApiCallInput(BaseModel):
+    """UKG — Custom API Call"""
+    path: str = Field(..., description="Relative path under /personnel/v1, for example /personnel/v1/person-details.")
+    query: Optional[Any] = Field(None, description="JSON object of query parameters.")
 
     model_config = {"populate_by_name": True}
 
@@ -42452,9 +46060,12 @@ IntegrationName = Literal[
     "atlassian",
     "attio",
     "auth0",
+    "authorize-net",
     "autotask",
     "aws-s3",
+    "aws-secrets-manager",
     "aws-ses",
+    "aws-sts",
     "azure-blob-storage",
     "azure-devops",
     "azure-openai",
@@ -42470,8 +46081,10 @@ IntegrationName = Literal[
     "bloomerang",
     "bluesky",
     "box",
+    "braintree",
     "brandfolder",
     "brave-search",
+    "braze",
     "breezy-hr",
     "brevo",
     "brex",
@@ -42498,7 +46111,9 @@ IntegrationName = Literal[
     "classy",
     "clay",
     "clearbit",
+    "clerk",
     "clickfunnels",
+    "clickhouse",
     "clicksend",
     "clickup",
     "clio",
@@ -42510,8 +46125,10 @@ IntegrationName = Literal[
     "cloudinary",
     "coda",
     "codacy",
+    "cognism",
     "cognito-forms",
     "cohere",
+    "common-room",
     "companycam",
     "confluence",
     "connectwise",
@@ -42522,6 +46139,7 @@ IntegrationName = Literal[
     "courier",
     "crates-io",
     "crisp",
+    "culture-amp",
     "customer-io",
     "cvent",
     "data-transformer",
@@ -42529,11 +46147,13 @@ IntegrationName = Literal[
     "datadog",
     "datetime",
     "datocms",
+    "dbt-cloud",
     "deel",
     "deepgram",
     "deepgram-custom",
     "deepl",
     "deepseek",
+    "deputy",
     "descript",
     "dialpad",
     "digital-ocean",
@@ -42541,6 +46161,8 @@ IntegrationName = Literal[
     "discourse",
     "docebo",
     "docker-hub",
+    "documenso",
+    "docuseal",
     "docusign",
     "donorbox",
     "doodle",
@@ -42563,6 +46185,7 @@ IntegrationName = Literal[
     "euler",
     "eventbrite",
     "exa",
+    "expensify",
     "facebook-ads",
     "facebook-leads",
     "facebook-pages",
@@ -42577,6 +46200,7 @@ IntegrationName = Literal[
     "firecrawl",
     "fireflies",
     "fishbowl",
+    "fivetran",
     "fleetio",
     "fly-io",
     "folk-crm",
@@ -42599,6 +46223,7 @@ IntegrationName = Literal[
     "github",
     "gitlab",
     "gmail",
+    "gocardless",
     "gong",
     "google-ads",
     "google-analytics",
@@ -42629,6 +46254,7 @@ IntegrationName = Literal[
     "groq",
     "guesty",
     "gumroad",
+    "guru",
     "gusto",
     "harvest",
     "hash-encode",
@@ -42638,6 +46264,7 @@ IntegrationName = Literal[
     "height",
     "hellosign",
     "help-scout",
+    "hex",
     "heygen",
     "hibob",
     "hive",
@@ -42660,6 +46287,7 @@ IntegrationName = Literal[
     "intakeq",
     "intercom",
     "ipinfo",
+    "iterable",
     "code",
     "jazzhr",
     "jina-ai",
@@ -42682,6 +46310,7 @@ IntegrationName = Literal[
     "langsmith",
     "lastfm",
     "later",
+    "launchdarkly",
     "lawmatics",
     "lead-connector",
     "learnworlds",
@@ -42712,10 +46341,13 @@ IntegrationName = Literal[
     "medium",
     "meilisearch",
     "meistertask",
+    "mercado-pago",
+    "mercury",
     "metabase",
     "microsoft-365",
     "microsoft-365-planner",
     "microsoft-dynamics-crm",
+    "microsoft-entra-id",
     "microsoft-excel-365",
     "microsoft-learn",
     "microsoft-onedrive",
@@ -42755,6 +46387,7 @@ IntegrationName = Literal[
     "nutshell",
     "odoo",
     "okta",
+    "omnisend",
     "oncehub",
     "onesignal",
     "onfleet",
@@ -42764,6 +46397,7 @@ IntegrationName = Literal[
     "opentable",
     "openweather",
     "opsgenie",
+    "ortto",
     "outline",
     "outreach",
     "paddle",
@@ -42772,6 +46406,7 @@ IntegrationName = Literal[
     "paperform",
     "paylocity",
     "paypal",
+    "paystack",
     "paywhirl",
     "pdf-co",
     "pendo",
@@ -42813,13 +46448,17 @@ IntegrationName = Literal[
     "quicknode",
     "rabbitmq",
     "railway",
+    "ramp",
     "razorpay",
     "readme-io",
     "reclaim-ai",
     "recurly",
     "reddit",
+    "redis-cloud",
+    "remote",
     "render",
     "replicate",
+    "reply-io",
     "resend",
     "retell-ai",
     "retool",
@@ -42851,9 +46490,11 @@ IntegrationName = Literal[
     "shopify",
     "short-io",
     "sierra-interactive",
+    "similarweb",
     "simple-practice",
     "skilljar",
     "skyslope",
+    "slab",
     "slack",
     "slite",
     "smartlead",
@@ -42871,6 +46512,7 @@ IntegrationName = Literal[
     "squarespace",
     "stability-ai",
     "kv-store",
+    "statsig",
     "storyblok",
     "strapi",
     "strava",
@@ -42915,6 +46557,7 @@ IntegrationName = Literal[
     "twitter",
     "typeform",
     "typesense",
+    "ukg",
     "unbounce",
     "upstash",
     "uptime-robot",
@@ -43423,6 +47066,11 @@ IntegrationActionKey = Literal[
     "auth0.create_user",
     "auth0.list_roles",
     "auth0.list_connections",
+    "authorize-net.create_transaction",
+    "authorize-net.get_transaction",
+    "authorize-net.refund_transaction",
+    "authorize-net.void_transaction",
+    "authorize-net.create_customer_profile",
     "autotask.create_ticket",
     "autotask.list_tickets",
     "autotask.update_ticket",
@@ -43434,10 +47082,22 @@ IntegrationActionKey = Literal[
     "aws-s3.put_object",
     "aws-s3.delete_object",
     "aws-s3.head_object",
+    "aws-secrets-manager.list_secrets",
+    "aws-secrets-manager.describe_secret",
+    "aws-secrets-manager.get_secret_value",
+    "aws-secrets-manager.list_secret_version_ids",
+    "aws-secrets-manager.create_secret",
+    "aws-secrets-manager.put_secret_value",
+    "aws-secrets-manager.update_secret",
+    "aws-secrets-manager.delete_secret",
+    "aws-secrets-manager.restore_secret",
     "aws-ses.send_email",
     "aws-ses.list_identities",
     "aws-ses.get_email_identity",
     "aws-ses.get_account",
+    "aws-sts.get_caller_identity",
+    "aws-sts.get_access_key_info",
+    "aws-sts.assume_role",
     "azure-blob-storage.list_containers",
     "azure-blob-storage.create_container",
     "azure-blob-storage.list_blobs",
@@ -43549,6 +47209,11 @@ IntegrationActionKey = Literal[
     "box.delete_file",
     "box.delete_folder",
     "box.custom_api_call",
+    "braintree.get_payment",
+    "braintree.capture_transaction",
+    "braintree.reverse_transaction",
+    "braintree.refund_transaction",
+    "braintree.void_transaction",
     "brandfolder.get_asset",
     "brandfolder.create_asset",
     "brandfolder.get_collections",
@@ -43557,6 +47222,17 @@ IntegrationActionKey = Literal[
     "brandfolder.custom_api_call",
     "brave-search.web_search",
     "brave-search.custom_api_call",
+    "braze.track_users",
+    "braze.export_users_by_identifier",
+    "braze.delete_users",
+    "braze.list_campaigns",
+    "braze.get_campaign_details",
+    "braze.send_triggered_campaign",
+    "braze.list_segments",
+    "braze.get_segment_details",
+    "braze.update_subscription_group_status",
+    "braze.change_email_subscription_status",
+    "braze.custom_api_call",
     "breezy-hr.list_candidates",
     "breezy-hr.get_candidate",
     "breezy-hr.create_position",
@@ -43749,6 +47425,23 @@ IntegrationActionKey = Literal[
     "clearbit.find_email",
     "clearbit.reveal_visitor",
     "clearbit.custom_api_call",
+    "clerk.list_users",
+    "clerk.get_user",
+    "clerk.create_user",
+    "clerk.update_user",
+    "clerk.delete_user",
+    "clerk.list_organizations",
+    "clerk.get_organization",
+    "clerk.create_organization",
+    "clerk.update_organization",
+    "clerk.delete_organization",
+    "clerk.list_organization_memberships",
+    "clerk.create_organization_membership",
+    "clerk.update_organization_membership",
+    "clerk.remove_organization_membership",
+    "clerk.list_sessions",
+    "clerk.get_session",
+    "clerk.revoke_session",
     "clickfunnels.createOpportunity",
     "clickfunnels.applyTagToContact",
     "clickfunnels.removeTagFromContact",
@@ -43756,6 +47449,14 @@ IntegrationActionKey = Literal[
     "clickfunnels.updateOrCreateContact",
     "clickfunnels.searchContacts",
     "clickfunnels.custom_api_call",
+    "clickhouse.ping",
+    "clickhouse.execute_query",
+    "clickhouse.list_databases",
+    "clickhouse.list_tables",
+    "clickhouse.describe_table",
+    "clickhouse.show_create_table",
+    "clickhouse.kill_query",
+    "clickhouse.cloud_api_call",
     "clicksend.send_sms",
     "clicksend.send_mms",
     "clicksend.create_contact",
@@ -43833,6 +47534,16 @@ IntegrationActionKey = Literal[
     "codacy.get_quality",
     "codacy.list_issues",
     "codacy.custom_api_call",
+    "cognism.search_contacts",
+    "cognism.search_accounts",
+    "cognism.redeem_contacts",
+    "cognism.redeem_accounts",
+    "cognism.enrich_contact",
+    "cognism.enrich_account",
+    "cognism.get_contact_entitlements",
+    "cognism.get_account_entitlements",
+    "cognism.list_filter_values",
+    "cognism.get_opt_out_by_email",
     "cognito-forms.list_forms",
     "cognito-forms.get_form_schema",
     "cognito-forms.set_public_link_availability",
@@ -43850,6 +47561,16 @@ IntegrationActionKey = Literal[
     "cohere.chat",
     "cohere.embed",
     "cohere.rerank",
+    "common-room.get_token_status",
+    "common-room.add_or_update_contact",
+    "common-room.get_contact_by_email",
+    "common-room.anonymize_contact",
+    "common-room.add_or_update_activity",
+    "common-room.get_activity_types",
+    "common-room.list_segments",
+    "common-room.list_tags",
+    "common-room.create_tag",
+    "common-room.delete_tag",
     "companycam.list_projects",
     "companycam.create_project",
     "companycam.upload_photo",
@@ -43943,6 +47664,19 @@ IntegrationActionKey = Literal[
     "crisp.find_conversation",
     "crisp.find_user_profile",
     "crisp.custom_api_call",
+    "culture-amp.validate_connection",
+    "culture-amp.list_employees",
+    "culture-amp.get_employee",
+    "culture-amp.list_employee_demographics",
+    "culture-amp.list_performance_cycles",
+    "culture-amp.get_performance_cycle",
+    "culture-amp.list_manager_reviews",
+    "culture-amp.get_manager_review",
+    "culture-amp.list_employee_manager_reviews",
+    "culture-amp.list_cycle_manager_reviews",
+    "culture-amp.list_surveys",
+    "culture-amp.get_survey",
+    "culture-amp.custom_api_call",
     "customer-io.identify_person",
     "customer-io.track_event",
     "customer-io.list_segments",
@@ -43998,6 +47732,18 @@ IntegrationActionKey = Literal[
     "datocms.create_item",
     "datocms.update_item",
     "datocms.custom_api_call",
+    "dbt-cloud.list_projects",
+    "dbt-cloud.get_project",
+    "dbt-cloud.list_jobs",
+    "dbt-cloud.get_job",
+    "dbt-cloud.trigger_job_run",
+    "dbt-cloud.list_runs",
+    "dbt-cloud.get_run",
+    "dbt-cloud.cancel_run",
+    "dbt-cloud.list_run_artifacts",
+    "dbt-cloud.get_run_artifact",
+    "dbt-cloud.get_step",
+    "dbt-cloud.custom_api_call",
     "deel.list_contracts",
     "deel.get_contract",
     "deel.list_people",
@@ -44015,6 +47761,18 @@ IntegrationActionKey = Literal[
     "deepl.custom_api_call",
     "deepseek.ask_deepseek",
     "deepseek.ask_json",
+    "deputy.validate_connection",
+    "deputy.list_employees",
+    "deputy.get_employee",
+    "deputy.list_locations",
+    "deputy.list_operational_units",
+    "deputy.query_resource",
+    "deputy.list_rosters",
+    "deputy.list_timesheets",
+    "deputy.create_resource",
+    "deputy.delete_resource",
+    "deputy.create_webhook",
+    "deputy.custom_api_call",
     "descript.import_media",
     "descript.upload_direct_media_file",
     "descript.agent_edit",
@@ -44077,6 +47835,22 @@ IntegrationActionKey = Literal[
     "docker-hub.get_tag",
     "docker-hub.search_images",
     "docker-hub.custom_api_call",
+    "documenso.list_documents",
+    "documenso.get_document",
+    "documenso.create_document",
+    "documenso.send_document",
+    "documenso.delete_document",
+    "documenso.list_templates",
+    "documenso.custom_api_call",
+    "docuseal.list_submissions",
+    "docuseal.get_submission",
+    "docuseal.create_submission",
+    "docuseal.get_submission_documents",
+    "docuseal.archive_submission",
+    "docuseal.list_templates",
+    "docuseal.get_template",
+    "docuseal.archive_template",
+    "docuseal.custom_api_call",
     "docusign.listEnvelopes",
     "docusign.createEnvelope",
     "docusign.getEnvelope",
@@ -44242,6 +48016,19 @@ IntegrationActionKey = Literal[
     "exa.perform_search",
     "exa.find_similar_links",
     "exa.custom_api_call",
+    "expensify.export_reports",
+    "expensify.export_card_reconciliation",
+    "expensify.download_file",
+    "expensify.create_report",
+    "expensify.create_expenses",
+    "expensify.create_policy",
+    "expensify.create_expense_rules",
+    "expensify.get_policy",
+    "expensify.get_policy_list",
+    "expensify.get_domain_card_list",
+    "expensify.update_policy",
+    "expensify.update_report_status",
+    "expensify.submit_job",
     "facebook-ads.list_campaigns",
     "facebook-ads.get_campaign",
     "facebook-ads.list_adsets",
@@ -44346,6 +48133,20 @@ IntegrationActionKey = Literal[
     "fishbowl.create_sales_order",
     "fishbowl.get_inventory",
     "fishbowl.custom_api_call",
+    "fivetran.list_groups",
+    "fivetran.get_group",
+    "fivetran.list_destinations",
+    "fivetran.get_destination",
+    "fivetran.run_destination_setup_tests",
+    "fivetran.list_connections",
+    "fivetran.list_group_connections",
+    "fivetran.get_connection",
+    "fivetran.sync_connection",
+    "fivetran.resync_connection",
+    "fivetran.run_connection_setup_tests",
+    "fivetran.update_connection",
+    "fivetran.delete_connection",
+    "fivetran.custom_api_call",
     "fleetio.get_vehicle",
     "fleetio.create_vehicle",
     "fleetio.create_fuel_entry",
@@ -44540,6 +48341,15 @@ IntegrationActionKey = Literal[
     "gmail.get_people",
     "gmail.search_people",
     "gmail.custom_api_call",
+    "gocardless.list_customers",
+    "gocardless.get_customer",
+    "gocardless.create_customer",
+    "gocardless.list_mandates",
+    "gocardless.list_payments",
+    "gocardless.get_payment",
+    "gocardless.create_payment",
+    "gocardless.cancel_payment",
+    "gocardless.create_refund",
     "gong.list_calls",
     "gong.get_call_transcript",
     "gong.list_users",
@@ -44736,6 +48546,14 @@ IntegrationActionKey = Literal[
     "gumroad.list_sales",
     "gumroad.get_subscriber",
     "gumroad.custom_api_call",
+    "guru.list_collections",
+    "guru.search_cards",
+    "guru.get_card",
+    "guru.create_card",
+    "guru.update_card",
+    "guru.delete_card",
+    "guru.ask_question",
+    "guru.custom_api_call",
     "gusto.list_employees",
     "gusto.get_employee",
     "gusto.list_payrolls",
@@ -44785,6 +48603,18 @@ IntegrationActionKey = Literal[
     "help-scout.add_note",
     "help-scout.update_conversation_status",
     "help-scout.list_customers",
+    "hex.validate_connection",
+    "hex.list_projects",
+    "hex.get_project",
+    "hex.run_project",
+    "hex.list_project_runs",
+    "hex.get_project_run",
+    "hex.cancel_project_run",
+    "hex.list_users",
+    "hex.list_groups",
+    "hex.list_collections",
+    "hex.list_data_connections",
+    "hex.custom_api_call",
     "heygen.create-video-from-template",
     "heygen.retrieve-translated-video-status",
     "heygen.retrieve_video_status",
@@ -44995,6 +48825,16 @@ IntegrationActionKey = Literal[
     "ipinfo.lookup_ip",
     "ipinfo.get_asn",
     "ipinfo.custom_api_call",
+    "iterable.upsert_user",
+    "iterable.get_user_by_email",
+    "iterable.delete_user",
+    "iterable.track_event",
+    "iterable.list_lists",
+    "iterable.subscribe_to_list",
+    "iterable.unsubscribe_from_list",
+    "iterable.list_campaigns",
+    "iterable.send_targeted_email",
+    "iterable.custom_api_call",
     "code.run_code",
     "jazzhr.list_applicants",
     "jazzhr.get_applicant",
@@ -45128,6 +48968,16 @@ IntegrationActionKey = Literal[
     "later.list_posts",
     "later.list_profiles",
     "later.custom_api_call",
+    "launchdarkly.list_projects",
+    "launchdarkly.list_environments",
+    "launchdarkly.list_feature_flags",
+    "launchdarkly.get_feature_flag",
+    "launchdarkly.create_feature_flag",
+    "launchdarkly.update_feature_flag_patch",
+    "launchdarkly.set_flag_enabled",
+    "launchdarkly.delete_feature_flag",
+    "launchdarkly.list_audit_log_entries",
+    "launchdarkly.custom_api_call",
     "lawmatics.get_contact",
     "lawmatics.create_contact",
     "lawmatics.get_matters",
@@ -45383,6 +49233,36 @@ IntegrationActionKey = Literal[
     "meistertask.find_or_create_task",
     "meistertask.find_or_create_label",
     "meistertask.custom_api_call",
+    "mercado-pago.create_preference",
+    "mercado-pago.get_preference",
+    "mercado-pago.search_payments",
+    "mercado-pago.get_payment",
+    "mercado-pago.refund_payment",
+    "mercado-pago.cancel_payment",
+    "mercury.validate_connection",
+    "mercury.list_accounts",
+    "mercury.get_account",
+    "mercury.list_account_transactions",
+    "mercury.list_transactions",
+    "mercury.get_transaction",
+    "mercury.list_recipients",
+    "mercury.get_recipient",
+    "mercury.create_recipient",
+    "mercury.update_recipient",
+    "mercury.list_categories",
+    "mercury.create_category",
+    "mercury.update_category",
+    "mercury.delete_category",
+    "mercury.list_invoices",
+    "mercury.get_invoice",
+    "mercury.create_invoice",
+    "mercury.update_invoice",
+    "mercury.cancel_invoice",
+    "mercury.list_events",
+    "mercury.get_event",
+    "mercury.request_send_money",
+    "mercury.create_internal_transfer",
+    "mercury.custom_api_call",
     "metabase.list_cards",
     "metabase.get_card",
     "metabase.create_card",
@@ -45497,6 +49377,23 @@ IntegrationActionKey = Literal[
     "microsoft-dynamics-crm.dynamics_crm_get_record",
     "microsoft-dynamics-crm.dynamics_crm_update_record",
     "microsoft-dynamics-crm.dynamics_crm_delete_record",
+    "microsoft-entra-id.list_users",
+    "microsoft-entra-id.get_user",
+    "microsoft-entra-id.create_user",
+    "microsoft-entra-id.update_user",
+    "microsoft-entra-id.delete_user",
+    "microsoft-entra-id.list_groups",
+    "microsoft-entra-id.get_group",
+    "microsoft-entra-id.create_security_group",
+    "microsoft-entra-id.update_group",
+    "microsoft-entra-id.delete_group",
+    "microsoft-entra-id.list_group_members",
+    "microsoft-entra-id.add_group_member",
+    "microsoft-entra-id.remove_group_member",
+    "microsoft-entra-id.list_applications",
+    "microsoft-entra-id.get_application",
+    "microsoft-entra-id.list_service_principals",
+    "microsoft-entra-id.get_service_principal",
     "microsoft-excel-365.list_worksheets",
     "microsoft-excel-365.read_range",
     "microsoft-excel-365.write_range",
@@ -45806,6 +49703,15 @@ IntegrationActionKey = Literal[
     "okta.get_user",
     "okta.list_groups",
     "okta.list_applications",
+    "omnisend.create_contact",
+    "omnisend.update_contact",
+    "omnisend.get_contact",
+    "omnisend.list_contacts",
+    "omnisend.delete_contact",
+    "omnisend.send_event",
+    "omnisend.create_batch",
+    "omnisend.list_campaigns",
+    "omnisend.custom_api_call",
     "oncehub.findContact",
     "oncehub.createContact",
     "oncehub.custom_api_call",
@@ -45852,6 +49758,18 @@ IntegrationActionKey = Literal[
     "opsgenie.get_on_calls",
     "opsgenie.list_services",
     "opsgenie.get_service",
+    "ortto.merge_people",
+    "ortto.get_people",
+    "ortto.get_person_subscriptions",
+    "ortto.archive_people",
+    "ortto.delete_people",
+    "ortto.create_activities",
+    "ortto.get_audiences",
+    "ortto.subscribe_to_audience",
+    "ortto.get_campaign_calendar",
+    "ortto.get_tags",
+    "ortto.send_transactional_email",
+    "ortto.custom_api_call",
     "outline.list_documents",
     "outline.get_document",
     "outline.create_document",
@@ -45917,6 +49835,12 @@ IntegrationActionKey = Literal[
     "paypal.list_transactions",
     "paypal.create_payout",
     "paypal.custom_api_call",
+    "paystack.initialize_transaction",
+    "paystack.verify_transaction",
+    "paystack.list_transactions",
+    "paystack.create_refund",
+    "paystack.create_customer",
+    "paystack.list_customers",
     "paywhirl.cancelSubscription",
     "paywhirl.createCustomer",
     "paywhirl.getCustomer",
@@ -46299,6 +50223,48 @@ IntegrationActionKey = Literal[
     "railway.get_deployments",
     "railway.redeploy",
     "railway.custom_api_call",
+    "ramp.validate_connection",
+    "ramp.get_business",
+    "ramp.get_business_balance",
+    "ramp.list_users",
+    "ramp.get_user",
+    "ramp.update_user",
+    "ramp.list_departments",
+    "ramp.create_department",
+    "ramp.list_locations",
+    "ramp.create_location",
+    "ramp.list_cards",
+    "ramp.get_card",
+    "ramp.update_card",
+    "ramp.list_transactions",
+    "ramp.get_transaction",
+    "ramp.update_transaction",
+    "ramp.list_receipts",
+    "ramp.get_receipt",
+    "ramp.upload_receipt",
+    "ramp.list_reimbursements",
+    "ramp.get_reimbursement",
+    "ramp.list_vendors",
+    "ramp.get_vendor",
+    "ramp.create_vendor",
+    "ramp.update_vendor",
+    "ramp.delete_vendor",
+    "ramp.list_bills",
+    "ramp.get_bill",
+    "ramp.create_bill",
+    "ramp.update_bill",
+    "ramp.delete_bill",
+    "ramp.list_statements",
+    "ramp.get_statement",
+    "ramp.list_transfers",
+    "ramp.get_transfer",
+    "ramp.list_accounting_connections",
+    "ramp.list_gl_accounts",
+    "ramp.get_gl_account",
+    "ramp.upload_gl_accounts",
+    "ramp.update_gl_account",
+    "ramp.delete_gl_account",
+    "ramp.custom_api_call",
     "razorpay.custom_api_call",
     "razorpay.create-payment-link",
     "readme-io.create_doc",
@@ -46329,6 +50295,34 @@ IntegrationActionKey = Literal[
     "reddit.deleteRedditPost",
     "reddit.deleteRedditComment",
     "reddit.custom_api_call",
+    "redis-cloud.list_pro_subscriptions",
+    "redis-cloud.get_pro_subscription",
+    "redis-cloud.list_essentials_subscriptions",
+    "redis-cloud.get_essentials_subscription",
+    "redis-cloud.list_databases",
+    "redis-cloud.get_database",
+    "redis-cloud.create_database",
+    "redis-cloud.update_database",
+    "redis-cloud.delete_database",
+    "redis-cloud.get_task",
+    "redis-cloud.custom_api_call",
+    "remote.validate_connection",
+    "remote.list_countries",
+    "remote.list_employments",
+    "remote.get_employment",
+    "remote.update_employment",
+    "remote.invite_employment",
+    "remote.cancel_onboarding",
+    "remote.list_time_off",
+    "remote.get_time_off",
+    "remote.create_time_off",
+    "remote.approve_time_off",
+    "remote.decline_time_off",
+    "remote.cancel_time_off",
+    "remote.list_webhook_callbacks",
+    "remote.create_webhook_callback",
+    "remote.delete_webhook_callback",
+    "remote.custom_api_call",
     "render.list_services",
     "render.get_service",
     "render.list_deploys",
@@ -46336,6 +50330,14 @@ IntegrationActionKey = Literal[
     "replicate.create_prediction",
     "replicate.get_prediction",
     "replicate.list_models",
+    "reply-io.whoami",
+    "reply-io.list_contacts",
+    "reply-io.get_contact",
+    "reply-io.create_contact",
+    "reply-io.update_contact",
+    "reply-io.delete_contact",
+    "reply-io.list_sequences",
+    "reply-io.create_webhook_subscription",
     "resend.send_email",
     "resend.custom_api_call",
     "retell-ai.create_agent",
@@ -46521,6 +50523,21 @@ IntegrationActionKey = Literal[
     "sierra-interactive.create_lead",
     "sierra-interactive.list_properties",
     "sierra-interactive.custom_api_call",
+    "similarweb.validate_connection",
+    "similarweb.check_capabilities",
+    "similarweb.check_user_usage",
+    "similarweb.get_total_visits",
+    "similarweb.get_page_views",
+    "similarweb.get_pages_per_visit",
+    "similarweb.get_bounce_rate",
+    "similarweb.get_average_visit_duration",
+    "similarweb.get_desktop_traffic_sources",
+    "similarweb.get_desktop_traffic_by_country",
+    "similarweb.get_desktop_referrals",
+    "similarweb.subscribe_webhook",
+    "similarweb.list_webhook_subscriptions",
+    "similarweb.unsubscribe_webhook",
+    "similarweb.custom_api_call",
     "simple-practice.list_clients",
     "simple-practice.get_client",
     "simple-practice.list_appointments",
@@ -46536,6 +50553,11 @@ IntegrationActionKey = Literal[
     "skyslope.upload_document",
     "skyslope.get_agents",
     "skyslope.custom_api_call",
+    "slab.list_posts",
+    "slab.get_post",
+    "slab.search_posts",
+    "slab.create_post",
+    "slab.graphql",
     "slack.send_channel_message",
     "slack.send_direct_message",
     "slack.update_message",
@@ -46664,6 +50686,28 @@ IntegrationActionKey = Literal[
     "kv-store.delete",
     "kv-store.add_to_list",
     "kv-store.remove_from_list",
+    "statsig.list_gates",
+    "statsig.get_gate",
+    "statsig.create_gate",
+    "statsig.update_gate",
+    "statsig.enable_gate",
+    "statsig.disable_gate",
+    "statsig.archive_gate",
+    "statsig.unarchive_gate",
+    "statsig.delete_gate",
+    "statsig.list_dynamic_configs",
+    "statsig.get_dynamic_config",
+    "statsig.create_dynamic_config",
+    "statsig.update_dynamic_config",
+    "statsig.enable_dynamic_config",
+    "statsig.disable_dynamic_config",
+    "statsig.archive_dynamic_config",
+    "statsig.unarchive_dynamic_config",
+    "statsig.list_experiments",
+    "statsig.get_experiment",
+    "statsig.update_experiment",
+    "statsig.archive_experiment",
+    "statsig.custom_api_call",
     "storyblok.list_spaces",
     "storyblok.get_space",
     "storyblok.list_stories",
@@ -47037,6 +51081,12 @@ IntegrationActionKey = Literal[
     "typesense.search_documents",
     "typesense.get_document",
     "typesense.upsert_document",
+    "ukg.validate_connection",
+    "ukg.list_person_details",
+    "ukg.list_employment_details",
+    "ukg.list_employee_employment_details",
+    "ukg.list_employee_changes",
+    "ukg.custom_api_call",
     "unbounce.list_pages",
     "unbounce.get_leads",
     "unbounce.list_domains",
@@ -47957,6 +52007,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_roles",
         "list_connections",
     ),
+    "authorize-net": (
+        "create_transaction",
+        "get_transaction",
+        "refund_transaction",
+        "void_transaction",
+        "create_customer_profile",
+    ),
     "autotask": (
         "create_ticket",
         "list_tickets",
@@ -47972,11 +52029,27 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "delete_object",
         "head_object",
     ),
+    "aws-secrets-manager": (
+        "list_secrets",
+        "describe_secret",
+        "get_secret_value",
+        "list_secret_version_ids",
+        "create_secret",
+        "put_secret_value",
+        "update_secret",
+        "delete_secret",
+        "restore_secret",
+    ),
     "aws-ses": (
         "send_email",
         "list_identities",
         "get_email_identity",
         "get_account",
+    ),
+    "aws-sts": (
+        "get_caller_identity",
+        "get_access_key_info",
+        "assume_role",
     ),
     "azure-blob-storage": (
         "list_containers",
@@ -48119,6 +52192,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "delete_folder",
         "custom_api_call",
     ),
+    "braintree": (
+        "get_payment",
+        "capture_transaction",
+        "reverse_transaction",
+        "refund_transaction",
+        "void_transaction",
+    ),
     "brandfolder": (
         "get_asset",
         "create_asset",
@@ -48129,6 +52209,19 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     ),
     "brave-search": (
         "web_search",
+        "custom_api_call",
+    ),
+    "braze": (
+        "track_users",
+        "export_users_by_identifier",
+        "delete_users",
+        "list_campaigns",
+        "get_campaign_details",
+        "send_triggered_campaign",
+        "list_segments",
+        "get_segment_details",
+        "update_subscription_group_status",
+        "change_email_subscription_status",
         "custom_api_call",
     ),
     "breezy-hr": (
@@ -48375,6 +52468,25 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "reveal_visitor",
         "custom_api_call",
     ),
+    "clerk": (
+        "list_users",
+        "get_user",
+        "create_user",
+        "update_user",
+        "delete_user",
+        "list_organizations",
+        "get_organization",
+        "create_organization",
+        "update_organization",
+        "delete_organization",
+        "list_organization_memberships",
+        "create_organization_membership",
+        "update_organization_membership",
+        "remove_organization_membership",
+        "list_sessions",
+        "get_session",
+        "revoke_session",
+    ),
     "clickfunnels": (
         "createOpportunity",
         "applyTagToContact",
@@ -48383,6 +52495,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "updateOrCreateContact",
         "searchContacts",
         "custom_api_call",
+    ),
+    "clickhouse": (
+        "ping",
+        "execute_query",
+        "list_databases",
+        "list_tables",
+        "describe_table",
+        "show_create_table",
+        "kill_query",
+        "cloud_api_call",
     ),
     "clicksend": (
         "send_sms",
@@ -48483,6 +52605,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_issues",
         "custom_api_call",
     ),
+    "cognism": (
+        "search_contacts",
+        "search_accounts",
+        "redeem_contacts",
+        "redeem_accounts",
+        "enrich_contact",
+        "enrich_account",
+        "get_contact_entitlements",
+        "get_account_entitlements",
+        "list_filter_values",
+        "get_opt_out_by_email",
+    ),
     "cognito-forms": (
         "list_forms",
         "get_form_schema",
@@ -48503,6 +52637,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "chat",
         "embed",
         "rerank",
+    ),
+    "common-room": (
+        "get_token_status",
+        "add_or_update_contact",
+        "get_contact_by_email",
+        "anonymize_contact",
+        "add_or_update_activity",
+        "get_activity_types",
+        "list_segments",
+        "list_tags",
+        "create_tag",
+        "delete_tag",
     ),
     "companycam": (
         "list_projects",
@@ -48617,6 +52763,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_user_profile",
         "custom_api_call",
     ),
+    "culture-amp": (
+        "validate_connection",
+        "list_employees",
+        "get_employee",
+        "list_employee_demographics",
+        "list_performance_cycles",
+        "get_performance_cycle",
+        "list_manager_reviews",
+        "get_manager_review",
+        "list_employee_manager_reviews",
+        "list_cycle_manager_reviews",
+        "list_surveys",
+        "get_survey",
+        "custom_api_call",
+    ),
     "customer-io": (
         "identify_person",
         "track_event",
@@ -48686,6 +52847,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "update_item",
         "custom_api_call",
     ),
+    "dbt-cloud": (
+        "list_projects",
+        "get_project",
+        "list_jobs",
+        "get_job",
+        "trigger_job_run",
+        "list_runs",
+        "get_run",
+        "cancel_run",
+        "list_run_artifacts",
+        "get_run_artifact",
+        "get_step",
+        "custom_api_call",
+    ),
     "deel": (
         "list_contracts",
         "get_contract",
@@ -48712,6 +52887,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "deepseek": (
         "ask_deepseek",
         "ask_json",
+    ),
+    "deputy": (
+        "validate_connection",
+        "list_employees",
+        "get_employee",
+        "list_locations",
+        "list_operational_units",
+        "query_resource",
+        "list_rosters",
+        "list_timesheets",
+        "create_resource",
+        "delete_resource",
+        "create_webhook",
+        "custom_api_call",
     ),
     "descript": (
         "import_media",
@@ -48787,6 +52976,26 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_tags",
         "get_tag",
         "search_images",
+        "custom_api_call",
+    ),
+    "documenso": (
+        "list_documents",
+        "get_document",
+        "create_document",
+        "send_document",
+        "delete_document",
+        "list_templates",
+        "custom_api_call",
+    ),
+    "docuseal": (
+        "list_submissions",
+        "get_submission",
+        "create_submission",
+        "get_submission_documents",
+        "archive_submission",
+        "list_templates",
+        "get_template",
+        "archive_template",
         "custom_api_call",
     ),
     "docusign": (
@@ -48998,6 +53207,21 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_similar_links",
         "custom_api_call",
     ),
+    "expensify": (
+        "export_reports",
+        "export_card_reconciliation",
+        "download_file",
+        "create_report",
+        "create_expenses",
+        "create_policy",
+        "create_expense_rules",
+        "get_policy",
+        "get_policy_list",
+        "get_domain_card_list",
+        "update_policy",
+        "update_report_status",
+        "submit_job",
+    ),
     "facebook-ads": (
         "list_campaigns",
         "get_campaign",
@@ -49128,6 +53352,22 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_product",
         "create_sales_order",
         "get_inventory",
+        "custom_api_call",
+    ),
+    "fivetran": (
+        "list_groups",
+        "get_group",
+        "list_destinations",
+        "get_destination",
+        "run_destination_setup_tests",
+        "list_connections",
+        "list_group_connections",
+        "get_connection",
+        "sync_connection",
+        "resync_connection",
+        "run_connection_setup_tests",
+        "update_connection",
+        "delete_connection",
         "custom_api_call",
     ),
     "fleetio": (
@@ -49367,6 +53607,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_people",
         "search_people",
         "custom_api_call",
+    ),
+    "gocardless": (
+        "list_customers",
+        "get_customer",
+        "create_customer",
+        "list_mandates",
+        "list_payments",
+        "get_payment",
+        "create_payment",
+        "cancel_payment",
+        "create_refund",
     ),
     "gong": (
         "list_calls",
@@ -49624,6 +53875,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_subscriber",
         "custom_api_call",
     ),
+    "guru": (
+        "list_collections",
+        "search_cards",
+        "get_card",
+        "create_card",
+        "update_card",
+        "delete_card",
+        "ask_question",
+        "custom_api_call",
+    ),
     "gusto": (
         "list_employees",
         "get_employee",
@@ -49690,6 +53951,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "add_note",
         "update_conversation_status",
         "list_customers",
+    ),
+    "hex": (
+        "validate_connection",
+        "list_projects",
+        "get_project",
+        "run_project",
+        "list_project_runs",
+        "get_project_run",
+        "cancel_project_run",
+        "list_users",
+        "list_groups",
+        "list_collections",
+        "list_data_connections",
+        "custom_api_call",
     ),
     "heygen": (
         "create-video-from-template",
@@ -49945,6 +54220,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_asn",
         "custom_api_call",
     ),
+    "iterable": (
+        "upsert_user",
+        "get_user_by_email",
+        "delete_user",
+        "track_event",
+        "list_lists",
+        "subscribe_to_list",
+        "unsubscribe_from_list",
+        "list_campaigns",
+        "send_targeted_email",
+        "custom_api_call",
+    ),
     "code": (
         "run_code",
     ),
@@ -50120,6 +54407,18 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_post",
         "list_posts",
         "list_profiles",
+        "custom_api_call",
+    ),
+    "launchdarkly": (
+        "list_projects",
+        "list_environments",
+        "list_feature_flags",
+        "get_feature_flag",
+        "create_feature_flag",
+        "update_feature_flag_patch",
+        "set_flag_enabled",
+        "delete_feature_flag",
+        "list_audit_log_entries",
         "custom_api_call",
     ),
     "lawmatics": (
@@ -50437,6 +54736,40 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "find_or_create_label",
         "custom_api_call",
     ),
+    "mercado-pago": (
+        "create_preference",
+        "get_preference",
+        "search_payments",
+        "get_payment",
+        "refund_payment",
+        "cancel_payment",
+    ),
+    "mercury": (
+        "validate_connection",
+        "list_accounts",
+        "get_account",
+        "list_account_transactions",
+        "list_transactions",
+        "get_transaction",
+        "list_recipients",
+        "get_recipient",
+        "create_recipient",
+        "update_recipient",
+        "list_categories",
+        "create_category",
+        "update_category",
+        "delete_category",
+        "list_invoices",
+        "get_invoice",
+        "create_invoice",
+        "update_invoice",
+        "cancel_invoice",
+        "list_events",
+        "get_event",
+        "request_send_money",
+        "create_internal_transfer",
+        "custom_api_call",
+    ),
     "metabase": (
         "list_cards",
         "get_card",
@@ -50558,6 +54891,25 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "dynamics_crm_get_record",
         "dynamics_crm_update_record",
         "dynamics_crm_delete_record",
+    ),
+    "microsoft-entra-id": (
+        "list_users",
+        "get_user",
+        "create_user",
+        "update_user",
+        "delete_user",
+        "list_groups",
+        "get_group",
+        "create_security_group",
+        "update_group",
+        "delete_group",
+        "list_group_members",
+        "add_group_member",
+        "remove_group_member",
+        "list_applications",
+        "get_application",
+        "list_service_principals",
+        "get_service_principal",
     ),
     "microsoft-excel-365": (
         "list_worksheets",
@@ -50946,6 +55298,17 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_groups",
         "list_applications",
     ),
+    "omnisend": (
+        "create_contact",
+        "update_contact",
+        "get_contact",
+        "list_contacts",
+        "delete_contact",
+        "send_event",
+        "create_batch",
+        "list_campaigns",
+        "custom_api_call",
+    ),
     "oncehub": (
         "findContact",
         "createContact",
@@ -51009,6 +55372,20 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "get_on_calls",
         "list_services",
         "get_service",
+    ),
+    "ortto": (
+        "merge_people",
+        "get_people",
+        "get_person_subscriptions",
+        "archive_people",
+        "delete_people",
+        "create_activities",
+        "get_audiences",
+        "subscribe_to_audience",
+        "get_campaign_calendar",
+        "get_tags",
+        "send_transactional_email",
+        "custom_api_call",
     ),
     "outline": (
         "list_documents",
@@ -51090,6 +55467,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_transactions",
         "create_payout",
         "custom_api_call",
+    ),
+    "paystack": (
+        "initialize_transaction",
+        "verify_transaction",
+        "list_transactions",
+        "create_refund",
+        "create_customer",
+        "list_customers",
     ),
     "paywhirl": (
         "cancelSubscription",
@@ -51555,6 +55940,50 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "redeploy",
         "custom_api_call",
     ),
+    "ramp": (
+        "validate_connection",
+        "get_business",
+        "get_business_balance",
+        "list_users",
+        "get_user",
+        "update_user",
+        "list_departments",
+        "create_department",
+        "list_locations",
+        "create_location",
+        "list_cards",
+        "get_card",
+        "update_card",
+        "list_transactions",
+        "get_transaction",
+        "update_transaction",
+        "list_receipts",
+        "get_receipt",
+        "upload_receipt",
+        "list_reimbursements",
+        "get_reimbursement",
+        "list_vendors",
+        "get_vendor",
+        "create_vendor",
+        "update_vendor",
+        "delete_vendor",
+        "list_bills",
+        "get_bill",
+        "create_bill",
+        "update_bill",
+        "delete_bill",
+        "list_statements",
+        "get_statement",
+        "list_transfers",
+        "get_transfer",
+        "list_accounting_connections",
+        "list_gl_accounts",
+        "get_gl_account",
+        "upload_gl_accounts",
+        "update_gl_account",
+        "delete_gl_account",
+        "custom_api_call",
+    ),
     "razorpay": (
         "custom_api_call",
         "create-payment-link",
@@ -51595,6 +56024,38 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "deleteRedditComment",
         "custom_api_call",
     ),
+    "redis-cloud": (
+        "list_pro_subscriptions",
+        "get_pro_subscription",
+        "list_essentials_subscriptions",
+        "get_essentials_subscription",
+        "list_databases",
+        "get_database",
+        "create_database",
+        "update_database",
+        "delete_database",
+        "get_task",
+        "custom_api_call",
+    ),
+    "remote": (
+        "validate_connection",
+        "list_countries",
+        "list_employments",
+        "get_employment",
+        "update_employment",
+        "invite_employment",
+        "cancel_onboarding",
+        "list_time_off",
+        "get_time_off",
+        "create_time_off",
+        "approve_time_off",
+        "decline_time_off",
+        "cancel_time_off",
+        "list_webhook_callbacks",
+        "create_webhook_callback",
+        "delete_webhook_callback",
+        "custom_api_call",
+    ),
     "render": (
         "list_services",
         "get_service",
@@ -51605,6 +56066,16 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "create_prediction",
         "get_prediction",
         "list_models",
+    ),
+    "reply-io": (
+        "whoami",
+        "list_contacts",
+        "get_contact",
+        "create_contact",
+        "update_contact",
+        "delete_contact",
+        "list_sequences",
+        "create_webhook_subscription",
     ),
     "resend": (
         "send_email",
@@ -51853,6 +56324,23 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_properties",
         "custom_api_call",
     ),
+    "similarweb": (
+        "validate_connection",
+        "check_capabilities",
+        "check_user_usage",
+        "get_total_visits",
+        "get_page_views",
+        "get_pages_per_visit",
+        "get_bounce_rate",
+        "get_average_visit_duration",
+        "get_desktop_traffic_sources",
+        "get_desktop_traffic_by_country",
+        "get_desktop_referrals",
+        "subscribe_webhook",
+        "list_webhook_subscriptions",
+        "unsubscribe_webhook",
+        "custom_api_call",
+    ),
     "simple-practice": (
         "list_clients",
         "get_client",
@@ -51873,6 +56361,13 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "upload_document",
         "get_agents",
         "custom_api_call",
+    ),
+    "slab": (
+        "list_posts",
+        "get_post",
+        "search_posts",
+        "create_post",
+        "graphql",
     ),
     "slack": (
         "send_channel_message",
@@ -52035,6 +56530,30 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "delete",
         "add_to_list",
         "remove_from_list",
+    ),
+    "statsig": (
+        "list_gates",
+        "get_gate",
+        "create_gate",
+        "update_gate",
+        "enable_gate",
+        "disable_gate",
+        "archive_gate",
+        "unarchive_gate",
+        "delete_gate",
+        "list_dynamic_configs",
+        "get_dynamic_config",
+        "create_dynamic_config",
+        "update_dynamic_config",
+        "enable_dynamic_config",
+        "disable_dynamic_config",
+        "archive_dynamic_config",
+        "unarchive_dynamic_config",
+        "list_experiments",
+        "get_experiment",
+        "update_experiment",
+        "archive_experiment",
+        "custom_api_call",
     ),
     "storyblok": (
         "list_spaces",
@@ -52496,6 +57015,14 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "search_documents",
         "get_document",
         "upsert_document",
+    ),
+    "ukg": (
+        "validate_connection",
+        "list_person_details",
+        "list_employment_details",
+        "list_employee_employment_details",
+        "list_employee_changes",
+        "custom_api_call",
     ),
     "unbounce": (
         "list_pages",
@@ -53429,6 +57956,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "auth0.create_user": Auth0CreateUserInput,
     "auth0.list_roles": Auth0ListRolesInput,
     "auth0.list_connections": Auth0ListConnectionsInput,
+    "authorize-net.create_transaction": AuthorizeNetCreateTransactionInput,
+    "authorize-net.get_transaction": AuthorizeNetGetTransactionInput,
+    "authorize-net.refund_transaction": AuthorizeNetRefundTransactionInput,
+    "authorize-net.void_transaction": AuthorizeNetVoidTransactionInput,
+    "authorize-net.create_customer_profile": AuthorizeNetCreateCustomerProfileInput,
     "autotask.create_ticket": AutotaskCreateTicketInput,
     "autotask.list_tickets": AutotaskListTicketsInput,
     "autotask.update_ticket": AutotaskUpdateTicketInput,
@@ -53440,10 +57972,22 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "aws-s3.put_object": AwsS3PutObjectInput,
     "aws-s3.delete_object": AwsS3DeleteObjectInput,
     "aws-s3.head_object": AwsS3HeadObjectInput,
+    "aws-secrets-manager.list_secrets": AwsSecretsManagerListSecretsInput,
+    "aws-secrets-manager.describe_secret": AwsSecretsManagerDescribeSecretInput,
+    "aws-secrets-manager.get_secret_value": AwsSecretsManagerGetSecretValueInput,
+    "aws-secrets-manager.list_secret_version_ids": AwsSecretsManagerListSecretVersionIdsInput,
+    "aws-secrets-manager.create_secret": AwsSecretsManagerCreateSecretInput,
+    "aws-secrets-manager.put_secret_value": AwsSecretsManagerPutSecretValueInput,
+    "aws-secrets-manager.update_secret": AwsSecretsManagerUpdateSecretInput,
+    "aws-secrets-manager.delete_secret": AwsSecretsManagerDeleteSecretInput,
+    "aws-secrets-manager.restore_secret": AwsSecretsManagerRestoreSecretInput,
     "aws-ses.send_email": AwsSesSendEmailInput,
     "aws-ses.list_identities": AwsSesListIdentitiesInput,
     "aws-ses.get_email_identity": AwsSesGetEmailIdentityInput,
     "aws-ses.get_account": AwsSesGetAccountInput,
+    "aws-sts.get_caller_identity": AwsStsGetCallerIdentityInput,
+    "aws-sts.get_access_key_info": AwsStsGetAccessKeyInfoInput,
+    "aws-sts.assume_role": AwsStsAssumeRoleInput,
     "azure-blob-storage.list_containers": AzureBlobStorageListContainersInput,
     "azure-blob-storage.create_container": AzureBlobStorageCreateContainerInput,
     "azure-blob-storage.list_blobs": AzureBlobStorageListBlobsInput,
@@ -53555,6 +58099,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "box.delete_file": BoxDeleteFileInput,
     "box.delete_folder": BoxDeleteFolderInput,
     "box.custom_api_call": BoxCustomApiCallInput,
+    "braintree.get_payment": BraintreeGetPaymentInput,
+    "braintree.capture_transaction": BraintreeCaptureTransactionInput,
+    "braintree.reverse_transaction": BraintreeReverseTransactionInput,
+    "braintree.refund_transaction": BraintreeRefundTransactionInput,
+    "braintree.void_transaction": BraintreeVoidTransactionInput,
     "brandfolder.get_asset": BrandfolderGetAssetInput,
     "brandfolder.create_asset": BrandfolderCreateAssetInput,
     "brandfolder.get_collections": BrandfolderGetCollectionsInput,
@@ -53563,6 +58112,17 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "brandfolder.custom_api_call": BrandfolderCustomApiCallInput,
     "brave-search.web_search": BraveSearchWebSearchInput,
     "brave-search.custom_api_call": BraveSearchCustomApiCallInput,
+    "braze.track_users": BrazeTrackUsersInput,
+    "braze.export_users_by_identifier": BrazeExportUsersByIdentifierInput,
+    "braze.delete_users": BrazeDeleteUsersInput,
+    "braze.list_campaigns": BrazeListCampaignsInput,
+    "braze.get_campaign_details": BrazeGetCampaignDetailsInput,
+    "braze.send_triggered_campaign": BrazeSendTriggeredCampaignInput,
+    "braze.list_segments": BrazeListSegmentsInput,
+    "braze.get_segment_details": BrazeGetSegmentDetailsInput,
+    "braze.update_subscription_group_status": BrazeUpdateSubscriptionGroupStatusInput,
+    "braze.change_email_subscription_status": BrazeChangeEmailSubscriptionStatusInput,
+    "braze.custom_api_call": BrazeCustomApiCallInput,
     "breezy-hr.list_candidates": BreezyHrListCandidatesInput,
     "breezy-hr.get_candidate": BreezyHrGetCandidateInput,
     "breezy-hr.create_position": BreezyHrCreatePositionInput,
@@ -53755,6 +58315,23 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "clearbit.find_email": ClearbitFindEmailInput,
     "clearbit.reveal_visitor": ClearbitRevealVisitorInput,
     "clearbit.custom_api_call": ClearbitCustomApiCallInput,
+    "clerk.list_users": ClerkListUsersInput,
+    "clerk.get_user": ClerkGetUserInput,
+    "clerk.create_user": ClerkCreateUserInput,
+    "clerk.update_user": ClerkUpdateUserInput,
+    "clerk.delete_user": ClerkDeleteUserInput,
+    "clerk.list_organizations": ClerkListOrganizationsInput,
+    "clerk.get_organization": ClerkGetOrganizationInput,
+    "clerk.create_organization": ClerkCreateOrganizationInput,
+    "clerk.update_organization": ClerkUpdateOrganizationInput,
+    "clerk.delete_organization": ClerkDeleteOrganizationInput,
+    "clerk.list_organization_memberships": ClerkListOrganizationMembershipsInput,
+    "clerk.create_organization_membership": ClerkCreateOrganizationMembershipInput,
+    "clerk.update_organization_membership": ClerkUpdateOrganizationMembershipInput,
+    "clerk.remove_organization_membership": ClerkRemoveOrganizationMembershipInput,
+    "clerk.list_sessions": ClerkListSessionsInput,
+    "clerk.get_session": ClerkGetSessionInput,
+    "clerk.revoke_session": ClerkRevokeSessionInput,
     "clickfunnels.createOpportunity": ClickfunnelsCreateOpportunityInput,
     "clickfunnels.applyTagToContact": ClickfunnelsApplyTagToContactInput,
     "clickfunnels.removeTagFromContact": ClickfunnelsRemoveTagFromContactInput,
@@ -53762,6 +58339,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "clickfunnels.updateOrCreateContact": ClickfunnelsUpdateOrCreateContactInput,
     "clickfunnels.searchContacts": ClickfunnelsSearchContactsInput,
     "clickfunnels.custom_api_call": ClickfunnelsCustomApiCallInput,
+    "clickhouse.ping": ClickhousePingInput,
+    "clickhouse.execute_query": ClickhouseExecuteQueryInput,
+    "clickhouse.list_databases": ClickhouseListDatabasesInput,
+    "clickhouse.list_tables": ClickhouseListTablesInput,
+    "clickhouse.describe_table": ClickhouseDescribeTableInput,
+    "clickhouse.show_create_table": ClickhouseShowCreateTableInput,
+    "clickhouse.kill_query": ClickhouseKillQueryInput,
+    "clickhouse.cloud_api_call": ClickhouseCloudApiCallInput,
     "clicksend.send_sms": ClicksendSendSmsInput,
     "clicksend.send_mms": ClicksendSendMmsInput,
     "clicksend.create_contact": ClicksendCreateContactInput,
@@ -53839,6 +58424,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "codacy.get_quality": CodacyGetQualityInput,
     "codacy.list_issues": CodacyListIssuesInput,
     "codacy.custom_api_call": CodacyCustomApiCallInput,
+    "cognism.search_contacts": CognismSearchContactsInput,
+    "cognism.search_accounts": CognismSearchAccountsInput,
+    "cognism.redeem_contacts": CognismRedeemContactsInput,
+    "cognism.redeem_accounts": CognismRedeemAccountsInput,
+    "cognism.enrich_contact": CognismEnrichContactInput,
+    "cognism.enrich_account": CognismEnrichAccountInput,
+    "cognism.get_contact_entitlements": CognismGetContactEntitlementsInput,
+    "cognism.get_account_entitlements": CognismGetAccountEntitlementsInput,
+    "cognism.list_filter_values": CognismListFilterValuesInput,
+    "cognism.get_opt_out_by_email": CognismGetOptOutByEmailInput,
     "cognito-forms.list_forms": CognitoFormsListFormsInput,
     "cognito-forms.get_form_schema": CognitoFormsGetFormSchemaInput,
     "cognito-forms.set_public_link_availability": CognitoFormsSetPublicLinkAvailabilityInput,
@@ -53856,6 +58451,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "cohere.chat": CohereChatInput,
     "cohere.embed": CohereEmbedInput,
     "cohere.rerank": CohereRerankInput,
+    "common-room.get_token_status": CommonRoomGetTokenStatusInput,
+    "common-room.add_or_update_contact": CommonRoomAddOrUpdateContactInput,
+    "common-room.get_contact_by_email": CommonRoomGetContactByEmailInput,
+    "common-room.anonymize_contact": CommonRoomAnonymizeContactInput,
+    "common-room.add_or_update_activity": CommonRoomAddOrUpdateActivityInput,
+    "common-room.get_activity_types": CommonRoomGetActivityTypesInput,
+    "common-room.list_segments": CommonRoomListSegmentsInput,
+    "common-room.list_tags": CommonRoomListTagsInput,
+    "common-room.create_tag": CommonRoomCreateTagInput,
+    "common-room.delete_tag": CommonRoomDeleteTagInput,
     "companycam.list_projects": CompanycamListProjectsInput,
     "companycam.create_project": CompanycamCreateProjectInput,
     "companycam.upload_photo": CompanycamUploadPhotoInput,
@@ -53949,6 +58554,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "crisp.find_conversation": CrispFindConversationInput,
     "crisp.find_user_profile": CrispFindUserProfileInput,
     "crisp.custom_api_call": CrispCustomApiCallInput,
+    "culture-amp.validate_connection": CultureAmpValidateConnectionInput,
+    "culture-amp.list_employees": CultureAmpListEmployeesInput,
+    "culture-amp.get_employee": CultureAmpGetEmployeeInput,
+    "culture-amp.list_employee_demographics": CultureAmpListEmployeeDemographicsInput,
+    "culture-amp.list_performance_cycles": CultureAmpListPerformanceCyclesInput,
+    "culture-amp.get_performance_cycle": CultureAmpGetPerformanceCycleInput,
+    "culture-amp.list_manager_reviews": CultureAmpListManagerReviewsInput,
+    "culture-amp.get_manager_review": CultureAmpGetManagerReviewInput,
+    "culture-amp.list_employee_manager_reviews": CultureAmpListEmployeeManagerReviewsInput,
+    "culture-amp.list_cycle_manager_reviews": CultureAmpListCycleManagerReviewsInput,
+    "culture-amp.list_surveys": CultureAmpListSurveysInput,
+    "culture-amp.get_survey": CultureAmpGetSurveyInput,
+    "culture-amp.custom_api_call": CultureAmpCustomApiCallInput,
     "customer-io.identify_person": CustomerIoIdentifyPersonInput,
     "customer-io.track_event": CustomerIoTrackEventInput,
     "customer-io.list_segments": CustomerIoListSegmentsInput,
@@ -54004,6 +58622,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "datocms.create_item": DatocmsCreateItemInput,
     "datocms.update_item": DatocmsUpdateItemInput,
     "datocms.custom_api_call": DatocmsCustomApiCallInput,
+    "dbt-cloud.list_projects": DbtCloudListProjectsInput,
+    "dbt-cloud.get_project": DbtCloudGetProjectInput,
+    "dbt-cloud.list_jobs": DbtCloudListJobsInput,
+    "dbt-cloud.get_job": DbtCloudGetJobInput,
+    "dbt-cloud.trigger_job_run": DbtCloudTriggerJobRunInput,
+    "dbt-cloud.list_runs": DbtCloudListRunsInput,
+    "dbt-cloud.get_run": DbtCloudGetRunInput,
+    "dbt-cloud.cancel_run": DbtCloudCancelRunInput,
+    "dbt-cloud.list_run_artifacts": DbtCloudListRunArtifactsInput,
+    "dbt-cloud.get_run_artifact": DbtCloudGetRunArtifactInput,
+    "dbt-cloud.get_step": DbtCloudGetStepInput,
+    "dbt-cloud.custom_api_call": DbtCloudCustomApiCallInput,
     "deel.list_contracts": DeelListContractsInput,
     "deel.get_contract": DeelGetContractInput,
     "deel.list_people": DeelListPeopleInput,
@@ -54021,6 +58651,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "deepl.custom_api_call": DeeplCustomApiCallInput,
     "deepseek.ask_deepseek": DeepseekAskDeepseekInput,
     "deepseek.ask_json": DeepseekAskJsonInput,
+    "deputy.validate_connection": DeputyValidateConnectionInput,
+    "deputy.list_employees": DeputyListEmployeesInput,
+    "deputy.get_employee": DeputyGetEmployeeInput,
+    "deputy.list_locations": DeputyListLocationsInput,
+    "deputy.list_operational_units": DeputyListOperationalUnitsInput,
+    "deputy.query_resource": DeputyQueryResourceInput,
+    "deputy.list_rosters": DeputyListRostersInput,
+    "deputy.list_timesheets": DeputyListTimesheetsInput,
+    "deputy.create_resource": DeputyCreateResourceInput,
+    "deputy.delete_resource": DeputyDeleteResourceInput,
+    "deputy.create_webhook": DeputyCreateWebhookInput,
+    "deputy.custom_api_call": DeputyCustomApiCallInput,
     "descript.import_media": DescriptImportMediaInput,
     "descript.upload_direct_media_file": DescriptUploadDirectMediaFileInput,
     "descript.agent_edit": DescriptAgentEditInput,
@@ -54083,6 +58725,22 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "docker-hub.get_tag": DockerHubGetTagInput,
     "docker-hub.search_images": DockerHubSearchImagesInput,
     "docker-hub.custom_api_call": DockerHubCustomApiCallInput,
+    "documenso.list_documents": DocumensoListDocumentsInput,
+    "documenso.get_document": DocumensoGetDocumentInput,
+    "documenso.create_document": DocumensoCreateDocumentInput,
+    "documenso.send_document": DocumensoSendDocumentInput,
+    "documenso.delete_document": DocumensoDeleteDocumentInput,
+    "documenso.list_templates": DocumensoListTemplatesInput,
+    "documenso.custom_api_call": DocumensoCustomApiCallInput,
+    "docuseal.list_submissions": DocusealListSubmissionsInput,
+    "docuseal.get_submission": DocusealGetSubmissionInput,
+    "docuseal.create_submission": DocusealCreateSubmissionInput,
+    "docuseal.get_submission_documents": DocusealGetSubmissionDocumentsInput,
+    "docuseal.archive_submission": DocusealArchiveSubmissionInput,
+    "docuseal.list_templates": DocusealListTemplatesInput,
+    "docuseal.get_template": DocusealGetTemplateInput,
+    "docuseal.archive_template": DocusealArchiveTemplateInput,
+    "docuseal.custom_api_call": DocusealCustomApiCallInput,
     "docusign.listEnvelopes": DocusignListEnvelopesInput,
     "docusign.createEnvelope": DocusignCreateEnvelopeInput,
     "docusign.getEnvelope": DocusignGetEnvelopeInput,
@@ -54248,6 +58906,19 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "exa.perform_search": ExaPerformSearchInput,
     "exa.find_similar_links": ExaFindSimilarLinksInput,
     "exa.custom_api_call": ExaCustomApiCallInput,
+    "expensify.export_reports": ExpensifyExportReportsInput,
+    "expensify.export_card_reconciliation": ExpensifyExportCardReconciliationInput,
+    "expensify.download_file": ExpensifyDownloadFileInput,
+    "expensify.create_report": ExpensifyCreateReportInput,
+    "expensify.create_expenses": ExpensifyCreateExpensesInput,
+    "expensify.create_policy": ExpensifyCreatePolicyInput,
+    "expensify.create_expense_rules": ExpensifyCreateExpenseRulesInput,
+    "expensify.get_policy": ExpensifyGetPolicyInput,
+    "expensify.get_policy_list": ExpensifyGetPolicyListInput,
+    "expensify.get_domain_card_list": ExpensifyGetDomainCardListInput,
+    "expensify.update_policy": ExpensifyUpdatePolicyInput,
+    "expensify.update_report_status": ExpensifyUpdateReportStatusInput,
+    "expensify.submit_job": ExpensifySubmitJobInput,
     "facebook-ads.list_campaigns": FacebookAdsListCampaignsInput,
     "facebook-ads.get_campaign": FacebookAdsGetCampaignInput,
     "facebook-ads.list_adsets": FacebookAdsListAdsetsInput,
@@ -54352,6 +59023,20 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fishbowl.create_sales_order": FishbowlCreateSalesOrderInput,
     "fishbowl.get_inventory": FishbowlGetInventoryInput,
     "fishbowl.custom_api_call": FishbowlCustomApiCallInput,
+    "fivetran.list_groups": FivetranListGroupsInput,
+    "fivetran.get_group": FivetranGetGroupInput,
+    "fivetran.list_destinations": FivetranListDestinationsInput,
+    "fivetran.get_destination": FivetranGetDestinationInput,
+    "fivetran.run_destination_setup_tests": FivetranRunDestinationSetupTestsInput,
+    "fivetran.list_connections": FivetranListConnectionsInput,
+    "fivetran.list_group_connections": FivetranListGroupConnectionsInput,
+    "fivetran.get_connection": FivetranGetConnectionInput,
+    "fivetran.sync_connection": FivetranSyncConnectionInput,
+    "fivetran.resync_connection": FivetranResyncConnectionInput,
+    "fivetran.run_connection_setup_tests": FivetranRunConnectionSetupTestsInput,
+    "fivetran.update_connection": FivetranUpdateConnectionInput,
+    "fivetran.delete_connection": FivetranDeleteConnectionInput,
+    "fivetran.custom_api_call": FivetranCustomApiCallInput,
     "fleetio.get_vehicle": FleetioGetVehicleInput,
     "fleetio.create_vehicle": FleetioCreateVehicleInput,
     "fleetio.create_fuel_entry": FleetioCreateFuelEntryInput,
@@ -54546,6 +59231,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gmail.get_people": GmailGetPeopleInput,
     "gmail.search_people": GmailSearchPeopleInput,
     "gmail.custom_api_call": GmailCustomApiCallInput,
+    "gocardless.list_customers": GocardlessListCustomersInput,
+    "gocardless.get_customer": GocardlessGetCustomerInput,
+    "gocardless.create_customer": GocardlessCreateCustomerInput,
+    "gocardless.list_mandates": GocardlessListMandatesInput,
+    "gocardless.list_payments": GocardlessListPaymentsInput,
+    "gocardless.get_payment": GocardlessGetPaymentInput,
+    "gocardless.create_payment": GocardlessCreatePaymentInput,
+    "gocardless.cancel_payment": GocardlessCancelPaymentInput,
+    "gocardless.create_refund": GocardlessCreateRefundInput,
     "gong.list_calls": GongListCallsInput,
     "gong.get_call_transcript": GongGetCallTranscriptInput,
     "gong.list_users": GongListUsersInput,
@@ -54742,6 +59436,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "gumroad.list_sales": GumroadListSalesInput,
     "gumroad.get_subscriber": GumroadGetSubscriberInput,
     "gumroad.custom_api_call": GumroadCustomApiCallInput,
+    "guru.list_collections": GuruListCollectionsInput,
+    "guru.search_cards": GuruSearchCardsInput,
+    "guru.get_card": GuruGetCardInput,
+    "guru.create_card": GuruCreateCardInput,
+    "guru.update_card": GuruUpdateCardInput,
+    "guru.delete_card": GuruDeleteCardInput,
+    "guru.ask_question": GuruAskQuestionInput,
+    "guru.custom_api_call": GuruCustomApiCallInput,
     "gusto.list_employees": GustoListEmployeesInput,
     "gusto.get_employee": GustoGetEmployeeInput,
     "gusto.list_payrolls": GustoListPayrollsInput,
@@ -54791,6 +59493,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "help-scout.add_note": HelpScoutAddNoteInput,
     "help-scout.update_conversation_status": HelpScoutUpdateConversationStatusInput,
     "help-scout.list_customers": HelpScoutListCustomersInput,
+    "hex.validate_connection": HexValidateConnectionInput,
+    "hex.list_projects": HexListProjectsInput,
+    "hex.get_project": HexGetProjectInput,
+    "hex.run_project": HexRunProjectInput,
+    "hex.list_project_runs": HexListProjectRunsInput,
+    "hex.get_project_run": HexGetProjectRunInput,
+    "hex.cancel_project_run": HexCancelProjectRunInput,
+    "hex.list_users": HexListUsersInput,
+    "hex.list_groups": HexListGroupsInput,
+    "hex.list_collections": HexListCollectionsInput,
+    "hex.list_data_connections": HexListDataConnectionsInput,
+    "hex.custom_api_call": HexCustomApiCallInput,
     "heygen.create-video-from-template": HeygenCreateVideoFromTemplateInput,
     "heygen.retrieve-translated-video-status": HeygenRetrieveTranslatedVideoStatusInput,
     "heygen.retrieve_video_status": HeygenRetrieveVideoStatusInput,
@@ -55001,6 +59715,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "ipinfo.lookup_ip": IpinfoLookupIpInput,
     "ipinfo.get_asn": IpinfoGetAsnInput,
     "ipinfo.custom_api_call": IpinfoCustomApiCallInput,
+    "iterable.upsert_user": IterableUpsertUserInput,
+    "iterable.get_user_by_email": IterableGetUserByEmailInput,
+    "iterable.delete_user": IterableDeleteUserInput,
+    "iterable.track_event": IterableTrackEventInput,
+    "iterable.list_lists": IterableListListsInput,
+    "iterable.subscribe_to_list": IterableSubscribeToListInput,
+    "iterable.unsubscribe_from_list": IterableUnsubscribeFromListInput,
+    "iterable.list_campaigns": IterableListCampaignsInput,
+    "iterable.send_targeted_email": IterableSendTargetedEmailInput,
+    "iterable.custom_api_call": IterableCustomApiCallInput,
     "code.run_code": CodeRunCodeInput,
     "jazzhr.list_applicants": JazzhrListApplicantsInput,
     "jazzhr.get_applicant": JazzhrGetApplicantInput,
@@ -55134,6 +59858,16 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "later.list_posts": LaterListPostsInput,
     "later.list_profiles": LaterListProfilesInput,
     "later.custom_api_call": LaterCustomApiCallInput,
+    "launchdarkly.list_projects": LaunchdarklyListProjectsInput,
+    "launchdarkly.list_environments": LaunchdarklyListEnvironmentsInput,
+    "launchdarkly.list_feature_flags": LaunchdarklyListFeatureFlagsInput,
+    "launchdarkly.get_feature_flag": LaunchdarklyGetFeatureFlagInput,
+    "launchdarkly.create_feature_flag": LaunchdarklyCreateFeatureFlagInput,
+    "launchdarkly.update_feature_flag_patch": LaunchdarklyUpdateFeatureFlagPatchInput,
+    "launchdarkly.set_flag_enabled": LaunchdarklySetFlagEnabledInput,
+    "launchdarkly.delete_feature_flag": LaunchdarklyDeleteFeatureFlagInput,
+    "launchdarkly.list_audit_log_entries": LaunchdarklyListAuditLogEntriesInput,
+    "launchdarkly.custom_api_call": LaunchdarklyCustomApiCallInput,
     "lawmatics.get_contact": LawmaticsGetContactInput,
     "lawmatics.create_contact": LawmaticsCreateContactInput,
     "lawmatics.get_matters": LawmaticsGetMattersInput,
@@ -55389,6 +60123,36 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "meistertask.find_or_create_task": MeistertaskFindOrCreateTaskInput,
     "meistertask.find_or_create_label": MeistertaskFindOrCreateLabelInput,
     "meistertask.custom_api_call": MeistertaskCustomApiCallInput,
+    "mercado-pago.create_preference": MercadoPagoCreatePreferenceInput,
+    "mercado-pago.get_preference": MercadoPagoGetPreferenceInput,
+    "mercado-pago.search_payments": MercadoPagoSearchPaymentsInput,
+    "mercado-pago.get_payment": MercadoPagoGetPaymentInput,
+    "mercado-pago.refund_payment": MercadoPagoRefundPaymentInput,
+    "mercado-pago.cancel_payment": MercadoPagoCancelPaymentInput,
+    "mercury.validate_connection": MercuryValidateConnectionInput,
+    "mercury.list_accounts": MercuryListAccountsInput,
+    "mercury.get_account": MercuryGetAccountInput,
+    "mercury.list_account_transactions": MercuryListAccountTransactionsInput,
+    "mercury.list_transactions": MercuryListTransactionsInput,
+    "mercury.get_transaction": MercuryGetTransactionInput,
+    "mercury.list_recipients": MercuryListRecipientsInput,
+    "mercury.get_recipient": MercuryGetRecipientInput,
+    "mercury.create_recipient": MercuryCreateRecipientInput,
+    "mercury.update_recipient": MercuryUpdateRecipientInput,
+    "mercury.list_categories": MercuryListCategoriesInput,
+    "mercury.create_category": MercuryCreateCategoryInput,
+    "mercury.update_category": MercuryUpdateCategoryInput,
+    "mercury.delete_category": MercuryDeleteCategoryInput,
+    "mercury.list_invoices": MercuryListInvoicesInput,
+    "mercury.get_invoice": MercuryGetInvoiceInput,
+    "mercury.create_invoice": MercuryCreateInvoiceInput,
+    "mercury.update_invoice": MercuryUpdateInvoiceInput,
+    "mercury.cancel_invoice": MercuryCancelInvoiceInput,
+    "mercury.list_events": MercuryListEventsInput,
+    "mercury.get_event": MercuryGetEventInput,
+    "mercury.request_send_money": MercuryRequestSendMoneyInput,
+    "mercury.create_internal_transfer": MercuryCreateInternalTransferInput,
+    "mercury.custom_api_call": MercuryCustomApiCallInput,
     "metabase.list_cards": MetabaseListCardsInput,
     "metabase.get_card": MetabaseGetCardInput,
     "metabase.create_card": MetabaseCreateCardInput,
@@ -55503,6 +60267,23 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "microsoft-dynamics-crm.dynamics_crm_get_record": MicrosoftDynamicsCrmDynamicsCrmGetRecordInput,
     "microsoft-dynamics-crm.dynamics_crm_update_record": MicrosoftDynamicsCrmDynamicsCrmUpdateRecordInput,
     "microsoft-dynamics-crm.dynamics_crm_delete_record": MicrosoftDynamicsCrmDynamicsCrmDeleteRecordInput,
+    "microsoft-entra-id.list_users": MicrosoftEntraIdListUsersInput,
+    "microsoft-entra-id.get_user": MicrosoftEntraIdGetUserInput,
+    "microsoft-entra-id.create_user": MicrosoftEntraIdCreateUserInput,
+    "microsoft-entra-id.update_user": MicrosoftEntraIdUpdateUserInput,
+    "microsoft-entra-id.delete_user": MicrosoftEntraIdDeleteUserInput,
+    "microsoft-entra-id.list_groups": MicrosoftEntraIdListGroupsInput,
+    "microsoft-entra-id.get_group": MicrosoftEntraIdGetGroupInput,
+    "microsoft-entra-id.create_security_group": MicrosoftEntraIdCreateSecurityGroupInput,
+    "microsoft-entra-id.update_group": MicrosoftEntraIdUpdateGroupInput,
+    "microsoft-entra-id.delete_group": MicrosoftEntraIdDeleteGroupInput,
+    "microsoft-entra-id.list_group_members": MicrosoftEntraIdListGroupMembersInput,
+    "microsoft-entra-id.add_group_member": MicrosoftEntraIdAddGroupMemberInput,
+    "microsoft-entra-id.remove_group_member": MicrosoftEntraIdRemoveGroupMemberInput,
+    "microsoft-entra-id.list_applications": MicrosoftEntraIdListApplicationsInput,
+    "microsoft-entra-id.get_application": MicrosoftEntraIdGetApplicationInput,
+    "microsoft-entra-id.list_service_principals": MicrosoftEntraIdListServicePrincipalsInput,
+    "microsoft-entra-id.get_service_principal": MicrosoftEntraIdGetServicePrincipalInput,
     "microsoft-excel-365.list_worksheets": MicrosoftExcel365ListWorksheetsInput,
     "microsoft-excel-365.read_range": MicrosoftExcel365ReadRangeInput,
     "microsoft-excel-365.write_range": MicrosoftExcel365WriteRangeInput,
@@ -55812,6 +60593,15 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "okta.get_user": OktaGetUserInput,
     "okta.list_groups": OktaListGroupsInput,
     "okta.list_applications": OktaListApplicationsInput,
+    "omnisend.create_contact": OmnisendCreateContactInput,
+    "omnisend.update_contact": OmnisendUpdateContactInput,
+    "omnisend.get_contact": OmnisendGetContactInput,
+    "omnisend.list_contacts": OmnisendListContactsInput,
+    "omnisend.delete_contact": OmnisendDeleteContactInput,
+    "omnisend.send_event": OmnisendSendEventInput,
+    "omnisend.create_batch": OmnisendCreateBatchInput,
+    "omnisend.list_campaigns": OmnisendListCampaignsInput,
+    "omnisend.custom_api_call": OmnisendCustomApiCallInput,
     "oncehub.findContact": OncehubFindContactInput,
     "oncehub.createContact": OncehubCreateContactInput,
     "oncehub.custom_api_call": OncehubCustomApiCallInput,
@@ -55858,6 +60648,18 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "opsgenie.get_on_calls": OpsgenieGetOnCallsInput,
     "opsgenie.list_services": OpsgenieListServicesInput,
     "opsgenie.get_service": OpsgenieGetServiceInput,
+    "ortto.merge_people": OrttoMergePeopleInput,
+    "ortto.get_people": OrttoGetPeopleInput,
+    "ortto.get_person_subscriptions": OrttoGetPersonSubscriptionsInput,
+    "ortto.archive_people": OrttoArchivePeopleInput,
+    "ortto.delete_people": OrttoDeletePeopleInput,
+    "ortto.create_activities": OrttoCreateActivitiesInput,
+    "ortto.get_audiences": OrttoGetAudiencesInput,
+    "ortto.subscribe_to_audience": OrttoSubscribeToAudienceInput,
+    "ortto.get_campaign_calendar": OrttoGetCampaignCalendarInput,
+    "ortto.get_tags": OrttoGetTagsInput,
+    "ortto.send_transactional_email": OrttoSendTransactionalEmailInput,
+    "ortto.custom_api_call": OrttoCustomApiCallInput,
     "outline.list_documents": OutlineListDocumentsInput,
     "outline.get_document": OutlineGetDocumentInput,
     "outline.create_document": OutlineCreateDocumentInput,
@@ -55923,6 +60725,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "paypal.list_transactions": PaypalListTransactionsInput,
     "paypal.create_payout": PaypalCreatePayoutInput,
     "paypal.custom_api_call": PaypalCustomApiCallInput,
+    "paystack.initialize_transaction": PaystackInitializeTransactionInput,
+    "paystack.verify_transaction": PaystackVerifyTransactionInput,
+    "paystack.list_transactions": PaystackListTransactionsInput,
+    "paystack.create_refund": PaystackCreateRefundInput,
+    "paystack.create_customer": PaystackCreateCustomerInput,
+    "paystack.list_customers": PaystackListCustomersInput,
     "paywhirl.cancelSubscription": PaywhirlCancelSubscriptionInput,
     "paywhirl.createCustomer": PaywhirlCreateCustomerInput,
     "paywhirl.getCustomer": PaywhirlGetCustomerInput,
@@ -56305,6 +61113,48 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "railway.get_deployments": RailwayGetDeploymentsInput,
     "railway.redeploy": RailwayRedeployInput,
     "railway.custom_api_call": RailwayCustomApiCallInput,
+    "ramp.validate_connection": RampValidateConnectionInput,
+    "ramp.get_business": RampGetBusinessInput,
+    "ramp.get_business_balance": RampGetBusinessBalanceInput,
+    "ramp.list_users": RampListUsersInput,
+    "ramp.get_user": RampGetUserInput,
+    "ramp.update_user": RampUpdateUserInput,
+    "ramp.list_departments": RampListDepartmentsInput,
+    "ramp.create_department": RampCreateDepartmentInput,
+    "ramp.list_locations": RampListLocationsInput,
+    "ramp.create_location": RampCreateLocationInput,
+    "ramp.list_cards": RampListCardsInput,
+    "ramp.get_card": RampGetCardInput,
+    "ramp.update_card": RampUpdateCardInput,
+    "ramp.list_transactions": RampListTransactionsInput,
+    "ramp.get_transaction": RampGetTransactionInput,
+    "ramp.update_transaction": RampUpdateTransactionInput,
+    "ramp.list_receipts": RampListReceiptsInput,
+    "ramp.get_receipt": RampGetReceiptInput,
+    "ramp.upload_receipt": RampUploadReceiptInput,
+    "ramp.list_reimbursements": RampListReimbursementsInput,
+    "ramp.get_reimbursement": RampGetReimbursementInput,
+    "ramp.list_vendors": RampListVendorsInput,
+    "ramp.get_vendor": RampGetVendorInput,
+    "ramp.create_vendor": RampCreateVendorInput,
+    "ramp.update_vendor": RampUpdateVendorInput,
+    "ramp.delete_vendor": RampDeleteVendorInput,
+    "ramp.list_bills": RampListBillsInput,
+    "ramp.get_bill": RampGetBillInput,
+    "ramp.create_bill": RampCreateBillInput,
+    "ramp.update_bill": RampUpdateBillInput,
+    "ramp.delete_bill": RampDeleteBillInput,
+    "ramp.list_statements": RampListStatementsInput,
+    "ramp.get_statement": RampGetStatementInput,
+    "ramp.list_transfers": RampListTransfersInput,
+    "ramp.get_transfer": RampGetTransferInput,
+    "ramp.list_accounting_connections": RampListAccountingConnectionsInput,
+    "ramp.list_gl_accounts": RampListGlAccountsInput,
+    "ramp.get_gl_account": RampGetGlAccountInput,
+    "ramp.upload_gl_accounts": RampUploadGlAccountsInput,
+    "ramp.update_gl_account": RampUpdateGlAccountInput,
+    "ramp.delete_gl_account": RampDeleteGlAccountInput,
+    "ramp.custom_api_call": RampCustomApiCallInput,
     "razorpay.custom_api_call": RazorpayCustomApiCallInput,
     "razorpay.create-payment-link": RazorpayCreatePaymentLinkInput,
     "readme-io.create_doc": ReadmeIoCreateDocInput,
@@ -56335,6 +61185,34 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "reddit.deleteRedditPost": RedditDeleteRedditPostInput,
     "reddit.deleteRedditComment": RedditDeleteRedditCommentInput,
     "reddit.custom_api_call": RedditCustomApiCallInput,
+    "redis-cloud.list_pro_subscriptions": RedisCloudListProSubscriptionsInput,
+    "redis-cloud.get_pro_subscription": RedisCloudGetProSubscriptionInput,
+    "redis-cloud.list_essentials_subscriptions": RedisCloudListEssentialsSubscriptionsInput,
+    "redis-cloud.get_essentials_subscription": RedisCloudGetEssentialsSubscriptionInput,
+    "redis-cloud.list_databases": RedisCloudListDatabasesInput,
+    "redis-cloud.get_database": RedisCloudGetDatabaseInput,
+    "redis-cloud.create_database": RedisCloudCreateDatabaseInput,
+    "redis-cloud.update_database": RedisCloudUpdateDatabaseInput,
+    "redis-cloud.delete_database": RedisCloudDeleteDatabaseInput,
+    "redis-cloud.get_task": RedisCloudGetTaskInput,
+    "redis-cloud.custom_api_call": RedisCloudCustomApiCallInput,
+    "remote.validate_connection": RemoteValidateConnectionInput,
+    "remote.list_countries": RemoteListCountriesInput,
+    "remote.list_employments": RemoteListEmploymentsInput,
+    "remote.get_employment": RemoteGetEmploymentInput,
+    "remote.update_employment": RemoteUpdateEmploymentInput,
+    "remote.invite_employment": RemoteInviteEmploymentInput,
+    "remote.cancel_onboarding": RemoteCancelOnboardingInput,
+    "remote.list_time_off": RemoteListTimeOffInput,
+    "remote.get_time_off": RemoteGetTimeOffInput,
+    "remote.create_time_off": RemoteCreateTimeOffInput,
+    "remote.approve_time_off": RemoteApproveTimeOffInput,
+    "remote.decline_time_off": RemoteDeclineTimeOffInput,
+    "remote.cancel_time_off": RemoteCancelTimeOffInput,
+    "remote.list_webhook_callbacks": RemoteListWebhookCallbacksInput,
+    "remote.create_webhook_callback": RemoteCreateWebhookCallbackInput,
+    "remote.delete_webhook_callback": RemoteDeleteWebhookCallbackInput,
+    "remote.custom_api_call": RemoteCustomApiCallInput,
     "render.list_services": RenderListServicesInput,
     "render.get_service": RenderGetServiceInput,
     "render.list_deploys": RenderListDeploysInput,
@@ -56342,6 +61220,14 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "replicate.create_prediction": ReplicateCreatePredictionInput,
     "replicate.get_prediction": ReplicateGetPredictionInput,
     "replicate.list_models": ReplicateListModelsInput,
+    "reply-io.whoami": ReplyIoWhoamiInput,
+    "reply-io.list_contacts": ReplyIoListContactsInput,
+    "reply-io.get_contact": ReplyIoGetContactInput,
+    "reply-io.create_contact": ReplyIoCreateContactInput,
+    "reply-io.update_contact": ReplyIoUpdateContactInput,
+    "reply-io.delete_contact": ReplyIoDeleteContactInput,
+    "reply-io.list_sequences": ReplyIoListSequencesInput,
+    "reply-io.create_webhook_subscription": ReplyIoCreateWebhookSubscriptionInput,
     "resend.send_email": ResendSendEmailInput,
     "resend.custom_api_call": ResendCustomApiCallInput,
     "retell-ai.create_agent": RetellAiCreateAgentInput,
@@ -56527,6 +61413,21 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "sierra-interactive.create_lead": SierraInteractiveCreateLeadInput,
     "sierra-interactive.list_properties": SierraInteractiveListPropertiesInput,
     "sierra-interactive.custom_api_call": SierraInteractiveCustomApiCallInput,
+    "similarweb.validate_connection": SimilarwebValidateConnectionInput,
+    "similarweb.check_capabilities": SimilarwebCheckCapabilitiesInput,
+    "similarweb.check_user_usage": SimilarwebCheckUserUsageInput,
+    "similarweb.get_total_visits": SimilarwebGetTotalVisitsInput,
+    "similarweb.get_page_views": SimilarwebGetPageViewsInput,
+    "similarweb.get_pages_per_visit": SimilarwebGetPagesPerVisitInput,
+    "similarweb.get_bounce_rate": SimilarwebGetBounceRateInput,
+    "similarweb.get_average_visit_duration": SimilarwebGetAverageVisitDurationInput,
+    "similarweb.get_desktop_traffic_sources": SimilarwebGetDesktopTrafficSourcesInput,
+    "similarweb.get_desktop_traffic_by_country": SimilarwebGetDesktopTrafficByCountryInput,
+    "similarweb.get_desktop_referrals": SimilarwebGetDesktopReferralsInput,
+    "similarweb.subscribe_webhook": SimilarwebSubscribeWebhookInput,
+    "similarweb.list_webhook_subscriptions": SimilarwebListWebhookSubscriptionsInput,
+    "similarweb.unsubscribe_webhook": SimilarwebUnsubscribeWebhookInput,
+    "similarweb.custom_api_call": SimilarwebCustomApiCallInput,
     "simple-practice.list_clients": SimplePracticeListClientsInput,
     "simple-practice.get_client": SimplePracticeGetClientInput,
     "simple-practice.list_appointments": SimplePracticeListAppointmentsInput,
@@ -56542,6 +61443,11 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "skyslope.upload_document": SkyslopeUploadDocumentInput,
     "skyslope.get_agents": SkyslopeGetAgentsInput,
     "skyslope.custom_api_call": SkyslopeCustomApiCallInput,
+    "slab.list_posts": SlabListPostsInput,
+    "slab.get_post": SlabGetPostInput,
+    "slab.search_posts": SlabSearchPostsInput,
+    "slab.create_post": SlabCreatePostInput,
+    "slab.graphql": SlabGraphqlInput,
     "slack.send_channel_message": SlackSendChannelMessageInput,
     "slack.send_direct_message": SlackSendDirectMessageInput,
     "slack.update_message": SlackUpdateMessageInput,
@@ -56670,6 +61576,28 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "kv-store.delete": KvStoreDeleteInput,
     "kv-store.add_to_list": KvStoreAddToListInput,
     "kv-store.remove_from_list": KvStoreRemoveFromListInput,
+    "statsig.list_gates": StatsigListGatesInput,
+    "statsig.get_gate": StatsigGetGateInput,
+    "statsig.create_gate": StatsigCreateGateInput,
+    "statsig.update_gate": StatsigUpdateGateInput,
+    "statsig.enable_gate": StatsigEnableGateInput,
+    "statsig.disable_gate": StatsigDisableGateInput,
+    "statsig.archive_gate": StatsigArchiveGateInput,
+    "statsig.unarchive_gate": StatsigUnarchiveGateInput,
+    "statsig.delete_gate": StatsigDeleteGateInput,
+    "statsig.list_dynamic_configs": StatsigListDynamicConfigsInput,
+    "statsig.get_dynamic_config": StatsigGetDynamicConfigInput,
+    "statsig.create_dynamic_config": StatsigCreateDynamicConfigInput,
+    "statsig.update_dynamic_config": StatsigUpdateDynamicConfigInput,
+    "statsig.enable_dynamic_config": StatsigEnableDynamicConfigInput,
+    "statsig.disable_dynamic_config": StatsigDisableDynamicConfigInput,
+    "statsig.archive_dynamic_config": StatsigArchiveDynamicConfigInput,
+    "statsig.unarchive_dynamic_config": StatsigUnarchiveDynamicConfigInput,
+    "statsig.list_experiments": StatsigListExperimentsInput,
+    "statsig.get_experiment": StatsigGetExperimentInput,
+    "statsig.update_experiment": StatsigUpdateExperimentInput,
+    "statsig.archive_experiment": StatsigArchiveExperimentInput,
+    "statsig.custom_api_call": StatsigCustomApiCallInput,
     "storyblok.list_spaces": StoryblokListSpacesInput,
     "storyblok.get_space": StoryblokGetSpaceInput,
     "storyblok.list_stories": StoryblokListStoriesInput,
@@ -57043,6 +61971,12 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "typesense.search_documents": TypesenseSearchDocumentsInput,
     "typesense.get_document": TypesenseGetDocumentInput,
     "typesense.upsert_document": TypesenseUpsertDocumentInput,
+    "ukg.validate_connection": UkgValidateConnectionInput,
+    "ukg.list_person_details": UkgListPersonDetailsInput,
+    "ukg.list_employment_details": UkgListEmploymentDetailsInput,
+    "ukg.list_employee_employment_details": UkgListEmployeeEmploymentDetailsInput,
+    "ukg.list_employee_changes": UkgListEmployeeChangesInput,
+    "ukg.custom_api_call": UkgCustomApiCallInput,
     "unbounce.list_pages": UnbounceListPagesInput,
     "unbounce.get_leads": UnbounceGetLeadsInput,
     "unbounce.list_domains": UnbounceListDomainsInput,
