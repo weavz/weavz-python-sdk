@@ -37,7 +37,7 @@ class PersistenceSettings(BaseModel):
 
 
 class LocalBrowserSettings(BaseModel):
-    """Owner-controlled runtime policy for Agent Local Browser Control."""
+    """Owner-controlled runtime policy for Local Browser for Agents."""
 
     runtime: LocalBrowserRuntime = "chrome_extension"
 

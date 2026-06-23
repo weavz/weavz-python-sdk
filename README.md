@@ -7,9 +7,9 @@
 [![Release workflow](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml)
 [![License](https://img.shields.io/pypi/l/weavz-io-sdk?label=license)](https://github.com/weavz/weavz-python-sdk/blob/main/LICENSE)
 
-Official Python SDK for [Weavz](https://weavz.io), the stateful agent runtime for SaaS and AI products.
+Official Python SDK for [Weavz](https://weavz.io), governed app access and execution infrastructure for SaaS and AI products.
 
-Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, Human Gates, input partials, Filesystem, State KV, Sandbox execution, and 500+ integrations.
+Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, Human Gates, input partials, Filesystem, State KV, Sandbox execution, and 1,000+ integrations.
 
 ## Links
 
@@ -388,7 +388,7 @@ The model naming pattern is `{IntegrationName}{ActionName}Input` in PascalCase. 
 
 ## AI Framework Adapters
 
-MCP is the primary hosted agent surface. The SDK also includes small dependency-free adapters that convert configured workspace actions into common AI tool shapes.
+MCP is the primary hosted agent access path. The SDK also includes small dependency-free adapters that convert configured workspace actions into common AI tool shapes.
 
 ```python
 from weavz_sdk import (
