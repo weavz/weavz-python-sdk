@@ -310,11 +310,12 @@ class TestWorkspaceIntegrations:
         global _integration_instance_id
         result = _client.workspaces.add_integration(
             _workspace_id,
-            integration_name="github",
+            integration_name="openai",
+            integration_alias="openai_user",
             connection_strategy="per_user",
         )
         assert "integration" in result
-        assert result["integration"]["integrationName"] == "github"
+        assert result["integration"]["integrationName"] == "openai"
         assert result["integration"]["connectionStrategy"] == "per_user"
         _integration_instance_id = result["integration"]["id"]
 
@@ -323,7 +324,7 @@ class TestWorkspaceIntegrations:
         assert "integrations" in result
         assert len(result["integrations"]) > 0
         names = [i["integrationName"] for i in result["integrations"]]
-        assert "github" in names
+        assert "openai" in names
 
     def test_update_integration(self):
         result = _client.workspaces.update_integration(
@@ -336,14 +337,14 @@ class TestWorkspaceIntegrations:
     def test_add_integration_with_alias(self):
         result = _client.workspaces.add_integration(
             _workspace_id,
-            integration_name="slack",
-            integration_alias="slack_bot",
+            integration_name="openai",
+            integration_alias="openai_bot",
             connection_strategy="per_user",
-            display_name="Slack Bot",
+            display_name="OpenAI Bot",
         )
         assert "integration" in result
-        assert result["integration"]["alias"] == "slack_bot"
-        assert result["integration"]["displayName"] == "Slack Bot"
+        assert result["integration"]["alias"] == "openai_bot"
+        assert result["integration"]["displayName"] == "OpenAI Bot"
         inst_id = result["integration"]["id"]
         # Clean up
         _client.workspaces.remove_integration(_workspace_id, inst_id)
@@ -380,8 +381,8 @@ class TestMcpServers:
     def test_add_tool(self):
         result = _client.mcp_servers.add_tool(
             _mcp_server_id,
-            integration_name="openai",
-            action_name="chat_completion",
+            integration_name="http",
+            action_name="send_request",
         )
         assert "tool" in result
         TestMcpServers._tool_id = result["tool"]["id"]
@@ -511,6 +512,7 @@ class TestPartials:
             _workspace_id,
             "openai",
             "Default OpenAI Config",
+            integration_alias="openai_primary",
             description="Pre-filled model and temperature",
             values={"model": "gpt-4o", "temperature": 0.7},
             enforced_keys=["model"],
@@ -534,11 +536,12 @@ class TestPartials:
 
     def test_list_partials_with_filter(self):
         result = _client.partials.list(
-            _workspace_id, integration_name="openai"
+            _workspace_id, integration_name="openai", integration_alias="openai_primary"
         )
         assert "partials" in result
         for p in result["partials"]:
             assert p["integrationName"] == "openai"
+            assert p["integrationAlias"] == "openai_primary"
 
     def test_get_partial(self):
         result = _client.partials.get(TestPartials._partial_id)
@@ -570,6 +573,7 @@ class TestPartials:
             _workspace_id,
             "openai",
             "Chat Completion Defaults",
+            integration_alias="openai_primary",
             action_name="chat_completion",
             values={"model": "gpt-4o"},
         )
