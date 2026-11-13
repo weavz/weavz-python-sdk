@@ -21,10 +21,11 @@ from weavz_sdk.adapters import (
 @pytest.fixture
 def client_factory():
     clients = []
-    def make(handler, retries=0):
-        client = WeavzClient("wvz_test", base_url="https://api.example.com", max_retries=retries)
+    def make(handler, retries=0, **options):
+        client = WeavzClient("wvz_test", base_url="https://api.example.com", max_retries=retries, **options)
+        default_headers = client._http.headers
         client._http.close()
-        client._http = httpx.Client(base_url="https://api.example.com", headers={"Authorization": "Bearer wvz_test"}, timeout=310, transport=httpx.MockTransport(handler))
+        client._http = httpx.Client(base_url="https://api.example.com", headers=default_headers, timeout=310, transport=httpx.MockTransport(handler))
         clients.append(client)
         return client
     yield make
@@ -41,6 +42,35 @@ def client_factory():
 def test_reject_invalid_config(kwargs):
     with pytest.raises(ValueError):
         WeavzClient(**{"api_key": "wvz_test", **kwargs})
+
+
+def test_hosted_connect_sends_configured_frontend_origin_without_mutating_headers(client_factory):
+    requests = []
+    headers = {"Origin": "https://app.example.com", "X-Example": "configured"}
+    client = client_factory(lambda req: (requests.append(req), httpx.Response(200, json={}))[1], headers=headers)
+    headers["Origin"] = "https://changed.example.com"
+    headers["X-Example"] = "changed"
+    client.connect.create_token(integration_name="slack", connection_name="Example", external_id="account", workspace_id="workspace")
+    assert requests[0].headers["origin"] == "https://app.example.com"
+    assert requests[0].headers["x-example"] == "configured"
+    assert requests[0].headers["authorization"] == "Bearer wvz_test"
+
+
+@pytest.mark.parametrize("name", ["Authorization", "authorization", "AUTHORIZATION"])
+def test_custom_headers_cannot_override_api_key_case_insensitively(client_factory, name):
+    requests = []
+    headers = {"Authorization": "global-one", "authorization": "global-two", "AUTHORIZATION": "global-three", "Origin": "https://app.example.com"}
+    original = headers.copy()
+    client = client_factory(lambda req: (requests.append(req), httpx.Response(200, json={}))[1], headers=headers)
+    assert client._http.headers.get_list("Authorization") == ["Bearer wvz_test"]
+    client.workspaces.list()
+    request_headers = {name: "request-override", "X-Example": "request"}
+    client.request("GET", "/api/v1/workspaces", headers=request_headers)
+    assert headers == original and request_headers == {name: "request-override", "X-Example": "request"}
+    for request in requests:
+        assert request.headers.get_list("Authorization") == ["Bearer wvz_test"]
+        assert request.headers["origin"] == "https://app.example.com"
+    assert requests[-1].headers["x-example"] == "request"
 
 
 @pytest.mark.parametrize("path", ["https://other.example/api", "//other.example/api", "http://api.example.com/api"])

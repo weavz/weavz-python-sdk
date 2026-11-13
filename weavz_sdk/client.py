@@ -1330,6 +1330,7 @@ class WeavzClient:
         base_url: str = "https://platform.weavz.io",
         timeout: float = 310.0,
         max_retries: int = 2,
+        headers: dict[str, str] | None = None,
     ) -> None:
         if not isinstance(api_key, str) or not api_key.strip():
             raise ValueError("api_key must be a non-empty string")
@@ -1342,9 +1343,11 @@ class WeavzClient:
         self._api_key = api_key
         self._base_url = str(base).rstrip("/")
         self._max_retries = max_retries
+        default_headers = httpx.Headers(headers)
+        default_headers["Authorization"] = f"Bearer {api_key}"
         self._http = httpx.Client(
             base_url=self._base_url,
-            headers={"Authorization": f"Bearer {api_key}"},
+            headers=default_headers,
             timeout=timeout,
         )
 
@@ -1376,7 +1379,9 @@ class WeavzClient:
         if max_retries is not None and (not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0):
             raise ValueError("max_retries must be a non-negative integer")
         retries = self._max_retries if max_retries is None else max_retries
-        request_options: dict[str, Any] = {"params": params, "json": json, "headers": headers}
+        request_headers = httpx.Headers(headers)
+        request_headers["Authorization"] = f"Bearer {self._api_key}"
+        request_options: dict[str, Any] = {"params": params, "json": json, "headers": request_headers}
         if timeout is not None:
             request_options["timeout"] = _positive_finite(timeout, "timeout")
         if path.startswith("//"):

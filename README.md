@@ -96,6 +96,7 @@ client = WeavzClient(
     base_url="https://platform.weavz.io",
     timeout=310.0,
     max_retries=2,
+    headers={"Origin": "https://app.example.com"},
 )
 ```
 
@@ -105,6 +106,7 @@ client = WeavzClient(
 | `base_url` | No | `https://platform.weavz.io` | API base URL |
 | `timeout` | No | `310.0` | Positive finite timeout in seconds for connection and request I/O |
 | `max_retries` | No | `2` | Non-negative retry count for rate limits and retryable read/update failures |
+| `headers` | No | `None` | Additional HTTP headers. The configured API-key authorization is preserved. |
 
 Network failures and server errors do not automatically replay action-execution POST requests. Rate-limit responses can be retried. Retry delays are bounded to 60 seconds. `connect.wait()` and `approvals.wait()` validate their polling settings, cap each request's I/O timeout to the remaining polling budget, and stop polling at the deadline.
 
@@ -164,27 +166,31 @@ Pydantic action inputs serialize aliases and JSON-compatible values, including d
 
 ### Hosted Connect
 
-Create a hosted connect session when an end user needs to connect Slack, Google, GitHub, or another integration account.
+Create a hosted connect session on your backend when an end user needs to connect Slack, Google, GitHub, or another integration account. Keep your API key on the backend. Set `Origin` to a fixed frontend origin from your application's allowlist so OAuth completion messages return to your app. Return the connect URL only to the end user authorized for that connection, and open it from their **Connect** click.
 
 ```python
-session = client.connect.create_token(
-    integration_name="slack",
-    connection_name="Acme Slack",
-    external_id="acme_slack",
-    workspace_id=workspace["id"],
-    end_user_id="user_123",
-)
+with WeavzClient(
+    api_key="wvz_your_api_key",
+    headers={"Origin": "https://app.example.com"},
+) as connect_client:
+    session = connect_client.connect.create_token(
+        integration_name="slack",
+        connection_name="Acme Slack",
+        external_id="acme_slack",
+        workspace_id=workspace["id"],
+        end_user_id="user_123",
+    )
 
-print(f"Send the user here: {session['connectUrl']}")
+    print(f"Send the user here: {session['connectUrl']}")
 
-completed = client.connect.wait(
-    session["token"],
-    timeout=120.0,
-    interval=1.0,
-)
+    completed = connect_client.connect.wait(
+        session["token"],
+        timeout=120.0,
+        interval=1.0,
+    )
 
-if completed["status"] == "COMPLETED":
-    print(completed["connectionId"])
+    if completed["status"] == "COMPLETED":
+        print(completed["connectionId"])
 ```
 
 Read more:
