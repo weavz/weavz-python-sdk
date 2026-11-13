@@ -61,7 +61,7 @@ jobs:
 
       - name: Run package checks
         run: |
-          python -m pytest tests/test_generated_integrations.py
+          python -m pytest
           python -m build
           python -m twine check dist/*
 

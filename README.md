@@ -7,7 +7,7 @@
 [![Release workflow](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/weavz/weavz-python-sdk/actions/workflows/release.yml)
 [![License](https://img.shields.io/pypi/l/weavz-io-sdk?label=license)](https://github.com/weavz/weavz-python-sdk/blob/main/LICENSE)
 
-Official Python SDK for [Weavz](https://weavz.io), governed app access and execution infrastructure for SaaS and AI products.
+Official Python SDK for [Weavz](https://weavz.io), governed app access for SaaS and AI products.
 
 Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, Human Gates, input partials, Filesystem, State KV, Sandbox execution, and 1,000+ integrations.
 
@@ -103,8 +103,12 @@ client = WeavzClient(
 | --- | --- | --- | --- |
 | `api_key` | Yes | - | Weavz API key with the `wvz_` prefix |
 | `base_url` | No | `https://platform.weavz.io` | API base URL |
-| `timeout` | No | `310.0` | Request timeout in seconds |
-| `max_retries` | No | `2` | Retry count for transient failures |
+| `timeout` | No | `310.0` | Positive finite timeout in seconds for connection and request I/O |
+| `max_retries` | No | `2` | Non-negative retry count for rate limits and retryable read/update failures |
+
+Network failures and server errors do not automatically replay action-execution POST requests. Rate-limit responses can be retried. Retry delays are bounded to 60 seconds. `connect.wait()` and `approvals.wait()` validate their polling settings, cap each request's I/O timeout to the remaining polling budget, and stop polling at the deadline.
+
+Successful responses containing invalid JSON raise `WeavzError` with code `INVALID_RESPONSE`. Network timeouts use `TIMEOUT`; other transport failures use `NETWORK_ERROR`. Raw requests must use the configured API origin so API credentials are not sent to another service.
 
 Use the context manager to close the underlying HTTP client automatically:
 
@@ -140,6 +144,23 @@ Read more:
 - [Organizations and workspaces](https://weavz.io/docs/concepts/organizations-and-workspaces)
 - [Workspace integrations](https://weavz.io/docs/concepts/integration-selectors)
 - [Integration aliases](https://weavz.io/docs/guides/integration-aliases)
+
+For nullable update fields, omit the argument to leave it unchanged, or pass `None` to clear it:
+
+```python
+# Replace these IDs with the integration and end user you want to update.
+integration_id = "00000000-0000-4000-8000-000000000001"
+end_user_id = "00000000-0000-4000-8000-000000000002"
+client.workspaces.update_integration(
+    workspace["id"],
+    integration_id,
+    display_name=None,
+    enabled_actions=None,
+)
+client.end_users.update(end_user_id, email=None)
+```
+
+Pydantic action inputs serialize aliases and JSON-compatible values, including dates. Fields explicitly set to `None` remain JSON `null`; fields not set are omitted.
 
 ### Hosted Connect
 
@@ -388,6 +409,9 @@ The model naming pattern is `{IntegrationName}{ActionName}Input` in PascalCase. 
 
 ## AI Framework Adapters
 
+MCP-derived action tools retain the server's end-user binding, explicit connection selection, aliases, partials, and input defaults. They execute through the SDK action API and its approval policies; they do not call the MCP protocol or evaluate policies restricted to MCP sources. Pending approval responses remain available to your agent. Duplicate tool names are rejected rather than dispatching to the wrong action.
+
+
 MCP is the primary hosted agent access path. The SDK also includes small dependency-free adapters that convert configured workspace actions into common AI tool shapes.
 
 ```python
@@ -459,3 +483,22 @@ Live integration tests require a running Weavz API stack.
 ## License
 
 [MIT](LICENSE)
+
+## Migrating to 0.2.0
+
+Google function declarations now use `parametersJsonSchema` so JSON values, file inputs, nested arrays, and numeric choices keep their full schemas. Pass the returned declaration directly to Google GenAI. If your code reads the old `parameters` key, read `parametersJsonSchema` instead.
+
+Nullable update arguments now distinguish omission from `None`: omit a field to leave it unchanged, or pass `None` to clear it. Pydantic action inputs retain explicit null values and omit fields not set by the caller. For actions whose required inputs are supplied by saved partials, use `execute()` so the API can apply them; `execute_typed()` validates the provided input against the complete generated action model before making a request.
+
+MCP-derived adapters fail when a configured connection belongs to another integration, workspace or end user, or requires an end-user binding missing from the server. Set an explicit matching binding before creating the tools. They no longer silently fall back to another account.
+
+## Testing
+
+Run the offline client, adapter, and generated-model regressions:
+
+```bash
+python -m pip install -e . pytest
+python -m pytest
+```
+
+Live integration suites are opt-in. Set `TEST_API_KEY` to an organization-scoped API key for a dedicated test organization and `TEST_API_URL` to its API URL. These suites create customer resources and clean up their own resources. They do not create an account or delete your supplied key. Without `TEST_API_KEY`, live suites are skipped while offline checks run.

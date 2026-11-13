@@ -1,29 +1,24 @@
-"""
-SDK Integration Tests
+"""Opt-in customer API integration tests.
 
-Runs against a live local Node.js API server (http://localhost:3000).
-Requires: Docker (Postgres, Redis, MinIO) + running `npm run dev:node`.
-
-Bootstrap: creates an API key via service key auth, then uses it for all tests.
+Set TEST_API_KEY to an organization-scoped API key for a dedicated test
+organization. TEST_API_URL defaults to a local API. Tests create and clean up
+only their own customer resources; no account bootstrap is performed.
 """
 from __future__ import annotations
 
 import os
 from typing import Optional
 
-import httpx
 import pytest
 
 from weavz_sdk import WeavzClient, WeavzError
 
 BASE_URL = os.environ.get("TEST_API_URL", "http://localhost:3000")
-SERVICE_KEY = "local-test-service-key-12345"
-TEST_ORG_ID = ""
+TEST_API_KEY = os.environ.get("TEST_API_KEY")
 
 # Module-level state
 _client: Optional[WeavzClient] = None
 _api_key_plain: str = ""
-_api_key_id: str = ""
 _workspace_id: str = ""
 _connection_id: str = ""
 _mcp_server_id: str = ""
@@ -33,20 +28,6 @@ _bearer_workspace_id: str = ""
 _bearer_mcp_server_id: str = ""
 _approval_workspace_id: str = ""
 _approval_policy_id: str = ""
-
-
-def _service_key_request(method: str, path: str, json: Optional[dict] = None) -> httpx.Response:
-    return httpx.request(
-        method,
-        f"{BASE_URL}{path}",
-        headers={
-            "X-Service-Key": SERVICE_KEY,
-            "X-Org-ID": TEST_ORG_ID,
-            "Content-Type": "application/json",
-        },
-        json=json,
-        timeout=15.0,
-    )
 
 
 def _ensure_openai_workspace_integration() -> None:
@@ -66,31 +47,11 @@ def _ensure_openai_workspace_integration() -> None:
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_client():
-    """Bootstrap: create org, API key and initialize client."""
-    global _client, _api_key_plain, _api_key_id, TEST_ORG_ID
-
-    # Verify server is up
-    health = httpx.get(f"{BASE_URL}/health", timeout=5.0)
-    assert health.status_code == 200, f"Server not reachable: {health.status_code}"
-
-    # Create a test org
-    import time
-    org_res = httpx.post(
-        f"{BASE_URL}/api/v1/orgs",
-        headers={"X-Service-Key": SERVICE_KEY, "Content-Type": "application/json"},
-        json={"name": "Python SDK Test Org", "slug": f"py-sdk-test-{int(time.time())}"},
-        timeout=15.0,
-    )
-    assert org_res.status_code == 201, f"Failed to create org: {org_res.status_code} {org_res.text}"
-    TEST_ORG_ID = org_res.json()["org"]["id"]
-
-    # Create API key via service key
-    res = _service_key_request("POST", "/api/v1/api-keys", {"name": "python-sdk-test-key"})
-    assert res.status_code == 201, f"Failed to create API key: {res.status_code} {res.text}"
-    data = res.json()
-    _api_key_plain = data["plainKey"]
-    _api_key_id = data["apiKey"]["id"]
-
+    """Use the caller-provided test API key without changing the account."""
+    global _client, _api_key_plain
+    if not TEST_API_KEY:
+        pytest.skip("Set TEST_API_KEY to run opt-in customer API integration tests")
+    _api_key_plain = TEST_API_KEY
     _client = WeavzClient(api_key=_api_key_plain, base_url=BASE_URL)
     yield
 
@@ -138,11 +99,6 @@ def setup_client():
     try:
         if _workspace_id:
             _client.workspaces.delete(_workspace_id)
-    except Exception:
-        pass
-    try:
-        if _api_key_id:
-            _service_key_request("DELETE", f"/api/v1/api-keys/{_api_key_id}")
     except Exception:
         pass
     _client.close()

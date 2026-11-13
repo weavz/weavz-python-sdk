@@ -65,6 +65,9 @@ class WorkspaceIntegration(BaseModel):
     workspace_id: str = Field(alias="workspaceId")
     integration_name: str = Field(alias="integrationName")
     alias: str = Field(alias="alias")
+    auth_method_key: Optional[str] = Field(default=None, alias="authMethodKey")
+    oauth_app_mode: Optional[Literal["weavz_managed", "custom"]] = Field(default=None, alias="oauthAppMode")
+    oauth_app_id: Optional[str] = Field(default=None, alias="oauthAppId")
     connection_strategy: str = Field(alias="connectionStrategy")
     connection_id: Optional[str] = Field(default=None, alias="connectionId")
     display_name: Optional[str] = Field(default=None, alias="displayName")
@@ -76,6 +79,7 @@ class WorkspaceIntegration(BaseModel):
     created_at: str = Field(alias="createdAt")
     updated_at: str = Field(alias="updatedAt")
     connection_status: Optional[str] = Field(default=None, alias="connectionStatus")
+    connection_external_id: Optional[str] = Field(default=None, alias="connectionExternalId")
     connection_display_name: Optional[str] = Field(
         default=None, alias="connectionDisplayName"
     )

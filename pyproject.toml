@@ -12,7 +12,7 @@ requires-python = ">=3.10"
 authors = [
   { name = "Weavz", email = "support@weavz.io" },
 ]
-keywords = ["weavz", "sdk", "api", "integrations", "mcp", "agents", "agent-runtime", "stateful-agents", "filesystem", "sandbox"]
+keywords = ["weavz", "sdk", "api", "integrations", "mcp", "agents", "governed-access", "approvals", "filesystem", "sandbox"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",

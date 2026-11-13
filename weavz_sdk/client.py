@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import time
+import math
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
+from urllib.parse import quote
 from typing import Any, Literal
 
 import httpx
@@ -18,9 +22,44 @@ class _UnsetType:
 UNSET = _UnsetType()
 
 
+def _path_segment(value: str) -> str:
+    if value in (".", ".."):
+        raise ValueError("Resource identifiers cannot be dot segments")
+    return quote(value, safe="")
+
+
+def _positive_finite(value: float, name: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be a positive finite number")
+    try:
+        number = float(value)
+    except OverflowError:
+        raise ValueError(f"{name} must be a positive finite number") from None
+    if not math.isfinite(number) or number <= 0:
+        raise ValueError(f"{name} must be a positive finite number")
+    return number
+
+
+def _retry_delay(value: str | None, attempt: int) -> float:
+    fallback = min(0.5 * (2 ** min(attempt, 10)), 60.0)
+    if value is None:
+        return fallback
+    try:
+        delay = float(value)
+    except ValueError:
+        try:
+            retry_at = parsedate_to_datetime(value)
+            if retry_at.tzinfo is None:
+                retry_at = retry_at.replace(tzinfo=timezone.utc)
+            delay = (retry_at - datetime.now(timezone.utc)).total_seconds()
+        except (TypeError, ValueError, OverflowError):
+            return fallback
+    return min(delay, 60.0) if math.isfinite(delay) and delay >= 0 else fallback
+
+
 def _to_jsonable(value: Any) -> Any:
     if isinstance(value, BaseModel):
-        return value.model_dump(by_alias=True, exclude_none=True)
+        return value.model_dump(mode="json", by_alias=True, exclude_unset=True)
     return value
 
 _APPROVAL_CAMEL_KEYS = {
@@ -60,7 +99,7 @@ _APPROVAL_CAMEL_KEYS = {
 
 def _approval_json(value: Any) -> Any:
     if isinstance(value, BaseModel):
-        return value.model_dump(by_alias=True, exclude_none=True)
+        return value.model_dump(mode="json", by_alias=True, exclude_unset=True)
     if isinstance(value, list):
         return [_approval_json(item) for item in value]
     if isinstance(value, dict):
@@ -116,7 +155,7 @@ class WorkspacesResource(_BaseResource):
         return self._post("/api/v1/workspaces", json={"name": name, "slug": slug})
 
     def get(self, workspace_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/workspaces/{workspace_id}")
+        return self._get(f"/api/v1/workspaces/{_path_segment(workspace_id)}")
 
     def update(
         self,
@@ -130,13 +169,13 @@ class WorkspacesResource(_BaseResource):
             body["name"] = name
         if slug is not None:
             body["slug"] = slug
-        return self._patch(f"/api/v1/workspaces/{workspace_id}", json=body)
+        return self._patch(f"/api/v1/workspaces/{_path_segment(workspace_id)}", json=body)
 
     def delete(self, workspace_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/workspaces/{workspace_id}")
+        return self._delete(f"/api/v1/workspaces/{_path_segment(workspace_id)}")
 
     def list_integrations(self, workspace_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/workspaces/{workspace_id}/integrations")
+        return self._get(f"/api/v1/workspaces/{_path_segment(workspace_id)}/integrations")
 
     def add_integration(
         self,
@@ -176,7 +215,7 @@ class WorkspacesResource(_BaseResource):
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._post(
-            f"/api/v1/workspaces/{workspace_id}/integrations", json=body
+            f"/api/v1/workspaces/{_path_segment(workspace_id)}/integrations", json=body
         )
 
     def update_integration(
@@ -187,12 +226,12 @@ class WorkspacesResource(_BaseResource):
         integration_alias: str | None = None,
         connection_strategy: str | None = None,
         auth_method_key: str | None = None,
-        oauth_app_mode: str | None = None,
-        oauth_app_id: str | None = None,
-        connection_id: str | None = None,
-        display_name: str | None = None,
-        enabled_actions: list[str] | None = None,
-        settings: WorkspaceIntegrationSettings | dict[str, Any] | BaseModel | None = None,
+        oauth_app_mode: str | None | _UnsetType = UNSET,
+        oauth_app_id: str | None | _UnsetType = UNSET,
+        connection_id: str | None | _UnsetType = UNSET,
+        display_name: str | None | _UnsetType = UNSET,
+        enabled_actions: list[str] | None | _UnsetType = UNSET,
+        settings: WorkspaceIntegrationSettings | dict[str, Any] | BaseModel | None | _UnsetType = UNSET,
         sort_order: int | None = None,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
@@ -202,22 +241,22 @@ class WorkspacesResource(_BaseResource):
             body["connectionStrategy"] = connection_strategy
         if auth_method_key is not None:
             body["authMethodKey"] = auth_method_key
-        if oauth_app_mode is not None:
+        if oauth_app_mode is not UNSET:
             body["oauthAppMode"] = oauth_app_mode
-        if oauth_app_id is not None:
+        if oauth_app_id is not UNSET:
             body["oauthAppId"] = oauth_app_id
-        if connection_id is not None:
+        if connection_id is not UNSET:
             body["connectionId"] = connection_id
-        if display_name is not None:
+        if display_name is not UNSET:
             body["displayName"] = display_name
-        if enabled_actions is not None:
+        if enabled_actions is not UNSET:
             body["enabledActions"] = enabled_actions
-        if settings is not None:
+        if settings is not UNSET:
             body["settings"] = _to_jsonable(settings)
         if sort_order is not None:
             body["sortOrder"] = sort_order
         return self._patch(
-            f"/api/v1/workspaces/{workspace_id}/integrations/{integration_id}",
+            f"/api/v1/workspaces/{_path_segment(workspace_id)}/integrations/{_path_segment(integration_id)}",
             json=body,
         )
 
@@ -225,7 +264,7 @@ class WorkspacesResource(_BaseResource):
         self, workspace_id: str, integration_id: str
     ) -> dict[str, Any]:
         return self._delete(
-            f"/api/v1/workspaces/{workspace_id}/integrations/{integration_id}"
+            f"/api/v1/workspaces/{_path_segment(workspace_id)}/integrations/{_path_segment(integration_id)}"
         )
 
 
@@ -314,7 +353,7 @@ class ConnectionsResource(_BaseResource):
         return self._post("/api/v1/connections", json=body)
 
     def delete(self, connection_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/connections/{connection_id}")
+        return self._delete(f"/api/v1/connections/{_path_segment(connection_id)}")
 
     def resolve(
         self,
@@ -382,7 +421,7 @@ class ConnectResource(_BaseResource):
         return self._post("/api/v1/connect/token", json=body)
 
     def get_session(self, session_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/connect/session/{session_id}")
+        return self._get(f"/api/v1/connect/session/{_path_segment(session_id)}")
 
     def poll(self, token: str) -> dict[str, Any]:
         """Poll connect status using the cst_ token returned by create_token."""
@@ -396,12 +435,16 @@ class ConnectResource(_BaseResource):
         interval: float = 1.0,
     ) -> dict[str, Any]:
         """Wait until a connect session completes or fails."""
+        timeout = _positive_finite(timeout, "timeout")
+        interval = _positive_finite(interval, "interval")
         deadline = time.monotonic() + timeout
-        while time.monotonic() <= deadline:
-            result = self.poll(token)
+        while (remaining := deadline - time.monotonic()) > 0:
+            result = self._client.request("POST", "/api/v1/connect/session/poll", json={"token": token}, timeout=remaining, max_retries=0)
             if result.get("status") in ("COMPLETED", "FAILED"):
                 return result
-            time.sleep(interval)
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(interval, remaining))
         raise WeavzError("Connect session timed out", code="CONNECT_TIMEOUT", status=408)
 
 
@@ -515,13 +558,13 @@ class ApprovalPoliciesResource(_BaseResource):
         return self._post("/api/v1/approval-policies", json=_approval_json(policy))
 
     def get(self, policy_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/approval-policies/{policy_id}")
+        return self._get(f"/api/v1/approval-policies/{_path_segment(policy_id)}")
 
     def update(self, policy_id: str, **updates: Any) -> dict[str, Any]:
-        return self._patch(f"/api/v1/approval-policies/{policy_id}", json=_approval_json(updates))
+        return self._patch(f"/api/v1/approval-policies/{_path_segment(policy_id)}", json=_approval_json(updates))
 
     def delete(self, policy_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/approval-policies/{policy_id}")
+        return self._delete(f"/api/v1/approval-policies/{_path_segment(policy_id)}")
 
     def test(self, *, policy: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
         return self._post(
@@ -559,7 +602,7 @@ class ApprovalsResource(_BaseResource):
         return self._get("/api/v1/approvals", params=params or None)
 
     def get(self, approval_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/approvals/{approval_id}")
+        return self._get(f"/api/v1/approvals/{_path_segment(approval_id)}")
 
     def approve(
         self,
@@ -569,7 +612,7 @@ class ApprovalsResource(_BaseResource):
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         return self._post(
-            f"/api/v1/approvals/{approval_id}/approve",
+            f"/api/v1/approvals/{_path_segment(approval_id)}/approve",
             json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
         )
 
@@ -581,7 +624,7 @@ class ApprovalsResource(_BaseResource):
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         return self._post(
-            f"/api/v1/approvals/{approval_id}/reject",
+            f"/api/v1/approvals/{_path_segment(approval_id)}/reject",
             json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
         )
 
@@ -593,7 +636,7 @@ class ApprovalsResource(_BaseResource):
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         return self._post(
-            f"/api/v1/approvals/{approval_id}/cancel",
+            f"/api/v1/approvals/{_path_segment(approval_id)}/cancel",
             json={k: v for k, v in {"reason": reason, "metadata": metadata}.items() if v is not None},
         )
 
@@ -604,12 +647,16 @@ class ApprovalsResource(_BaseResource):
         timeout: float = 120.0,
         interval: float = 1.0,
     ) -> dict[str, Any]:
+        timeout = _positive_finite(timeout, "timeout")
+        interval = _positive_finite(interval, "interval")
         deadline = time.monotonic() + timeout
-        while time.monotonic() <= deadline:
-            result = self.get(approval_id)
+        while (remaining := deadline - time.monotonic()) > 0:
+            result = self._client.request("GET", f"/api/v1/approvals/{_path_segment(approval_id)}", timeout=remaining, max_retries=0)
             if result.get("approval", {}).get("status") != "pending":
                 return result
-            time.sleep(interval)
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(interval, remaining))
         raise WeavzError("Approval wait timed out", code="APPROVAL_TIMEOUT", status=408)
 
 
@@ -743,7 +790,7 @@ class McpServersResource(_BaseResource):
         return self._post("/api/v1/mcp/servers", json=body)
 
     def get(self, server_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/mcp/servers/{server_id}")
+        return self._get(f"/api/v1/mcp/servers/{_path_segment(server_id)}")
 
     def update(
         self,
@@ -772,13 +819,13 @@ class McpServersResource(_BaseResource):
             body["endUserAccess"] = end_user_access
         if end_user_id is not UNSET:
             body["endUserId"] = end_user_id
-        return self._patch(f"/api/v1/mcp/servers/{server_id}", json=body)
+        return self._patch(f"/api/v1/mcp/servers/{_path_segment(server_id)}", json=body)
 
     def delete(self, server_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/mcp/servers/{server_id}")
+        return self._delete(f"/api/v1/mcp/servers/{_path_segment(server_id)}")
 
     def regenerate_token(self, server_id: str) -> dict[str, Any]:
-        return self._post(f"/api/v1/mcp/servers/{server_id}/regenerate-token")
+        return self._post(f"/api/v1/mcp/servers/{_path_segment(server_id)}/regenerate-token")
 
     def create_access_token(
         self,
@@ -793,7 +840,7 @@ class McpServersResource(_BaseResource):
             body["scopes"] = scopes
         if expires_in is not None:
             body["expiresIn"] = expires_in
-        return self._post(f"/api/v1/mcp/servers/{server_id}/access-tokens", json=body)
+        return self._post(f"/api/v1/mcp/servers/{_path_segment(server_id)}/access-tokens", json=body)
 
     def create_bearer_token(
         self,
@@ -838,7 +885,7 @@ class McpServersResource(_BaseResource):
             body["scopes"] = scopes
         if expires_in is not None:
             body["expiresIn"] = expires_in
-        return self._post(f"/api/v1/mcp/servers/{server_id}/oauth-tokens", json=body)
+        return self._post(f"/api/v1/mcp/servers/{_path_segment(server_id)}/oauth-tokens", json=body)
 
     def add_tool(
         self,
@@ -877,7 +924,7 @@ class McpServersResource(_BaseResource):
             body["partialIds"] = partial_ids
         if sort_order is not None:
             body["sortOrder"] = sort_order
-        return self._post(f"/api/v1/mcp/servers/{server_id}/tools", json=body)
+        return self._post(f"/api/v1/mcp/servers/{_path_segment(server_id)}/tools", json=body)
 
     def update_tool(
         self,
@@ -908,11 +955,11 @@ class McpServersResource(_BaseResource):
         if partial_ids is not None:
             body["partialIds"] = partial_ids
         return self._patch(
-            f"/api/v1/mcp/servers/{server_id}/tools/{tool_id}", json=body
+            f"/api/v1/mcp/servers/{_path_segment(server_id)}/tools/{_path_segment(tool_id)}", json=body
         )
 
     def delete_tool(self, server_id: str, tool_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/mcp/servers/{server_id}/tools/{tool_id}")
+        return self._delete(f"/api/v1/mcp/servers/{_path_segment(server_id)}/tools/{_path_segment(tool_id)}")
 
     def execute_code(
         self,
@@ -927,12 +974,12 @@ class McpServersResource(_BaseResource):
         if wait_for_approval_seconds is not None:
             body["waitForApprovalSeconds"] = wait_for_approval_seconds
         return self._post(
-            f"/api/v1/mcp/servers/{server_id}/execute-code", json=body
+            f"/api/v1/mcp/servers/{_path_segment(server_id)}/execute-code", json=body
         )
 
     def get_declarations(self, server_id: str, alias: str) -> dict[str, Any]:
         return self._get(
-            f"/api/v1/mcp/servers/{server_id}/declarations/{alias}"
+            f"/api/v1/mcp/servers/{_path_segment(server_id)}/declarations/{_path_segment(alias)}"
         )
 
 
@@ -963,7 +1010,7 @@ class ApiKeysResource(_BaseResource):
         return self._post("/api/v1/api-keys", json=body)
 
     def delete(self, key_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/api-keys/{key_id}")
+        return self._delete(f"/api/v1/api-keys/{_path_segment(key_id)}")
 
 
 class IntegrationsResource(_BaseResource):
@@ -1018,7 +1065,7 @@ class IntegrationsResource(_BaseResource):
         if search_value is not None:
             body["searchValue"] = search_value
         return self._post(
-            f"/api/v1/integrations/{integration_name}/properties/options", json=body
+            f"/api/v1/integrations/{_path_segment(integration_name)}/properties/options", json=body
         )
 
     def resolve_property(
@@ -1059,7 +1106,7 @@ class IntegrationsResource(_BaseResource):
         if partial_ids is not None:
             body["partialIds"] = partial_ids
         return self._post(
-            f"/api/v1/integrations/{integration_name}/properties/resolve", json=body
+            f"/api/v1/integrations/{_path_segment(integration_name)}/properties/resolve", json=body
         )
 
     def oauth_status(self) -> dict[str, Any]:
@@ -1093,7 +1140,7 @@ class PartialsResource(_BaseResource):
         return self._get("/api/v1/partials", params=params)
 
     def get(self, partial_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/partials/{partial_id}")
+        return self._get(f"/api/v1/partials/{_path_segment(partial_id)}")
 
     def create(
         self,
@@ -1136,7 +1183,7 @@ class PartialsResource(_BaseResource):
         partial_id: str,
         *,
         name: str | None = None,
-        description: str | None = None,
+        description: str | None | _UnsetType = UNSET,
         values: dict[str, Any] | None = None,
         enforced_keys: list[str] | None = None,
         is_default: bool | None = None,
@@ -1144,7 +1191,7 @@ class PartialsResource(_BaseResource):
         body: dict[str, Any] = {}
         if name is not None:
             body["name"] = name
-        if description is not None:
+        if description is not UNSET:
             body["description"] = description
         if values is not None:
             body["values"] = values
@@ -1152,14 +1199,14 @@ class PartialsResource(_BaseResource):
             body["enforcedKeys"] = enforced_keys
         if is_default is not None:
             body["isDefault"] = is_default
-        return self._patch(f"/api/v1/partials/{partial_id}", json=body)
+        return self._patch(f"/api/v1/partials/{_path_segment(partial_id)}", json=body)
 
     def delete(self, partial_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/partials/{partial_id}")
+        return self._delete(f"/api/v1/partials/{_path_segment(partial_id)}")
 
     def set_default(self, partial_id: str, is_default: bool) -> dict[str, Any]:
         return self._post(
-            f"/api/v1/partials/{partial_id}/set-default",
+            f"/api/v1/partials/{_path_segment(partial_id)}/set-default",
             json={"isDefault": is_default},
         )
 
@@ -1203,27 +1250,27 @@ class EndUsersResource(_BaseResource):
         return self._get("/api/v1/end-users", params=params)
 
     def get(self, end_user_id: str) -> dict[str, Any]:
-        return self._get(f"/api/v1/end-users/{end_user_id}")
+        return self._get(f"/api/v1/end-users/{_path_segment(end_user_id)}")
 
     def update(
         self,
         end_user_id: str,
         *,
-        display_name: str | None = None,
-        email: str | None = None,
-        metadata: dict[str, Any] | None = None,
+        display_name: str | None | _UnsetType = UNSET,
+        email: str | None | _UnsetType = UNSET,
+        metadata: dict[str, Any] | None | _UnsetType = UNSET,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
-        if display_name is not None:
+        if display_name is not UNSET:
             body["displayName"] = display_name
-        if email is not None:
+        if email is not UNSET:
             body["email"] = email
-        if metadata is not None:
+        if metadata is not UNSET:
             body["metadata"] = metadata
-        return self._patch(f"/api/v1/end-users/{end_user_id}", json=body)
+        return self._patch(f"/api/v1/end-users/{_path_segment(end_user_id)}", json=body)
 
     def delete(self, end_user_id: str) -> dict[str, Any]:
-        return self._delete(f"/api/v1/end-users/{end_user_id}")
+        return self._delete(f"/api/v1/end-users/{_path_segment(end_user_id)}")
 
     def create_connect_token(
         self,
@@ -1241,7 +1288,7 @@ class EndUsersResource(_BaseResource):
         if expires_in is not None:
             body["expiresIn"] = expires_in
         return self._post(
-            f"/api/v1/end-users/{end_user_id}/connect-token", json=body
+            f"/api/v1/end-users/{_path_segment(end_user_id)}/connect-token", json=body
         )
 
     def invite(
@@ -1261,7 +1308,7 @@ class EndUsersResource(_BaseResource):
         if expires_in is not None:
             body["expiresIn"] = expires_in
         return self._post(
-            f"/api/v1/end-users/{end_user_id}/invite", json=body
+            f"/api/v1/end-users/{_path_segment(end_user_id)}/invite", json=body
         )
 
 
@@ -1284,8 +1331,16 @@ class WeavzClient:
         timeout: float = 310.0,
         max_retries: int = 2,
     ) -> None:
+        if not isinstance(api_key, str) or not api_key.strip():
+            raise ValueError("api_key must be a non-empty string")
+        if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
+            raise ValueError("max_retries must be a non-negative integer")
+        timeout = _positive_finite(timeout, "timeout")
+        base = httpx.URL(base_url)
+        if base.scheme not in ("http", "https") or not base.host or base.userinfo or base.query or base.fragment:
+            raise ValueError("base_url must be an HTTP(S) URL without credentials, query, or fragment")
         self._api_key = api_key
-        self._base_url = base_url.rstrip("/")
+        self._base_url = str(base).rstrip("/")
         self._max_retries = max_retries
         self._http = httpx.Client(
             base_url=self._base_url,
@@ -1314,35 +1369,53 @@ class WeavzClient:
         params: dict[str, Any] | None = None,
         json: Any = None,
         headers: dict[str, str] | None = None,
+        timeout: float | None = None,
+        max_retries: int | None = None,
     ) -> Any:
         """Make an authenticated request to the Weavz API."""
+        if max_retries is not None and (not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0):
+            raise ValueError("max_retries must be a non-negative integer")
+        retries = self._max_retries if max_retries is None else max_retries
+        request_options: dict[str, Any] = {"params": params, "json": json, "headers": headers}
+        if timeout is not None:
+            request_options["timeout"] = _positive_finite(timeout, "timeout")
+        if path.startswith("//"):
+            raise ValueError("Request URL must use the configured API origin")
+        target = self._http.build_request(method, path).url
+        base = httpx.URL(self._base_url)
+        if (target.scheme, target.host, target.port) != (base.scheme, base.host, base.port):
+            raise ValueError("Request URL must use the configured API origin")
+        # API resource updates set absolute values; execution POSTs are never
+        # replayed after ambiguous network/server failures.
         is_idempotent = method.upper() in ("GET", "PUT", "DELETE", "PATCH")
         last_error: WeavzError | None = None
 
-        for attempt in range(self._max_retries + 1):
+        for attempt in range(retries + 1):
             try:
-                response = self._http.request(method, path, params=params, json=json, headers=headers)
+                response = self._http.request(method, path, **request_options)
             except httpx.RequestError as exc:
                 last_error = WeavzError(
                     str(exc),
-                    code="NETWORK_ERROR",
+                    code="TIMEOUT" if isinstance(exc, httpx.TimeoutException) else "NETWORK_ERROR",
                     status=0,
-                    details={"request": str(exc.request.url) if exc.request else None},
                 )
-                if not is_idempotent or attempt >= self._max_retries:
+                if not is_idempotent or attempt >= retries:
                     raise last_error from exc
-                time.sleep(0.5 * (2 ** attempt))
+                time.sleep(_retry_delay(None, attempt))
                 continue
 
             if response.is_success:
                 if response.status_code == 204 or not response.content:
                     return None
-                return response.json()
+                try:
+                    return response.json()
+                except ValueError as exc:
+                    raise WeavzError("The API returned an invalid JSON response", code="INVALID_RESPONSE", status=response.status_code) from exc
 
             body: dict[str, Any] = {}
             error_text = ""
             try:
-                if "application/json" in response.headers.get("content-type", ""):
+                if "json" in response.headers.get("content-type", "").lower():
                     parsed = response.json()
                     if isinstance(parsed, dict):
                         body = parsed
@@ -1352,8 +1425,8 @@ class WeavzClient:
                 pass
 
             last_error = WeavzError(
-                body.get("error", error_text or f"HTTP {response.status_code}"),
-                code=body.get("code", "HTTP_ERROR"),
+                body.get("error") if isinstance(body.get("error"), str) and body["error"] else error_text or f"HTTP {response.status_code}",
+                code=body.get("code") if isinstance(body.get("code"), str) and body["code"] else "HTTP_ERROR",
                 status=response.status_code,
                 details=body.get("details"),
             )
@@ -1362,22 +1435,10 @@ class WeavzClient:
             is_5xx = 500 <= response.status_code < 600
             should_retry = is_429 or (is_5xx and is_idempotent)
 
-            if not should_retry or attempt >= self._max_retries:
+            if not should_retry or attempt >= retries:
                 raise last_error
 
-            # Calculate backoff delay
-            retry_after = response.headers.get("Retry-After")
-            if retry_after is not None:
-                try:
-                    delay = float(retry_after)
-                except ValueError:
-                    # RFC 7231 date format — not common, fall back to backoff
-                    delay = 0.5 * (2 ** attempt)
-            else:
-                # Exponential backoff: 0.5s, 1s, 2s, ...
-                delay = 0.5 * (2 ** attempt)
-
-            time.sleep(delay)
+            time.sleep(_retry_delay(response.headers.get("Retry-After"), attempt))
 
         # Should not reach here, but satisfy type checkers
         raise last_error  # type: ignore[misc]
