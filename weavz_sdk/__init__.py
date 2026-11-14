@@ -2,7 +2,9 @@
 
 from weavz_sdk.client import WeavzClient
 from weavz_sdk.errors import WeavzError
+from weavz_sdk.skills import SkillsResource
 from weavz_sdk.models import (
+    Skill, SkillMetadata, SkillScope, SkillPermissions, SkillPagination, SkillResponse, SkillListResponse,
     ComputerSessionAccess,
     ComputerSessionAccessRole,
     ApprovalReviewAccess,
@@ -38,6 +40,7 @@ from weavz_sdk.adapters import (
 )
 
 __all__ = [
+    "SkillsResource", "Skill", "SkillMetadata", "SkillScope", "SkillPermissions", "SkillPagination", "SkillResponse", "SkillListResponse",
     "WeavzClient",
     "WeavzError",
     "ComputerSessionAccess",

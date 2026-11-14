@@ -13,6 +13,7 @@ import httpx
 from pydantic import BaseModel
 
 from weavz_sdk.errors import WeavzError
+from weavz_sdk.skills import SkillsResource
 from weavz_sdk.models import ComputerSessionAccess, ComputerSessionAccessRole, WorkspaceIntegrationSettings
 
 class _UnsetType:
@@ -1393,6 +1394,7 @@ class WeavzClient:
         self.partials = PartialsResource(self)
         self.end_users = EndUsersResource(self)
         self.computer_sessions = ComputerSessionsResource(self)
+        self.skills = SkillsResource(self)
 
     def request(
         self,

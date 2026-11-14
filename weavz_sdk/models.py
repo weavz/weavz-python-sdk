@@ -211,3 +211,49 @@ class ApprovalReviewAccess(_ApprovalReviewAccessRequired, total=False):
 
     reason: str
     code: str
+
+
+SkillScope = Literal['end_user', 'workspace']
+
+
+class SkillMetadata(BaseModel):
+    id: str
+    workspace_id: str = Field(alias='workspaceId')
+    scope: SkillScope
+    slug: str
+    name: str
+    description: str
+    tags: list[str]
+    enabled: bool
+    version: int
+    created_at: str = Field(alias='createdAt')
+    updated_at: str = Field(alias='updatedAt')
+    model_config = {'populate_by_name': True}
+
+
+class Skill(SkillMetadata):
+    markdown: str
+
+
+class SkillPermissions(BaseModel):
+    can_write: bool = Field(alias='canWrite')
+    model_config = {'populate_by_name': True}
+
+
+class SkillPagination(BaseModel):
+    limit: int
+    offset: int
+    total: int
+
+
+class SkillResponse(BaseModel):
+    skill: Skill
+    permissions: SkillPermissions
+    instruction_notice: Optional[str] = Field(default=None, alias='instructionNotice')
+    model_config = {'populate_by_name': True}
+
+
+class SkillListResponse(BaseModel):
+    skills: list[SkillMetadata]
+    pagination: SkillPagination
+    permissions: SkillPermissions
