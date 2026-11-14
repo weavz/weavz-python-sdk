@@ -297,3 +297,44 @@ def test_full_json_schema_survives_google_conversion():
     tool = WeavzActionTool("process_rows", "Process rows", schema, "example", "process", lambda _: {})
     declaration = to_google_function_declaration(tool)
     assert declaration["parametersJsonSchema"] is schema and "parameters" not in declaration
+
+
+def test_computer_human_access_preserves_external_identity_and_sensitive_fragment(client_factory):
+    from weavz_sdk import ComputerSessionAccess, ComputerSessionAccessRole
+    from typing import get_args, get_type_hints
+    from weavz_sdk.client import ComputerSessionsResource
+    requests = []
+    response = {"sessionId": "session", "role": "control", "viewerUrl": "https://api.example.com/viewer#token=fixture-only", "expiresAt": "2030-01-01T00:00:00Z", "frameOrigin": "https://app.example.com"}
+    client = client_factory(lambda request: (requests.append(request), httpx.Response(200, json=response))[1])
+    result = client.computer_sessions.create_access("session/a?b#c", workspace_id="workspace", end_user_id="customer/alice@example.test", role="control", ttl_seconds=120, frame_origin="https://app.example.com:443")
+    assert len(requests) == 1
+    assert requests[0].url.raw_path == b"/api/v1/computer-sessions/session%2Fa%3Fb%23c/access"
+    assert requests[0].headers["authorization"] == "Bearer wvz_test"
+    assert json.loads(requests[0].content) == {"workspaceId": "workspace", "endUserId": "customer/alice@example.test", "role": "control", "ttlSeconds": 120, "frameOrigin": "https://app.example.com:443"}
+    assert result == response
+    assert get_type_hints(ComputerSessionsResource.create_access)["return"] is ComputerSessionAccess
+    assert set(get_args(ComputerSessionAccessRole)) == {"watch", "control"}
+    assert not any(hasattr(client.computer_sessions, name) for name in ("viewer", "stream", "control"))
+
+
+def test_computer_access_omits_unset_options_and_requires_customer_scope(client_factory):
+    requests = []
+    client = client_factory(lambda request: (requests.append(request), httpx.Response(200, json={}))[1])
+    client.computer_sessions.create_access("session", workspace_id="workspace", end_user_id="external-user", role="watch")
+    assert json.loads(requests[0].content) == {"workspaceId": "workspace", "endUserId": "external-user", "role": "watch"}
+    with pytest.raises(TypeError):
+        client.computer_sessions.create_access("session", role="control")
+    assert len(requests) == 1
+
+
+def test_approval_history_cursor_null_workspace_and_review_access(client_factory):
+    requests = []
+    bodies = [{"approvals": [], "total": 0, "nextCursor": "next-page"}, {"policy": {}}, {"approval": {"reviewAccess": {"canDecide": False, "code": "APPROVAL_DECISION_SCOPE_REQUIRED"}}}]
+    client = client_factory(lambda request: (requests.append(request), httpx.Response(200, json=bodies.pop(0)))[1])
+    page = client.approvals.list(status="history", workspace_id="workspace", cursor="opaque+cursor/=", limit=2)
+    assert requests[0].url.params["status"] == "history"
+    assert requests[0].url.params["cursor"] == "opaque+cursor/="
+    assert page["nextCursor"] == "next-page"
+    client.approval_policies.update("policy", workspace_id=None)
+    assert json.loads(requests[1].content) == {"workspaceId": None}
+    assert client.approvals.get("approval")["approval"]["reviewAccess"]["canDecide"] is False

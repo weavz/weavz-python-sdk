@@ -7,13 +7,13 @@ import math
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from urllib.parse import quote
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 import httpx
 from pydantic import BaseModel
 
 from weavz_sdk.errors import WeavzError
-from weavz_sdk.models import WorkspaceIntegrationSettings
+from weavz_sdk.models import ComputerSessionAccess, ComputerSessionAccessRole, WorkspaceIntegrationSettings
 
 class _UnsetType:
     pass
@@ -585,6 +585,7 @@ class ApprovalsResource(_BaseResource):
         integration_name: str | None = None,
         action_name: str | None = None,
         limit: int | None = None,
+        cursor: str | None = None,
     ) -> dict[str, Any]:
         params: dict[str, Any] = {}
         if workspace_id is not None:
@@ -599,6 +600,8 @@ class ApprovalsResource(_BaseResource):
             params["actionName"] = action_name
         if limit is not None:
             params["limit"] = limit
+        if cursor is not None:
+            params["cursor"] = cursor
         return self._get("/api/v1/approvals", params=params or None)
 
     def get(self, approval_id: str) -> dict[str, Any]:
@@ -984,6 +987,32 @@ class McpServersResource(_BaseResource):
 
 
 
+class ComputerSessionsResource(_BaseResource):
+    """Human viewer links issued by your trusted application backend."""
+
+    def create_access(
+        self,
+        session_id: str,
+        *,
+        workspace_id: str,
+        end_user_id: str,
+        role: ComputerSessionAccessRole,
+        ttl_seconds: int | None = None,
+        frame_origin: str | None = None,
+    ) -> ComputerSessionAccess:
+        """Issue a short-lived human link; end_user_id is your external ID.
+
+        The returned viewerUrl contains a sensitive capability in its fragment.
+        Deliver it to the intended human without adding it to agent/tool context.
+        """
+        body: dict[str, Any] = {"workspaceId": workspace_id, "endUserId": end_user_id, "role": role}
+        if ttl_seconds is not None:
+            body["ttlSeconds"] = ttl_seconds
+        if frame_origin is not None:
+            body["frameOrigin"] = frame_origin
+        return cast(ComputerSessionAccess, self._post(f"/api/v1/computer-sessions/{_path_segment(session_id)}/access", json=body))
+
+
 class ApiKeysResource(_BaseResource):
     def list(self) -> dict[str, Any]:
         return self._get("/api/v1/api-keys")
@@ -1363,6 +1392,7 @@ class WeavzClient:
         self.integrations = IntegrationsResource(self)
         self.partials = PartialsResource(self)
         self.end_users = EndUsersResource(self)
+        self.computer_sessions = ComputerSessionsResource(self)
 
     def request(
         self,

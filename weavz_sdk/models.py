@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, TypedDict
 
 from pydantic import BaseModel, Field
 
@@ -184,3 +184,30 @@ class ApprovalWebhookPayload(BaseModel):
     decision: Optional[dict[str, Any]] = None
 
     model_config = {"populate_by_name": True}
+
+
+ComputerSessionAccessRole = Literal["watch", "control"]
+
+
+class _ComputerSessionAccessRequired(TypedDict):
+    sessionId: str
+    role: ComputerSessionAccessRole
+    viewerUrl: str
+    expiresAt: str
+
+
+class ComputerSessionAccess(_ComputerSessionAccessRequired, total=False):
+    """Short-lived human viewer access. Keep viewerUrl out of agent/tool context."""
+
+    frameOrigin: str
+
+
+class _ApprovalReviewAccessRequired(TypedDict):
+    canDecide: bool
+
+
+class ApprovalReviewAccess(_ApprovalReviewAccessRequired, total=False):
+    """Whether the current caller can decide an approval request."""
+
+    reason: str
+    code: str

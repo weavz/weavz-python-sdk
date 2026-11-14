@@ -3,6 +3,9 @@
 from weavz_sdk.client import WeavzClient
 from weavz_sdk.errors import WeavzError
 from weavz_sdk.models import (
+    ComputerSessionAccess,
+    ComputerSessionAccessRole,
+    ApprovalReviewAccess,
     AdvancedCodeSettings,
     AdvancedCodeSandboxPersistence,
     AdvancedCodeStorageMountScope,
@@ -37,6 +40,9 @@ from weavz_sdk.adapters import (
 __all__ = [
     "WeavzClient",
     "WeavzError",
+    "ComputerSessionAccess",
+    "ComputerSessionAccessRole",
+    "ApprovalReviewAccess",
     "InputPartial",
     "WorkspaceIntegration",
     "WorkspaceIntegrationSettings",
