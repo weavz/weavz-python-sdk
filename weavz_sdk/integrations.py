@@ -19404,6 +19404,152 @@ class ComplyadvantageUpdateCaseInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class ComputerControlStartSessionInput(BaseModel):
+    """Computer Control — Start computer"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    durationSeconds: Optional[float] = Field(None, description="Seconds to reserve from your available computer time. Default 600; maximum 1800. Unused time is returned after the computer stops.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlSessionStatusInput(BaseModel):
+    """Computer Control — Computer status"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlShowLiveViewInput(BaseModel):
+    """Computer Control — Show live computer"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlRequestHumanInput(BaseModel):
+    """Computer Control — Request human takeover"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlResumeInput(BaseModel):
+    """Computer Control — Check returned control"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlScreenshotInput(BaseModel):
+    """Computer Control — Screenshot"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlClickInput(BaseModel):
+    """Computer Control — Click"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    x: float = Field(..., description="Horizontal position in the 1280 × 800 desktop.")
+    y: float = Field(..., description="Vertical position in the 1280 × 800 desktop.")
+    button: Optional[str] = Field(None, description="Mouse button")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlMoveMouseInput(BaseModel):
+    """Computer Control — Move mouse"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    x: float = Field(..., description="Horizontal position in the 1280 × 800 desktop.")
+    y: float = Field(..., description="Vertical position in the 1280 × 800 desktop.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlDragInput(BaseModel):
+    """Computer Control — Drag"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    x: float = Field(..., description="Horizontal position in the 1280 × 800 desktop.")
+    y: float = Field(..., description="Vertical position in the 1280 × 800 desktop.")
+    toX: float = Field(..., description="Destination X")
+    toY: float = Field(..., description="Destination Y")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlTypeInput(BaseModel):
+    """Computer Control — Type text"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    text: str = Field(..., description="Text")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlPressKeyInput(BaseModel):
+    """Computer Control — Press key"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    key: str = Field(..., description="Key")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlScrollInput(BaseModel):
+    """Computer Control — Scroll"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    deltaY: float = Field(..., description="Vertical distance")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlWaitInput(BaseModel):
+    """Computer Control — Wait"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    milliseconds: float = Field(..., description="Milliseconds")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlFileListInput(BaseModel):
+    """Computer Control — List workspace files"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    path: Optional[str] = Field(None, description="Path")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlFileReadInput(BaseModel):
+    """Computer Control — Read workspace file"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    path: str = Field(..., description="A relative path inside /workspace. This is the folder saved between sessions.")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlFileWriteInput(BaseModel):
+    """Computer Control — Write workspace file"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    path: str = Field(..., description="A relative path inside /workspace. This is the folder saved between sessions.")
+    content: str = Field(..., description="Content")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlShellExecInput(BaseModel):
+    """Computer Control — Run terminal command"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+    command: str = Field(..., description="Command")
+    timeoutSeconds: Optional[float] = Field(None, description="Timeout in seconds")
+
+    model_config = {"populate_by_name": True}
+
+
+class ComputerControlEndSessionInput(BaseModel):
+    """Computer Control — End computer session"""
+    sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
+
+    model_config = {"populate_by_name": True}
+
+
 class ConfluenceGetPageInput(BaseModel):
     """Confluence — Get Page"""
     pageId: str = Field(..., description="Page ID or title to retrieve")
@@ -99786,6 +99932,7 @@ IntegrationName = Literal[
     "companies-house",
     "companycam",
     "complyadvantage",
+    "computer-control",
     "confluence",
     "confluent-cloud",
     "connectwise",
@@ -102755,6 +102902,24 @@ IntegrationActionKey = Literal[
     "complyadvantage.list_cases",
     "complyadvantage.get_case",
     "complyadvantage.update_case",
+    "computer-control.start_session",
+    "computer-control.session_status",
+    "computer-control.show_live_view",
+    "computer-control.request_human",
+    "computer-control.resume",
+    "computer-control.screenshot",
+    "computer-control.click",
+    "computer-control.move_mouse",
+    "computer-control.drag",
+    "computer-control.type",
+    "computer-control.press_key",
+    "computer-control.scroll",
+    "computer-control.wait",
+    "computer-control.file_list",
+    "computer-control.file_read",
+    "computer-control.file_write",
+    "computer-control.shell_exec",
+    "computer-control.end_session",
     "confluence.get_page",
     "confluence.create_page",
     "confluence.update_page",
@@ -114065,6 +114230,26 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
         "list_cases",
         "get_case",
         "update_case",
+    ),
+    "computer-control": (
+        "start_session",
+        "session_status",
+        "show_live_view",
+        "request_human",
+        "resume",
+        "screenshot",
+        "click",
+        "move_mouse",
+        "drag",
+        "type",
+        "press_key",
+        "scroll",
+        "wait",
+        "file_list",
+        "file_read",
+        "file_write",
+        "shell_exec",
+        "end_session",
     ),
     "confluence": (
         "get_page",
@@ -126623,6 +126808,24 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "complyadvantage.list_cases": ComplyadvantageListCasesInput,
     "complyadvantage.get_case": ComplyadvantageGetCaseInput,
     "complyadvantage.update_case": ComplyadvantageUpdateCaseInput,
+    "computer-control.start_session": ComputerControlStartSessionInput,
+    "computer-control.session_status": ComputerControlSessionStatusInput,
+    "computer-control.show_live_view": ComputerControlShowLiveViewInput,
+    "computer-control.request_human": ComputerControlRequestHumanInput,
+    "computer-control.resume": ComputerControlResumeInput,
+    "computer-control.screenshot": ComputerControlScreenshotInput,
+    "computer-control.click": ComputerControlClickInput,
+    "computer-control.move_mouse": ComputerControlMoveMouseInput,
+    "computer-control.drag": ComputerControlDragInput,
+    "computer-control.type": ComputerControlTypeInput,
+    "computer-control.press_key": ComputerControlPressKeyInput,
+    "computer-control.scroll": ComputerControlScrollInput,
+    "computer-control.wait": ComputerControlWaitInput,
+    "computer-control.file_list": ComputerControlFileListInput,
+    "computer-control.file_read": ComputerControlFileReadInput,
+    "computer-control.file_write": ComputerControlFileWriteInput,
+    "computer-control.shell_exec": ComputerControlShellExecInput,
+    "computer-control.end_session": ComputerControlEndSessionInput,
     "confluence.get_page": ConfluenceGetPageInput,
     "confluence.create_page": ConfluenceCreatePageInput,
     "confluence.update_page": ConfluenceUpdatePageInput,
