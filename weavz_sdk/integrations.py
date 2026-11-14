@@ -29497,6 +29497,27 @@ class FigmaGetFileInput(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class FigmaGetFileOutlineInput(BaseModel):
+    """Figma — Get File Outline"""
+    fileKey: str = Field(..., description="File Key or Figma URL")
+    version: Optional[str] = Field(None, description="Version ID")
+    parentNodeId: Optional[str] = Field(None, description="Expand a returned node ID. A validated node-id in the file URL is used when this is blank.")
+    depth: Optional[float] = Field(None, description="Selected-node expansion only. Integer 1 or 2; the initial file outline always requests depth 2.")
+    maxNodes: Optional[float] = Field(None, description="Maximum 1 to 200 compact node records. Defaults to 100.")
+
+    model_config = {"populate_by_name": True}
+
+
+class FigmaGetNodeDesignContextInput(BaseModel):
+    """Figma — Get Node Design Context"""
+    fileKey: str = Field(..., description="File Key or Figma URL")
+    nodeIds: Optional[str] = Field(None, description="Comma-separated node IDs, such as 1:2 or an instance path returned by Figma. Optional only when fileKey is a Figma URL containing a valid node-id.")
+    version: Optional[str] = Field(None, description="Version ID")
+    depth: Optional[float] = Field(None, description="Positive integer 1 or 2; always sent so Figma does not return an unbounded tree.")
+
+    model_config = {"populate_by_name": True}
+
+
 class FigmaGetFileMetadataInput(BaseModel):
     """Figma — Get File Metadata"""
     fileKey: str = Field(..., description="File Key")
@@ -103990,6 +104011,8 @@ IntegrationActionKey = Literal[
     "fieldwire.custom_api_call",
     "figma.get_me",
     "figma.get_file",
+    "figma.get_file_outline",
+    "figma.get_node_design_context",
     "figma.get_file_metadata",
     "figma.get_file_nodes",
     "figma.render_images",
@@ -115546,6 +115569,8 @@ INTEGRATION_ACTIONS: dict[str, tuple[str, ...]] = {
     "figma": (
         "get_me",
         "get_file",
+        "get_file_outline",
+        "get_node_design_context",
         "get_file_metadata",
         "get_file_nodes",
         "render_images",
@@ -127896,6 +127921,8 @@ INTEGRATION_ACTION_INPUT_MAP: dict[str, type[BaseModel]] = {
     "fieldwire.custom_api_call": FieldwireCustomApiCallInput,
     "figma.get_me": FigmaGetMeInput,
     "figma.get_file": FigmaGetFileInput,
+    "figma.get_file_outline": FigmaGetFileOutlineInput,
+    "figma.get_node_design_context": FigmaGetNodeDesignContextInput,
     "figma.get_file_metadata": FigmaGetFileMetadataInput,
     "figma.get_file_nodes": FigmaGetFileNodesInput,
     "figma.render_images": FigmaRenderImagesInput,
