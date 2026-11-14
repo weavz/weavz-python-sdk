@@ -499,8 +499,8 @@ access = client.computer_sessions.create_access(
 | `client.computer_sessions` | Short-lived human watch or control links for existing Computer Control sessions |
 | `client.integrations` | Integration metadata, property options, OAuth status |
 | `client.end_users` | End-user identity, connect tokens, invites |
-| `client.partials` | Input partial presets and enforced fields |
-| `client.approval_policies` | Human Gates policy management |
+| `client.partials` | Saved inputs and enforced fields |
+| `client.approval_policies` | Approval rule management |
 | `client.approvals` | Approval inbox, decisions, and waiting |
 | `client.api_keys` | Customer-facing API key management |
 
@@ -541,6 +541,10 @@ Live integration tests require a running Weavz API stack.
 ## License
 
 [MIT](LICENSE)
+
+## Current capabilities in 0.3.0
+
+The 0.3.0 SDK adds the Skills resource for optional, reusable task instructions and `client.computer_sessions.create_access()` for issuing a short-lived human watch or control link to an existing Computer Control session. Skills do not run tasks or grant app access; session access does not start or provision a computer. See [Skills](#skills) and [Human Computer Access](#human-computer-access) for setup and safe handling.
 
 ## Migrating to 0.2.0
 
