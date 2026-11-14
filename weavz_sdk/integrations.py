@@ -19407,7 +19407,7 @@ class ComplyadvantageUpdateCaseInput(BaseModel):
 class ComputerControlStartSessionInput(BaseModel):
     """Computer Control — Start computer"""
     sessionId: Optional[str] = Field(None, description="Omit to use the current computer for this end user and alias.")
-    durationSeconds: Optional[float] = Field(None, description="Seconds to reserve from your available computer time. Default 600; maximum 1800. Unused time is returned after the computer stops.")
+    durationSeconds: Optional[float] = Field(None, description="Up to 600 seconds by default, adjusted to available computer time. An explicit duration must fit your available time; maximum 1800 seconds. Unused time is returned after the computer stops.")
 
     model_config = {"populate_by_name": True}
 

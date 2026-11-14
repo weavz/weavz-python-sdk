@@ -9,7 +9,7 @@
 
 Official Python SDK for [Weavz](https://weavz.io), governed app access for SaaS and AI products.
 
-Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, Human Gates, input partials, Filesystem, State KV, Sandbox execution, and 1,000+ integrations.
+Weavz gives your product one API for connection management, end-user identity, hosted connect flows, action execution, triggers, MCP servers, approval rules, saved inputs, Filesystem, State KV, Sandbox execution, and 1,000+ integrations.
 
 ## Links
 
@@ -44,13 +44,13 @@ client = WeavzClient(api_key="wvz_your_api_key")
 - Tool Mode MCP servers with a small explicit tool list
 - Filesystem and State KV for durable files, checkpoints, cursors, and lightweight agent state
 - Sandbox workflows that run JavaScript, Python, or Shell through the runtime
-- Human Gates for approvals before sensitive actions run
-- Input partials for defaults, locked fields, and reusable action configuration
+- Approval rules for review before selected actions run
+- Saved inputs for reusable action values, with optional advanced defaults and locked fields
 - Triggers and webhooks that forward integration events into your product
 
 ## Quick Start
 
-This example creates a workspace, enables a built-in integration, and executes an action through the SDK.
+This example creates a workspace and writes a file to its shared Filesystem. Use end-user scope when files should be private to each user.
 
 ```python
 from weavz_sdk import WeavzClient
@@ -64,19 +64,20 @@ workspace = client.workspaces.create(
 
 client.workspaces.add_integration(
     workspace["id"],
-    integration_name="hash-encode",
-    integration_alias="hash",
+    integration_name="storage",
+    integration_alias="files",
+    connection_strategy="fixed",
+    settings={"persistence": {"scope": "workspace"}},
 )
 
-result = client.actions.execute(
-    "hash-encode",
-    "hash",
+result = client.actions.execute_typed(
+    "storage",
+    "write_file",
     workspace_id=workspace["id"],
-    integration_alias="hash",
+    integration_alias="files",
     input={
-        "text": "hello from weavz",
-        "algorithm": "sha256",
-        "encoding": "hex",
+        "path": "hello.txt",
+        "content": "Hello from Weavz",
     },
 )
 
@@ -257,7 +258,8 @@ token_result = client.mcp_servers.create_bearer_token(
     expires_in=60 * 60 * 24 * 30,
 )
 
-print(mcp_endpoint, token_result["bearerToken"])
+# Store token_result["bearerToken"] privately for the intended client.
+print(mcp_endpoint)
 ```
 
 You can also run Code Mode directly through the SDK:
@@ -266,12 +268,10 @@ You can also run Code Mode directly through the SDK:
 code_run = client.mcp_servers.execute_code(
     server["id"],
     """
-const parsed = await weavz.datetime.parse_date({
-  dateString: "June 18, 2026 9am",
-  timezone: "America/New_York"
+return await weavz.files.write_file({
+  path: "summary.json",
+  content: JSON.stringify({ status: "ready" })
 })
-
-return { parsed }
 """,
 )
 ```
@@ -287,7 +287,7 @@ Read more:
 - [MCP Tool Mode](https://weavz.io/docs/guides/mcp-tool-mode)
 - [Weavz MCP App](https://weavz.io/docs/guides/weavz-mcp-app)
 
-### Human Gates
+### Approval Rules
 
 Human Gates let you require approval before sensitive actions execute.
 
@@ -322,21 +322,23 @@ if guarded.get("status") == "approval_required":
 
 Read more:
 
-- [Human Gates guide](https://weavz.io/docs/guides/human-gates)
+- [Approval rules guide](https://weavz.io/docs/guides/human-gates)
 - [Approvals API reference](https://weavz.io/docs/api-reference/approvals)
 
-### Input Partials
+### Saved Inputs
 
-Input partials let you reuse defaults and lock enforced fields so agents or callers only provide the fields they should control.
+Saved inputs reuse action values. They are optional and manually selected by default; use advanced locking only when a field must not be overridden. SDK names remain `partials`.
 
 ```python
 partial = client.partials.create(
     workspace["id"],
     "slack",
-    "Support channel default",
+    "Support channel",
+    integration_alias="customer_slack",
     action_name="send_channel_message",
-    values={"channel": "#support"},
-    enforced_keys=["channel"],
+    values={"channel": "C0123456789"},
+    enforced_keys=[],
+    is_default=False,
 )["partial"]
 
 client.actions.execute(
@@ -434,6 +436,32 @@ anthropic_tools = [to_anthropic_tool(tool) for tool in tools]
 ```
 
 Optional framework adapters are created lazily when the matching package is installed.
+
+## Skills
+
+Skills store optional reusable task instructions. Search returns metadata; get a selected skill to read its instructions. Saving a skill does not execute it or grant app access.
+
+```python
+workspace_id = "11111111-1111-4111-8111-111111111111"
+created = client.skills.create(
+    workspace_id,
+    "customer-call-brief",
+    "Prepare a customer call brief",
+    "# Customer call brief\nSummarize the connected records and cite sources.",
+    end_user_id="customer_123",
+)
+matches = client.skills.search(workspace_id, "brief", end_user_id="customer_123")
+selected = client.skills.get(created.skill.id, workspace_id, end_user_id="customer_123")
+client.skills.update(
+    selected.skill.id,
+    workspace_id,
+    selected.skill.version,
+    end_user_id="customer_123",
+    description="Prepare a sourced brief before a customer meeting.",
+)
+```
+
+For shared instructions, set `scope="workspace"` and omit `end_user_id`. Create a separate shared copy; an existing skill's owner and scope are immutable. Updates and deletion require the current version and return `SKILL_CONFLICT` for a stale version. See the [Skills guide](https://weavz.io/docs/guides/skills).
 
 ## Resource Map
 
