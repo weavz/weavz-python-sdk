@@ -136,6 +136,27 @@ class _BaseResource:
 
 
 class WorkspacesResource(_BaseResource):
+    def create_access_token(
+        self, workspace_id: str, *, end_user_id: str,
+        scopes: list[str] | None = None, expires_in: int | None = None,
+    ) -> dict[str, Any]:
+        """Issue access for one external end user without a separate server ID."""
+        body: dict[str, Any] = {"endUserId": end_user_id}
+        if scopes is not None:
+            body["scopes"] = scopes
+        if expires_in is not None:
+            body["expiresIn"] = expires_in
+        return self._post(f"/api/v1/workspaces/{_path_segment(workspace_id)}/access-tokens", json=body)
+
+    def configure_mcp(self, workspace_id: str, **settings: Any) -> dict[str, Any]:
+        """Explicitly configure this MCP Workspace's existing endpoint."""
+        workspace = self.get(workspace_id)["workspace"]
+        endpoint = workspace.get("mcpServer")
+        if not isinstance(endpoint, dict) or not endpoint.get("id"):
+            raise ValueError("MCP Workspace endpoint is unavailable")
+        result = self._client.mcp_servers.update(endpoint["id"], **settings)
+        return {**result, "mcpEndpoint": result["server"]["mcpEndpoint"]}
+
     def list(
         self,
         *,
@@ -152,8 +173,11 @@ class WorkspacesResource(_BaseResource):
             params["includeSuspended"] = include_suspended
         return self._get("/api/v1/workspaces", params=params or None)
 
-    def create(self, *, name: str, slug: str) -> dict[str, Any]:
-        return self._post("/api/v1/workspaces", json={"name": name, "slug": slug})
+    def create(self, *, name: str, slug: str | None = None) -> dict[str, Any]:
+        body: dict[str, Any] = {"name": name}
+        if slug is not None:
+            body["slug"] = slug
+        return self._post("/api/v1/workspaces", json=body)
 
     def get(self, workspace_id: str) -> dict[str, Any]:
         return self._get(f"/api/v1/workspaces/{_path_segment(workspace_id)}")
@@ -806,6 +830,7 @@ class McpServersResource(_BaseResource):
         settings: dict[str, Any] | None = None,
         auth_mode: str | None = None,
         end_user_access: str | None = None,
+        allow_workspace_members: bool | None = None,
         end_user_id: str | None | _UnsetType = UNSET,
     ) -> dict[str, Any]:
         body: dict[str, Any] = {}
@@ -819,6 +844,8 @@ class McpServersResource(_BaseResource):
             body["settings"] = settings
         if auth_mode is not None:
             body["authMode"] = auth_mode
+        if allow_workspace_members is not None:
+            body["allowWorkspaceMembers"] = allow_workspace_members
         if end_user_access is not None:
             body["endUserAccess"] = end_user_access
         if end_user_id is not UNSET:
@@ -1382,6 +1409,7 @@ class WeavzClient:
         )
 
         self.workspaces = WorkspacesResource(self)
+        self.mcp_workspaces = self.workspaces
         self.connections = ConnectionsResource(self)
         self.connect = ConnectResource(self)
         self.actions = ActionsResource(self)

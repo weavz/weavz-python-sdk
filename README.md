@@ -121,6 +121,20 @@ with WeavzClient(api_key="wvz_your_api_key") as client:
     print(result["connections"])
 ```
 
+## MCP Workspaces
+
+An MCP Workspace includes one endpoint automatically. Add apps, choose whose accounts they use, then connect an AI client. No separate server creation is needed. New endpoints use Code Mode and OAuth, admit organization members and pre-added end users, and do not default to the creator's private credentials.
+
+```python
+workspace = client.mcp_workspaces.create(name="Support")["workspace"]
+endpoint = workspace["mcpServer"]["mcpEndpoint"]
+
+# Optional: intentionally change endpoint settings.
+client.mcp_workspaces.configure_mcp(workspace["id"], mode="TOOLS")
+```
+
+The existing `workspaces` resource remains an alias. Several end users can share an endpoint with separate OAuth sessions or scoped access tokens. Existing endpoint URLs and permissions remain valid; older additional endpoints are compatibility connections. Use a separate MCP Workspace for a separate tool surface. Primary endpoint deletion is blocked; delete its workspace explicitly when that is intended.
+
 ## Core Product Flows
 
 ### Workspaces And Integration Aliases
@@ -230,43 +244,24 @@ Read more:
 - [Executing actions](https://weavz.io/docs/guides/executing-actions)
 - [Actions API reference](https://weavz.io/docs/api-reference/actions)
 
-### MCP Servers For Agents
+### MCP Workspaces For Agents
 
-Create remote MCP servers that expose workspace integrations to AI agents. Code Mode is the best default for broad agent workspaces; Tool Mode is useful for small explicit tool surfaces.
+Each MCP Workspace includes an endpoint. Connect an OAuth-capable client to its URL. For a programmatic agent, issue private access for an existing external end user:
 
 ```python
-result = client.mcp_servers.create(
-    name="Acme Agent Workspace",
-    mode="CODE",
-    workspace_id=workspace["id"],
-    auth_mode="oauth_and_bearer",
-    end_user_access="restricted",
-    settings={
-        "codeMode": {
-            "approvalWaitSeconds": 30,
-        },
-    },
+access = client.mcp_workspaces.create_access_token(
+    workspace["id"], end_user_id="user_123",
+    scopes=["mcp:tools", "mcp:code"], expires_in=60 * 60,
 )
-
-server = result["server"]
-mcp_endpoint = result["mcpEndpoint"]
-
-token_result = client.mcp_servers.create_bearer_token(
-    server["id"],
-    end_user_id="user_123",
-    scopes=["mcp:tools", "mcp:code"],
-    expires_in=60 * 60 * 24 * 30,
-)
-
-# Store token_result["bearerToken"] privately for the intended client.
-print(mcp_endpoint)
+# Deliver access["mcpEndpoint"] and access["accessToken"] privately to this user's agent.
+# Send accessToken as Authorization: Bearer to the MCP endpoint.
 ```
 
 You can also run Code Mode directly through the SDK:
 
 ```python
 code_run = client.mcp_servers.execute_code(
-    server["id"],
+    workspace["mcpServer"]["id"],
     """
 return await weavz.files.write_file({
   path: "summary.json",

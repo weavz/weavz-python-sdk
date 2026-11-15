@@ -33,6 +33,32 @@ def client_factory():
         client.close()
 
 
+def test_mcp_workspace_creation_and_configuration_reuse_its_endpoint(client_factory):
+    workspace_id = "550e8400-e29b-41d4-a716-446655440001"
+    server_id = "660e8400-e29b-41d4-a716-446655440002"
+    endpoint = f"https://api.example.com/mcp/srv_{server_id}"
+    requests = []
+
+    def handler(request):
+        requests.append(request)
+        if request.method == "PATCH":
+            return httpx.Response(200, json={"server": {"id": server_id, "mcpEndpoint": endpoint}})
+        return httpx.Response(200, json={"workspace": {"id": workspace_id, "mcpServer": {"id": server_id, "mcpEndpoint": endpoint}}})
+
+    client = client_factory(handler)
+    assert client.mcp_workspaces is client.workspaces
+    client.mcp_workspaces.create(name="Support")
+    result = client.mcp_workspaces.configure_mcp(workspace_id, mode="TOOLS", allow_workspace_members=False)
+    assert result["mcpEndpoint"] == endpoint
+    assert [(request.method, request.url.path) for request in requests] == [
+        ("POST", "/api/v1/workspaces"),
+        ("GET", f"/api/v1/workspaces/{workspace_id}"),
+        ("PATCH", f"/api/v1/mcp/servers/{server_id}"),
+    ]
+    assert json.loads(requests[0].content) == {"name": "Support"}
+    assert json.loads(requests[2].content) == {"mode": "TOOLS", "allowWorkspaceMembers": False}
+
+
 @pytest.mark.parametrize("kwargs", [
     {"api_key": ""}, {"api_key": "  "}, {"max_retries": -1}, {"max_retries": 1.5},
     {"max_retries": True}, {"timeout": 0}, {"timeout": -1}, {"timeout": float("inf")},
@@ -338,3 +364,14 @@ def test_approval_history_cursor_null_workspace_and_review_access(client_factory
     client.approval_policies.update("policy", workspace_id=None)
     assert json.loads(requests[1].content) == {"workspaceId": None}
     assert client.approvals.get("approval")["approval"]["reviewAccess"]["canDecide"] is False
+
+
+@pytest.mark.parametrize("auth_method", ["oauth", "bearer"])
+def test_workspace_private_access_uses_only_workspace_and_external_identity(client_factory, auth_method):
+    requests = []
+    response = {"accessToken": "fixture-only", "mcpEndpoint": "https://api.example.com/mcp/srv_fixture", "token": {"endUserId": "customer/alice", "authMethod": auth_method}}
+    client = client_factory(lambda req: (requests.append(req), httpx.Response(201, json=response))[1])
+    assert client.mcp_workspaces.create_access_token("workspace/a?b", end_user_id="customer/alice", scopes=["mcp:tools"], expires_in=600) == response
+    assert len(requests) == 1
+    assert requests[0].url.raw_path == b"/api/v1/workspaces/workspace%2Fa%3Fb/access-tokens"
+    assert json.loads(requests[0].content) == {"endUserId": "customer/alice", "scopes": ["mcp:tools"], "expiresIn": 600}
