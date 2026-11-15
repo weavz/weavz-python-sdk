@@ -59,6 +59,25 @@ def test_mcp_workspace_creation_and_configuration_reuse_its_endpoint(client_fact
     assert json.loads(requests[2].content) == {"mode": "TOOLS", "allowWorkspaceMembers": False}
 
 
+@pytest.mark.parametrize("search", ["Team %_!\\ +/?#", ""])
+def test_end_user_directory_preserves_literal_search_and_pagination(client_factory, search):
+    requests = []
+    response = {"endUsers": [{"id": "customer-51", "externalId": "customer-51"}], "total": 137}
+    client = client_factory(lambda req: (requests.append(req), httpx.Response(200, json=response))[1])
+    assert client.end_users.list("workspace", search=search, limit=100, offset=50) == response
+    assert requests[0].method == "GET"
+    assert requests[0].url.path == "/api/v1/end-users"
+    assert dict(requests[0].url.params) == {"workspaceId": "workspace", "search": search, "limit": "100", "offset": "50"}
+    assert requests[0].headers["authorization"] == "Bearer wvz_test"
+
+
+def test_end_user_directory_keeps_workspace_only_calls_sparse(client_factory):
+    requests = []
+    client = client_factory(lambda req: (requests.append(req), httpx.Response(200, json={"endUsers": [], "total": 0}))[1])
+    client.end_users.list("workspace")
+    assert dict(requests[0].url.params) == {"workspaceId": "workspace"}
+
+
 @pytest.mark.parametrize("kwargs", [
     {"api_key": ""}, {"api_key": "  "}, {"max_retries": -1}, {"max_retries": 1.5},
     {"max_retries": True}, {"timeout": 0}, {"timeout": -1}, {"timeout": float("inf")},

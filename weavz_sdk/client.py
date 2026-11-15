@@ -1296,10 +1296,13 @@ class EndUsersResource(_BaseResource):
         self,
         workspace_id: str,
         *,
+        search: str | None = None,
         limit: int | None = None,
         offset: int | None = None,
     ) -> dict[str, Any]:
         params: dict[str, Any] = {"workspaceId": workspace_id}
+        if search is not None:
+            params["search"] = search
         if limit is not None:
             params["limit"] = limit
         if offset is not None:
